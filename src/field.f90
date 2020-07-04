@@ -14,8 +14,9 @@ module mod_field
     character(:), allocatable :: name
     integer(ip)               :: dims(2)
     ! always have two levels: n, np1 and intermediate levels for RK4 time
-    ! evolution. k1, etc. are the time derivatives (note 1==n, 5==np1)
-    real(rp), allocatable     :: &
+    ! evolution. k1, etc. are the time derivatives (note 1==n, 5==np1).
+    ! These functions are complex as we work in NP formalism
+    complex(rp), allocatable :: &
         n( :,:),l2(:,:),l3(:,:),l4(:,:),np1(:,:), &
         k1(:,:),k2(:,:),k3(:,:),k4(:,:),k5(:,:)
 
