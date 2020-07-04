@@ -1,8 +1,13 @@
+#==========================================================================
 TOP= ./
 SRC= $(TOP)src/
 BIN= $(TOP)bin/
 
 OBJDIR= $(TOP)obj/
+
+vpath %.f90 $(SRC)
+vpath %.mod $(OBJDIR)
+vpath %.o   $(OBJDIR)
 #==========================================================================
 FF = ifort #gfortran
 
@@ -16,13 +21,17 @@ ifeq ($(FF),ifort)
 	FFLAGS+= -ip -ipo -no-inline-max-total-size -no-inline-max-size
 endif
 #==========================================================================
-RUN = run
+RUN = $(BIN)run
 
 MAIN = main.f90
 
-OBJ = modules.o
+OBJ= $(addprefix $(OBJDIR), \
+	modules.o \
+	)
 
-MOD = io.f90
+MOD = $(addprefix $(SRC), \
+	io.f90 \
+	)
 
 all: ${RUN}
 
@@ -33,5 +42,5 @@ ${OBJ}:
 	${FF} ${FFLAGS} -c -o $@ ${MOD}
 #==========================================================================
 clean:
-	rm -f *.o
-	rm -f *.mod
+	rm -f $(OBJDIR)*.o
+	rm -f $(OBJDIR)*.mod
