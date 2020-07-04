@@ -1,3 +1,9 @@
+TOP= ./
+SRC= $(TOP)src/
+BIN= $(TOP)bin/
+
+OBJDIR= $(TOP)obj/
+#==========================================================================
 FF = ifort #gfortran
 
 FFLAGS= -g -fmax-errors=5 -O2 #-fopenmp
