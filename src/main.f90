@@ -1,6 +1,8 @@
 program main
     use, intrinsic :: iso_fortran_env, only: prec=>real64
 
+    use teuk
+
     implicit none
 
     complex(prec) :: a = (0,1)

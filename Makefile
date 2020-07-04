@@ -29,15 +29,15 @@ RUN = $(BIN)run
 MAIN = main.f90
 
 OBJ= $(addprefix $(OBJDIR), \
+	field.o \
+	teuk.o \
 	io.o \
 	)
 
 DEPS = $(addprefix $(SRC), \
+	field.f90 \
+	teuk.f90 \
 	io.f90 \
-	)
-
-MOD = $(addprefix $(OBJDIR), \
-	io.mod \
 	)
 
 all: $(RUN)
