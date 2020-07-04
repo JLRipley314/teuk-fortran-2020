@@ -9,38 +9,48 @@ vpath %.f90 $(SRC)
 vpath %.mod $(OBJDIR)
 vpath %.o   $(OBJDIR)
 #==========================================================================
-FF = ifort #gfortran
+FC = gfortran#ifort#
 
 FFLAGS= -g -fmax-errors=5 -O2 #-fopenmp
 #==========================================================================
-ifeq ($(FF),gfortran)
-	FFLAGS+= -Wall -Wextra -std=f2008  
+ifeq ($(FC),gfortran)
+	FFLAGS+= -Wall -Wextra -std=f2008 \
+		-J$(OBJDIR) 
 endif
 
-ifeq ($(FF),ifort)
-	FFLAGS+= -ip -ipo -no-inline-max-total-size -no-inline-max-size
+ifeq ($(FC),ifort)
+	FFLAGS+= -ip -ipo \
+		-module $(OBJDIR) 
 endif
+#		-no-inline-max-total-size -no-inline-max-size \
 #==========================================================================
 RUN = $(BIN)run
 
 MAIN = main.f90
 
 OBJ= $(addprefix $(OBJDIR), \
-	modules.o \
+	io.o \
 	)
 
-MOD = $(addprefix $(SRC), \
+DEPS = $(addprefix $(SRC), \
 	io.f90 \
 	)
 
-all: ${RUN}
+MOD = $(addprefix $(OBJDIR), \
+	io.mod \
+	)
 
-${RUN}: ${MAIN} ${OBJ}
-	${FF} ${FFLAGS} -o $@ $^
+all: $(RUN)
 
-${OBJ}:
-	${FF} ${FFLAGS} -c -o $@ ${MOD}
+$(RUN): $(MAIN) $(OBJ)
+	$(FC) $(FFLAGS) -o $@ $^
+
+$(OBJDIR)%.o: %.f90
+	$(FC) $(FFLAGS) -c -o $@ $^
 #==========================================================================
 clean:
 	rm -f $(OBJDIR)*.o
 	rm -f $(OBJDIR)*.mod
+#==========================================================================
+run:
+	@./bin/run
