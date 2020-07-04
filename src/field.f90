@@ -1,19 +1,79 @@
-module fields
-    use, intrinsic :: iso_fortran_env, only: prec=>real64
+! Provides the Field class and its methods.
+
+module mod_field
+!-----------------------------------------------------------------------------
+    use iso_fortran_env, only: ip => int64, rp => real64
+!   use mod_io, only: write_field
+
     implicit none
+!-----------------------------------------------------------------------------
+    private
+    public :: Field 
+!-----------------------------------------------------------------------------
+    type :: Field
 
-    type field
-        complex(prec), allocatable :: n(:,:)
-        complex(prec), allocatable :: np1(:,:)
-        complex(prec), allocatable :: l2(:,:)
-        complex(prec), allocatable :: l3(:,:)
-        complex(prec), allocatable :: l4(:,:)
+    character(:), allocatable :: name
+    integer(ip)               :: dims(2)
+    real(rp), allocatable     :: &
+        n( :,:),l2(:,:),l3(:,:),l4(:,:),np1(:,:), &
+        k1(:,:),k2(:,:),k3(:,:),k4(:,:),k5(:,:)
 
-        complex(prec), allocatable :: k1(:,:)
-        complex(prec), allocatable :: k2(:,:)
-        complex(prec), allocatable :: k3(:,:)
-        complex(prec), allocatable :: k4(:,:)
-        complex(prec), allocatable :: k5(:,:)
-    end type field
+    end type Field
+!-----------------------------------------------------------------------------
+    interface Field
+        module procedure :: field_constructor
+    end interface Field
+!-----------------------------------------------------------------------------
+contains
+!-----------------------------------------------------------------------------
+    type(Field) function field_constructor(name, dims) result(self)
+        character(*), intent(in) :: name ! field name
+        integer(ip),  intent(in) :: dims(2) ! domain size in x and y
+        self % name = name 
+        self % dims = dims
+        allocate(self % n(  dims(1),dims(2)))
+        allocate(self % l2( dims(1),dims(2)))
+        allocate(self % l3( dims(1),dims(2)))
+        allocate(self % l4( dims(1),dims(2)))
+        allocate(self % np1(dims(1),dims(2)))
+        allocate(self % k1( dims(1),dims(2)))
+        allocate(self % k2( dims(1),dims(2)))
+        allocate(self % k3( dims(1),dims(2)))
+        allocate(self % k4( dims(1),dims(2)))
+        allocate(self % k5( dims(1),dims(2)))
+        self % n   = 0
+        self % l2  = 0
+        self % l3  = 0
+        self % l4  = 0
+        self % np1 = 0
+        self % k1  = 0
+        self % k2  = 0
+        self % k3  = 0
+        self % k4  = 0
+        self % k5  = 0
+    end function field_constructor
+!-----------------------------------------------------------------------------
+    pure subroutine from_field(target, source)
+        ! Initializes Field instance target using components
+        ! from Field instance source. Used to initialize a 
+        ! Field from another Field without invoking the 
+        ! assignment operator.
+        type(Field), intent(in out) :: target
+        type(Field), intent(in) :: source
+        target % name = source % name
+        target % dims = source % dims
 
-end module fields
+        target % n   = source % n
+        target % l2  = source % l2
+        target % l3  = source % l3
+        target % l4  = source % l4
+        target % np1 = source % np1
+
+        target % k1 = source % k1
+        target % k2 = source % k2
+        target % k3 = source % k3
+        target % k4 = source % k4
+        target % k5 = source % k5
+    end subroutine from_field
+!-----------------------------------------------------------------------------
+end module mod_field
