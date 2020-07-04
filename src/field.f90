@@ -3,7 +3,6 @@
 module mod_field
 !-----------------------------------------------------------------------------
     use iso_fortran_env, only: ip => int64, rp => real64
-!   use mod_io, only: write_field
 
     implicit none
 !-----------------------------------------------------------------------------
@@ -14,6 +13,8 @@ module mod_field
 
     character(:), allocatable :: name
     integer(ip)               :: dims(2)
+    ! always have two levels: n, np1 and intermediate levels for RK4 time
+    ! evolution. k1, etc. are the time derivatives (note 1==n, 5==np1)
     real(rp), allocatable     :: &
         n( :,:),l2(:,:),l3(:,:),l4(:,:),np1(:,:), &
         k1(:,:),k2(:,:),k3(:,:),k4(:,:),k5(:,:)
