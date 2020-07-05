@@ -14,12 +14,12 @@ FC = ifort#gfortran#
 FFLAGS= -g -fmax-errors=5 -O2 #-fopenmp
 #==========================================================================
 ifeq ($(FC),gfortran)
-	FFLAGS+= -Wall -Wextra -std=f2008 \
+	FFLAGS+= -std=f2008 -Wall -Wextra -fimplicit-none -fbounds-check \
 		-J$(OBJDIR) 
 endif
 
 ifeq ($(FC),ifort)
-	FFLAGS+= -ip -ipo -std08 \
+	FFLAGS+= -std08 -ip -ipo -warn declarations -warn all -check-bounds \
 		-module $(OBJDIR) 
 endif
 #		-no-inline-max-total-size -no-inline-max-size \
@@ -30,12 +30,16 @@ MAIN = main.f90
 
 OBJ= $(addprefix $(OBJDIR), \
 	field.o \
+	sim_params.o \
+	bkgrd.o \
 	teuk.o \
 	io.o \
 	)
 
 DEPS = $(addprefix $(SRC), \
 	field.f90 \
+	sim_params.f90 \
+	bkgrd.f90 \
 	teuk.f90 \
 	io.f90 \
 	)
