@@ -53,8 +53,22 @@ contains
           ,&
           kind=rp)
 
-        pi_0(i,j) = 0
-        rh_0(i,j) = 0
+        pi_0(i,j) = cmplx( &
+          0.0_rp &
+          , &
+        - (bhs*sn(j)) &
+          / (sqrt(2.0_rp)*(cl**4) + (bhs**2)*(cs(j)**2)*(r_pts(i)**2)) &
+          , &
+          kind=rp)
+
+        rh_0(i,j) = cmplx( &
+          (-2.0_rp*((cl**6) - 2.0_rp*(cl**4)*bhm*r_pts(i) + (bhs**2)*(cl**2)*(r_pts(i)**2))) &
+          / ((2.0_rp*(cl**4) + (bhs**2)*(r_pts(i)**2)*(1.0_rp + (cs(j)**2) - (sn(j)**2)))**2) &
+          , & 
+          (-2.0_rp*bhs*cs(j)*r_pts(i)*((cl**4) - 2.0_rp*(cl**2)*bhm*r_pts(i) + (bhs**2)*(r_pts(i)**2))) &
+          / ((2.0_rp*(cl**4) + (bhs**2)*(r_pts(i)**2)*(1.0_rp + (cs(j)**2) - (sn(j)**2)))**2) &
+          , &
+          kind=rp)
 
         thorn_prime_ta_0(i,j) = 0
 
