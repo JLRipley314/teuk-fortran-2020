@@ -2,6 +2,7 @@ program main
 !-----------------------------------------------------------------------------
     use, intrinsic :: iso_fortran_env, only: prec=>real64
 
+    use mod_field
     use mod_teuk
 
     implicit none

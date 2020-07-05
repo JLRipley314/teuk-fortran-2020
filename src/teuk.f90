@@ -12,7 +12,6 @@ module mod_teuk
     type :: Teuk
     
     integer(ip) :: dims(2)
-
     complex(rp), allocatable :: &
         A_pp(:,:), A_pq(:,:), A_pf(:,:), &
         A_qp(:,:), A_qq(:,:), A_qf(:,:), &

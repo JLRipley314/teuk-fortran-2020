@@ -19,7 +19,7 @@ ifeq ($(FC),gfortran)
 endif
 
 ifeq ($(FC),ifort)
-	FFLAGS+= -ip -ipo \
+	FFLAGS+= -ip -ipo -std08 \
 		-module $(OBJDIR) 
 endif
 #		-no-inline-max-total-size -no-inline-max-size \
