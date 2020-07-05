@@ -36,14 +36,23 @@ contains
       x_loop: do i=1,nx
 
         mu_0(i,j) = cmplx( &
-        - ((cl**2) &
+        - (cl**2) &
           / ((cl**4) + (bhs**2)*(cs(j)**2)*(r_pts(i)**2)) &
-          ), &
-        - ((bhs*cs(j)*r_pts(i)) & 
+          , &
+        - (bhs*cs(j)*r_pts(i)) & 
           / ((cl**4) + (bhs**2)*(cs(j)**2)*(r_pts(i)**2)) &
-          ), & 
+          , & 
           kind=rp)
-        ta_0(i,j) = 0
+
+        ta_0(i,j) = cmplx( &
+        - (sqrt(2.0_rp)*(bhs**2)*cs(j)*(cl**2)*r_pts(i)*sn(j)) &
+          / (((cl**4) + (bhs**2)*(cs(j)**2)*(r_pts(i)**2))**2) &
+          , &
+          (bhs*sn(j)*(4.0_rp*(cl**4) + (bhs**2)*(r_pts(i)**2)*(-1.0_rp - 3.0_rp*(cs(j)**2) + (sn(j)**2)))) &
+          / (sqrt(2.0_rp)*((2*(cl**4) + (bhs**2)*(r_pts(i)**2)*(1.0_rp + (cs(j)**2) - (sn(j)**2)))**2)) &
+          ,&
+          kind=rp)
+
         pi_0(i,j) = 0
         rh_0(i,j) = 0
 
