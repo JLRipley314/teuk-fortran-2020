@@ -1,3 +1,3 @@
 module io
-    implicit none
+  implicit none
 end module io
