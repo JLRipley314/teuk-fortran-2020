@@ -61,4 +61,4 @@ clean:
 run:
 	@./bin/run
 run_debug:
-	@valgrind -v --track-origins=yes ./bin/run
+	@valgrind -v --track-origins=yes --leak-check=full ./bin/run

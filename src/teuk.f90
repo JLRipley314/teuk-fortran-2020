@@ -1,3 +1,6 @@
+!
+! Teukolsky field solver
+!
 module mod_teuk
 !-----------------------------------------------------------------------------
   use mod_def_prec
