@@ -5,14 +5,23 @@ program main
   use mod_field
   use mod_sim_params
   use mod_teuk
-  use mod_bkgrd
+  use mod_bkgrd_np
 
   implicit none
 !-----------------------------------------------------------------------------
+  integer(ip) :: i, j
+  real(rp) :: val
 !-----------------------------------------------------------------------------
-  print '(a)', 'setting up fields'
+  call init_bkgrd_np()
+!-----------------------------------------------------------------------------
+  y_loop: do j=1,ny
+    x_loop: do i=1,nx
 
-  call init_bkgrd()
+      val = mu_0(i,j)
 
+    end do x_loop
+  end do y_loop 
+!-----------------------------------------------------------------------------
+  call clear_bkgrd_np()
 !-----------------------------------------------------------------------------
 end program main

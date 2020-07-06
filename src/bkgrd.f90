@@ -1,4 +1,4 @@
-module mod_bkgrd
+module mod_bkgrd_np
 !-----------------------------------------------------------------------------
   use, intrinsic :: iso_fortran_env, only: ip => int64, rp => real64
 
@@ -19,7 +19,7 @@ module mod_bkgrd
 !-----------------------------------------------------------------------------
 contains
 !-----------------------------------------------------------------------------
-  subroutine init_bkgrd()
+  subroutine init_bkgrd_np()
 
     integer(ip) :: i, j
 
@@ -102,6 +102,20 @@ contains
       end do x_loop
     end do y_loop
 
-  end subroutine init_bkgrd
+  end subroutine init_bkgrd_np
+
+  ! allocatable arrays are freed at end of main
+  ! but clean is here so valgrind doesn't get confused
+  subroutine clear_bkgrd_np
+
+    deallocate(mu_0)
+    deallocate(ta_0)
+    deallocate(pi_0)
+    deallocate(rh_0)
+
+    deallocate(thorn_prime_ta_0)
+
+    deallocate(psi2_0)
+  end subroutine clear_bkgrd_np
 !-----------------------------------------------------------------------------
-end module mod_bkgrd
+end module mod_bkgrd_np

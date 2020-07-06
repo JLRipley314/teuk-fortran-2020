@@ -58,3 +58,5 @@ clean:
 #==========================================================================
 run:
 	@./bin/run
+run_debug:
+	@valgrind -v --track-origins=yes ./bin/run
