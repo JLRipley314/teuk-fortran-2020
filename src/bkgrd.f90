@@ -70,9 +70,34 @@ contains
           , &
           kind=rp)
 
-        thorn_prime_ta_0(i,j) = 0
+        thorn_prime_ta_0(i,j) = cmplx( &
+          (4.0_rp*sqrt(2.0_rp)*(bhs**2)*cs(j)*r_pts(i)*sn(j)*(-6.0_rp*(cl**4) &
+            + (bhs**2)*(r_pts(i)**2)*(1.0_rp + (cs(j)**2) - (sn(j)**2))) &
+          ) &
+          / ((2.0_rp*(cl**4) + (bhs**2)*(r_pts(i)**2)*(1.0_rp + (cs(j)**2) - (sn(j)**2)))**3) &
+          , &
+          (2.0_rp*sqrt(2.0_rp)*bhs*(cl**2)*sn(j)*( &
+              4.0_rp*(cl**4) &
+            + 3.0_rp*(bhs**2)*(r_pts(i)**2)*(-1.0_rp - 3.0_rp*(cs(j)**2) + (sn(j)**2)) &
+            )) &
+          / ((2.0_rp*(cl**4) + (bhs**2)*(r_pts(i)**2)*(1.0_rp + (cs(j)**2) - (sn(j)**2)))**3) &
+          , &
+          kind=rp)
 
-        psi2_0(i,j) = 0
+        psi2_0(i,j) = cmplx( &
+          (4.0_rp*(cl**2)*bhm*( &
+            - 2.0_rp*(cl**4) &
+            + 3.0_rp*(bhs**2)*(r_pts(i)**2)*(1.0_rp + (cs(j)**2) - (sn(j)**2)) &
+            )) &
+          / ((2.0_rp*(cl**4) + (bhs**2)*(r_pts(i)**2)*(1.0_rp + (cs(j)**2) - (sn(j)**2)))**3) &
+          , &
+          (2.0_rp*bhs*cs(j)*bhm*r_pts(i)*( &
+            - 12.0_rp*(cl**4) &
+            + (bhs**2)*(r_pts(i)**2)*(3.0_rp + (cs(j)**2) - 3.0_rp*(sn(j)**2)) &
+            )) &
+          / ((2.0_rp*(cl**4) + (bhs**2)*(r_pts(i)**2)*(1.0_rp + (cs(j)**2) - (sn(j)**2)))**3) &
+          , &
+          kind=rp)
 
       end do x_loop
     end do y_loop
