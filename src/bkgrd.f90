@@ -5,7 +5,7 @@ module mod_bkgrd
   use mod_sim_params, only: &
     nx, ny, cl, &
     bhs, bhm, &
-    r_pts, y_pts, cs, sn
+    R, cy, sy
 
   implicit none
 ! all variables are public
@@ -37,65 +37,65 @@ contains
 
         mu_0(i,j) = cmplx( &
         - (cl**2) &
-          / ((cl**4) + (bhs**2)*(cs(j)**2)*(r_pts(i)**2)) &
+          / ((cl**4) + (bhs**2)*(cy(j)**2)*(R(i)**2)) &
           , &
-        - (bhs*cs(j)*r_pts(i)) & 
-          / ((cl**4) + (bhs**2)*(cs(j)**2)*(r_pts(i)**2)) &
+        - (bhs*cy(j)*R(i)) & 
+          / ((cl**4) + (bhs**2)*(cy(j)**2)*(R(i)**2)) &
           , & 
           kind=rp)
 
         ta_0(i,j) = cmplx( &
-        - (sqrt(2.0_rp)*(bhs**2)*cs(j)*(cl**2)*r_pts(i)*sn(j)) &
-          / (((cl**4) + (bhs**2)*(cs(j)**2)*(r_pts(i)**2))**2) &
+        - (sqrt(2.0_rp)*(bhs**2)*cy(j)*(cl**2)*R(i)*sy(j)) &
+          / (((cl**4) + (bhs**2)*(cy(j)**2)*(R(i)**2))**2) &
           , &
-          (bhs*sn(j)*(4.0_rp*(cl**4) + (bhs**2)*(r_pts(i)**2)*(-1.0_rp - 3.0_rp*(cs(j)**2) + (sn(j)**2)))) &
-          / (sqrt(2.0_rp)*((2*(cl**4) + (bhs**2)*(r_pts(i)**2)*(1.0_rp + (cs(j)**2) - (sn(j)**2)))**2)) &
+          (bhs*sy(j)*(4.0_rp*(cl**4) + (bhs**2)*(R(i)**2)*(-1.0_rp - 3.0_rp*(cy(j)**2) + (sy(j)**2)))) &
+          / (sqrt(2.0_rp)*((2*(cl**4) + (bhs**2)*(R(i)**2)*(1.0_rp + (cy(j)**2) - (sy(j)**2)))**2)) &
           ,&
           kind=rp)
 
         pi_0(i,j) = cmplx( &
           0.0_rp &
           , &
-        - (bhs*sn(j)) &
-          / (sqrt(2.0_rp)*(cl**4) + (bhs**2)*(cs(j)**2)*(r_pts(i)**2)) &
+        - (bhs*sy(j)) &
+          / (sqrt(2.0_rp)*(cl**4) + (bhs**2)*(cy(j)**2)*(R(i)**2)) &
           , &
           kind=rp)
 
         rh_0(i,j) = cmplx( &
-          (-2.0_rp*((cl**6) - 2.0_rp*(cl**4)*bhm*r_pts(i) + (bhs**2)*(cl**2)*(r_pts(i)**2))) &
-          / ((2.0_rp*(cl**4) + (bhs**2)*(r_pts(i)**2)*(1.0_rp + (cs(j)**2) - (sn(j)**2)))**2) &
+          (-2.0_rp*((cl**6) - 2.0_rp*(cl**4)*bhm*R(i) + (bhs**2)*(cl**2)*(R(i)**2))) &
+          / ((2.0_rp*(cl**4) + (bhs**2)*(R(i)**2)*(1.0_rp + (cy(j)**2) - (sy(j)**2)))**2) &
           , & 
-          (-2.0_rp*bhs*cs(j)*r_pts(i)*((cl**4) - 2.0_rp*(cl**2)*bhm*r_pts(i) + (bhs**2)*(r_pts(i)**2))) &
-          / ((2.0_rp*(cl**4) + (bhs**2)*(r_pts(i)**2)*(1.0_rp + (cs(j)**2) - (sn(j)**2)))**2) &
+          (-2.0_rp*bhs*cy(j)*R(i)*((cl**4) - 2.0_rp*(cl**2)*bhm*R(i) + (bhs**2)*(R(i)**2))) &
+          / ((2.0_rp*(cl**4) + (bhs**2)*(R(i)**2)*(1.0_rp + (cy(j)**2) - (sy(j)**2)))**2) &
           , &
           kind=rp)
 
         thorn_prime_ta_0(i,j) = cmplx( &
-          (4.0_rp*sqrt(2.0_rp)*(bhs**2)*cs(j)*r_pts(i)*sn(j)*(-6.0_rp*(cl**4) &
-            + (bhs**2)*(r_pts(i)**2)*(1.0_rp + (cs(j)**2) - (sn(j)**2))) &
+          (4.0_rp*sqrt(2.0_rp)*(bhs**2)*cy(j)*R(i)*sy(j)*(-6.0_rp*(cl**4) &
+            + (bhs**2)*(R(i)**2)*(1.0_rp + (cy(j)**2) - (sy(j)**2))) &
           ) &
-          / ((2.0_rp*(cl**4) + (bhs**2)*(r_pts(i)**2)*(1.0_rp + (cs(j)**2) - (sn(j)**2)))**3) &
+          / ((2.0_rp*(cl**4) + (bhs**2)*(R(i)**2)*(1.0_rp + (cy(j)**2) - (sy(j)**2)))**3) &
           , &
-          (2.0_rp*sqrt(2.0_rp)*bhs*(cl**2)*sn(j)*( &
+          (2.0_rp*sqrt(2.0_rp)*bhs*(cl**2)*sy(j)*( &
               4.0_rp*(cl**4) &
-            + 3.0_rp*(bhs**2)*(r_pts(i)**2)*(-1.0_rp - 3.0_rp*(cs(j)**2) + (sn(j)**2)) &
+            + 3.0_rp*(bhs**2)*(R(i)**2)*(-1.0_rp - 3.0_rp*(cy(j)**2) + (sy(j)**2)) &
             )) &
-          / ((2.0_rp*(cl**4) + (bhs**2)*(r_pts(i)**2)*(1.0_rp + (cs(j)**2) - (sn(j)**2)))**3) &
+          / ((2.0_rp*(cl**4) + (bhs**2)*(R(i)**2)*(1.0_rp + (cy(j)**2) - (sy(j)**2)))**3) &
           , &
           kind=rp)
 
         psi2_0(i,j) = cmplx( &
           (4.0_rp*(cl**2)*bhm*( &
             - 2.0_rp*(cl**4) &
-            + 3.0_rp*(bhs**2)*(r_pts(i)**2)*(1.0_rp + (cs(j)**2) - (sn(j)**2)) &
+            + 3.0_rp*(bhs**2)*(R(i)**2)*(1.0_rp + (cy(j)**2) - (sy(j)**2)) &
             )) &
-          / ((2.0_rp*(cl**4) + (bhs**2)*(r_pts(i)**2)*(1.0_rp + (cs(j)**2) - (sn(j)**2)))**3) &
+          / ((2.0_rp*(cl**4) + (bhs**2)*(R(i)**2)*(1.0_rp + (cy(j)**2) - (sy(j)**2)))**3) &
           , &
-          (2.0_rp*bhs*cs(j)*bhm*r_pts(i)*( &
+          (2.0_rp*bhs*cy(j)*bhm*R(i)*( &
             - 12.0_rp*(cl**4) &
-            + (bhs**2)*(r_pts(i)**2)*(3.0_rp + (cs(j)**2) - 3.0_rp*(sn(j)**2)) &
+            + (bhs**2)*(R(i)**2)*(3.0_rp + (cy(j)**2) - 3.0_rp*(sy(j)**2)) &
             )) &
-          / ((2.0_rp*(cl**4) + (bhs**2)*(r_pts(i)**2)*(1.0_rp + (cs(j)**2) - (sn(j)**2)))**3) &
+          / ((2.0_rp*(cl**4) + (bhs**2)*(R(i)**2)*(1.0_rp + (cy(j)**2) - (sy(j)**2)))**3) &
           , &
           kind=rp)
 

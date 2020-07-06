@@ -49,9 +49,9 @@ module mod_sim_params
   real(rp), parameter :: r_max = 1_rp 
   real(rp), parameter :: dx_over_dr = 1_rp
 
-  real(rp), parameter :: r_pts(nx) = [ 0, 0, 0, 0] 
-  real(rp), parameter :: y_pts(ny) = [ 0, 0, 0, 0] 
-  real(rp), parameter :: cs(ny) = cos(y_pts)
-  real(rp), parameter :: sn(ny) = sin(y_pts)
+  real(rp), parameter :: R(nx) = [ 0, 0, 0, 0] 
+  real(rp), parameter :: Y(ny) = [ 0, 0, 0, 0] 
+  real(rp), parameter :: cy(ny) = cos(Y)
+  real(rp), parameter :: sy(ny) = sin(Y)
 !-----------------------------------------------------------------------------
 end module mod_sim_params
