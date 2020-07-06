@@ -1,6 +1,6 @@
 module mod_teuk
 !-----------------------------------------------------------------------------
-  use, intrinsic :: iso_fortran_env, only: ip => int64, rp => real64
+  use mod_def_prec
 
   use mod_field
 

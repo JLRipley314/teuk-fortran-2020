@@ -1,8 +1,9 @@
+!
 ! Provides the Field class and its methods.
-
+!
 module mod_field
 !-----------------------------------------------------------------------------
-  use iso_fortran_env, only: ip => int64, rp => real64
+  use mod_def_prec
 
   implicit none
 !-----------------------------------------------------------------------------

@@ -29,6 +29,7 @@ RUN = $(BIN)run
 MAIN = main.f90
 
 OBJ= $(addprefix $(OBJDIR), \
+	def_prec.o \
 	field.o \
 	sim_params.o \
 	bkgrd.o \
@@ -37,6 +38,7 @@ OBJ= $(addprefix $(OBJDIR), \
 	)
 
 DEPS = $(addprefix $(SRC), \
+	def_prec.f90 \
 	field.f90 \
 	sim_params.f90 \
 	bkgrd.f90 \

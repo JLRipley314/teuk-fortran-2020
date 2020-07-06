@@ -1,6 +1,9 @@
+!
+! Newman-Penrose fields for the background manifold
+!
 module mod_bkgrd_np
 !-----------------------------------------------------------------------------
-  use, intrinsic :: iso_fortran_env, only: ip => int64, rp => real64
+  use mod_def_prec
 
   use mod_sim_params, only: &
     nx, ny, cl, &
