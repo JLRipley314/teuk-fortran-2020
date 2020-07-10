@@ -95,6 +95,28 @@ contains
 
   end subroutine swal_coef_to_real
 !-----------------------------------------------------------------------------
+  subroutine swal_lower(spin,m_ang,coefs,vals)
+    integer(ip), intent(in) :: spin
+    integer(ip), intent(in) :: m_ang
+    complex(rp), dimension(nx,0:lmax), intent(inout) :: coefs
+    complex(rp), dimension(nx,ny),     intent(inout) :: vals
+
+    real(rp)    :: pre
+    integer(ip) :: i, k
+
+    call swal_real_to_coef(spin,m_ang,vals,coefs) 
+
+    do k=0,lmax
+      do i=1,nx
+        pre = -sqrt((real(k,rp)+real(spin,rp))*(real(k,rp)-real(spin,rp)+1.0_rp)) 
+        coefs(i,k) = pre*coefs(i,k)
+      end do
+    end do
+
+    call swal_coef_to_real(spin-1,m_ang,coefs,vals) 
+
+  end subroutine swal_lower
+!-----------------------------------------------------------------------------
   subroutine swal_raise(spin,m_ang,coefs,vals)
     integer(ip), intent(in) :: spin
     integer(ip), intent(in) :: m_ang
@@ -104,18 +126,8 @@ contains
     real(rp)    :: pre
     integer(ip) :: i, k
 
-    if (m_ang<min_m .or. m_ang>max_m) then
-      write (*,*) "ERROR(to_swal_coef): m_ang = ", m_ang
-      stop
-    end if
-    if (spin<min_s .or. spin>max_s) then
-      write (*,*) "ERROR(to_swal_coef): spin = ", spin
-      stop
-    end if
-
     call swal_real_to_coef(spin,m_ang,vals,coefs) 
 
-    ! synthesis
     do k=0,lmax
       do i=1,nx
         pre = sqrt((real(k,rp)-real(spin,rp))*(real(k,rp)+real(spin,rp)+1.0_rp)) 
@@ -123,7 +135,7 @@ contains
       end do
     end do
 
-    call swal_coef_to_real(spin,m_ang,coefs,vals) 
+    call swal_coef_to_real(spin+1,m_ang,coefs,vals) 
 
   end subroutine swal_raise
 !-----------------------------------------------------------------------------
