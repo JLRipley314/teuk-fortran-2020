@@ -49,7 +49,7 @@ module mod_sim_params
   !-------------------
   integer(ip), parameter :: t_step_save = nt / num_t_save
 
-  real(rp), parameter :: dt = 6_rp / ((nx ** 2) * (ny ** 2))
+  real(rp), parameter :: dt = 6_rp / ((real(nx,rp)**2) * (real(ny,rp)**2))
 
   real(rp), parameter :: r_max = 1_rp 
   real(rp), parameter :: dx_over_dr = 1_rp
