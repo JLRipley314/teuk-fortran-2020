@@ -18,9 +18,9 @@ module mod_swal
 !-----------------------------------------------------------------------------
 contains
 !-----------------------------------------------------------------------------
-  subroutine set_vals(fn, arr)
-    character(*), allocatable,  intent(in)  :: fn
-    real(rp), intent(out) :: arr
+  subroutine swal_set(fn, arr)
+    character(*), allocatable,      intent(in)  :: fn
+    real(rp), dimension(ny,0:lmax), intent(out) :: arr
 
     character(:), allocatable :: rn
     integer(ip) :: ierror
@@ -37,7 +37,7 @@ contains
       end if
       read (uf,*,iostat=ierror) arr
     close(uf)
-  end subroutine set_vals
+  end subroutine swal_set
 !-----------------------------------------------------------------------------
   subroutine swal_real_to_coef(spin,m_ang,vals,coefs)
     integer(ip), intent(in) :: spin
