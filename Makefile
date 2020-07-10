@@ -33,7 +33,8 @@ OBJ= $(addprefix $(OBJDIR), \
 	mod_field.o \
 	mod_sim_params.o \
 	mod_io.o \
-	mod_swaL.o \
+	mod_cheb.o \
+	mod_swal.o \
 	mod_bkgrd.o \
 	mod_teuk.o \
 	)
@@ -43,7 +44,8 @@ DEPS = $(addprefix $(SRC), \
 	mod_field.f90 \
 	mod_sim_params.f90 \
 	mod_io.f90 \
-	mod_swaL.f90 \
+	mod_cheb.f90 \
+	mod_swal.f90 \
 	mod_bkgrd.f90 \
 	mod_teuk.f90 \
 	)
