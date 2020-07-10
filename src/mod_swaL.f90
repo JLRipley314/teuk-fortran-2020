@@ -14,7 +14,7 @@ module mod_swal
   real(rp), dimension(ny) :: weights
 
   ! p2 = 2, n1 = -1, etc. Refers to the spin weight 
-  real(rp), dimension(ny, lmax, min_m:max_m, min_s:max_s) ::  swal = 0
+  real(rp), dimension(ny, 0:lmax, min_m:max_m, min_s:max_s) ::  swal = 0
 !-----------------------------------------------------------------------------
 contains
 !-----------------------------------------------------------------------------
@@ -37,7 +37,7 @@ contains
       end if
       read (uf,*,iostat=ierror) arr
     close(uf)
-  end subroutine
+  end subroutine set_vals
 !-----------------------------------------------------------------------------
   subroutine swal_real_to_coef(spin,m_ang,vals,coefs)
     integer(ip), intent(in) :: spin
@@ -65,9 +65,9 @@ contains
       end do
     end do
 
-  end subroutine
+  end subroutine swal_real_to_coef
 !-----------------------------------------------------------------------------
-  subroutine swal_coef_to_real(spin,m_ang,vals,coefs)
+  subroutine swal_coef_to_real(spin,m_ang,coefs,vals)
     integer(ip), intent(in) :: spin
     integer(ip), intent(in) :: m_ang
     complex(rp), dimension(nx,0:lmax), intent(in)  :: coefs
@@ -93,7 +93,7 @@ contains
       end do
     end do
 
-  end subroutine
+  end subroutine swal_coef_to_real
 !-----------------------------------------------------------------------------
   subroutine swal_raise(spin,m_ang,coefs,vals)
     integer(ip), intent(in) :: spin
@@ -113,7 +113,7 @@ contains
       stop
     end if
 
-!    swal_real_to_coef(spin,m_ang,vals,coefs) 
+    call swal_real_to_coef(spin,m_ang,vals,coefs) 
 
     ! synthesis
     do k=0,lmax
@@ -123,8 +123,8 @@ contains
       end do
     end do
 
-!    swal_coef_to_real(spin,m_ang,coefs,vals) 
+    call swal_coef_to_real(spin,m_ang,coefs,vals) 
 
-  end subroutine
+  end subroutine swal_raise
 !-----------------------------------------------------------------------------
 end module mod_swal
