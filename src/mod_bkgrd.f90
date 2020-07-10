@@ -3,7 +3,7 @@
 !
 module mod_bkgrd_np
 !-----------------------------------------------------------------------------
-  use mod_def_prec
+  use mod_prec
 
   use mod_sim_params, only: &
     nx, ny, cl, &

@@ -1,7 +1,6 @@
 program main
 !-----------------------------------------------------------------------------
-  use mod_def_prec
-
+  use mod_prec
   use mod_field
   use mod_sim_params
   use mod_teuk

@@ -1,18 +1,18 @@
 module mod_sim_params
 !-----------------------------------------------------------------------------
-  use mod_def_prec
+  use mod_prec
 
   implicit none
 !-----------------------------------------------------------------------------
   integer(ip), parameter :: min_s = -3 
   integer(ip), parameter :: max_s =  2
 
-  integer(ip), parameter :: min_m =  2 
-  integer(ip), parameter :: max_m =  2
+  integer(ip), parameter :: min_m = 2 
+  integer(ip), parameter :: max_m = 2
 !-----------------------------------------------------------------------------
   integer(ip), parameter :: nt = 10_ip
   integer(ip), parameter :: nx = 4_ip 
-  integer(ip), parameter :: nl = 4_ip 
+  integer(ip), parameter :: lmax = 4_ip 
   integer(ip), parameter :: ny = 4_ip
   integer(ip), parameter :: num_t_save = 10_ip
 

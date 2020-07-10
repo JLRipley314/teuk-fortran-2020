@@ -3,7 +3,7 @@
 !
 module mod_teuk
 !-----------------------------------------------------------------------------
-  use mod_def_prec
+  use mod_prec
 
   use mod_field
 

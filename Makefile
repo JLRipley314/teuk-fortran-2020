@@ -29,23 +29,23 @@ RUN = $(BIN)run
 MAIN = main.f90
 
 OBJ= $(addprefix $(OBJDIR), \
-	def_prec.o \
-	field.o \
-	sim_params.o \
-	io.o \
-	swaL.o \
-	bkgrd.o \
-	teuk.o \
+	mod_prec.o \
+	mod_field.o \
+	mod_sim_params.o \
+	mod_io.o \
+	mod_swaL.o \
+	mod_bkgrd.o \
+	mod_teuk.o \
 	)
 
 DEPS = $(addprefix $(SRC), \
-	def_prec.f90 \
-	field.f90 \
-	sim_params.f90 \
-	io.f90 \
-	swaL.f90 \
-	bkgrd.f90 \
-	teuk.f90 \
+	mod_prec.f90 \
+	mod_field.f90 \
+	mod_sim_params.f90 \
+	mod_io.f90 \
+	mod_swaL.f90 \
+	mod_bkgrd.f90 \
+	mod_teuk.f90 \
 	)
 
 all: $(RUN)
