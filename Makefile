@@ -32,18 +32,20 @@ OBJ= $(addprefix $(OBJDIR), \
 	def_prec.o \
 	field.o \
 	sim_params.o \
+	io.o \
+	swaL.o \
 	bkgrd.o \
 	teuk.o \
-	io.o \
 	)
 
 DEPS = $(addprefix $(SRC), \
 	def_prec.f90 \
 	field.f90 \
 	sim_params.f90 \
+	io.f90 \
+	swaL.f90 \
 	bkgrd.f90 \
 	teuk.f90 \
-	io.f90 \
 	)
 
 all: $(RUN)
