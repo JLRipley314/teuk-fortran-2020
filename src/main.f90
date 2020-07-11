@@ -1,6 +1,8 @@
 program main
 !-----------------------------------------------------------------------------
   use mod_prec
+  use mod_cheb
+  use mod_swal
   use mod_field
   use mod_sim_params
   use mod_teuk
@@ -14,7 +16,9 @@ clean_memory: block
   integer(ip) :: i, j
   complex(rp) :: val
 !-----------------------------------------------------------------------------
-  call init_bkgrd_np()
+  call cheb_init()
+  call swal_init()
+  call bkgrd_np_init()
 !-----------------------------------------------------------------------------
   y_loop: do j=1,ny
     x_loop: do i=1,nx
@@ -25,8 +29,6 @@ clean_memory: block
 
     end do x_loop
   end do y_loop 
-!-----------------------------------------------------------------------------
-  call clear_bkgrd_np()
 !-----------------------------------------------------------------------------
 end block clean_memory
 !-----------------------------------------------------------------------------

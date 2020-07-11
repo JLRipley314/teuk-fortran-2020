@@ -13,8 +13,6 @@ module mod_bkgrd_np
   implicit none
 ! all variables are public
 !-----------------------------------------------------------------------------
-  integer(ip) :: dims(2)
-
   complex(rp), allocatable :: &
     mu_0(:,:), ta_0(:,:), pi_0(:,:), rh_0(:,:), &
     thorn_prime_ta_0(:,:), &
@@ -22,7 +20,7 @@ module mod_bkgrd_np
 !-----------------------------------------------------------------------------
 contains
 !-----------------------------------------------------------------------------
-  subroutine init_bkgrd_np()
+  subroutine bkgrd_np_init()
 
     integer(ip) :: i, j
 
@@ -105,20 +103,6 @@ contains
       end do x_loop
     end do y_loop
 
-  end subroutine init_bkgrd_np
-
-  ! allocatable arrays are freed at end of main
-  ! but clean is here so valgrind doesn't get confused
-  subroutine clear_bkgrd_np
-
-    deallocate(mu_0)
-    deallocate(ta_0)
-    deallocate(pi_0)
-    deallocate(rh_0)
-
-    deallocate(thorn_prime_ta_0)
-
-    deallocate(psi2_0)
-  end subroutine clear_bkgrd_np
+  end subroutine bkgrd_np_init
 !-----------------------------------------------------------------------------
 end module mod_bkgrd_np

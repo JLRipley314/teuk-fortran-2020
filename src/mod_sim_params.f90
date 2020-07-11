@@ -4,12 +4,21 @@ module mod_sim_params
 
   implicit none
 !-----------------------------------------------------------------------------
+  !------------
+  ! directories
+  !------------
+  character(*), parameter :: cwd = '/home/jripley/teuk-fortran'
+  character(*), parameter :: dir_tables = 'tables'
+  character(*), parameter :: dir_output = 'output'
+  !----------------------
+  ! simulation parameters 
+  !----------------------
   integer(ip), parameter :: min_s = -3 
   integer(ip), parameter :: max_s =  2
 
   integer(ip), parameter :: min_m = 2 
   integer(ip), parameter :: max_m = 2
-!-----------------------------------------------------------------------------
+
   integer(ip), parameter :: nt = 10_ip
   integer(ip), parameter :: nx = 4_ip 
   integer(ip), parameter :: lmax = 4_ip 

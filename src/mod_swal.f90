@@ -2,13 +2,14 @@ module mod_swal
 !-----------------------------------------------------------------------------
   use mod_prec
 
-  use mod_sim_params, only: nx, ny, lmax, min_m, max_m, min_s, max_s
+  use mod_sim_params, only: dir_tables, &
+    nx, ny, lmax, &
+    min_m, max_m, min_s, max_s
 
   implicit none
 !-----------------------------------------------------------------------------
   private
-
-  character(:), allocatable :: dir
+  public :: swal_init, swal_lower, swal_raise
 
   ! weights for Gaussian integration 
   real(rp), dimension(ny) :: weights
@@ -18,15 +19,24 @@ module mod_swal
 !-----------------------------------------------------------------------------
 contains
 !-----------------------------------------------------------------------------
+  subroutine swal_init()
+    call swal_set('spin_p2.txt',swal(:,:,:, 2))
+    call swal_set('spin_p1.txt',swal(:,:,:, 1))
+    call swal_set('spin_0.txt', swal(:,:,:, 0))
+    call swal_set('spin_n1.txt',swal(:,:,:,-1))
+    call swal_set('spin_n2.txt',swal(:,:,:,-2))
+    call swal_set('spin_n3.txt',swal(:,:,:,-3))
+  end subroutine swal_init
+!-----------------------------------------------------------------------------
   subroutine swal_set(fn, arr)
-    character(*), allocatable,      intent(in)  :: fn
+    character(*),                   intent(in)  :: fn
     real(rp), dimension(ny,0:lmax), intent(out) :: arr
 
     character(:), allocatable :: rn
     integer(ip) :: ierror
     integer(ip) :: uf = 3
     ! set the file name to read from
-    rn = dir // fn
+    rn = dir_tables // fn
 
     ! Note: here we ASSUME the input file is correctly formatted
     open(unit=uf,file=rn,status='old',action='read',iostat=ierror)

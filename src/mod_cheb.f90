@@ -2,13 +2,12 @@ module mod_cheb
 !-----------------------------------------------------------------------------
   use mod_prec
 
-  use mod_sim_params, only: nx, ny, R 
+  use mod_sim_params, only: dir_tables, nx, ny, R 
 
   implicit none
 !-----------------------------------------------------------------------------
   private
-
-  character(:), allocatable :: dir
+  public :: cheb_init, cheb_der
 
   ! Chebyshev matrix and
   ! Chebyshev differentiation matrix  
@@ -17,15 +16,21 @@ module mod_cheb
 !-----------------------------------------------------------------------------
 contains
 !-----------------------------------------------------------------------------
+  subroutine cheb_init()
+    call cheb_set('cheb.txt',cheb)
+    call cheb_set('D_cheb.txt',D_cheb)
+  end subroutine cheb_init
+!-----------------------------------------------------------------------------
   subroutine cheb_set(fn, arr)
-    character(*), allocatable,  intent(in)  :: fn
+    character(*),               intent(in)  :: fn
     real(rp), dimension(nx,nx), intent(out) :: arr
 
     character(:), allocatable :: rn
     integer(ip) :: ierror
     integer(ip) :: uf = 3
+
     ! set the file name to read from
-    rn = dir // fn
+    rn = dir_tables // fn
 
     ! Note: here we ASSUME the input file is correctly formatted
     open(unit=uf,file=rn,status='old',action='read',iostat=ierror)
@@ -44,7 +49,7 @@ contains
     integer(ip) :: i, j, k
 
     D_vals = 0
-    do k=0,nx
+    do k=1,nx
       do j=1,ny
         do i=1,nx
           D_vals(i,j) = D_vals(i,j) + (D_cheb(i,k) * vals(k,j))
@@ -55,4 +60,3 @@ contains
   end subroutine cheb_der 
 !-----------------------------------------------------------------------------
 end module mod_cheb
-
