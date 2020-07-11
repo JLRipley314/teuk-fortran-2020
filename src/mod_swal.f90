@@ -1,10 +1,10 @@
 module mod_swal 
 !-----------------------------------------------------------------------------
    use mod_prec
-
-   use mod_sim_params, only: dir_tables, &
-   nx, ny, lmax, &
-   min_m, max_m, min_s, max_s
+   use mod_io, only: set_arr
+   use mod_sim_params, only: &
+      nx, ny, lmax, &
+      min_m, max_m, min_s, max_s
 
    implicit none
 !-----------------------------------------------------------------------------
@@ -20,34 +20,23 @@ module mod_swal
 contains
 !-----------------------------------------------------------------------------
    subroutine swal_init()
-      call swal_set('spin_p2.txt',swal(:,:,:, 2))
-      call swal_set('spin_p1.txt',swal(:,:,:, 1))
-      call swal_set('spin_0.txt', swal(:,:,:, 0))
-      call swal_set('spin_n1.txt',swal(:,:,:,-1))
-      call swal_set('spin_n2.txt',swal(:,:,:,-2))
-      call swal_set('spin_n3.txt',swal(:,:,:,-3))
+      integer(ip) :: m = 0
+      character(:), allocatable :: mstr
+      do m=min_m,max_m
+
+         ! inelegant int to str conversion
+         mstr = '     '
+         write (mstr,'(i5)') m
+         mstr = trim(adjustl(mstr))
+
+         call set_arr('s_2_m_' //mstr//'.txt', ny, lmax+1, swal(:,:,m,  2))
+         call set_arr('s_1_m_' //mstr//'.txt', ny, lmax+1, swal(:,:,m,  1))
+         call set_arr('s_0_m_' //mstr//'.txt', ny, lmax+1, swal(:,:,m,  0))
+         call set_arr('s_-1_m_'//mstr//'.txt', ny, lmax+1, swal(:,:,m, -1))
+         call set_arr('s_-2_m_'//mstr//'.txt', ny, lmax+1, swal(:,:,m, -2))
+         call set_arr('s_-3_m_'//mstr//'.txt', ny, lmax+1, swal(:,:,m, -3))
+      end do
    end subroutine swal_init
-!-----------------------------------------------------------------------------
-   subroutine swal_set(fn, arr)
-      character(*),                   intent(in)  :: fn
-      real(rp), dimension(ny,0:lmax), intent(out) :: arr
-
-      character(:), allocatable :: rn
-      integer(ip) :: ierror
-      integer(ip) :: uf = 3
-      ! set the file name to read from
-      rn = dir_tables // fn
-
-      ! Note: here we ASSUME the input file is correctly formatted
-      open(unit=uf,file=rn,status='old',action='read',iostat=ierror)
-         if (ierror/=0) then
-            write (*,*) "Error: ierror=", ierror
-            write (*,*) "file = ", rn
-            stop
-         end if
-         read (uf,*,iostat=ierror) arr
-      close(uf)
-   end subroutine swal_set
 !-----------------------------------------------------------------------------
    pure subroutine swal_real_to_coef(spin,m_ang,vals,coefs)
       integer(ip), intent(in) :: spin

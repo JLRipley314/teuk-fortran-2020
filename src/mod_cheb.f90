@@ -1,7 +1,7 @@
 module mod_cheb 
 !-----------------------------------------------------------------------------
    use mod_prec
-
+   use mod_io, only: set_arr
    use mod_sim_params, only: dir_tables, nx, ny, R 
 
    implicit none
@@ -17,31 +17,9 @@ module mod_cheb
 contains
 !-----------------------------------------------------------------------------
    subroutine cheb_init()
-      call cheb_set('cheb.txt',cheb)
-      call cheb_set('D_cheb.txt',D_cheb)
+      call set_arr('cheb.txt',  nx,nx,  cheb)
+      call set_arr('D_cheb.txt',nx,nx,D_cheb)
    end subroutine cheb_init
-!-----------------------------------------------------------------------------
-   subroutine cheb_set(fn, arr)
-      character(*),               intent(in)  :: fn
-      real(rp), dimension(nx,nx), intent(out) :: arr
-
-      character(:), allocatable :: rn
-      integer(ip) :: ierror
-      integer(ip) :: uf = 3
-
-      ! set the file name to read from
-      rn = dir_tables // fn
-
-      ! Note: here we ASSUME the input file is correctly formatted
-      open(unit=uf,file=rn,status='old',action='read',iostat=ierror)
-         if (ierror/=0) then
-            write (*,*) "Error: ierror=", ierror
-            write (*,*) "file = ", rn
-            stop
-         end if
-         read (uf,*,iostat=ierror) arr
-      close(uf)
-   end subroutine cheb_set
 !-----------------------------------------------------------------------------
    pure subroutine cheb_der(vals,D_vals)
       complex(rp), dimension(nx,nx), intent(in)  :: vals
