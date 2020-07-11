@@ -24,7 +24,7 @@ ifeq ($(FC),ifort)
 endif
 #		-no-inline-max-total-size -no-inline-max-size \
 #==========================================================================
-RUN = $(BIN)run
+RUN = $(BIN)default.run
 
 MAIN = main.f90
 
@@ -52,15 +52,24 @@ DEPS = $(addprefix $(SRC), \
 
 all: $(RUN)
 
+%.run: $(MAIN) $(OBJ)
+	$(FC) $(FFLAGS) -o $(BIN)$@ $^
+
 $(RUN): $(MAIN) $(OBJ)
 	$(FC) $(FFLAGS) -o $@ $^
 
 $(OBJDIR)%.o: %.f90
 	$(FC) $(FFLAGS) -c -o $@ $^
 #==========================================================================
-clean:
+clean_obj:
 	rm -f $(OBJDIR)*.o
 	rm -f $(OBJDIR)*.mod
+clean_bin:
+	rm -f $(BIN)*.run
+clean_all:
+	rm -f $(OBJDIR)*.o
+	rm -f $(OBJDIR)*.mod
+	rm -f $(BIN)*.run
 #==========================================================================
 run:
 	@./bin/run
