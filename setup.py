@@ -60,38 +60,31 @@ sim.walltime= '168:00:00' ### (hh:mm:ss)
 sim.memory=  '512' ### MB 
 #=============================================================================
 if (sim.run_type == "basic_run"):
-	sim.set_derived_params()
-	sim.make_output_dir()
-	sim.make_swaL_dir()
-	sim.make_Legendre_pts()
-	sim.make_Gauss_pts()
-	sim.write_sim_params()
-	sim.launch_run()
+   sim.set_derived_params()
+   sim.make_output_dir()
+   sim.make_swaL_dir()
+   sim.make_Legendre_pts()
+   sim.make_Gauss_pts()
+   sim.write_sim_params()
+   sim.launch_run()
 #=============================================================================
 elif (sim.run_type == "convergence_test"):
-	nx_vals= [64, 80, 96]
-	nl_vals= [16, 20, 24]
+   nx_vals= [64, 80, 96]
+   nl_vals= [16, 20, 24]
 
-#	nx_vals= [80, 96,112]
-#	nl_vals= [16, 20, 24]
+for i in range(len(nx_vals)):
+   sim.nx= nx_vals[i]
+   sim.nl= nl_vals[i]
 
-#	nx_vals= [112, 128, 144]
-#	nl_vals= [24,   28,  32]
+   sim.set_derived_params()
+   sim.make_output_dir()
+   sim.make_swaL_dir()
+   sim.make_Legendre_pts()
+   sim.make_Gauss_pts()
+   sim.write_sim_params()
+   sim.launch_run()
 
-	for i in range(len(nx_vals)):
-		sim.nx= nx_vals[i]
-		sim.nl= nl_vals[i]
-
-		sim.set_derived_params()
-		sim.make_output_dir()
-		sim.make_swaL_dir()
-		sim.make_Legendre_pts()
-		sim.make_Gauss_pts()
-		sim.write_sim_params()
-		sim.launch_run()
-
-		time.sleep(1)
+   time.sleep(1)
 #=============================================================================
 else:
-	raise ValueError("run_type = "+str(sim.run_type)) 
-
+   raise ValueError("run_type = "+str(sim.run_type)) 

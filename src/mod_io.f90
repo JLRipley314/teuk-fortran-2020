@@ -1,5 +1,7 @@
 module io
-  use mod_prec
+   use mod_prec
 
-  implicit none
+   implicit none
+
+   private
 end module io
