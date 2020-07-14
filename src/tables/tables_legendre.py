@@ -41,6 +41,11 @@ def roots_weights_Legendre(n:int)->(List[mp.mpf],List[mp.mpf]):
 #=============================================================================
 def save_roots_weights_Legendre(dir_name:str,gauss_pts:int)->None:
    (roots,weights)= roots_weights_Legendre(gauss_pts)
-   with open('{}/roots_weights_Legendre_{}.txt'.format(dir_name,gauss_pts),'w') as f:
+
+   with open('{}/roots_Legendre_{}.txt'.format(dir_name,gauss_pts),'w') as f:
       for i in range(gauss_pts):
-         f.write(mp.nstr(roots[i],16)+' '+mp.nstr(weights[i],16)+'\n')
+         f.write(mp.nstr(roots[i],16)+'\n')
+
+   with open('{}/weights_Legendre_{}.txt'.format(dir_name,gauss_pts),'w') as f:
+      for i in range(gauss_pts):
+         f.write(mp.nstr(weights[i],16)+'\n')

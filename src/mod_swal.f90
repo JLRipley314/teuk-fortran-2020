@@ -10,10 +10,11 @@ module mod_swal
 !-----------------------------------------------------------------------------
    private
 
-   public :: swal_init, swal_lower, swal_raise
-
    ! gauss points y, cos(y), sin(y)
-   real(rp), dimension(ny), public :: Y, cy, sy
+   real(rp), dimension(ny), protected, public :: Y, cy, sy
+
+   ! subroutines 
+   public :: swal_init, swal_lower, swal_raise
 
    ! weights for Gaussian integration 
    real(rp), dimension(ny) :: weights

@@ -1,66 +1,33 @@
+!
+! automatically generated from sim_class.py
+!
 module mod_params
-!-----------------------------------------------------------------------------
 use mod_prec
-
 implicit none
-!-----------------------------------------------------------------------------
-   !------------
-   ! directories
-   !------------
-   character(*), parameter :: cwd = '/home/jripley/teuk-fortran'
-   character(*), parameter :: dir_tables = 'tables'
-   character(*), parameter :: dir_output = 'output'
-   !----------------------
-   ! simulation parameters 
-   !----------------------
-   integer(ip), parameter :: min_s = -3 
-   integer(ip), parameter :: max_s =  2
-
-   integer(ip), parameter :: min_m = 2 
-   integer(ip), parameter :: max_m = 2
-
-   integer(ip), parameter :: nt = 10_ip
-   integer(ip), parameter :: nx = 4_ip 
-   integer(ip), parameter :: lmax = 4_ip 
-   integer(ip), parameter :: ny = 4_ip
-   integer(ip), parameter :: num_t_save = 10_ip
-
-   integer(ip), parameter :: spin = -2_ip
-
-   real(rp), parameter :: start_multiple = 1.0_rp
-
-   logical, parameter :: save_coefs = .false.
-   logical, parameter :: save_indep_res = .false.
-   logical, parameter :: save_metric = .false.
-   logical, parameter :: save_source = .false.
-
-   real(rp), parameter :: bhm = 0.5_rp ! black hole mass
-   real(rp), parameter :: bhs = 0.0_rp ! black hole spin
-   real(rp), parameter :: cl  = 1_rp ! compactification length
-   !-----------------
-   ! for initial data
-   !-----------------
+   character(*), parameter :: home_dir = '/home/jripley/teuk-fortran'
+   character(*), parameter :: run_type = 'basic_run'
+   character(*), parameter :: computer = 'home'
+   character(*), parameter :: output_dir = 'output/Tue_Jul_14_15_16_32_2020_a0.7_nx64_ny28_nl16_s-2_lpm2_lnm2_pm2'
+   integer(ip), parameter :: num_saved_times = 50_ip
    character(*), parameter :: initial_data_direction = 'ingoing'
-   character(*), parameter :: initial_data_type = 'bump'
-
-   complex(rp), parameter :: amp_pm = 0_rp
-   complex(rp), parameter :: amp_nm = 0_rp
-   complex(rp), parameter ::  rl_pm = 0_rp
-   complex(rp), parameter ::  rl_nm = 0_rp
-   complex(rp), parameter ::  ru_pm = 0_rp
-   complex(rp), parameter ::  ru_nm = 0_rp
-
-   integer(ip), parameter :: pm_ang = 2_rp
-   integer(ip), parameter :: l_ang_pm = 2_rp
-   integer(ip), parameter :: l_ang_nm = 2_rp
-   !-------------------
-   ! derived parameters
-   !-------------------
-   integer(ip), parameter :: t_step_save = nt / num_t_save
-
-   real(rp), parameter :: dt = 6_rp / ((real(nx,rp)**2) * (real(ny,rp)**2))
-
-   real(rp), parameter :: r_max = 1_rp 
-   real(rp), parameter :: dx_over_dr = 1_rp
-!-----------------------------------------------------------------------------
+   character(*), parameter :: initial_data_type = 'compact_bump'
+   integer(ip), parameter :: l_ang_pm = 2_ip
+   integer(ip), parameter :: l_ang_nm = 2_ip
+   integer(ip), parameter :: pm_ang = 2_ip
+   integer(ip), parameter :: spin = -2_ip
+   integer(ip), parameter :: nx = 64_ip
+   integer(ip), parameter :: nl = 16_ip
+   character(*), parameter :: save_indep_res = 'true'
+   character(*), parameter :: save_coefs = 'true'
+   character(*), parameter :: save_metric = 'true'
+   character(*), parameter :: save_source = 'true'
+   integer(ip), parameter :: lmin = 2_ip
+   integer(ip), parameter :: ny = 28_ip
+   integer(ip), parameter :: nt = 5120_ip
+   integer(ip), parameter :: t_step_save = 102_ip
+   character(*), parameter :: walltime = '168:00:00'
+   character(*), parameter :: memory = '512'
+   character(*), parameter :: tables_dir = '/home/jripley/teuk-fortran/output/swaL_tables'
+   character(*), parameter :: output_stem = 'Tue_Jul_14_15_16_32_2020_a0.7_nx64_ny28_nl16_s-2_lpm2_lnm2_pm2'
+   character(*), parameter :: bin = 'Tue_Jul_14_15_16_32_2020_a0.7_nx64_ny28_nl16_s-2_lpm2_lnm2_pm2.run'
 end module mod_params

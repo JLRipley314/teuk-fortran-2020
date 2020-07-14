@@ -66,10 +66,13 @@ clean_obj:
 	rm -f $(OBJDIR)*.mod
 clean_bin:
 	rm -f $(BIN)*.run
+clean_out:
+	rm -rf output/*
 clean_all:
 	rm -f $(OBJDIR)*.o
 	rm -f $(OBJDIR)*.mod
 	rm -f $(BIN)*.run
+	rm -rf output/*
 #==========================================================================
 run:
 	@./bin/run

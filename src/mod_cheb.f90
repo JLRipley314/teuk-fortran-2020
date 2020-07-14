@@ -2,15 +2,17 @@ module mod_cheb
 !-----------------------------------------------------------------------------
    use mod_prec
    use mod_io, only: set_arr
-   use mod_params, only: dir_tables, r_max, nx, ny 
+   use mod_params, only: tables_dir, R_max, nx, ny 
 
    implicit none
 !-----------------------------------------------------------------------------
    private
-   public :: R, cheb_init, cheb_der
 
    ! radial points
-   real(rp), protected, dimension(nx) :: R = 0
+   real(rp), dimension(nx), protected, public :: R = 0
+
+   ! subroutines
+   public :: cheb_init, cheb_der
 
    ! Chebyshev differentiation matrix  
    real(rp), dimension(nx,nx) ::  D_cheb = 0
@@ -24,10 +26,10 @@ contains
       call set_arr('pts_cheb.txt', nx,     R)
       call set_arr('D_cheb.txt',nx,nx,D_cheb)
 
-      D_cheb = (2.0_rp/r_max) * D_cheb
+      D_cheb = (2.0_rp/R_max) * D_cheb
 
       do i=1,nx
-         R(i) = (r_max/2.0_rp) * (R(i) + 1.0_rp)
+         R(i) = (R_max/2.0_rp) * (R(i) + 1.0_rp)
       end do
 
    end subroutine cheb_init

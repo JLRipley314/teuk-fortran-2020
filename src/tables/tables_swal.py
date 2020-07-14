@@ -4,7 +4,7 @@
 #=============================================================================
 import mpmath as mp
 from typing import List
-from tables_Legendre import roots_weights_Legendre
+from tables_legendre import roots_weights_Legendre
 
 mp.prec= +mp.inf 
 #=============================================================================
@@ -48,26 +48,3 @@ def save_Gauss_quad_vals_swaL(
       "{}/s_{}_m_{}.txt".format(dir_name,spin,m_ang),
       swaL_vals
    )
-#=============================================================================
-def write_module(
-   dir_name:str,spin:int,m_ang:int,nl:int,gauss_pts:int)->None:
-
-   roots, weights= roots_weights_Legendre(gauss_pts)
-
-   lmin= max(abs(m_ang),abs(spin))
-
-   swaL_vals= [ 
-      [swaL(spin,m_ang,l_ang,root) for root in roots]
-      for l_ang in range(lmin,lmin+nl+1)
-    ]
-   write_to_file(
-      "{}/s_{}_m_{}.txt".format(dir_name,spin,m_ang),
-      swaL_vals
-   )
-   name= 'src/mod_coords.f90'
-   with open(name,'w') as f:
-      for y in roots:
-         for l in range(0,nl):
-            for m in range(min_m,max_m+1):
-               for s in [-3,-2,-1,0,1,2]:
-                  f.write(mp.str(swal(s,m,l,y),16)+'_rp &\n')

@@ -4,8 +4,8 @@ from typing import List
 
 sys.path.insert(1,os.getcwd()+'/src/tables/')
 #=============================================================================
-from tables_Legendre import save_roots_weights_Legendre
-from tables_swaL import save_Gauss_quad_vals_swaL 
+from tables_legendre import save_roots_weights_Legendre
+from tables_swal     import save_Gauss_quad_vals_swaL 
 #=============================================================================
 class Sim:
 #=============================================================================
@@ -16,10 +16,25 @@ class Sim:
          'argv[1] is empty-meed a run_type to run!'
       )	
       self.run_type = args[1]
-   if (len(args)>2 and args[2]=='debug'):
-      self.debug=True
-   else:
-      self.debug=False
+      if (len(args)>2 and args[2]=='debug'):
+         self.debug=True
+      else:
+         self.debug=False
+#=============================================================================
+   def make_output_dir(self)->None:
+      self.output_stem= str(
+        '_'.join('_'.join(time.asctime().split(' ')).split(':'))
+      +	'_a'+str(self.black_hole_spin/self.black_hole_mass)
+      +	'_nx'+str(self.nx)
+      +	'_ny'+str(self.ny)
+      +	'_nl'+str(self.nl)
+      +	'_s'+str(self.spin)
+      +	'_lpm'+str(self.l_ang_pm)
+      +	'_lnm'+str(self.l_ang_nm)
+      +	'_pm'+str(self.pm_ang)
+      )
+      self.output_dir= 'output/'+self.output_stem
+      os.makedirs(self.output_dir)
 #=============================================================================
    def set_derived_params(self)->None:
 #-----------------------------------------------------------------------------
@@ -28,9 +43,10 @@ class Sim:
 ## the outer and inner horizons
       sqrt_term= pow(
          pow(self.black_hole_mass,2)
-      -   pow(self.black_hole_spin,2)
+      -  pow(self.black_hole_spin,2)
       ,0.5)
-      self.horizon=  self.black_hole_mass+sqrt_term
+
+      self.horizon= self.black_hole_mass+sqrt_term
 
       self.R_max= float(
          pow(self.compactification_length,2)
@@ -66,24 +82,9 @@ class Sim:
       if (self.t_step_save==0):
          self.t_step_save= 1
 #=============================================================================
-   def make_output_dir(self)->None:
-      self.output_dir= str(
-         'output/'
-      +	'_'.join('_'.join(time.asctime().split(' ')).split(':'))
-      +	'_a'+str(self.black_hole_spin/self.black_hole_mass)
-      +	'_nx'+str(self.nx)
-      +	'_ny'+str(self.ny)
-      +	'_nl'+str(self.nl)
-      +	'_s'+str(self.spin)
-      +	'_lpm'+str(self.l_ang_pm)
-      +	'_lnm'+str(self.l_ang_nm)
-      +	'_pm'+str( self.pm_ang)
-      )
-      os.makedirs(self.output_dir)
-#=============================================================================
-   def make_swaL_dir(self)->None:
-      self.swaL_dir= self.output_dir+"/swaL_tables"
-      os.makedirs(self.swaL_dir)
+   def make_tables_dir(self)->None:
+      self.tables_dir= self.output_dir+"/swaL_tables"
+      os.makedirs(self.tables_dir)
 #=============================================================================
    def write_sim_params(self)->None:
       with open(self.output_dir+'/sim_params.txt','w') as f:
@@ -95,6 +96,17 @@ class Sim:
       subprocess.call('make '+self.bin,shell='True')
 #=============================================================================
    def launch_run(self)->None:
+
+      self.make_tables_dir()
+      self.make_Legendre_pts()
+      self.make_Gauss_pts()
+
+      self.make_output_dir()
+      self.bin= self.output_stem+'.run'
+
+      self.write_sim_params()
+      self.write_mod_params()
+
       if (self.computer=='home'):
          output_file= self.output_dir+'/output.txt'
          run_str= (
@@ -109,11 +121,36 @@ class Sim:
 #=============================================================================
    def make_Legendre_pts(self)->None:
       save_roots_weights_Legendre(
-         self.swaL_dir,
+         self.tables_dir,
          self.ny
       )
 #=============================================================================
    def make_Gauss_pts(self)->None:
       for spin in [-3,-2,-1,0,1,2]:
          for m_ang in [-2*self.pm_ang,-self.pm_ang,0,self.pm_ang,2*self.pm_ang]:
-            save_Gauss_quad_vals_swaL(self.swaL_dir,spin,m_ang,self.nl,self.ny) 
+            save_Gauss_quad_vals_swaL(self.tables_dir,spin,m_ang,self.nl,self.ny) 
+#=============================================================================
+## write mod_params.f90 and recompile so everything is a module
+## will probably rewrite at some point...
+   def write_mod_params(self)->None:
+      attrs= vars(self)
+      with open('src/mod_params.f90','w') as f:
+         f.write('!\n')
+         f.write('! automatically generated from sim_class.py\n')
+         f.write('!\n')
+         f.write('module mod_params\n')
+         f.write('use mod_prec\n')
+         f.write('implicit none\n')
+         attrs= vars(self)
+         for param in attrs:
+            if (type(attrs[param])==str):
+               f.write("   character(*), parameter :: {} = '{}'\n".format(param,attrs[param]))
+            if (type(attrs[param])==int):
+               f.write("   integer(ip), parameter :: {} = {}_ip\n".format(param,attrs[param]))
+            if (type(attrs[param])==float):
+               f.write("   real(rp), parameter :: {} = {}_rp\n".format(param,attrs[param]))
+            if (type(attrs[param])==complex):
+               f.write("   complex(rp), parameter :: {} = ({}_rp,{}_rp)\n".format(param,attrs[param].real,attrs[param].imag))
+         f.write('end module mod_params\n')
+      subprocess.call('make clean_obj'+self.bin,shell='True')
+      subprocess.call('make '+self.bin,shell='True')

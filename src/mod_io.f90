@@ -1,6 +1,6 @@
 module mod_io
    use mod_prec
-   use mod_params, only: dir_tables 
+   use mod_params, only: tables_dir
 
    implicit none
 !-----------------------------------------------------------------------------
@@ -22,7 +22,7 @@ contains
       integer(ip) :: ierror
       integer(ip) :: uf = 3
       ! set the file name to read from
-      rn = dir_tables // fn
+      rn = tables_dir // fn
 
       ! Note: here we ASSUME the input file is correctly formatted
       open(unit=uf,file=fn,status='old',action='read',iostat=ierror)
@@ -44,7 +44,7 @@ contains
       integer(ip) :: ierror
       integer(ip) :: uf = 3
       ! set the file name to read from
-      rn = dir_tables // fn
+      rn = tables_dir // fn
 
       ! Note: here we ASSUME the input file is correctly formatted
       open(unit=uf,file=fn,status='old',action='read',iostat=ierror)
@@ -66,7 +66,7 @@ contains
       integer(ip) :: ierror
       integer(ip) :: uf = 3
       ! set the file name to read from
-      rn = dir_tables // fn
+      rn = tables_dir // fn
 
       ! Note: here we ASSUME the input file is correctly formatted
       open(unit=uf,file=fn,status='old',action='read',iostat=ierror)
