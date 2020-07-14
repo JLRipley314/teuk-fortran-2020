@@ -9,8 +9,9 @@ args= sys.argv
 #=============================================================================
 sim= Sim(args)
 #-----------------------------------------------------------------------------
-#sim.base_output_dir= '/mnt/grtheory/second_order_pert/'
-sim.base_output_dir= '/mnt/grtheory/test_second_order_pert/'
+sim.computer= 'home' #'feynman'
+sim.output_dir= '/home/jripley/teuk-fortran/output'
+#sim.base_output_dir= '/mnt/grtheory/test_second_order_pert/'
 #-----------------------------------------------------------------------------
 sim.black_hole_mass= float(0.5)	
 sim.black_hole_spin= float(0.35)

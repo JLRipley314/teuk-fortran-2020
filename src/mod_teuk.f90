@@ -5,14 +5,16 @@ module mod_teuk
 !-----------------------------------------------------------------------------
    use mod_prec
    use mod_field
-   use mod_sim_params
+   use mod_sim_params, only: nx, ny
 
    implicit none
 !-----------------------------------------------------------------------------
    private
-   public :: Teuk 
+   public :: Teuk, teuk_constructor 
 !-----------------------------------------------------------------------------
    type :: Teuk
+
+   private
 
    complex(rp), allocatable :: &
       A_pp(:,:), A_pq(:,:), A_pf(:,:), &

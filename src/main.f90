@@ -5,7 +5,7 @@ program main
    use mod_swal
    use mod_field
    use mod_sim_params
-   use mod_teuk
+   use mod_teuk, only: Teuk, teuk_constructor
    use mod_bkgrd_np
 
    implicit none
@@ -14,7 +14,9 @@ program main
 clean_memory: block
 !-----------------------------------------------------------------------------
    integer(ip) :: i, j
-   complex(rp) :: val
+
+   type(Teuk) :: psi4_m
+   psi4_m = teuk_constructor()
 !-----------------------------------------------------------------------------
    call cheb_init()
    call swal_init()
@@ -22,8 +24,7 @@ clean_memory: block
 !-----------------------------------------------------------------------------
    y_loop: do j=1,ny
       x_loop: do i=1,nx
-         val = mu_0(i,j)
-         print *, val
+         write(*,*) mu_0(i,j)
       end do x_loop
    end do y_loop 
 !-----------------------------------------------------------------------------
