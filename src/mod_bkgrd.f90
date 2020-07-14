@@ -6,8 +6,9 @@ module mod_bkgrd_np
    use mod_prec
    use mod_params, only: &
       nx, ny, cl, &
-      bhs, bhm, &
-      R, cy, sy
+      bhs, bhm
+   use mod_cheb, only: R
+   use mod_swal, only: Y, cy, sy
 
    implicit none
 ! all variables are public

@@ -95,14 +95,17 @@ class Sim:
       subprocess.call('make '+self.bin,shell='True')
 #=============================================================================
    def launch_run(self)->None:
-      output_file= self.output_dir+'/output.txt'
-      run_str= (
-         './bin/ '+self.bin+self.home_dir+'/'+self.output_dir
-      +  '>'+output_file+' 2>&1 &'
-      )
-      if (self.debug):
-         run_str= 'valgrind -v --track-origins=yes --leak-check=full '+run_str
-         subprocess.call(run_str,shell='True') 
+      if (self.computer=='home'):
+         output_file= self.output_dir+'/output.txt'
+         run_str= (
+            './bin/ '+self.bin+self.home_dir+'/'+self.output_dir
+         +  '>'+output_file+' 2>&1 &'
+         )
+         if (self.debug):
+            run_str= 'valgrind -v --track-origins=yes --leak-check=full '+run_str
+            subprocess.call(run_str,shell='True') 
+      else:
+         raise ValueError('computer= '+self.computer+' not yet supported')
 #=============================================================================
    def make_Legendre_pts(self)->None:
       save_roots_weights_Legendre(
@@ -111,39 +114,6 @@ class Sim:
       )
 #=============================================================================
    def make_Gauss_pts(self)->None:
-    ## spin +2
-        save_Gauss_quad_vals_swaL(self.swaL_dir,+2,-2*self.pm_ang,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir,+2,  -self.pm_ang,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir,+2,            0,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir,+2,  +self.pm_ang,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir,+2,+2*self.pm_ang,self.nl,self.ny) 
-    ## spin +1
-        save_Gauss_quad_vals_swaL(self.swaL_dir,+1,-2*self.pm_ang,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir,+1,  -self.pm_ang,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir,+1,            0,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir,+1,  +self.pm_ang,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir,+1,+2*self.pm_ang,self.nl,self.ny) 
-    ## spin 0
-        save_Gauss_quad_vals_swaL(self.swaL_dir, 0,-2*self.pm_ang,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir, 0,  -self.pm_ang,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir, 0,            0,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir, 0,  +self.pm_ang,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir, 0,+2*self.pm_ang,self.nl,self.ny) 
-    ## spin -1
-        save_Gauss_quad_vals_swaL(self.swaL_dir,-1,-2*self.pm_ang,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir,-1,  -self.pm_ang,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir,-1,            0,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir,-1,  +self.pm_ang,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir,-1,+2*self.pm_ang,self.nl,self.ny) 
-    ## spin -2
-        save_Gauss_quad_vals_swaL(self.swaL_dir,-2,-2*self.pm_ang,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir,-2,  -self.pm_ang,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir,-2,            0,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir,-2,  +self.pm_ang,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir,-2,+2*self.pm_ang,self.nl,self.ny) 
-    ## spin -3
-        save_Gauss_quad_vals_swaL(self.swaL_dir,-3,-2*self.pm_ang,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir,-3,  -self.pm_ang,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir,-3,            0,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir,-3,  +self.pm_ang,self.nl,self.ny) 
-        save_Gauss_quad_vals_swaL(self.swaL_dir,-3,+2*self.pm_ang,self.nl,self.ny) 
+      for spin in [-3,-2,-1,0,1,2]:
+         for m_ang in [-2*self.pm_ang,-self.pm_ang,0,self.pm_ang,2*self.pm_ang]:
+            save_Gauss_quad_vals_swaL(self.swaL_dir,spin,m_ang,self.nl,self.ny) 

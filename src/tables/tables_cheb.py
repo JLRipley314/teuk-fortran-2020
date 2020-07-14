@@ -15,6 +15,13 @@ def cheb_pts(n:int)->List[mp.mpf]:
 def diff_cheb(n:int,x:float)->mp.mpf:
    return mp.diff(lambda x: mp.chebyt(n,x) x)
 #=============================================================================
+def cheb_D(n:int)->mp.mpf:
+   pts= cheb_pts(n)
+   return [
+      [diff_cheb(n,x) for x in pts]
+      for n in range(n)
+   ] 
+#=============================================================================
 def write_to_file(name:str,arr:List[List[mp.mpf]])->None:
    with open(name,'w') as f:
       for line in arr:

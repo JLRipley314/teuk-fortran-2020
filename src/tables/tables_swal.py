@@ -43,7 +43,7 @@ def save_Gauss_quad_vals_swaL(
    swaL_vals= [ 
       [swaL(spin,m_ang,l_ang,root) for root in roots]
       for l_ang in range(lmin,lmin+nl+1)
-    ]
+   ]
    write_to_file(
       "{}/s_{}_m_{}.txt".format(dir_name,spin,m_ang),
       swaL_vals
@@ -64,15 +64,10 @@ def write_module(
       "{}/s_{}_m_{}.txt".format(dir_name,spin,m_ang),
       swaL_vals
    )
-
+   name= 'src/mod_coords.f90'
    with open(name,'w') as f:
-      f.write('module mod_swal') 
-      f.write('use mod_prec') 
-      f.write('use mod_io, only: set_arr')
-      f.write('use mod_sim_params, only: &')
-      f.write('nx, ny, lmax, &')
-      f.write('min_m, max_m, min_s, max_s')
-
-      for spin in spins:
-         for m_ang in m_angs:
-            
+      for y in roots:
+         for l in range(0,nl):
+            for m in range(min_m,max_m+1):
+               for s in [-3,-2,-1,0,1,2]:
+                  f.write(mp.str(swal(s,m,l,y),16)+'_rp &\n')

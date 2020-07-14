@@ -62,10 +62,5 @@ implicit none
 
    real(rp), parameter :: r_max = 1_rp 
    real(rp), parameter :: dx_over_dr = 1_rp
-
-   real(rp), parameter :: R(nx) = [ 0, 0, 0, 0] 
-   real(rp), parameter :: Y(ny) = [ 0, 0, 0, 0] 
-   real(rp), parameter :: cy(ny) = cos(Y)
-   real(rp), parameter :: sy(ny) = sin(Y)
 !-----------------------------------------------------------------------------
 end module mod_params

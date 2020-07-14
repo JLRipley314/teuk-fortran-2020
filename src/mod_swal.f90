@@ -9,7 +9,11 @@ module mod_swal
    implicit none
 !-----------------------------------------------------------------------------
    private
+
    public :: swal_init, swal_lower, swal_raise
+
+   ! gauss points y, cos(y), sin(y)
+   real(rp), dimension(ny), public :: Y, cy, sy
 
    ! weights for Gaussian integration 
    real(rp), dimension(ny) :: weights
@@ -22,6 +26,17 @@ contains
    subroutine swal_init()
       integer(ip) :: m = 0
       character(:), allocatable :: mstr
+
+      ! weights for Gaussian quadrature
+      call set_arr('roots_gauss.txt', ny, Y)
+
+      cy = cos(Y)
+      sy = sin(Y)
+
+      ! weights for Gaussian quadrature
+      call set_arr('weights_gauss.txt', ny, weights)
+
+      ! spin-weighted spherical associated Legendre polynomials 
       do m=min_m,max_m
 
          ! inelegant int to str conversion
