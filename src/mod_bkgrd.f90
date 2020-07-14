@@ -4,7 +4,7 @@
 module mod_bkgrd_np
 !-----------------------------------------------------------------------------
    use mod_prec
-   use mod_sim_params, only: &
+   use mod_params, only: &
       nx, ny, cl, &
       bhs, bhm, &
       R, cy, sy

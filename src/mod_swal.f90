@@ -2,7 +2,7 @@ module mod_swal
 !-----------------------------------------------------------------------------
    use mod_prec
    use mod_io, only: set_arr
-   use mod_sim_params, only: &
+   use mod_params, only: &
       nx, ny, lmax, &
       min_m, max_m, min_s, max_s
 

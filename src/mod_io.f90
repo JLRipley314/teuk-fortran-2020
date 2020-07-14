@@ -1,6 +1,6 @@
 module mod_io
    use mod_prec
-   use mod_sim_params, only: dir_tables 
+   use mod_params, only: dir_tables 
 
    implicit none
 !-----------------------------------------------------------------------------

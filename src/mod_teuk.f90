@@ -5,7 +5,7 @@ module mod_teuk
 !-----------------------------------------------------------------------------
    use mod_prec
    use mod_field
-   use mod_sim_params, only: nx, ny
+   use mod_params, only: nx, ny
 
    implicit none
 !-----------------------------------------------------------------------------

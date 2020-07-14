@@ -1,4 +1,4 @@
-module mod_sim_params
+module mod_params
 !-----------------------------------------------------------------------------
 use mod_prec
 
@@ -68,4 +68,4 @@ implicit none
    real(rp), parameter :: cy(ny) = cos(Y)
    real(rp), parameter :: sy(ny) = sin(Y)
 !-----------------------------------------------------------------------------
-end module mod_sim_params
+end module mod_params

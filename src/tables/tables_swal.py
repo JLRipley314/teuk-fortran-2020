@@ -48,3 +48,31 @@ def save_Gauss_quad_vals_swaL(
       "{}/s_{}_m_{}.txt".format(dir_name,spin,m_ang),
       swaL_vals
    )
+#=============================================================================
+def write_module(
+   dir_name:str,spin:int,m_ang:int,nl:int,gauss_pts:int)->None:
+
+   roots, weights= roots_weights_Legendre(gauss_pts)
+
+   lmin= max(abs(m_ang),abs(spin))
+
+   swaL_vals= [ 
+      [swaL(spin,m_ang,l_ang,root) for root in roots]
+      for l_ang in range(lmin,lmin+nl+1)
+    ]
+   write_to_file(
+      "{}/s_{}_m_{}.txt".format(dir_name,spin,m_ang),
+      swaL_vals
+   )
+
+   with open(name,'w') as f:
+      f.write('module mod_swal') 
+      f.write('use mod_prec') 
+      f.write('use mod_io, only: set_arr')
+      f.write('use mod_sim_params, only: &')
+      f.write('nx, ny, lmax, &')
+      f.write('min_m, max_m, min_s, max_s')
+
+      for spin in spins:
+         for m_ang in m_angs:
+            

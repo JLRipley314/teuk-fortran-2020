@@ -2,7 +2,7 @@ module mod_cheb
 !-----------------------------------------------------------------------------
    use mod_prec
    use mod_io, only: set_arr
-   use mod_sim_params, only: dir_tables, nx, ny, R 
+   use mod_params, only: dir_tables, nx, ny, R 
 
    implicit none
 !-----------------------------------------------------------------------------
