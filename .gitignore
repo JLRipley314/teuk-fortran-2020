@@ -1,3 +1,5 @@
+output/*
+*__pycache__*
 *.swp
 *.mod
 *.o

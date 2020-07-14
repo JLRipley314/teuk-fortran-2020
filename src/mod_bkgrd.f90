@@ -5,8 +5,11 @@ module mod_bkgrd_np
 !-----------------------------------------------------------------------------
    use mod_prec
    use mod_params, only: &
-      nx, ny, cl, &
-      bhs, bhm
+      nx, ny, & 
+      cl=>compactification_length, &
+      bhm=>black_hole_mass, &
+      bhs=>black_hole_spin
+
    use mod_cheb, only: R
    use mod_swal, only: Y, cy, sy
 

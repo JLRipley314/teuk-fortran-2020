@@ -3,12 +3,15 @@ module mod_swal
    use mod_prec
    use mod_io, only: set_arr
    use mod_params, only: &
-      nx, ny, lmax, &
+      nx, ny, nl, &
       min_m, max_m, min_s, max_s
 
    implicit none
 !-----------------------------------------------------------------------------
    private
+
+   ! maximum l angular value
+   integer(ip), parameter :: lmax = nl-1
 
    ! gauss points y, cos(y), sin(y)
    real(rp), dimension(ny), protected, public :: Y, cy, sy

@@ -18,8 +18,8 @@ clean_memory: block
    type(Teuk) :: psi4_m
    psi4_m = teuk_constructor()
 !-----------------------------------------------------------------------------
-!   call cheb_init()
-!   call swal_init()
+   call cheb_init()
+   call swal_init()
    call bkgrd_np_init()
 !-----------------------------------------------------------------------------
    y_loop: do j=1,ny

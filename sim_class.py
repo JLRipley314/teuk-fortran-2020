@@ -81,9 +81,15 @@ class Sim:
       )	
       if (self.t_step_save==0):
          self.t_step_save= 1
+#-----------------------------------------------------------------------------
+      self.max_m=  self.pm_ang
+      self.min_m= -self.pm_ang
+#-----------------------------------------------------------------------------
+      self.max_s=  2
+      self.min_s= -3
 #=============================================================================
    def make_tables_dir(self)->None:
-      self.tables_dir= self.output_dir+"/swaL_tables"
+      self.tables_dir= self.output_dir+"/tables"
       os.makedirs(self.tables_dir)
 #=============================================================================
    def write_sim_params(self)->None:
@@ -93,16 +99,16 @@ class Sim:
             f.write('{} {}\n'.format(param,attrs[param]))	
 #=============================================================================
    def compile(self)->None:
-      subprocess.call('make '+self.bin,shell='True')
+      subprocess.call('make '+self.bin,shell=True)
 #=============================================================================
    def launch_run(self)->None:
+
+      self.make_output_dir()
+      self.bin= self.output_stem+'.run'
 
       self.make_tables_dir()
       self.make_Legendre_pts()
       self.make_Gauss_pts()
-
-      self.make_output_dir()
-      self.bin= self.output_stem+'.run'
 
       self.write_sim_params()
       self.write_mod_params()
@@ -110,12 +116,12 @@ class Sim:
       if (self.computer=='home'):
          output_file= self.output_dir+'/output.txt'
          run_str= (
-            './bin/ '+self.bin+self.home_dir+'/'+self.output_dir
-         +  '>'+output_file+' 2>&1 &'
+            './bin/'+self.bin+' > '+output_file+' 2>&1 &'
          )
          if (self.debug):
             run_str= 'valgrind -v --track-origins=yes --leak-check=full '+run_str
-            subprocess.call(run_str,shell='True') 
+         print(run_str)
+         subprocess.call(run_str,shell=True) 
       else:
          raise ValueError('computer= '+self.computer+' not yet supported')
 #=============================================================================
@@ -152,5 +158,5 @@ class Sim:
             if (type(attrs[param])==complex):
                f.write("   complex(rp), parameter :: {} = ({}_rp,{}_rp)\n".format(param,attrs[param].real,attrs[param].imag))
          f.write('end module mod_params\n')
-      subprocess.call('make clean_obj'+self.bin,shell='True')
-      subprocess.call('make '+self.bin,shell='True')
+      subprocess.call('make clean_obj '+self.bin,shell=True)
+      subprocess.call('make '+self.bin,shell=True)
