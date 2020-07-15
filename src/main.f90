@@ -13,20 +13,18 @@ program main
 ! so valgrind doesn't get confused about automatically deallocated memory
 clean_memory: block
 !-----------------------------------------------------------------------------
-!   integer(ip) :: j
+   integer(ip) :: j
 
-   type(Teuk) :: psi4_m
-   psi4_m = teuk_constructor()
+   type(Teuk) :: psi4_pm
+   psi4_pm = Teuk(pm_ang)
 !-----------------------------------------------------------------------------
    call cheb_init()
    call swal_init()
    call bkgrd_np_init()
 !-----------------------------------------------------------------------------
-   call swal_write()
-
-!   y_loop: do j=1,ny
-!      write(*,*) mu_0(:,j)
-!   end do y_loop 
+   y_loop: do j=1,ny
+      write(*,*) mu_0(:,j)
+   end do y_loop 
 !-----------------------------------------------------------------------------
 end block clean_memory
 !-----------------------------------------------------------------------------

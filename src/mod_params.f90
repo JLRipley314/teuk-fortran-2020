@@ -7,7 +7,7 @@ implicit none
    character(*), parameter :: home_dir = '/home/jripley/teuk-fortran'
    character(*), parameter :: run_type = 'basic_run'
    character(*), parameter :: computer = 'home'
-   character(*), parameter :: output_dir = 'output/Wed_Jul_15_11_11_09_2020_a0.7_nx64_ny28_nl16_s-2_lpm2_lnm2_pm2'
+   character(*), parameter :: output_dir = 'output/Wed_Jul_15_13_59_09_2020_a0.7_nx64_ny28_nl16_s-2_lpm2_lnm2_pm2'
    real(rp), parameter :: black_hole_mass = 0.5_rp
    real(rp), parameter :: black_hole_spin = 0.35_rp
    real(rp), parameter :: compactification_length = 1.0_rp
@@ -45,7 +45,7 @@ implicit none
    integer(ip), parameter :: min_s = -3_ip
    character(*), parameter :: walltime = '168:00:00'
    character(*), parameter :: memory = '512'
-   character(*), parameter :: output_stem = 'Wed_Jul_15_11_11_09_2020_a0.7_nx64_ny28_nl16_s-2_lpm2_lnm2_pm2'
-   character(*), parameter :: bin = 'Wed_Jul_15_11_11_09_2020_a0.7_nx64_ny28_nl16_s-2_lpm2_lnm2_pm2.run'
-   character(*), parameter :: tables_dir = 'output/Wed_Jul_15_11_11_09_2020_a0.7_nx64_ny28_nl16_s-2_lpm2_lnm2_pm2/tables'
+   character(*), parameter :: output_stem = 'Wed_Jul_15_13_59_09_2020_a0.7_nx64_ny28_nl16_s-2_lpm2_lnm2_pm2'
+   character(*), parameter :: bin = 'Wed_Jul_15_13_59_09_2020_a0.7_nx64_ny28_nl16_s-2_lpm2_lnm2_pm2.run'
+   character(*), parameter :: tables_dir = 'output/Wed_Jul_15_13_59_09_2020_a0.7_nx64_ny28_nl16_s-2_lpm2_lnm2_pm2/tables'
 end module mod_params

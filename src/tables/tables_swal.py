@@ -14,6 +14,9 @@ def swaL(spin:int,m_ang:int,l_ang:int,x:float)->mp.mpf:
    assert((al+be)%2==0)
    n= mp.mpf(l_ang - (al+be)/2)
 
+   if n<0:
+      return mp.mpf(0)
+
    norm= mp.sqrt(
        (2*n+al+be+1)*mp.power(2,-al-be-1)
    *	mp.fdiv(mp.fac(n+al+be),mp.fac(n+al))
@@ -41,7 +44,7 @@ def save_Gauss_quad_vals_swaL(
    lmin= max(abs(m_ang),abs(spin))
 
    swaL_vals= [ 
-      [swaL(spin,m_ang,l_ang,root) for l_ang in range(0,nl+1)]
+      [swaL(spin,m_ang,l_ang,root) for l_ang in range(0,nl)]
       for root in roots 
    ]
    write_to_file(
