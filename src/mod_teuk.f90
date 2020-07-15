@@ -4,7 +4,7 @@
 module mod_teuk
 !-----------------------------------------------------------------------------
    use mod_prec
-   use mod_field
+   use mod_field, only: Field
    use mod_params, only: &
       nx, ny, &
       spin, &
@@ -33,6 +33,9 @@ module mod_teuk
       B_pp(:,:), B_pq(:,:), B_pf(:,:), &
       B_qp(:,:), B_qq(:,:), B_qf(:,:), &
       B_fp(:,:), B_fq(:,:), B_ff(:,:)
+
+   contains 
+      procedure, public :: time_step
 
    end type Teuk
 !-----------------------------------------------------------------------------
@@ -197,5 +200,10 @@ contains
       end do y_loop
 
    end function teuk_constructor
+!-----------------------------------------------------------------------------
+   subroutine time_step(self, teuk_f) 
+      class(Teuk) :: self
+      type(Field) :: teuk_f
+   end subroutine time_step
 !-----------------------------------------------------------------------------
 end module mod_teuk
