@@ -30,8 +30,8 @@ def write_to_file(name:str,arr:List[List[float]])->None:
    with open(name,'w') as f:
       for line in arr:
          for val in line:
-            f.write(mp.nstr(val,16)+' ')
-            f.write('\n')
+            f.write(mp.nstr(val,32)+' ')
+         f.write('\n')
 #=============================================================================
 def save_Gauss_quad_vals_swaL(
    dir_name:str,spin:int,m_ang:int,nl:int,gauss_pts:int)->None:
@@ -41,8 +41,8 @@ def save_Gauss_quad_vals_swaL(
    lmin= max(abs(m_ang),abs(spin))
 
    swaL_vals= [ 
-      [swaL(spin,m_ang,l_ang,root) for root in roots]
-      for l_ang in range(lmin,lmin+nl+1)
+      [swaL(spin,m_ang,l_ang,root) for l_ang in range(0,nl+1)]
+      for root in roots 
    ]
    write_to_file(
       "{}/s_{}_m_{}.txt".format(dir_name,spin,m_ang),

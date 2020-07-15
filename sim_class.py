@@ -4,6 +4,7 @@ from typing import List
 
 sys.path.insert(1,os.getcwd()+'/src/tables/')
 #=============================================================================
+from tables_cheb     import save_cheb
 from tables_legendre import save_roots_weights_Legendre
 from tables_swal     import save_Gauss_quad_vals_swaL 
 #=============================================================================
@@ -107,7 +108,8 @@ class Sim:
       self.bin= self.output_stem+'.run'
 
       self.make_tables_dir()
-      self.make_Legendre_pts()
+      save_cheb(self.tables_dir,self.nx)
+      save_roots_weights_Legendre(self.tables_dir,self.ny)
       self.make_Gauss_pts()
 
       self.write_sim_params()
@@ -125,15 +127,9 @@ class Sim:
       else:
          raise ValueError('computer= '+self.computer+' not yet supported')
 #=============================================================================
-   def make_Legendre_pts(self)->None:
-      save_roots_weights_Legendre(
-         self.tables_dir,
-         self.ny
-      )
-#=============================================================================
    def make_Gauss_pts(self)->None:
       for spin in [-3,-2,-1,0,1,2]:
-         for m_ang in [-2*self.pm_ang,-self.pm_ang,0,self.pm_ang,2*self.pm_ang]:
+         for m_ang in range(-2*self.pm_ang,2*self.pm_ang+1):
             save_Gauss_quad_vals_swaL(self.tables_dir,spin,m_ang,self.nl,self.ny) 
 #=============================================================================
 ## write mod_params.f90 and recompile so everything is a module

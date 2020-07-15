@@ -17,7 +17,7 @@ module mod_swal
    real(rp), dimension(ny), protected, public :: Y, cy, sy
 
    ! subroutines 
-   public :: swal_init, swal_lower, swal_raise
+   public :: swal_init, swal_lower, swal_raise, swal_write
 
    ! weights for Gaussian integration 
    real(rp), dimension(ny) :: weights
@@ -32,13 +32,13 @@ contains
       character(:), allocatable :: mstr
 
       ! weights for Gaussian quadrature
-      call set_arr('roots_gauss.txt', ny, Y)
+      call set_arr('roots_legendre.txt', ny, Y)
 
       cy = cos(Y)
       sy = sin(Y)
 
       ! weights for Gaussian quadrature
-      call set_arr('weights_gauss.txt', ny, weights)
+      call set_arr('weights_legendre.txt', ny, weights)
 
       ! spin-weighted spherical associated Legendre polynomials 
       do m=min_m,max_m
@@ -48,12 +48,12 @@ contains
          write (mstr,'(i5)') m
          mstr = trim(adjustl(mstr))
 
-         call set_arr('s_2_m_' //mstr//'.txt', ny, lmax+1, swal(:,:,m,  2))
-         call set_arr('s_1_m_' //mstr//'.txt', ny, lmax+1, swal(:,:,m,  1))
-         call set_arr('s_0_m_' //mstr//'.txt', ny, lmax+1, swal(:,:,m,  0))
-         call set_arr('s_-1_m_'//mstr//'.txt', ny, lmax+1, swal(:,:,m, -1))
-         call set_arr('s_-2_m_'//mstr//'.txt', ny, lmax+1, swal(:,:,m, -2))
-         call set_arr('s_-3_m_'//mstr//'.txt', ny, lmax+1, swal(:,:,m, -3))
+         call set_arr('s_2_m_' //mstr//'.txt', ny, nl, swal(:,:,m,  2))
+         call set_arr('s_1_m_' //mstr//'.txt', ny, nl, swal(:,:,m,  1))
+         call set_arr('s_0_m_' //mstr//'.txt', ny, nl, swal(:,:,m,  0))
+         call set_arr('s_-1_m_'//mstr//'.txt', ny, nl, swal(:,:,m, -1))
+         call set_arr('s_-2_m_'//mstr//'.txt', ny, nl, swal(:,:,m, -2))
+         call set_arr('s_-3_m_'//mstr//'.txt', ny, nl, swal(:,:,m, -3))
       end do
    end subroutine swal_init
 !-----------------------------------------------------------------------------
@@ -84,7 +84,7 @@ contains
 
       integer(ip) :: j, k
 
-      ! synthesis
+      ! coefficient synthesis
       vals = 0
       do j=1,ny
       do k=0,lmax
@@ -138,5 +138,13 @@ contains
 
       call swal_coef_to_real(spin+1,m_ang,coefs,vals) 
    end subroutine swal_raise
+!-----------------------------------------------------------------------------
+   subroutine swal_write()
+      integer(ip) :: j
+
+      do j=1,ny
+         write (*,*) swal(j,:,0,0)
+      end do
+   end subroutine swal_write
 !-----------------------------------------------------------------------------
 end module mod_swal

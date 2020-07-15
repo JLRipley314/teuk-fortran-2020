@@ -22,13 +22,13 @@ contains
       integer(ip) :: ierror
       integer(ip) :: uf = 3
       ! set the file name to read from
-      rn = tables_dir // fn
+      rn = tables_dir // '/' // fn
 
       ! Note: here we ASSUME the input file is correctly formatted
-      open(unit=uf,file=fn,status='old',action='read',iostat=ierror)
+      open(unit=uf,file=rn,status='old',action='read',iostat=ierror)
          if (ierror/=0) then
             write (*,*) "Error(read_arr): ierror=", ierror
-            write (*,*) "file = ", fn
+            write (*,*) "file = ", rn
             stop
          end if
          read (uf,*,iostat=ierror) arr
@@ -41,19 +41,21 @@ contains
       real(rp),     intent(out) :: arr(n1,n2)
 
       character(:), allocatable :: rn
-      integer(ip) :: ierror
+      integer(ip) :: i1, ierror
       integer(ip) :: uf = 3
       ! set the file name to read from
-      rn = tables_dir // fn
+      rn = tables_dir // '/' // fn
 
       ! Note: here we ASSUME the input file is correctly formatted
-      open(unit=uf,file=fn,status='old',action='read',iostat=ierror)
+      open(unit=uf,file=rn,status='old',action='read',iostat=ierror)
          if (ierror/=0) then
             write (*,*) "Error(read_arr): ierror=", ierror
-            write (*,*) "file = ", fn
+            write (*,*) "file = ", rn
             stop
          end if
-         read (uf,*,iostat=ierror) arr
+         do i1=1,n1
+            read (uf,*,iostat=ierror) arr(i1,:)
+         end do
       close(uf)
    end subroutine set_arr_2d
 !-----------------------------------------------------------------------------
@@ -63,19 +65,23 @@ contains
       real(rp),     intent(out) :: arr(n1,n2,n3)
 
       character(:), allocatable :: rn
-      integer(ip) :: ierror
+      integer(ip) :: i1, i2, ierror
       integer(ip) :: uf = 3
       ! set the file name to read from
-      rn = tables_dir // fn
+      rn = tables_dir // '/' // fn
 
       ! Note: here we ASSUME the input file is correctly formatted
-      open(unit=uf,file=fn,status='old',action='read',iostat=ierror)
+      open(unit=uf,file=rn,status='old',action='read',iostat=ierror)
          if (ierror/=0) then
             write (*,*) "Error(read_arr): ierror=", ierror
-            write (*,*) "file = ", fn
+            write (*,*) "file = ", rn
             stop
          end if
-         read (uf,*,iostat=ierror) arr
+         do i1=1,n1
+         do i2=1,n2
+            read (uf,*,iostat=ierror) arr(i1,i2,:)
+         end do   
+         end do
       close(uf)
    end subroutine set_arr_3d
 !-----------------------------------------------------------------------------

@@ -21,22 +21,19 @@ contains
 !-----------------------------------------------------------------------------
    subroutine cheb_init()
       implicit none
-      integer(ip) :: i
 
-      call set_arr('pts_cheb.txt', nx,     R)
-      call set_arr('D_cheb.txt',nx,nx,D_cheb)
+      call set_arr('cheb_pts.txt', nx,     R)
+      call set_arr('cheb_D.txt',nx,nx,D_cheb)
 
       D_cheb = (2.0_rp/R_max) * D_cheb
 
-      do i=1,nx
-         R(i) = (R_max/2.0_rp) * (R(i) + 1.0_rp)
-      end do
+      R = (R_max/2.0_rp) * (R + 1.0_rp)
 
    end subroutine cheb_init
 !-----------------------------------------------------------------------------
    pure subroutine cheb_der(vals,D_vals)
-      complex(rp), dimension(nx,nx), intent(in)  :: vals
-      complex(rp), dimension(nx,nx), intent(out) :: D_vals 
+      complex(rp), dimension(nx,ny), intent(in)  :: vals
+      complex(rp), dimension(nx,ny), intent(out) :: D_vals 
       integer(ip) :: i, j
 
       D_vals = 0
