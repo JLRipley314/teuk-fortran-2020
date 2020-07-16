@@ -1,5 +1,5 @@
 !
-! Provides the Field class and its methods.
+! Provides the field class and its methods.
 !
 module mod_field
 !=============================================================================
@@ -9,30 +9,31 @@ module mod_field
    implicit none
 !=============================================================================
    private
-   public :: Field, shift_time_step
+   public :: field, shift_time_step
 !=============================================================================
-   type :: Field
+   type :: field
 
    character(:), allocatable :: name
    ! always have two levels: n, np1 and intermediate levels for RK4 time
    ! evolution. k1, etc. are the time derivatives (note 1==n, 5==np1).
    ! These functions are complex as we work in NP formalism
    complex(rp) :: &
-   n( nx,ny),l2(nx,ny),l3(nx,ny),l4(nx,ny),np1(nx,ny), &
-   k1(nx,ny),k2(nx,ny),k3(nx,ny),k4(nx,ny),k5(nx,ny), &
-   DR(nx,ny), lap(nx,ny)
+   n( nx,ny), l2(nx,ny), l3(nx,ny), l4(nx,ny), np1(nx,ny), &
+   k1(nx,ny), k2(nx,ny), k3(nx,ny), k4(nx,ny), k5( nx,ny), &
+   DR(nx,ny),lap(nx,ny)
 
-   end type Field
+   end type field
 !=============================================================================
-   interface Field
+   interface field
       module procedure :: field_constructor
-   end interface Field
+   end interface field
 !=============================================================================
 contains
 !=============================================================================
-   type(Field) function field_constructor(name) result(self)
+   type(field) function field_constructor(name) result(self)
       character(*), intent(in) :: name ! field name
       self % name = name 
+
       self % n   = 0
       self % l2  = 0
       self % l3  = 0
@@ -49,12 +50,12 @@ contains
    end function field_constructor
 !=============================================================================
    pure subroutine from_field(target, source)
-      ! Initializes Field instance target using components
-      ! from Field instance source. Used to initialize a 
-      ! Field from another Field without invoking the 
+      ! Initializes field instance target using components
+      ! from field instance source. Used to initialize a 
+      ! field from another field without invoking the 
       ! assignment operator.
-      type(Field), intent(in out) :: target
-      type(Field), intent(in) :: source
+      type(field), intent(in out) :: target
+      type(field), intent(in) :: source
       target % name = source % name
 
       target % n   = source % n
@@ -74,7 +75,7 @@ contains
    end subroutine from_field
 !=============================================================================
    pure subroutine shift_time_step(f)
-      type(Field), intent(in out) :: f 
+      type(field), intent(in out) :: f 
 
       f % n  = f % np1
       f % k1 = f % k5

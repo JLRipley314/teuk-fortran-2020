@@ -91,8 +91,7 @@ contains
    end subroutine set_arr_3d
 !=============================================================================
 ! writes to one line, row by row
-   subroutine write_field_csv(fn, f)
-      character(*), intent(in) :: fn
+   subroutine write_field_csv(f)
       type(field),  intent(in) :: f
 
       character(:), allocatable :: rn
@@ -100,7 +99,7 @@ contains
       integer(ip) :: i, j, ierror = 0
       integer(ip) :: uf = 3
       ! set the file name to read from
-      rn = output_dir // '/' // fn // '.csv'
+      rn = output_dir // '/' // f%name // '.csv'
 
       inquire(file=rn,exist=exists)
       if (exists) then
@@ -112,7 +111,8 @@ contains
             do j=1,ny
                write (uf,'(e12.6,a1)',advance='no',iostat=ierror) f%np1(i,j), ','
             end do
-            write (uf,*) ! line break
+            ! line break
+            write (uf,*) 
          end do
       close(uf)
 
