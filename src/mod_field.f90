@@ -34,19 +34,19 @@ contains
       character(*), intent(in) :: name ! field name
       self % name = name 
 
-      self % n   = 0
-      self % l2  = 0
-      self % l3  = 0
-      self % l4  = 0
-      self % np1 = 0
-      self % k1  = 0
-      self % k2  = 0
-      self % k3  = 0
-      self % k4  = 0
-      self % k5  = 0
+      self % n   = 0.0_rp
+      self % l2  = 0.0_rp 
+      self % l3  = 0.0_rp
+      self % l4  = 0.0_rp
+      self % np1 = 0.0_rp
+      self % k1  = 0.0_rp
+      self % k2  = 0.0_rp
+      self % k3  = 0.0_rp
+      self % k4  = 0.0_rp
+      self % k5  = 0.0_rp
 
-      self % DR  = 0
-      self % lap = 0
+      self % DR  = 0.0_rp
+      self % lap = 0.0_rp
    end function field_constructor
 !=============================================================================
    pure subroutine from_field(target, source)

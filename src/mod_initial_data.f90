@@ -23,27 +23,28 @@ contains
 !=============================================================================
 
 !=============================================================================
-   pure subroutine set_initial_data(p,q,f)
+   subroutine set_initial_data(p,q,f)
       type(field), intent(inout) :: p, q, f
 
       integer(ip) :: i, j
       real(rp) :: max_val, bump, r
       real(rp) :: width 
 
+      bump    = 0.0_rp
       max_val = 0.0_rp
       width = ru_pm-rl_pm
 !-----------------------------------------------------------------------------
       y_loop: do j=1,ny
-      x_loop: do i=1,nx
-         r = Rvec(i) / (cl**2)
+      x_loop: do i=1,nx-1 ! last index is at 'r=infinity'
+         r = (cl**2) / Rvec(i)
 
          if ((r<ru_pm).and.(r>rl_pm)) then
-            bump= exp(-1.0_rp*width/(r-rl_pm))*exp(-2.0_rp*width/(ru_pm-r))
+            bump = exp(-1.0_rp*width/(r-rl_pm))*exp(-2.0_rp*width/(ru_pm-r))
          else
-            bump = 0
+            bump = 0.0_rp
          end if
 
-         f%n(i,j) = ((r-rl_pm)/width)**2 * ((ru_pm-r)/width)**2 * bump
+         f%n(i,j) = (((r-rl_pm)/width)**2) * (((ru_pm-r)/width)**2) * bump
          
          q%n(i,j) = ((2.0_rp*(((r-rl_pm)/width)   )*(((ru_pm-r)/width)**2)) &
                   -  (2.0_rp*(((r-rl_pm)/width)**2)*( (ru_pm-r)/width    )) &
@@ -67,26 +68,14 @@ contains
 !-----------------------------------------------------------------------------
 ! rescale to make max val = 'amp'
 !-----------------------------------------------------------------------------
-      y_loop_rescale: do j=1,ny
-      x_loop_rescale: do i=1,nx
-
-         f%n(i,j) = f%n(i,j) * (amp_pm / max_val)
-         q%n(i,j) = q%n(i,j) * (amp_pm / max_val)
-
-      end do x_loop_rescale
-      end do y_loop_rescale
+      f%n = f%n * (amp_pm / max_val)
+      q%n = q%n * (amp_pm / max_val)
 !-----------------------------------------------------------------------------
 ! copy to np1 so can be saved
 !-----------------------------------------------------------------------------
-      y_loop_copy: do j=1,ny
-      x_loop_copy: do i=1,nx
-
-         p%np1(i,j) = p%n(i,j)
-         q%np1(i,j) = q%n(i,j)
-         f%np1(i,j) = f%n(i,j)
-
-      end do x_loop_copy
-      end do y_loop_copy
+      p%np1 = p%n
+      q%np1 = q%n
+      f%np1 = f%n
 
    end subroutine set_initial_data
 !=============================================================================

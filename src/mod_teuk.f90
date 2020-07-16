@@ -12,7 +12,7 @@ module mod_teuk
       bhm=>black_hole_mass, &
       bhs=>black_hole_spin
 
-   use mod_cheb, only: Rvec=>r, set_DR
+   use mod_cheb, only: Rvec=>r, compute_DR
    use mod_swal, only: Yvec=>y, swal_laplacian
 !=============================================================================
    implicit none
@@ -177,9 +177,9 @@ contains
 
       integer(ip) :: i, j
 
-      call set_DR(p,p_DR)
-      call set_DR(q,q_DR)
-      call set_DR(f,f_DR)
+      call compute_DR(p,p_DR)
+      call compute_DR(q,q_DR)
+      call compute_DR(f,f_DR)
 
       call swal_laplacian(spin,m_ang,f,f_laplacian)
 
