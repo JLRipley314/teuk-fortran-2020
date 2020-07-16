@@ -15,7 +15,7 @@ module mod_cheb
    public :: cheb_init, set_DR
 
    ! Chebyshev differentiation matrix  
-   real(rp), dimension(nx,nx) ::  D_cheb = 0
+   real(rp), dimension(nx,nx) :: D_cheb = 0
 !-----------------------------------------------------------------------------
 contains
 !-----------------------------------------------------------------------------

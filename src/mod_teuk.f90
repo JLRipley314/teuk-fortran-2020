@@ -202,29 +202,29 @@ contains
       y_loop: do j=1,ny
       x_loop: do i=1,nx
          kp(i,j) = &
-            self%A_pp(i,j)*self%p_DR(i,j) &
-         +  self%A_pq(i,j)*self%q_DR(i,j) &
-         +  self%A_pf(i,j)*self%f_DR(i,j) &
-         +  self%B_pp(i,j)*p(i,j) &
-         +  self%B_pq(i,j)*q(i,j) &
-         +  self%B_pf(i,j)*f(i,j) &
+            self%A_pp(i,j) * self%p_DR(i,j) &
+         +  self%A_pq(i,j) * self%q_DR(i,j) &
+         +  self%A_pf(i,j) * self%f_DR(i,j) &
+         +  self%B_pp(i,j) * p(i,j) &
+         +  self%B_pq(i,j) * q(i,j) &
+         +  self%B_pf(i,j) * f(i,j) &
          +  self%f_laplacian(i,j) 
 
          kq(i,j) = &
-            self%A_qp(i,j)*self%p_DR(i,j) &
-         +  self%A_qq(i,j)*self%q_DR(i,j) &
-         +  self%A_qf(i,j)*self%f_DR(i,j) &
-         +  self%B_qp(i,j)*p(i,j) &
-         +  self%B_qq(i,j)*q(i,j) &
-         +  self%B_qf(i,j)*f(i,j) 
+            self%A_qp(i,j) * self%p_DR(i,j) &
+         +  self%A_qq(i,j) * self%q_DR(i,j) &
+         +  self%A_qf(i,j) * self%f_DR(i,j) &
+         +  self%B_qp(i,j) * p(i,j) &
+         +  self%B_qq(i,j) * q(i,j) &
+         +  self%B_qf(i,j) * f(i,j) 
 
          kf(i,j) = &
-            self%A_fp(i,j)*self%p_DR(i,j) &
-         +  self%A_fq(i,j)*self%q_DR(i,j) &
-         +  self%A_ff(i,j)*self%f_DR(i,j) &
-         +  self%B_fp(i,j)*p(i,j) &
-         +  self%B_fq(i,j)*q(i,j) &
-         +  self%B_ff(i,j)*f(i,j) 
+            self%A_fp(i,j) * self%p_DR(i,j) &
+         +  self%A_fq(i,j) * self%q_DR(i,j) &
+         +  self%A_ff(i,j) * self%f_DR(i,j) &
+         +  self%B_fp(i,j) * p(i,j) &
+         +  self%B_fq(i,j) * q(i,j) &
+         +  self%B_ff(i,j) * f(i,j) 
       end do x_loop
       end do y_loop
 
@@ -241,36 +241,36 @@ contains
       call self%set_k(p%n, q%n, f%n, p%k1, q%k1, f%k1) 
       do j=1,ny
       do i=1,nx
-         p%l2(i,j)= p%n(i,j)+0.5*dt*p%k1(i,j)
-         q%l2(i,j)= q%n(i,j)+0.5*dt*q%k1(i,j)
-         f%l2(i,j)= f%n(i,j)+0.5*dt*f%k1(i,j)
+         p%l2(i,j)= p%n(i,j)+0.5_rp*dt*p%k1(i,j)
+         q%l2(i,j)= q%n(i,j)+0.5_rp*dt*q%k1(i,j)
+         f%l2(i,j)= f%n(i,j)+0.5_rp*dt*f%k1(i,j)
       end do
       end do
    !--------------------------------------------------------
       call self%set_k(p%l2, q%l2, f%l2, p%k2, q%k2, f%k2) 
       do j=1,ny
       do i=1,nx
-         p%l3(i,j)= p%l2(i,j)+0.5*dt*p%k2(i,j)
-         q%l3(i,j)= q%l2(i,j)+0.5*dt*q%k2(i,j)
-         f%l3(i,j)= f%l2(i,j)+0.5*dt*f%k2(i,j)
+         p%l3(i,j)= p%l2(i,j)+0.5_rp*dt*p%k2(i,j)
+         q%l3(i,j)= q%l2(i,j)+0.5_rp*dt*q%k2(i,j)
+         f%l3(i,j)= f%l2(i,j)+0.5_rp*dt*f%k2(i,j)
       end do
       end do
    !--------------------------------------------------------
       call self%set_k(p%l3, q%l3, f%l3, p%k3, q%k3, f%k3) 
       do j=1,ny
       do i=1,nx
-         p%l4(i,j)= p%l3(i,j)+0.5*dt*p%k3(i,j)
-         q%l4(i,j)= q%l3(i,j)+0.5*dt*q%k3(i,j)
-         f%l4(i,j)= f%l3(i,j)+0.5*dt*f%k3(i,j)
+         p%l4(i,j)= p%l3(i,j)+dt*p%k3(i,j)
+         q%l4(i,j)= q%l3(i,j)+dt*q%k3(i,j)
+         f%l4(i,j)= f%l3(i,j)+dt*f%k3(i,j)
       end do
       end do
    !--------------------------------------------------------
       call self%set_k(p%l4, q%l4, f%l4, p%k4, q%k4, f%k4) 
       do j=1,ny
       do i=1,nx
-         p%np1(i,j)= p%l4(i,j)+0.5*dt*p%k4(i,j)
-         q%np1(i,j)= q%l4(i,j)+0.5*dt*q%k4(i,j)
-         f%np1(i,j)= f%l4(i,j)+0.5*dt*f%k4(i,j)
+         p%np1(i,j)= p%n(i,j)+(dt/6.0_rp)*(p%k1(i,j)+2.0_rp*p%k2(i,j)+2.0_rp*p%k3(i,j)+p%k4(i,j))
+         q%np1(i,j)= q%n(i,j)+(dt/6.0_rp)*(q%k1(i,j)+2.0_rp*q%k2(i,j)+2.0_rp*q%k3(i,j)+q%k4(i,j))
+         f%np1(i,j)= f%n(i,j)+(dt/6.0_rp)*(f%k1(i,j)+2.0_rp*f%k2(i,j)+2.0_rp*f%k3(i,j)+f%k4(i,j))
       end do
       end do
    end subroutine time_step

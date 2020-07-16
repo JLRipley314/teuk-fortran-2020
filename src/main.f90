@@ -13,7 +13,7 @@ program main
 ! so valgrind doesn't get confused about automatically deallocated memory
 clean_memory: block
 !-----------------------------------------------------------------------------
-   integer(ip) :: j
+   integer(ip) :: t
 
    type(Teuk) :: psi4_pm
    psi4_pm = Teuk(pm_ang)
@@ -22,9 +22,11 @@ clean_memory: block
    call swal_init()
    call bkgrd_np_init()
 !-----------------------------------------------------------------------------
-   y_loop: do j=1,ny
-      write(*,*) mu_0(:,j)
-   end do y_loop 
+! integrate Teukolsky field in time
+!-----------------------------------------------------------------------------
+   time_evolve: do t=1,nt
+
+   end do time_evolve
 !-----------------------------------------------------------------------------
 end block clean_memory
 !-----------------------------------------------------------------------------
