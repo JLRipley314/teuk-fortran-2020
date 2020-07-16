@@ -2,15 +2,15 @@
 ! Provides the Field class and its methods.
 !
 module mod_field
-!-----------------------------------------------------------------------------
+!=============================================================================
    use mod_prec
 
    use mod_params, only: nx, ny
    implicit none
-!-----------------------------------------------------------------------------
+!=============================================================================
    private
-   public :: Field 
-!-----------------------------------------------------------------------------
+   public :: Field, shift_time_step
+!=============================================================================
    type :: Field
 
    character(:), allocatable :: name
@@ -22,13 +22,13 @@ module mod_field
    k1(nx,ny),k2(nx,ny),k3(nx,ny),k4(nx,ny),k5(nx,ny)
 
    end type Field
-!-----------------------------------------------------------------------------
+!=============================================================================
    interface Field
-   module procedure :: field_constructor
+      module procedure :: field_constructor
    end interface Field
-!-----------------------------------------------------------------------------
+!=============================================================================
 contains
-!-----------------------------------------------------------------------------
+!=============================================================================
    type(Field) function field_constructor(name) result(self)
       character(*), intent(in) :: name ! field name
       self % name = name 
@@ -43,7 +43,7 @@ contains
       self % k4  = 0
       self % k5  = 0
    end function field_constructor
-!-----------------------------------------------------------------------------
+!=============================================================================
    pure subroutine from_field(target, source)
       ! Initializes Field instance target using components
       ! from Field instance source. Used to initialize a 
@@ -65,5 +65,12 @@ contains
       target % k4 = source % k4
       target % k5 = source % k5
    end subroutine from_field
-!-----------------------------------------------------------------------------
+!=============================================================================
+   pure subroutine shift_time_step(f)
+      type(Field), intent(in out) :: f 
+
+      f % n  = f % np1
+      f % k1 = f % k5
+   end subroutine shift_time_step
+!=============================================================================
 end module mod_field
