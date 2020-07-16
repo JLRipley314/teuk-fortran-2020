@@ -23,7 +23,7 @@ module mod_swal
    real(rp), dimension(ny) :: weights
 
    ! Note: range of indices
-   real(rp), dimension(1:ny, 0:lmax, min_m:max_m, min_s:max_s) :: swal = 0
+   real(rp), dimension(1:ny, 0:lmax, min_m:max_m, min_s:max_s), protected, public :: swal = 0
 !-----------------------------------------------------------------------------
 contains
 !-----------------------------------------------------------------------------

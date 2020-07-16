@@ -7,21 +7,18 @@ module mod_teuk
    use mod_field, only: Field
    use mod_params, only: &
       dt, nx, ny, &
-      spin, &
+      spin, min_m, max_m, &
       cl=>compactification_length, &
       bhm=>black_hole_mass, &
       bhs=>black_hole_spin
 
    use mod_cheb, only: Rvec=>r, set_DR
    use mod_swal, only: Yvec=>y, swal_laplacian
-
+!=============================================================================
    implicit none
-!=============================================================================
    private
-   public :: set_teuk, time_step 
+   public :: teuk_init, teuk_time_step 
 !=============================================================================
-   private
-
    real(rp) :: &
       A_pp(nx,ny,min_m:max_m), A_pq(nx,ny,min_m:max_m), A_pf(nx,ny,min_m:max_m), &
       A_qp(nx,ny,min_m:max_m), A_qq(nx,ny,min_m:max_m), A_qf(nx,ny,min_m:max_m), &
@@ -34,7 +31,7 @@ module mod_teuk
 !=============================================================================
 contains
 !=============================================================================
-   subroutine set_teuk()
+   subroutine teuk_init()
       integer(ip) :: i, j, m_ang
       real(rp) :: r, y
 
@@ -46,44 +43,44 @@ contains
       !----------------------------
          A_pp(i,j,m_ang) = 0.0_rp
 
-         A_pq(i,j,m) = ((r**2)*((cl**4) - 2*(cl**2)*bhm*r + (bhs**2)*(r**2)))/(cl**4) 
+         A_pq(i,j,m_ang) = ((r**2)*((cl**4) - 2*(cl**2)*bhm*r + (bhs**2)*(r**2)))/(cl**4) 
 
-         A_pf(i,j,m) = 0.0_rp
+         A_pf(i,j,m_ang) = 0.0_rp
       !----------------------------
-         A_qp(i,j,m) = cl**4/(&
+         A_qp(i,j,m_ang) = cl**4/(&
             16*cl**2*bhm**2*(cl**2 + 2*bhm*r) &
          +  bhs**2*(-(cl**2 + 4*bhm*r)**2 + cl**4*y**2) &
          )
 
-         A_qq(i,j,m) = (&
+         A_qq(i,j,m_ang) = (&
             2*(cl**6 + cl**2*(bhs**2 - 8*bhm**2)*r**2 + 4*bhs**2*bhm*r**3) &
          )/(&
             16*cl**2*bhm**2*(cl**2 + 2*bhm*r) + bhs**2*(-(cl**2 + 4*bhm*r)**2 + cl**4*y**2) &
          )
 
-         A_qf(i,j,m) = 0.0_rp
+         A_qf(i,j,m_ang) = 0.0_rp
       !----------------------------
-         A_fp(i,j,m) = 0.0_rp
+         A_fp(i,j,m_ang) = 0.0_rp
 
-         A_fq(i,j,m) = 0.0_rp
+         A_fq(i,j,m_ang) = 0.0_rp
 
-         A_ff(i,j,m) = 0.0_rp
+         A_ff(i,j,m_ang) = 0.0_rp
       !----------------------------
-         B_pp(i,j,m) = 0.0_rp 
+         B_pp(i,j,m_ang) = 0.0_rp 
 
-         B_pq(i,j,m) = cmplx(&
+         B_pq(i,j,m_ang) = cmplx(&
             -2*r*(-1 - spin + (r*(-2*bhs**2*r + cl**2*bhm*(3 + spin)))/cl**4) &
          ,&
-            (-2*bhs*m*r**2)/cl**2 &
+            (-2*bhs*m_ang*r**2)/cl**2 &
          ,rp)
 
-         B_pf(i,j,m) = cmplx(&
+         B_pf(i,j,m_ang) = cmplx(&
             (-2*r*(-(bhs**2*r) + cl**2*bhm*(1 + spin)))/cl**4 &
          ,&
-            (-2*bhs*m*r)/cl**2 &
+            (-2*bhs*m_ang*r)/cl**2 &
          ,rp)
       !----------------------------
-         B_qp(i,j,m) = cmplx( &
+         B_qp(i,j,m_ang) = cmplx( &
             -( &
             (32*cl**6*bhm**3 - 8*bhs**2*cl**4*bhm*(cl**2 + 4*bhm*r)) &
          /  (16*cl**2*bhm**2*(cl**2 + 2*bhm*r) + bhs**2*(-(cl**2 + 4*bhm*r)**2 + cl**4*y**2))**2) &
@@ -91,7 +88,7 @@ contains
             0.0_rp &
          ,rp)
 
-         B_qq(i,j,m) = cmplx( &
+         B_qq(i,j,m_ang) = cmplx( &
             -( &
             ( &
                64*cl**4*bhm**3*(12*cl**2*bhm*r - cl**4*(-1 + spin) + 4*bhm**2*r**2*(4 + spin)) &
@@ -105,13 +102,13 @@ contains
             ) &
          , &
             ( &
-               -2*bhs*cl**2*(4*m*bhm*r + cl**2*(m - spin*y)) &
+               -2*bhs*cl**2*(4*m_ang*bhm*r + cl**2*(m_ang - spin*y)) &
             )/( &
                16*cl**2*bhm**2*(cl**2 + 2*bhm*r) + bhs**2*(-(cl**2 + 4*bhm*r)**2 + cl**4*y**2) &
             ) &
          ,rp)
 
-         B_qf(i,j,m) = cmplx(&
+         B_qf(i,j,m_ang) = cmplx(&
             ( &
             -  2*cl**2*( &
                   128*cl**4*bhm**4*(1 + spin) &
@@ -126,15 +123,15 @@ contains
          ,&
             ( &
             -  8*bhs*cl**2*bhm*( &
-                  8*cl**4*bhm**2*(m + spin*y) + bhs**2*(m*(cl**2 + 4*bhm*r)**2 & 
-               -  2*cl**2*(cl**2 + 4*bhm*r)*spin*y + cl**4*m*y**2) &
+                  8*cl**4*bhm**2*(m_ang + spin*y) + bhs**2*(m_ang*(cl**2 + 4*bhm*r)**2 & 
+               -  2*cl**2*(cl**2 + 4*bhm*r)*spin*y + cl**4*m_ang*y**2) &
                ) &
             )/( &
                16*cl**2*bhm**2*(cl**2 + 2*bhm*r) + bhs**2*(-(cl**2 + 4*bhm*r)**2 + cl**4*y**2) &
             )**2 &
          ,rp)
       !----------------------------
-         B_fp(i,j,m) = cmplx( &
+         B_fp(i,j,m_ang) = cmplx( &
             cl**4 &
          / &
             (16*cl**2*bhm**2*(cl**2 + 2*bhm*r) + bhs**2*(-(cl**2 + 4*bhm*r)**2 + cl**4*y**2)) &
@@ -142,7 +139,7 @@ contains
             0.0_rp &
          ,rp)
 
-         B_fq(i,j,m) = cmplx( &
+         B_fq(i,j,m_ang) = cmplx( &
             (2*(cl**6 + cl**2*(bhs**2 - 8*bhm**2)*r**2 + 4*bhs**2*bhm*r**3)) &
          / &
             (16*cl**2*bhm**2*(cl**2 + 2*bhm*r) + bhs**2*(-(cl**2 + 4*bhm*r)**2 + cl**4*y**2)) &
@@ -150,14 +147,14 @@ contains
             0.0_rp &
          ,rp)
 
-         B_ff(i,j,m) = cmplx( &
+         B_ff(i,j,m_ang) = cmplx( &
             -( & 
                (2*bhs**2*r*(cl**2 + 6*bhm*r) + 4*cl**2*bhm*(cl**2*spin - 2*bhm*r*(2 + spin))) &
          / &
                (-16*cl**2*bhm**2*(cl**2 + 2*bhm*r) + bhs**2*((cl**2 + 4*bhm*r)**2 - cl**4*y**2)) &
             ) &
          , &
-            (-2*bhs*cl**2*(4*m*bhm*r + cl**2*(m - spin*y))) &
+            (-2*bhs*cl**2*(4*m_ang*bhm*r + cl**2*(m_ang - spin*y))) &
          /  &
             (16*cl**2*bhm**2*(cl**2 + 2*bhm*r) + bhs**2*(-(cl**2 + 4*bhm*r)**2 + cl**4*y**2)) &
          ,rp)
@@ -165,12 +162,18 @@ contains
       end do y_loop
       end do m_loop
 
-   end function init_teuk 
+   end subroutine teuk_init
 !=============================================================================
-   pure subroutine set_k(m, p, q, f, kp, kq, kf) 
-      class(Teuk), intent(in) :: m 
+   pure subroutine set_k(m_ang, & 
+         p, q, f, &
+         p_DR, q_DR, f_DR, f_laplacian, & 
+         kp, kq, kf) 
+
+      integer(ip), intent(in) :: m_ang 
       complex(rp), dimension(nx,ny),  intent(in) :: p, q, f 
-      complex(rp), dimension(nx,ny), intent(out) :: kp, kq, kf 
+      complex(rp), dimension(nx,ny), intent(inout) :: &
+         p_DR, q_DR, f_DR, f_laplacian, &
+         kp, kq, kf 
 
       integer(ip) :: i, j
 
@@ -213,13 +216,13 @@ contains
 !=============================================================================
 ! RK4 time integrator
 !=============================================================================
-   subroutine time_step(self, p, q, f) 
-      class(Teuk), intent(inout) :: self
+   pure subroutine teuk_time_step(m_ang, p, q, f) 
+      integer(ip), intent(in) :: m_ang
       type(Field), intent(inout) :: p, q, f 
 
       integer(ip) :: i, j
    !--------------------------------------------------------
-      call set_k(p%n, q%n, f%n, p%k1, q%k1, f%k1) 
+      call set_k(m_ang, p%n, q%n, p%DR, q%DR, f%DR, f%lap, f%n, p%k1, q%k1, f%k1) 
       do j=1,ny
       do i=1,nx
          p%l2(i,j)= p%n(i,j)+0.5_rp*dt*p%k1(i,j)
@@ -228,7 +231,7 @@ contains
       end do
       end do
    !--------------------------------------------------------
-      call set_k(p%l2, q%l2, f%l2, p%k2, q%k2, f%k2) 
+      call set_k(m_ang, p%l2, q%l2, f%l2, p%DR, q%DR, f%DR, f%lap, p%k2, q%k2, f%k2) 
       do j=1,ny
       do i=1,nx
          p%l3(i,j)= p%l2(i,j)+0.5_rp*dt*p%k2(i,j)
@@ -237,7 +240,7 @@ contains
       end do
       end do
    !--------------------------------------------------------
-      call set_k(p%l3, q%l3, f%l3, p%k3, q%k3, f%k3) 
+      call set_k(m_ang, p%l3, q%l3, f%l3, p%DR, q%DR, f%DR, f%lap, p%k3, q%k3, f%k3) 
       do j=1,ny
       do i=1,nx
          p%l4(i,j)= p%l3(i,j)+dt*p%k3(i,j)
@@ -246,7 +249,7 @@ contains
       end do
       end do
    !--------------------------------------------------------
-      call set_k(p%l4, q%l4, f%l4, p%k4, q%k4, f%k4) 
+      call set_k(m_ang, p%l4, q%l4, f%l4, p%DR, q%DR, f%DR, f%lap, p%k4, q%k4, f%k4) 
       do j=1,ny
       do i=1,nx
          p%np1(i,j)= p%n(i,j)+(dt/6.0_rp)*(p%k1(i,j)+2.0_rp*p%k2(i,j)+2.0_rp*p%k3(i,j)+p%k4(i,j))
@@ -254,6 +257,6 @@ contains
          f%np1(i,j)= f%n(i,j)+(dt/6.0_rp)*(f%k1(i,j)+2.0_rp*f%k2(i,j)+2.0_rp*f%k3(i,j)+f%k4(i,j))
       end do
       end do
-   end subroutine time_step
+   end subroutine teuk_time_step
 !=============================================================================
 end module mod_teuk

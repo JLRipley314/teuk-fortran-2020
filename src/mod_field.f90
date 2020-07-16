@@ -19,7 +19,8 @@ module mod_field
    ! These functions are complex as we work in NP formalism
    complex(rp) :: &
    n( nx,ny),l2(nx,ny),l3(nx,ny),l4(nx,ny),np1(nx,ny), &
-   k1(nx,ny),k2(nx,ny),k3(nx,ny),k4(nx,ny),k5(nx,ny)
+   k1(nx,ny),k2(nx,ny),k3(nx,ny),k4(nx,ny),k5(nx,ny), &
+   DR(nx,ny), lap(nx,ny)
 
    end type Field
 !=============================================================================
@@ -42,6 +43,9 @@ contains
       self % k3  = 0
       self % k4  = 0
       self % k5  = 0
+
+      self % DR  = 0
+      self % lap = 0
    end function field_constructor
 !=============================================================================
    pure subroutine from_field(target, source)
@@ -64,6 +68,9 @@ contains
       target % k3 = source % k3
       target % k4 = source % k4
       target % k5 = source % k5
+
+      target % DR  = source % DR
+      target % lap = source % lap
    end subroutine from_field
 !=============================================================================
    pure subroutine shift_time_step(f)

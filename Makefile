@@ -37,6 +37,7 @@ OBJ= $(addprefix $(OBJDIR), \
 	mod_swal.o \
 	mod_bkgrd.o \
 	mod_teuk.o \
+	mod_initial_data.o \
 	)
 
 DEPS = $(addprefix $(SRC), \
@@ -48,6 +49,7 @@ DEPS = $(addprefix $(SRC), \
 	mod_swal.f90 \
 	mod_bkgrd.f90 \
 	mod_teuk.f90 \
+	initial_data.f90 \
 	)
 
 all: $(RUN)
