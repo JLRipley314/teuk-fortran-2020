@@ -17,7 +17,7 @@ module mod_swal
    real(rp), dimension(ny), protected, public :: Y, cy, sy
 
    ! subroutines 
-   public :: swal_init, swal_lower, swal_raise, swal_write
+   public :: swal_init, swal_laplacian, swal_lower, swal_raise, swal_write
 
    ! weights for Gaussian integration 
    real(rp), dimension(ny) :: weights
@@ -94,6 +94,27 @@ contains
       end do
       end do
    end subroutine swal_coef_to_real
+!-----------------------------------------------------------------------------
+   pure subroutine swal_laplacian(spin,m_ang,vals, vals_lap)
+      integer(ip), intent(in) :: spin
+      integer(ip), intent(in) :: m_ang
+      complex(rp), dimension(nx,ny), intent(in)  :: vals
+      complex(rp), dimension(nx,ny), intent(out) :: vals_lap
+
+      real(rp)    :: pre
+      integer(ip) :: k
+
+      complex(rp), dimension(nx,0:lmax) :: coefs
+
+      call swal_real_to_coef(spin,m_ang,vals,coefs) 
+
+      do k=0,lmax
+         pre = - (k - spin) * (k + spin + 1.0_rp)
+         coefs(:,k) = pre*coefs(:,k)
+      end do
+
+      call swal_coef_to_real(spin,m_ang,coefs,vals_lap) 
+   end subroutine swal_laplacian
 !-----------------------------------------------------------------------------
    pure subroutine swal_lower(spin,m_ang,coefs,vals)
       integer(ip), intent(in) :: spin

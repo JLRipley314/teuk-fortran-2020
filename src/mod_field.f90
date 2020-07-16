@@ -3,7 +3,9 @@
 !
 module mod_field
 !-----------------------------------------------------------------------------
-use mod_prec
+   use mod_prec
+
+   use mod_params, only: nx, ny
    implicit none
 !-----------------------------------------------------------------------------
    private
@@ -12,13 +14,12 @@ use mod_prec
    type :: Field
 
    character(:), allocatable :: name
-   integer(ip)               :: dims(2)
    ! always have two levels: n, np1 and intermediate levels for RK4 time
    ! evolution. k1, etc. are the time derivatives (note 1==n, 5==np1).
    ! These functions are complex as we work in NP formalism
-   complex(rp), allocatable :: &
-   n( :,:),l2(:,:),l3(:,:),l4(:,:),np1(:,:), &
-   k1(:,:),k2(:,:),k3(:,:),k4(:,:),k5(:,:)
+   complex(rp) :: &
+   n( nx,ny),l2(nx,ny),l3(nx,ny),l4(nx,ny),np1(nx,ny), &
+   k1(nx,ny),k2(nx,ny),k3(nx,ny),k4(nx,ny),k5(nx,ny)
 
    end type Field
 !-----------------------------------------------------------------------------
@@ -28,21 +29,9 @@ use mod_prec
 !-----------------------------------------------------------------------------
 contains
 !-----------------------------------------------------------------------------
-   type(Field) function field_constructor(name, dims) result(self)
+   type(Field) function field_constructor(name) result(self)
       character(*), intent(in) :: name ! field name
-      integer(ip),  intent(in) :: dims(2) ! domain size in x and y
       self % name = name 
-      self % dims = dims
-      allocate(self % n(  dims(1),dims(2)))
-      allocate(self % l2( dims(1),dims(2)))
-      allocate(self % l3( dims(1),dims(2)))
-      allocate(self % l4( dims(1),dims(2)))
-      allocate(self % np1(dims(1),dims(2)))
-      allocate(self % k1( dims(1),dims(2)))
-      allocate(self % k2( dims(1),dims(2)))
-      allocate(self % k3( dims(1),dims(2)))
-      allocate(self % k4( dims(1),dims(2)))
-      allocate(self % k5( dims(1),dims(2)))
       self % n   = 0
       self % l2  = 0
       self % l3  = 0
@@ -63,7 +52,6 @@ contains
       type(Field), intent(in out) :: target
       type(Field), intent(in) :: source
       target % name = source % name
-      target % dims = source % dims
 
       target % n   = source % n
       target % l2  = source % l2

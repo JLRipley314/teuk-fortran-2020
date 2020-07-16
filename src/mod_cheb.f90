@@ -12,7 +12,7 @@ module mod_cheb
    real(rp), dimension(nx), protected, public :: R = 0
 
    ! subroutines
-   public :: cheb_init, cheb_der
+   public :: cheb_init, set_DR
 
    ! Chebyshev differentiation matrix  
    real(rp), dimension(nx,nx) ::  D_cheb = 0
@@ -31,7 +31,7 @@ contains
 
    end subroutine cheb_init
 !-----------------------------------------------------------------------------
-   pure subroutine cheb_der(vals,D_vals)
+   pure subroutine set_DR(vals,D_vals)
       complex(rp), dimension(nx,ny), intent(in)  :: vals
       complex(rp), dimension(nx,ny), intent(out) :: D_vals 
       integer(ip) :: i, j
@@ -42,6 +42,6 @@ contains
          D_vals(i,:) = D_vals(i,:) + (D_cheb(i,j) * vals(j,:))
       end do
       end do
-   end subroutine cheb_der 
+   end subroutine set_DR
 !-----------------------------------------------------------------------------
 end module mod_cheb

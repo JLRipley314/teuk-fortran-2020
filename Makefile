@@ -30,8 +30,8 @@ MAIN = main.f90
 
 OBJ= $(addprefix $(OBJDIR), \
 	mod_prec.o \
-	mod_field.o \
 	mod_params.o \
+	mod_field.o \
 	mod_io.o \
 	mod_cheb.o \
 	mod_swal.o \
@@ -41,8 +41,8 @@ OBJ= $(addprefix $(OBJDIR), \
 
 DEPS = $(addprefix $(SRC), \
 	mod_prec.f90 \
-	mod_field.f90 \
 	mod_params.f90 \
+	mod_field.f90 \
 	mod_io.f90 \
 	mod_cheb.f90 \
 	mod_swal.f90 \
