@@ -19,7 +19,7 @@ sim.compactification_length= float(1)
 #-----------------------------------------------------------------------------
 ## evolve time: in units of black hole mass
 #-----------------------------------------------------------------------------
-sim.evolve_time= float(1)
+sim.evolve_time= float(0.05)
 sim.num_saved_times= int(10)
 #-----------------------------------------------------------------------------
 ## initial data

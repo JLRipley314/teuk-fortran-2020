@@ -91,8 +91,9 @@ contains
    end subroutine set_arr_3d
 !=============================================================================
 ! writes to one line, row by row
-   subroutine write_field_csv(f)
-      type(field),  intent(in) :: f
+   subroutine write_field_csv(time,f)
+      real(rp),    intent(in) :: time
+      type(field), intent(in) :: f
 
       character(:), allocatable :: fn_re, fn_im
       logical :: exists
@@ -111,13 +112,15 @@ contains
          open(unit=uf,file=fn_re,status='new',action='write',iostat=ierror) 
       end if
 
+      write (uf,'(e12.6,a1,i3,a1,i3,a1)',advance='no',iostat=ierror) time, ',', nx, ',', ny, ','
       do i=1,nx
-         do j=1,ny
-            write (uf,'(e12.6,a1)',advance='no',iostat=ierror) real(f%np1(i,j)), ','
-         end do
-         ! line break
-         write (uf,*) 
+      do j=1,ny
+         write (uf,'(e12.6,a1)',advance='no',iostat=ierror) real(f%np1(i,j)), ','
       end do
+      end do
+      ! line break
+      write (uf,*) 
+
       close(uf)
 
       if (ierror/=0) then
@@ -135,13 +138,15 @@ contains
          open(unit=uf,file=fn_im,status='new',action='write',iostat=ierror) 
       end if
 
+      write (uf,'(e12.6,a1,i3,a1,i3,a1)',advance='no',iostat=ierror) time, ',', nx, ',', ny, ','
       do i=1,nx
-         do j=1,ny
-            write (uf,'(e12.6,a1)',advance='no',iostat=ierror) aimag(f%np1(i,j)), ','
-         end do
-         ! line break
-         write (uf,*) 
+      do j=1,ny
+         write (uf,'(e12.6,a1)',advance='no',iostat=ierror) aimag(f%np1(i,j)), ','
       end do
+      end do
+      ! line break
+      write (uf,*) 
+
       close(uf)
 
       if (ierror/=0) then
@@ -152,9 +157,10 @@ contains
    end subroutine write_field_csv
 !=============================================================================
 ! writes to one line, row by row
-   subroutine write_array_csv(fn, arr)
-      character(*), intent(in) :: fn
-      complex(rp),  dimension(nx,ny), intent(in) :: arr
+   subroutine write_array_csv(fn, time, arr)
+      character(*),                  intent(in) :: fn
+      real(rp),                      intent(in) :: time
+      complex(rp), dimension(nx,ny), intent(in) :: arr
 
       character(:), allocatable :: rn_re, rn_im
       logical :: exists
@@ -172,12 +178,16 @@ contains
       else
          open(unit=uf,file=rn_re,status='new',action='write',iostat=ierror) 
       end if
-         do i=1,nx
-            do j=1,ny
-               write (uf,'(e12.6,a1)',advance='no',iostat=ierror) arr(i,j), ','
-            end do
-            write (uf,*) ! line break
-         end do
+
+      write (uf,'(e12.6,a1,i3,a1,i3,a1)',advance='no',iostat=ierror) time, ',', nx, ',', ny, ','
+      do i=1,nx
+      do j=1,ny
+         write (uf,'(e12.6,a1)',advance='no',iostat=ierror) aimag(arr(i,j)), ','
+      end do
+      end do
+      ! line break 
+      write (uf,*)
+
       close(uf)
 
       if (ierror/=0) then
@@ -194,12 +204,16 @@ contains
       else
          open(unit=uf,file=rn_im,status='new',action='write',iostat=ierror) 
       end if
-         do i=1,nx
-            do j=1,ny
-               write (uf,'(e12.6,a1)',advance='no',iostat=ierror) arr(i,j), ','
-            end do
-            write (uf,*) ! line break
-         end do
+
+      write (uf,'(e12.6,a1,i3,a1,i3,a1)',advance='no',iostat=ierror) time, ',', nx, ',', ny, ','
+      do i=1,nx
+      do j=1,ny
+         write (uf,'(e12.6,a1)',advance='no',iostat=ierror) aimag(arr(i,j)), ','
+      end do
+      end do
+      ! line break      
+      write (uf,*) 
+
       close(uf)
 
       if (ierror/=0) then

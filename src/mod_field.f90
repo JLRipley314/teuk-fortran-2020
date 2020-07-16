@@ -75,7 +75,7 @@ contains
    end subroutine from_field
 !=============================================================================
    pure subroutine shift_time_step(f)
-      type(field), intent(in out) :: f 
+      type(field), intent(inout) :: f 
 
       f % n  = f % np1
       f % k1 = f % k5

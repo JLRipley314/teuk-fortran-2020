@@ -154,5 +154,5 @@ class Sim:
             if (type(attrs[param])==complex):
                f.write("   complex(rp), parameter :: {} = ({}_rp,{}_rp)\n".format(param,attrs[param].real,attrs[param].imag))
          f.write('end module mod_params\n')
-      subprocess.call('make clean_obj '+self.bin,shell=True)
+      subprocess.call('make clean_obj',shell=True)
       subprocess.call('make '+self.bin,shell=True)

@@ -50,12 +50,13 @@ contains
                   +  (1.0_rp*(1.0_rp              )*(((ru_pm-r)/width)**2)) &
                   -  (2.0_rp*(((r-rl_pm)/width)**2)*(1.0_rp              )) &
                   )*bump/width
-         q%n(i,j) = q%n(i,j)*(-(r**2)/(cl**2)); ! rescaling 
+      ! rescale q as q = \partial_R f = -(r/cl)^2 partial_r f
+         q%n(i,j) = q%n(i,j)*(-(r**2)/(cl**2))
 
          p%n(i,j) = 0.0_rp
                              
-         f%n(i,j) = f%n(i,j) * swal(j,l_ang_pm,pm_ang,spin);
-         q%n(i,j) = q%n(i,j) * swal(j,l_ang_pm,pm_ang,spin);
+         f%n(i,j) = f%n(i,j) * swal(j,l_ang_pm,pm_ang,spin)
+         q%n(i,j) = q%n(i,j) * swal(j,l_ang_pm,pm_ang,spin)
 
          if (abs(f%n(i,j)) > max_val) then
             max_val = abs(f%n(i,j))
@@ -74,6 +75,18 @@ contains
 
       end do x_loop_rescale
       end do y_loop_rescale
+!-----------------------------------------------------------------------------
+! copy to np1 so can be saved
+!-----------------------------------------------------------------------------
+      y_loop_copy: do j=1,ny
+      x_loop_copy: do i=1,nx
+
+         p%np1(i,j) = p%n(i,j)
+         q%np1(i,j) = q%n(i,j)
+         f%np1(i,j) = f%n(i,j)
+
+      end do x_loop_copy
+      end do y_loop_copy
 
    end subroutine set_initial_data
 !=============================================================================
