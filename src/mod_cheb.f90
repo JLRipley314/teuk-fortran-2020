@@ -49,8 +49,8 @@ contains
       integer(ip) :: i
 
       do i=1,nx
-         vals(i,:) = R(i)
-         DR_vals(i,:) = 1.0_rp
+         vals(i,:) = sin(R(i))
+         DR_vals(i,:) = cos(R(i))
       end do
 
       call compute_DR(vals, computed_DR_vals)

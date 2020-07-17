@@ -49,9 +49,9 @@ clean_memory: block
    call write_csv(time,q)
    call write_csv(time,f)
 !-----------------------------------------------------------------------------
-   write (*,*) "Performing tests"
-   call cheb_test()
-   stop
+!   write (*,*) "Performing tests"
+!   call cheb_test()
+!   stop
 !-----------------------------------------------------------------------------
    write (*,*) "Beginning time evolution"
 !-----------------------------------------------------------------------------

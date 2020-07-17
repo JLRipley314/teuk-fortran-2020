@@ -162,7 +162,6 @@ contains
 !-----------------------------------------------------------------------------
    subroutine swal_write()
       integer(ip) :: j
-
       do j=1,ny
          write (*,*) swal(j,:,0,0)
       end do

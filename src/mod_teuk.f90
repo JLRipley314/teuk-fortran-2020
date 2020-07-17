@@ -170,7 +170,7 @@ contains
          kp, kq, kf) 
 
       integer(ip), intent(in) :: m_ang 
-      complex(rp), dimension(nx,ny),  intent(in) :: p, q, f 
+      complex(rp), dimension(nx,ny), intent(in)    :: p, q, f 
       complex(rp), dimension(nx,ny), intent(inout) :: &
          p_DR, q_DR, f_DR, f_laplacian, &
          kp, kq, kf 
@@ -222,7 +222,11 @@ contains
 
       integer(ip) :: i, j
    !--------------------------------------------------------
-      call set_k(m_ang, p%n, q%n, p%DR, q%DR, f%DR, f%lap, f%n, p%k1, q%k1, f%k1) 
+      call set_k(m_ang, &
+         p%n,  q%n,  f%n, & 
+         p%DR, q%DR, f%DR, f%lap, &
+         p%k1, q%k1, f%k1) 
+
       do j=1,ny
       do i=1,nx
          p%l2(i,j)= p%n(i,j)+0.5_rp*dt*p%k1(i,j)
@@ -231,7 +235,11 @@ contains
       end do
       end do
    !--------------------------------------------------------
-      call set_k(m_ang, p%l2, q%l2, f%l2, p%DR, q%DR, f%DR, f%lap, p%k2, q%k2, f%k2) 
+      call set_k(m_ang, &
+         p%l2, q%l2, f%l2, & 
+         p%DR, q%DR, f%DR, f%lap, &
+         p%k2, q%k2, f%k2) 
+
       do j=1,ny
       do i=1,nx
          p%l3(i,j)= p%l2(i,j)+0.5_rp*dt*p%k2(i,j)
@@ -240,7 +248,11 @@ contains
       end do
       end do
    !--------------------------------------------------------
-      call set_k(m_ang, p%l3, q%l3, f%l3, p%DR, q%DR, f%DR, f%lap, p%k3, q%k3, f%k3) 
+      call set_k(m_ang, &
+         p%l3, q%l3, f%l3, &
+         p%DR, q%DR, f%DR, f%lap, &
+         p%k3, q%k3, f%k3) 
+
       do j=1,ny
       do i=1,nx
          p%l4(i,j)= p%l3(i,j)+dt*p%k3(i,j)
@@ -249,7 +261,11 @@ contains
       end do
       end do
    !--------------------------------------------------------
-      call set_k(m_ang, p%l4, q%l4, f%l4, p%DR, q%DR, f%DR, f%lap, p%k4, q%k4, f%k4) 
+      call set_k(m_ang, &
+         p%l4, q%l4, f%l4, &
+         p%DR, q%DR, f%DR, f%lap, &
+         p%k4, q%k4, f%k4) 
+
       do j=1,ny
       do i=1,nx
          p%np1(i,j)= p%n(i,j)+(dt/6.0_rp)*(p%k1(i,j)+2.0_rp*p%k2(i,j)+2.0_rp*p%k3(i,j)+p%k4(i,j))
