@@ -15,7 +15,7 @@ vpath %.o   $(OBJDIR)
 #==========================================================================
 FC = gfortran#ifort#
 
-FFLAGS= -g -fmax-errors=5 -O2 -lfftw3 #-fopenmp
+FFLAGS= -g -fmax-errors=5 -O2 #-lfftw3 #-fopenmp
 #==========================================================================
 ifeq ($(FC),gfortran)
 	FFLAGS+= -std=f2008 -Wall -Wextra -fimplicit-none -fbounds-check \

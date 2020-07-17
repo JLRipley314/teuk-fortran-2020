@@ -1,5 +1,5 @@
 !
-! Provides the field class and its methods.
+! Provides the field type, and some basic utility functions 
 !
 module mod_field
 !=============================================================================
@@ -9,7 +9,7 @@ module mod_field
    implicit none
 !=============================================================================
    private
-   public :: field, shift_time_step
+   public :: field, shift_time_step, copy_field
 !=============================================================================
    type :: field
 
@@ -50,7 +50,7 @@ contains
       self % coefs = 0.0_rp
    end function field_constructor
 !=============================================================================
-   pure subroutine from_field(target, source)
+   pure subroutine copy_field(target, source)
       ! Initializes field instance target using components
       ! from field instance source. Used to initialize a 
       ! field from another field without invoking the 
@@ -71,9 +71,10 @@ contains
       target % k4 = source % k4
       target % k5 = source % k5
 
-      target % DR  = source % DR
-      target % lap = source % lap
-   end subroutine from_field
+      target % DR    = source % DR
+      target % lap   = source % lap
+      target % coefs = source % coefs
+   end subroutine copy_field
 !=============================================================================
    pure subroutine shift_time_step(f)
       type(field), intent(inout) :: f 

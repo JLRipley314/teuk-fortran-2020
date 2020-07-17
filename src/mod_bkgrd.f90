@@ -17,10 +17,10 @@ module mod_bkgrd_np
 !-----------------------------------------------------------------------------
 ! all variables are public
 !-----------------------------------------------------------------------------
-   complex(rp), protected, allocatable :: &
-      mu_0(:,:), ta_0(:,:), pi_0(:,:), rh_0(:,:), &
-      thorn_prime_ta_0(:,:), &
-      psi2_0(:,:)
+   complex(rp), protected :: &
+      mu_0(nx,ny), ta_0(nx,ny), pi_0(nx,ny), rh_0(nx,ny), &
+      thorn_prime_ta_0(nx,ny), &
+      psi2_0(nx,ny)
 !-----------------------------------------------------------------------------
 contains
 !-----------------------------------------------------------------------------
@@ -29,21 +29,12 @@ contains
       integer(ip) :: i, j
       real(rp) :: r, cy, sy
 
-      allocate(mu_0(nx,ny))
-      allocate(ta_0(nx,ny))
-      allocate(pi_0(nx,ny))
-      allocate(rh_0(nx,ny))
-
-      allocate(thorn_prime_ta_0(nx,ny))
-
-      allocate(psi2_0(nx,ny))
-
       y_loop: do j=1,ny
       x_loop: do i=1,nx
          r = Rvec(i)
          cy = cyvec(j)
          sy = syvec(j)
-
+      !----------------------------
          mu_0(i,j) = cmplx( &
             - (cl**2) &
             / ((cl**4) + (bhs**2)*(cy**2)*(r**2)) &
@@ -52,7 +43,7 @@ contains
             / ((cl**4) + (bhs**2)*(cy**2)*(r**2)) &
             , & 
             kind=rp)
-
+      !----------------------------
          ta_0(i,j) = cmplx( &
             - (sqrt(2.0_rp)*(bhs**2)*cy*(cl**2)*r*sy) &
             / (((cl**4) + (bhs**2)*(cy**2)*(r**2))**2) &
@@ -61,7 +52,7 @@ contains
             / (sqrt(2.0_rp)*((2*(cl**4) + (bhs**2)*(r**2)*(1.0_rp + (cy**2) - (sy**2)))**2)) &
             ,&
             kind=rp)
-
+      !----------------------------
          pi_0(i,j) = cmplx( &
             0.0_rp &
             , &
@@ -69,7 +60,7 @@ contains
             / (sqrt(2.0_rp)*(cl**4) + (bhs**2)*(cy**2)*(r**2)) &
             , &
             kind=rp)
-
+      !----------------------------
          rh_0(i,j) = cmplx( &
             (-2.0_rp*((cl**6) - 2.0_rp*(cl**4)*bhm*r + (bhs**2)*(cl**2)*(r**2))) &
             / ((2.0_rp*(cl**4) + (bhs**2)*(r**2)*(1.0_rp + (cy**2) - (sy**2)))**2) &
@@ -78,7 +69,7 @@ contains
             / ((2.0_rp*(cl**4) + (bhs**2)*(r**2)*(1.0_rp + (cy**2) - (sy**2)))**2) &
             , &
             kind=rp)
-
+      !----------------------------
          thorn_prime_ta_0(i,j) = cmplx( &
             (4.0_rp*sqrt(2.0_rp)*(bhs**2)*cy*r*sy*(-6.0_rp*(cl**4) &
             + (bhs**2)*(r**2)*(1.0_rp + (cy**2) - (sy**2))) &
@@ -92,7 +83,7 @@ contains
             / ((2.0_rp*(cl**4) + (bhs**2)*(r**2)*(1.0_rp + (cy**2) - (sy**2)))**3) &
             , &
             kind=rp)
-
+      !----------------------------
          psi2_0(i,j) = cmplx( &
             (4.0_rp*(cl**2)*bhm*( &
             - 2.0_rp*(cl**4) &
@@ -107,7 +98,6 @@ contains
             / ((2.0_rp*(cl**4) + (bhs**2)*(r**2)*(1.0_rp + (cy**2) - (sy**2)))**3) &
             , &
             kind=rp)
-
       end do x_loop
       end do y_loop
 

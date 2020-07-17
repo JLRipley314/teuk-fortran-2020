@@ -104,6 +104,7 @@ class Sim:
       subprocess.call('make '+self.bin,shell=True)
 #=============================================================================
    def launch_run(self)->None:
+      self.set_derived_params()
 
       self.make_output_dir()
       self.bin= self.output_stem+'.run'

@@ -1,6 +1,6 @@
 module mod_cheb 
 !-----------------------------------------------------------------------------
-   use, intrinsic :: iso_c_binding ! for fftw
+!   use, intrinsic :: iso_c_binding ! for fftw
 
    use mod_prec
    use mod_io, only: set_arr
@@ -8,7 +8,7 @@ module mod_cheb
 
    implicit none
 !-----------------------------------------------------------------------------
-   include 'fftw3.f03'
+!   include 'fftw3.f03'
 !-----------------------------------------------------------------------------
    private
 
@@ -24,7 +24,7 @@ module mod_cheb
 contains
 !-----------------------------------------------------------------------------
    subroutine cheb_init()
-      implicit none
+      complex(rp), dimension(nx,ny) :: fftw_test
 
       call set_arr('cheb_pts.txt', nx,     R)
       call set_arr('cheb_D.txt',nx,nx,D_cheb)

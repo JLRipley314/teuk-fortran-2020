@@ -1,5 +1,10 @@
+!
+! Spin-weighted associated Legendre function routines, along with
+! Legendre polynomial roots and weights for Gaussian qudrature to
+! go to/from coefficient and real space
+!
 module mod_swal 
-!-----------------------------------------------------------------------------
+!=============================================================================
    use mod_prec
    use mod_io, only: set_arr
    use mod_params, only: &
@@ -7,23 +12,23 @@ module mod_swal
       min_m, max_m, min_s, max_s
 
    implicit none
-!-----------------------------------------------------------------------------
+!=============================================================================
    private
 
    ! gauss points y, cos(y), sin(y)
    real(rp), dimension(ny), protected, public :: Y, cy, sy
 
    ! subroutines 
-   public :: swal_init, swal_laplacian, swal_lower, swal_raise, swal_write
+   public :: swal_init, swal_laplacian, swal_lower, swal_raise, swal_filter, swal_write
 
    ! weights for Gaussian integration 
    real(rp), dimension(ny) :: weights
 
    ! Note: range of indices
    real(rp), dimension(1:ny, 0:lmax, min_m:max_m, min_s:max_s), protected, public :: swal = 0
-!-----------------------------------------------------------------------------
+!=============================================================================
 contains
-!-----------------------------------------------------------------------------
+!=============================================================================
    subroutine swal_init()
       integer(ip) :: m = 0
       character(:), allocatable :: mstr
@@ -53,7 +58,7 @@ contains
          call set_arr('s_-3_m_'//mstr//'.txt', ny, nl, swal(:,:,m, -3))
       end do
    end subroutine swal_init
-!-----------------------------------------------------------------------------
+!=============================================================================
    pure subroutine swal_real_to_coef(spin,m_ang,vals,coefs)
       integer(ip), intent(in) :: spin
       integer(ip), intent(in) :: m_ang
@@ -72,7 +77,7 @@ contains
       end do
       end do
    end subroutine swal_real_to_coef
-!-----------------------------------------------------------------------------
+!=============================================================================
    pure subroutine swal_coef_to_real(spin,m_ang,coefs,vals)
       integer(ip), intent(in) :: spin
       integer(ip), intent(in) :: m_ang
@@ -91,7 +96,7 @@ contains
       end do
       end do
    end subroutine swal_coef_to_real
-!-----------------------------------------------------------------------------
+!=============================================================================
    pure subroutine swal_laplacian(spin,m_ang,vals,coefs,vals_lap)
       integer(ip), intent(in) :: spin
       integer(ip), intent(in) :: m_ang
@@ -111,7 +116,7 @@ contains
 
       call swal_coef_to_real(spin,m_ang,coefs,vals_lap) 
    end subroutine swal_laplacian
-!-----------------------------------------------------------------------------
+!=============================================================================
    pure subroutine swal_lower(spin,m_ang,coefs,vals)
       integer(ip), intent(in) :: spin
       integer(ip), intent(in) :: m_ang
@@ -133,7 +138,7 @@ contains
 
       call swal_coef_to_real(spin-1,m_ang,coefs,vals) 
    end subroutine swal_lower
-!-----------------------------------------------------------------------------
+!=============================================================================
    pure subroutine swal_raise(spin,m_ang,coefs,vals)
       integer(ip), intent(in) :: spin
       integer(ip), intent(in) :: m_ang
@@ -155,12 +160,33 @@ contains
 
       call swal_coef_to_real(spin+1,m_ang,coefs,vals) 
    end subroutine swal_raise
-!-----------------------------------------------------------------------------
+!=============================================================================
+! Low pass filter. A smooth filter helps prevent Gibbs-like ringing
+!=============================================================================
+   pure subroutine swal_filter(spin,m_ang,vals,coefs)
+      integer(ip), intent(in) :: spin
+      integer(ip), intent(in) :: m_ang
+      complex(rp), dimension(nx,ny),     intent(inout) :: vals
+      complex(rp), dimension(nx,0:lmax), intent(inout) :: coefs
+
+      real(rp)    :: pre
+      integer(ip) :: k
+
+      call swal_real_to_coef(spin,m_ang,vals,coefs) 
+
+      do k=0,lmax
+         pre = exp(-36.0_rp*(real(k,rp)/real(lmax,rp))**25)
+         coefs(:,k) = pre*coefs(:,k)
+      end do
+
+      call swal_coef_to_real(spin,m_ang,coefs,vals) 
+   end subroutine swal_filter
+!=============================================================================
    subroutine swal_write()
       integer(ip) :: j
       do j=1,ny
          write (*,*) swal(j,:,0,0)
       end do
    end subroutine swal_write
-!-----------------------------------------------------------------------------
+!=============================================================================
 end module mod_swal

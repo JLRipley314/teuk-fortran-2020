@@ -37,7 +37,7 @@ sim.ru_nm=  float( 1.5)  ## compact support: upper r value
 sim.l_ang_nm= int(2)     ## support over single spin weighted spherical harmonic
 #-----------------------------------------------------------------------------
 ##  Teukolsky equation preserves m 
-sim.pm_ang= int(2)
+sim.pm_ang= int(0)
 assert(sim.pm_ang>=0)
 #-----------------------------------------------------------------------------
 ## psi_4 is spin -2, psi_0 is spin +2 (code only reconstructs for psi_4) 
@@ -54,15 +54,31 @@ sim.save_source= "true"#"false"#
 #-----------------------------------------------------------------------------
 ## change start time
 sim.start_multiple= float(1.0)
-#-----------------------------------------------------------------------------
-sim.set_derived_params()
 #=============================================================================
 sim.walltime= '168:00:00' ### (hh:mm:ss)
 sim.memory=  '512' ### MB 
 #=============================================================================
 if (sim.run_type == "basic_run"):
-   sim.set_derived_params()
    sim.launch_run()
+#=============================================================================
+elif (sim.run_type == "multiple_runs"):
+   nx_vals= [64, 80]
+   ny_vals= [12, 16]
+   m_vals=  [0, 1, 2]
+
+   sim.nx = 64
+   sim.ny = 12
+   for m in m_vals:
+      sim.pm_ang = m
+      sim.launch_run() 
+      time.sleep(180)
+
+   sim.nx = 80
+   sim.ny = 16
+   for m in m_vals:
+      sim.pm_ang = m
+      sim.launch_run() 
+      time.sleep(180)
 #=============================================================================
 elif (sim.run_type == "convergence_test"):
    nx_vals= [64, 80, 96]
@@ -72,11 +88,6 @@ elif (sim.run_type == "convergence_test"):
       sim.nx= nx_vals[i]
       sim.nl= nl_vals[i]
 
-      sim.set_derived_params()
-      sim.make_swaL_dir()
-      sim.make_Legendre_pts()
-      sim.make_Gauss_pts()
-      sim.write_sim_params()
       sim.launch_run()
 
       time.sleep(1)
