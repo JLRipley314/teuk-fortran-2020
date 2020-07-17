@@ -18,7 +18,7 @@ module mod_bkgrd_np
 ! all variables are public
 !-----------------------------------------------------------------------------
    complex(rp), protected :: &
-      mu_0(nx,ny), ta_0(nx,ny), pi_0(nx,ny), rh_0(nx,ny), &
+      mu_0(nx,ny), ta_0(nx,ny), pi_0(nx,ny), rh_0(nx,ny), ep_0(nx,ny), &
       thorn_prime_ta_0(nx,ny), &
       psi2_0(nx,ny)
 !-----------------------------------------------------------------------------
