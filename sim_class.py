@@ -38,6 +38,7 @@ class Sim:
       os.makedirs(self.output_dir)
 #=============================================================================
    def set_derived_params(self)->None:
+      self.lmax = int(self.nl - 1)
 #-----------------------------------------------------------------------------
 ## put the R_max slightly inside the outer horizon.
 ## if near extremal limit then put R_max a m, which is in between

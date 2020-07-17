@@ -3,15 +3,12 @@ module mod_swal
    use mod_prec
    use mod_io, only: set_arr
    use mod_params, only: &
-      nx, ny, nl, &
+      nx, ny, nl, lmax, &
       min_m, max_m, min_s, max_s
 
    implicit none
 !-----------------------------------------------------------------------------
    private
-
-   ! maximum l angular value
-   integer(ip), parameter :: lmax = nl-1
 
    ! gauss points y, cos(y), sin(y)
    real(rp), dimension(ny), protected, public :: Y, cy, sy
@@ -95,16 +92,15 @@ contains
       end do
    end subroutine swal_coef_to_real
 !-----------------------------------------------------------------------------
-   pure subroutine swal_laplacian(spin,m_ang,vals, vals_lap)
+   pure subroutine swal_laplacian(spin,m_ang,vals,coefs,vals_lap)
       integer(ip), intent(in) :: spin
       integer(ip), intent(in) :: m_ang
-      complex(rp), dimension(nx,ny), intent(in)  :: vals
-      complex(rp), dimension(nx,ny), intent(out) :: vals_lap
+      complex(rp), dimension(nx,ny),     intent(in)    :: vals
+      complex(rp), dimension(nx,0:lmax), intent(inout) :: coefs
+      complex(rp), dimension(nx,ny),     intent(out)   :: vals_lap
 
       real(rp)    :: pre
       integer(ip) :: k
-
-      complex(rp), dimension(nx,0:lmax) :: coefs
 
       call swal_real_to_coef(spin,m_ang,vals,coefs) 
 

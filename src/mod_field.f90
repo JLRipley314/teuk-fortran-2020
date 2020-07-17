@@ -5,7 +5,7 @@ module mod_field
 !=============================================================================
    use mod_prec
 
-   use mod_params, only: nx, ny
+   use mod_params, only: nx, ny, lmax
    implicit none
 !=============================================================================
    private
@@ -20,7 +20,7 @@ module mod_field
    complex(rp) :: &
    n( nx,ny), l2(nx,ny), l3(nx,ny), l4(nx,ny), np1(nx,ny), &
    k1(nx,ny), k2(nx,ny), k3(nx,ny), k4(nx,ny), k5( nx,ny), &
-   DR(nx,ny),lap(nx,ny)
+   DR(nx,ny),lap(nx,ny), coefs(nx,0:lmax)
 
    end type field
 !=============================================================================
@@ -47,6 +47,7 @@ contains
 
       self % DR  = 0.0_rp
       self % lap = 0.0_rp
+      self % coefs = 0.0_rp
    end function field_constructor
 !=============================================================================
    pure subroutine from_field(target, source)

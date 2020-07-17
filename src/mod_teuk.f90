@@ -6,7 +6,7 @@ module mod_teuk
    use mod_prec
    use mod_field, only: Field
    use mod_params, only: &
-      dt, nx, ny, &
+      dt, nx, ny, lmax, &
       spin, min_m, max_m, &
       cl=>compactification_length, &
       bhm=>black_hole_mass, &
@@ -166,7 +166,7 @@ contains
 !=============================================================================
    pure subroutine set_k(m_ang, & 
          p, q, f, &
-         p_DR, q_DR, f_DR, f_laplacian, & 
+         p_DR, q_DR, f_DR, f_coefs, f_laplacian, & 
          kp, kq, kf) 
 
       integer(ip), intent(in) :: m_ang 
@@ -175,13 +175,15 @@ contains
          p_DR, q_DR, f_DR, f_laplacian, &
          kp, kq, kf 
 
+      complex(rp), dimension(nx,0:lmax), intent(inout) :: f_coefs
+
       integer(ip) :: i, j
 
       call compute_DR(p,p_DR)
       call compute_DR(q,q_DR)
       call compute_DR(f,f_DR)
 
-      call swal_laplacian(spin,m_ang,f,f_laplacian)
+      call swal_laplacian(spin,m_ang,f,f_coefs,f_laplacian)
 
       y_loop: do j=1,ny
       x_loop: do i=1,nx
@@ -224,7 +226,7 @@ contains
    !--------------------------------------------------------
       call set_k(m_ang, &
          p%n,  q%n,  f%n, & 
-         p%DR, q%DR, f%DR, f%lap, &
+         p%DR, q%DR, f%DR, f%coefs, f%lap, &
          p%k1, q%k1, f%k1) 
 
       do j=1,ny
@@ -237,7 +239,7 @@ contains
    !--------------------------------------------------------
       call set_k(m_ang, &
          p%l2, q%l2, f%l2, & 
-         p%DR, q%DR, f%DR, f%lap, &
+         p%DR, q%DR, f%DR, f%coefs, f%lap, &
          p%k2, q%k2, f%k2) 
 
       do j=1,ny
@@ -250,7 +252,7 @@ contains
    !--------------------------------------------------------
       call set_k(m_ang, &
          p%l3, q%l3, f%l3, &
-         p%DR, q%DR, f%DR, f%lap, &
+         p%DR, q%DR, f%DR, f%coefs, f%lap, &
          p%k3, q%k3, f%k3) 
 
       do j=1,ny
@@ -263,7 +265,7 @@ contains
    !--------------------------------------------------------
       call set_k(m_ang, &
          p%l4, q%l4, f%l4, &
-         p%DR, q%DR, f%DR, f%lap, &
+         p%DR, q%DR, f%DR, f%coefs, f%lap, &
          p%k4, q%k4, f%k4) 
 
       do j=1,ny
