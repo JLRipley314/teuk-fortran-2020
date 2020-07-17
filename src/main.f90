@@ -6,7 +6,7 @@
 program main
 !=============================================================================
    use mod_prec
-   use mod_params,       only: nt, dt, t_step_save, pm_ang
+   use mod_params,       only: nt, dt, t_step_save, black_hole_mass, pm_ang
    use mod_field,        only: field, shift_time_step
    use mod_cheb,         only: cheb_init, cheb_test
    use mod_swal,         only: swal_init
@@ -65,7 +65,7 @@ clean_memory: block
       call teuk_time_step(pm_ang, p, q, f)
       !-----------------------------------------------------------------------
       if (mod(t_step,t_step_save)==0) then
-         write (*,*) time
+         write (*,*) time / black_hole_mass
 
          call compute_q_indep_res(q,f,q_indep_res)
 

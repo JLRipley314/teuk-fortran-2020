@@ -1,10 +1,14 @@
 module mod_cheb 
 !-----------------------------------------------------------------------------
+   use, intrinsic :: iso_c_binding ! for fftw
+
    use mod_prec
    use mod_io, only: set_arr
    use mod_params, only: tables_dir, R_max, nx, ny 
 
    implicit none
+!-----------------------------------------------------------------------------
+   include 'fftw3.f03'
 !-----------------------------------------------------------------------------
    private
 

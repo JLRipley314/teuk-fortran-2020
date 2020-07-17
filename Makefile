@@ -5,13 +5,17 @@ BIN= $(TOP)bin/
 
 OBJDIR= $(TOP)obj/
 
+## for fftw
+INC = /usr/include
+LIB = /usr/lib/x86_64-linux-gnu
+
 vpath %.f90 $(SRC)
 vpath %.mod $(OBJDIR)
 vpath %.o   $(OBJDIR)
 #==========================================================================
 FC = gfortran#ifort#
 
-FFLAGS= -g -fmax-errors=5 -O2 #-fopenmp
+FFLAGS= -g -fmax-errors=5 -O2 -lfftw3 #-fopenmp
 #==========================================================================
 ifeq ($(FC),gfortran)
 	FFLAGS+= -std=f2008 -Wall -Wextra -fimplicit-none -fbounds-check \
@@ -55,13 +59,13 @@ DEPS = $(addprefix $(SRC), \
 all: $(RUN)
 
 %.run: $(MAIN) $(OBJ)
-	$(FC) $(FFLAGS) -o $(BIN)$@ $^
+	$(FC) $(FFLAGS) -I$(INC) -L$(LIB) -o $(BIN)$@ $^
 
 $(RUN): $(MAIN) $(OBJ)
-	$(FC) $(FFLAGS) -o $@ $^
+	$(FC) $(FFLAGS) -I$(INC) -L$(LIB) -o $@ $^
 
 $(OBJDIR)%.o: %.f90
-	$(FC) $(FFLAGS) -c -o $@ $^
+	$(FC) $(FFLAGS) -I$(INC) -L$(LIB) -c -o $@ $^ 
 #==========================================================================
 clean_obj:
 	rm -f $(OBJDIR)*.o
