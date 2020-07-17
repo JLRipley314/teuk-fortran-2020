@@ -22,7 +22,7 @@ def swaL(spin:int,m_ang:int,l_ang:int,x:float)->mp.mpf:
    *	mp.fdiv(mp.fac(n+al+be),mp.fac(n+al))
    *	mp.fdiv(mp.fac(n)      ,mp.fac(n+be))
    )
-   norm*= pow(-1,max(m_ang,-spin))
+   norm*= mp.power(-1,max(m_ang,-spin))
 
    return norm*mp.power(1-x,al/2.)*mp.power(1+x,be/2.)*mp.jacobi(n,al,be,x)
 #=============================================================================

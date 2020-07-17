@@ -17,7 +17,7 @@ module mod_teuk
 !=============================================================================
    implicit none
    private
-   public :: teuk_init, teuk_time_step 
+   public :: teuk_init, teuk_time_step, compute_q_indep_res 
 !=============================================================================
    real(rp) :: &
       A_pp(nx,ny,min_m:max_m), A_pq(nx,ny,min_m:max_m), A_pf(nx,ny,min_m:max_m), &
@@ -274,5 +274,18 @@ contains
       end do
       end do
    end subroutine teuk_time_step
+!=============================================================================
+! independent residula: q - \partial_R f
+!=============================================================================
+   pure subroutine compute_q_indep_res(q, f, res) 
+      type(Field), intent(in)    :: q 
+      type(Field), intent(inout) :: f
+      type(Field), intent(out)   :: res
+
+      call compute_DR(f%np1,f%DR)
+   
+      res%np1 = f%DR - q%np1
+
+   end subroutine compute_q_indep_res
 !=============================================================================
 end module mod_teuk

@@ -47,10 +47,10 @@ def save_cheb(dir_name:str,n:int)->None:
 
    with open(dir_name+"/cheb_pts.txt","w") as f:
       for val in pts:
-         f.write(mp.nstr(val,8)+'\n')
+         f.write(mp.nstr(val,32)+'\n')
 
    with open(dir_name+"/cheb_D.txt","w") as f:
       for line in cheb_D_matrix:
          for val in line:
-            f.write(mp.nstr(val,8)+' ')
+            f.write(mp.nstr(val,32)+' ')
          f.write('\n')

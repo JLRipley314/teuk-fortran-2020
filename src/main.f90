@@ -11,7 +11,7 @@ program main
    use mod_cheb,         only: cheb_init, cheb_test
    use mod_swal,         only: swal_init
    use mod_bkgrd_np,     only: bkgrd_np_init
-   use mod_teuk,         only: teuk_init, teuk_time_step
+   use mod_teuk,         only: teuk_init, teuk_time_step, compute_q_indep_res
    use mod_initial_data, only: set_initial_data
    use mod_io,           only: write_csv
 
@@ -24,13 +24,15 @@ clean_memory: block
 !=============================================================================
    integer(ip) :: t_step
    real(rp) :: time
-   type(field) :: p, q, f
+   type(field) :: p, q, f, q_indep_res
 !=============================================================================
    write (*,*) "Initializing fields"   
 !-----------------------------------------------------------------------------
    p = field("p")
    q = field("q")
    f = field("f")
+
+   q_indep_res = field("q_indep_res")
 !-----------------------------------------------------------------------------
    call cheb_init()
    call swal_init()
@@ -44,6 +46,8 @@ clean_memory: block
    time = 0.0_rp
 
    call set_initial_data(p, q, f)
+
+   call compute_q_indep_res(q,f,q_indep_res)
 
    call write_csv(time,p)
    call write_csv(time,q)
@@ -62,9 +66,14 @@ clean_memory: block
       !-----------------------------------------------------------------------
       if (mod(t_step,t_step_save)==0) then
          write (*,*) time
+
+         call compute_q_indep_res(q,f,q_indep_res)
+
          call write_csv(time,p)
          call write_csv(time,q)
          call write_csv(time,f)
+
+         call write_csv(time,q_indep_res)
       end if
       !-----------------------------------------------------------------------
       call shift_time_step(p)

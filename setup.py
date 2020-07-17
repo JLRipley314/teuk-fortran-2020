@@ -14,13 +14,13 @@ sim.output_dir= '/home/jripley/teuk-fortran/output'
 #sim.base_output_dir= '/mnt/grtheory/test_second_order_pert/'
 #-----------------------------------------------------------------------------
 sim.black_hole_mass= float(0.5)	
-sim.black_hole_spin= float(0.0)
+sim.black_hole_spin= float(0.35)
 sim.compactification_length= float(1)
 #-----------------------------------------------------------------------------
 ## evolve time: in units of black hole mass
 #-----------------------------------------------------------------------------
-sim.evolve_time= float(1.0)
-sim.num_saved_times= int(20)
+sim.evolve_time= float(10.0)
+sim.num_saved_times= int(40)
 #-----------------------------------------------------------------------------
 ## initial data
 #-----------------------------------------------------------------------------
