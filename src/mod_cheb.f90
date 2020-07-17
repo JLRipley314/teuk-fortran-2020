@@ -12,7 +12,7 @@ module mod_cheb
    real(rp), dimension(nx), protected, public :: R = 0
 
    ! subroutines
-   public :: cheb_init, compute_DR
+   public :: cheb_init, compute_DR, cheb_test
 
    ! Chebyshev differentiation matrix  
    real(rp), dimension(nx,nx) :: D_cheb = 0
@@ -43,5 +43,22 @@ contains
       end do
       end do
    end subroutine compute_DR
+!-----------------------------------------------------------------------------
+   subroutine cheb_test()
+      complex(rp), dimension(nx,ny) :: vals, DR_vals, computed_DR_vals
+      integer(ip) :: i
+
+      do i=1,nx
+         vals(i,:) = R(i)
+         DR_vals(i,:) = 1.0_rp
+      end do
+
+      call compute_DR(vals, computed_DR_vals)
+
+      do i=1,nx
+         write (*,*) computed_DR_vals(i,:) - DR_vals(i,:)
+      end do
+
+   end subroutine cheb_test
 !-----------------------------------------------------------------------------
 end module mod_cheb
