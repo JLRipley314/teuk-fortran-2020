@@ -43,8 +43,8 @@ assert(sim.pm_ang>=0)
 ## psi_4 is spin -2, psi_0 is spin +2 (code only reconstructs for psi_4) 
 sim.spin= int(-2)
 #-----------------------------------------------------------------------------
-sim.nx= int(pow(2,6)*pow(3,0)*pow(5,0)*pow(7,0)) ## num radial pts 
-sim.nl= int(pow(2,4)*pow(3,0)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
+sim.nx= int(pow(2,4)*pow(3,0)*pow(5,1)*pow(7,0)) ## num radial pts 
+sim.nl= int(pow(2,2)*pow(3,0)*pow(5,1)*pow(7,0)) ## num swaL angular pts 
 #-----------------------------------------------------------------------------
 ## further diagnostics
 sim.save_indep_res= "true"#"false"#
