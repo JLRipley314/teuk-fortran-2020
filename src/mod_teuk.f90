@@ -4,7 +4,7 @@
 module mod_teuk
 !=============================================================================
    use mod_prec
-   use mod_field, only: Field
+   use mod_field, only: field
    use mod_params, only: &
       dt, nx, ny, lmax, &
       spin, min_m, max_m, &

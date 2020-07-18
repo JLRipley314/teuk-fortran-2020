@@ -28,11 +28,11 @@ clean_memory: block
 !=============================================================================
    write (*,*) "Initializing fields"   
 !-----------------------------------------------------------------------------
-   p = field("p")
-   q = field("q")
-   f = field("f")
+   p = field("p")!,-2,2)
+   q = field("q")!,-2,2)
+   f = field("f")!,-2,2)
 
-   q_indep_res = field("q_indep_res")
+   q_indep_res = field("q_indep_res")!,-2,2)
 !-----------------------------------------------------------------------------
    call cheb_init()
    call swal_init()
