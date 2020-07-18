@@ -22,12 +22,12 @@ module metric_recon
    public :: set_k 
 
    complex(rp), dimension(nx,ny) :: &
-      psi4, psi3, psi2, &
-      la, pi, &
-      hll, hlmb, hmbmb, &
+      psi4,  psi3,    psi2, &
+      la,      pi,          &
+      muhll, hlmb,   hmbmb, &
       edth_psi4, edth_psi3, &
-      edth_pi, &
-      edth_hlmb
+      edth_pi,              &
+      edth_hlmb, edth_hmbmb
 !=============================================================================
    contains
 !=============================================================================
@@ -94,6 +94,26 @@ module metric_recon
                -  2.0_rp*pi(i,j) &
                -  ta_0(i,j)*hmbmb(i,j) &
                -  conjg(mu_0(i,j))*hlmb(i,j)
+            end do
+            end do
+         !--------------------------------------------------------------------
+         case ("muhll")
+            do j=1,ny
+            do i=1,nx
+               kl(i,j) = &
+               -  conjg(mu_0(i,j))*muhll(i,j) &
+               -  mu_0(i,j)*edth_hlmb(i,j) &
+               -  mu_0(i,j)*(conjg(pi_0(i,j))+2.0_rp*ta_0(i,j))*hlmb(i,j) &
+               -  2.0_rp*edth_pi(i,j) &
+               -  2.0_rp*conjg(pi_0(i,j))*pi(i,j) &
+               -  2.0_rp*psi2(i,j) &
+               -  pi_0(i,j)*conjg(edth_hmbmb(i,j)) &
+               +  (pi_0(i,j)**2)*conjg(hmbmb(i,j)) &
+               +  mu_0(i,j)*conjg(edth_hlmb(i,j))  &
+               -  3.0_rp*mu_0(i,j)*pi_0(i,j)*conjg(hlmb(i,j)) &
+               +  2.0_rp*conjg(mu_0(i,j))*pi_0(i,j)*conjg(hlmb(i,j)) &
+               -  2.0_rp*mu_0(i,j)*conjg(ta_0(i,j))*conjg(hlmb(i,j)) &
+               -  2.0_rp*pi_0(i,j)*conjg(pi(i,j))
             end do
             end do
          !--------------------------------------------------------------------
