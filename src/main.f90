@@ -5,6 +5,7 @@
 !=============================================================================
 program main
 !=============================================================================
+   use, intrinsic :: iso_fortran_env, only: stdout=>output_unit
    use mod_prec
    use mod_params,       only: nt, dt, t_step_save, black_hole_mass, pm_ang
    use mod_field,        only: field, set_field, shift_time_step
@@ -70,7 +71,7 @@ clean_memory: block
 !=============================================================================
 ! integrate Teukolsky field in time
 !=============================================================================
-   write (*,*) "Setting up initial data"
+   write (stdout,*) "Setting up initial data"
 !-----------------------------------------------------------------------------
    time = 0.0_rp
 
@@ -91,7 +92,7 @@ clean_memory: block
 !   call cheb_test()
 !   stop
 !-----------------------------------------------------------------------------
-   write (*,*) "Beginning time evolution"
+   write (stdout,*) "Beginning time evolution"
 !-----------------------------------------------------------------------------
    time_evolve: do t_step=1,nt
       time = t_step*dt
@@ -101,8 +102,8 @@ clean_memory: block
       call metric_recon_time_step(pm_ang)
       !-----------------------------------------------------------------------
       if (mod(t_step,t_step_save)==0) then
-         write (*,*) time / black_hole_mass
-
+         write (stdout,*) time / black_hole_mass
+         flush (stdout)
          call compute_q_res(psi4_q,psi4_f,q_res)
 
          call metric_recon_indep_res(pm_ang)
