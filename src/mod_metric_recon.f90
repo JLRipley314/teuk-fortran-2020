@@ -166,7 +166,7 @@ module mod_metric_recon
       integer(ip) :: i, j
 
       !-----------------------------------------------------------------------
-      select_field: select case (step)
+      select_step: select case (step)
          !--------------------------------------------------------------------
          case (1)
             call set_k(m_ang, f%name, f%falloff, f%n,   f%DR, f%k1)
@@ -210,9 +210,49 @@ module mod_metric_recon
          !--------------------------------------------------------------------
          case default
             f%error = -1.0_ip
-      end select select_field
+      end select select_step
       !-----------------------------------------------------------------------
    end subroutine take_step
+!=============================================================================
+   subroutine set_indep_res(m_ang, fname)
+      integer(ip),  intent(in) :: m_ang
+      character(*), intent(in) :: fname
+
+      integer(ip) :: i, j
+      real(rp) :: R
+      !-----------------------------------------------------------------------
+      select_field: select case (fname)
+         !--------------------------------------------------------------------
+         case ("bianci3_res")
+            do j=1,ny
+            do i=1,nx
+               R = Rvec(i)
+
+               bianci3_res%np1(i,j,m_ang) = &
+                         psi3%edth_prime(i,j,m_ang) &
+               +       R*4.0_rp*pi_0(i,j)*psi3%level(i,j,m_ang) &
+               -       R*psi4_f%thorn(i,j,m_ang) &
+               +  (R**2)*rh_0(i,j)*psi4_f%level(i,j,m_ang) &
+               -         3.0_rp*psi2_0(i,j)*la%level(i,j,m_ang) 
+            end do
+            end do
+         !--------------------------------------------------------------------
+         case ("bianci2_res")
+            do j=1,ny
+            do i=1,nx
+               R = Rvec(i)
+
+               bianci2_res%np1(i,j,m_ang) = 0.0_rp 
+            end do
+            end do
+
+         !--------------------------------------------------------------------
+         case ("hll_res")
+         
+         case default
+            continue
+      end select select_field
+   end subroutine set_indep_res
 !=============================================================================
    subroutine step_all_fields(step, m_ang)
       integer(ip), intent(in) :: step, m_ang
@@ -264,12 +304,16 @@ module mod_metric_recon
 !=============================================================================
    subroutine metric_recon_indep_res(m_ang)
       integer(ip), intent(in) :: m_ang
+      !-----------------------------------------------------------------------
+      call set_level(5_ip,m_ang,psi4_f)
+      call set_level(5_ip,m_ang,psi3)
 
-      call step_all_fields(1_ip,m_ang)
-      call step_all_fields(2_ip,m_ang)
-      call step_all_fields(3_ip,m_ang)
-      call step_all_fields(4_ip,m_ang)
-      call step_all_fields(5_ip,m_ang)
+      call set_thorn(     5_ip,m_ang,psi4_f)
+      call set_edth_prime(5_ip,m_ang,psi3)
+
+      call set_indep_res(m_ang,"bianci3_res")
+      !-----------------------------------------------------------------------
+      call set_indep_res(m_ang,"bianci2_res")
 
    end subroutine metric_recon_indep_res
 !=============================================================================

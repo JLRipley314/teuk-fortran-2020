@@ -56,8 +56,6 @@ clean_memory: block
 !-----------------------------------------------------------------------------
    call set_field("q_res",-2_ip,2_ip,2_rp,q_res)
 
-   call set_field("q_res",-2_ip,2_ip,2_rp,q_res)
-
    call set_field("bianci3_res",-2_ip,2_ip,2_rp,bianci3_res)
    call set_field("bianci2_res",-2_ip,2_ip,2_rp,bianci2_res)
    call set_field("ll_res",     -2_ip,2_ip,2_rp,hll_res)
