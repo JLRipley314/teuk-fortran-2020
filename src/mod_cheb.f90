@@ -4,7 +4,7 @@ module mod_cheb
 
    use mod_prec
    use mod_io, only: set_arr
-   use mod_params, only: tables_dir, R_max, nx, ny 
+   use mod_params, only: tables_dir, R_max, nx, ny, min_m, max_m 
 
    implicit none
 !-----------------------------------------------------------------------------
@@ -33,32 +33,33 @@ contains
 
    end subroutine cheb_init
 !-----------------------------------------------------------------------------
-   pure subroutine compute_DR(vals,D_vals)
-      complex(rp), dimension(nx,ny), intent(in)  :: vals
-      complex(rp), dimension(nx,ny), intent(out) :: D_vals 
+   pure subroutine compute_DR(m_ang,vals,D_vals)
+      integer(ip), intent(in) :: m_ang
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: vals
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: D_vals 
       integer(ip) :: i, j
 
       D_vals = 0
       do j=1,nx
       do i=1,nx
-         D_vals(i,:) = D_vals(i,:) + (D_cheb(i,j) * vals(j,:))
+         D_vals(i,:,m_ang) = D_vals(i,:,m_ang) + (D_cheb(i,j) * vals(j,:,m_ang))
       end do
       end do
    end subroutine compute_DR
 !-----------------------------------------------------------------------------
    subroutine cheb_test()
-      complex(rp), dimension(nx,ny) :: vals, DR_vals, computed_DR_vals
+      complex(rp), dimension(nx,ny,min_m:max_m) :: vals, DR_vals, computed_DR_vals
       integer(ip) :: i
 
       do i=1,nx
-         vals(i,:) = sin(R(i))
-         DR_vals(i,:) = cos(R(i))
+         vals(i,:,:) = sin(R(i))
+         DR_vals(i,:,:) = cos(R(i))
       end do
 
-      call compute_DR(vals, computed_DR_vals)
+      call compute_DR(0_ip, vals, computed_DR_vals)
 
       do i=1,nx
-         write (*,*) computed_DR_vals(i,:) - DR_vals(i,:)
+         write (*,*) computed_DR_vals(i,:,0_ip) - DR_vals(i,:,0_ip)
       end do
 
    end subroutine cheb_test

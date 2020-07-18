@@ -91,17 +91,23 @@ contains
    end subroutine set_arr_3d
 !=============================================================================
 ! writes to one line, row by row
-   subroutine write_field_csv(time,f)
+   subroutine write_field_csv(time,m_ang,f)
       real(rp),    intent(in) :: time
+      integer(ip), intent(in) :: m_ang
       type(field), intent(in) :: f
 
-      character(:), allocatable :: fn_re, fn_im
+      character(:), allocatable :: mstr, fn_re, fn_im
       logical :: exists
       integer(ip) :: i, j, ierror = 0
       integer(ip) :: uf = 3
+
+      ! inelegant int to str conversion
+      mstr = '     '
+      write (mstr,'(i5)') m_ang
+      mstr = trim(adjustl(mstr))
       ! set the file name to read from
-      fn_re = output_dir // '/' // f%name // '_re.csv'
-      fn_im = output_dir // '/' // f%name // '_im.csv'
+      fn_re = output_dir // '/' // f%name // '_m' // mstr // '_re.csv'
+      fn_im = output_dir // '/' // f%name // '_m' // mstr // '_im.csv'
       !----------------------------------------------------------------------
       ! save real part
       !----------------------------------------------------------------------
@@ -115,7 +121,7 @@ contains
       write (uf,'(e12.6,a1,i3,a1,i3,a1)',advance='no',iostat=ierror) time, ',', nx, ',', ny, ','
       do i=1,nx
       do j=1,ny
-         write (uf,'(e12.6,a1)',advance='no',iostat=ierror) real(f%np1(i,j)), ','
+         write (uf,'(e12.6,a1)',advance='no',iostat=ierror) real(f%np1(i,j,m_ang)), ','
       end do
       end do
       ! line break
@@ -141,7 +147,7 @@ contains
       write (uf,'(e12.6,a1,i3,a1,i3,a1)',advance='no',iostat=ierror) time, ',', nx, ',', ny, ','
       do i=1,nx
       do j=1,ny
-         write (uf,'(e12.6,a1)',advance='no',iostat=ierror) aimag(f%np1(i,j)), ','
+         write (uf,'(e12.6,a1)',advance='no',iostat=ierror) aimag(f%np1(i,j,m_ang)), ','
       end do
       end do
       ! line break

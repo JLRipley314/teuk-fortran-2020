@@ -170,47 +170,47 @@ contains
          kp, kq, kf) 
 
       integer(ip), intent(in) :: m_ang 
-      complex(rp), dimension(nx,ny), intent(in)    :: p, q, f 
-      complex(rp), dimension(nx,ny), intent(inout) :: &
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)    :: p, q, f 
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: &
          p_DR, q_DR, f_DR, f_laplacian, &
          kp, kq, kf 
 
-      complex(rp), dimension(nx,0:lmax), intent(inout) :: f_coefs
+      complex(rp), dimension(nx,0:lmax,min_m:max_m), intent(inout) :: f_coefs
 
       integer(ip) :: i, j
 
-      call compute_DR(p,p_DR)
-      call compute_DR(q,q_DR)
-      call compute_DR(f,f_DR)
+      call compute_DR(m_ang, p, p_DR)
+      call compute_DR(m_ang, q, q_DR)
+      call compute_DR(m_ang, f ,f_DR)
 
       call swal_laplacian(spin,m_ang,f,f_coefs,f_laplacian)
 
       y_loop: do j=1,ny
       x_loop: do i=1,nx
-         kp(i,j) = &
-            A_pp(i,j,m_ang) * p_DR(i,j) &
-         +  A_pq(i,j,m_ang) * q_DR(i,j) &
-         +  A_pf(i,j,m_ang) * f_DR(i,j) &
-         +  B_pp(i,j,m_ang) * p(i,j) &
-         +  B_pq(i,j,m_ang) * q(i,j) &
-         +  B_pf(i,j,m_ang) * f(i,j) &
-         +  f_laplacian(i,j) 
+         kp(i,j,m_ang) = &
+            A_pp(i,j,m_ang) * p_DR(i,j,m_ang) &
+         +  A_pq(i,j,m_ang) * q_DR(i,j,m_ang) &
+         +  A_pf(i,j,m_ang) * f_DR(i,j,m_ang) &
+         +  B_pp(i,j,m_ang) * p(i,j,m_ang) &
+         +  B_pq(i,j,m_ang) * q(i,j,m_ang) &
+         +  B_pf(i,j,m_ang) * f(i,j,m_ang) &
+         +  f_laplacian(i,j,m_ang) 
 
-         kq(i,j) = &
-            A_qp(i,j,m_ang) * p_DR(i,j) &
-         +  A_qq(i,j,m_ang) * q_DR(i,j) &
-         +  A_qf(i,j,m_ang) * f_DR(i,j) &
-         +  B_qp(i,j,m_ang) * p(i,j) &
-         +  B_qq(i,j,m_ang) * q(i,j) &
-         +  B_qf(i,j,m_ang) * f(i,j) 
+         kq(i,j,m_ang) = &
+            A_qp(i,j,m_ang) * p_DR(i,j,m_ang) &
+         +  A_qq(i,j,m_ang) * q_DR(i,j,m_ang) &
+         +  A_qf(i,j,m_ang) * f_DR(i,j,m_ang) &
+         +  B_qp(i,j,m_ang) * p(i,j,m_ang) &
+         +  B_qq(i,j,m_ang) * q(i,j,m_ang) &
+         +  B_qf(i,j,m_ang) * f(i,j,m_ang) 
 
-         kf(i,j) = &
-            A_fp(i,j,m_ang) * p_DR(i,j) &
-         +  A_fq(i,j,m_ang) * q_DR(i,j) &
-         +  A_ff(i,j,m_ang) * f_DR(i,j) &
-         +  B_fp(i,j,m_ang) * p(i,j) &
-         +  B_fq(i,j,m_ang) * q(i,j) &
-         +  B_ff(i,j,m_ang) * f(i,j) 
+         kf(i,j,m_ang) = &
+            A_fp(i,j,m_ang) * p_DR(i,j,m_ang) &
+         +  A_fq(i,j,m_ang) * q_DR(i,j,m_ang) &
+         +  A_ff(i,j,m_ang) * f_DR(i,j,m_ang) &
+         +  B_fp(i,j,m_ang) * p(i,j,m_ang) &
+         +  B_fq(i,j,m_ang) * q(i,j,m_ang) &
+         +  B_ff(i,j,m_ang) * f(i,j,m_ang) 
       end do x_loop
       end do y_loop
 
@@ -220,7 +220,7 @@ contains
 !=============================================================================
    pure subroutine teuk_time_step(m_ang, p, q, f) 
       integer(ip), intent(in) :: m_ang
-      type(Field), intent(inout) :: p, q, f 
+      type(field), intent(inout) :: p, q, f 
 
       integer(ip) :: i, j
    !--------------------------------------------------------
@@ -231,9 +231,9 @@ contains
 
       do j=1,ny
       do i=1,nx
-         p%l2(i,j)= p%n(i,j)+0.5_rp*dt*p%k1(i,j)
-         q%l2(i,j)= q%n(i,j)+0.5_rp*dt*q%k1(i,j)
-         f%l2(i,j)= f%n(i,j)+0.5_rp*dt*f%k1(i,j)
+         p%l2(i,j,m_ang)= p%n(i,j,m_ang)+0.5_rp*dt*p%k1(i,j,m_ang)
+         q%l2(i,j,m_ang)= q%n(i,j,m_ang)+0.5_rp*dt*q%k1(i,j,m_ang)
+         f%l2(i,j,m_ang)= f%n(i,j,m_ang)+0.5_rp*dt*f%k1(i,j,m_ang)
       end do
       end do
    !--------------------------------------------------------
@@ -244,35 +244,40 @@ contains
 
       do j=1,ny
       do i=1,nx
-         p%l3(i,j)= p%l2(i,j)+0.5_rp*dt*p%k2(i,j)
-         q%l3(i,j)= q%l2(i,j)+0.5_rp*dt*q%k2(i,j)
-         f%l3(i,j)= f%l2(i,j)+0.5_rp*dt*f%k2(i,j)
+         p%l3(i,j,m_ang)= p%l2(i,j,m_ang)+0.5_rp*dt*p%k2(i,j,m_ang)
+         q%l3(i,j,m_ang)= q%l2(i,j,m_ang)+0.5_rp*dt*q%k2(i,j,m_ang)
+         f%l3(i,j,m_ang)= f%l2(i,j,m_ang)+0.5_rp*dt*f%k2(i,j,m_ang)
       end do
       end do
    !--------------------------------------------------------
       call set_k(m_ang, &
-         p%l3, q%l3, f%l3, &
+         p%l3, q%l3, f%l3, & 
          p%DR, q%DR, f%DR, f%coefs, f%lap, &
          p%k3, q%k3, f%k3) 
 
       do j=1,ny
       do i=1,nx
-         p%l4(i,j)= p%l3(i,j)+dt*p%k3(i,j)
-         q%l4(i,j)= q%l3(i,j)+dt*q%k3(i,j)
-         f%l4(i,j)= f%l3(i,j)+dt*f%k3(i,j)
+         p%l4(i,j,m_ang)= p%l3(i,j,m_ang)+dt*p%k3(i,j,m_ang)
+         q%l4(i,j,m_ang)= q%l3(i,j,m_ang)+dt*q%k3(i,j,m_ang)
+         f%l4(i,j,m_ang)= f%l3(i,j,m_ang)+dt*f%k3(i,j,m_ang)
       end do
       end do
    !--------------------------------------------------------
       call set_k(m_ang, &
-         p%l4, q%l4, f%l4, &
+         p%l4, q%l4, f%l4, & 
          p%DR, q%DR, f%DR, f%coefs, f%lap, &
          p%k4, q%k4, f%k4) 
 
       do j=1,ny
       do i=1,nx
-         p%np1(i,j)= p%n(i,j)+(dt/6.0_rp)*(p%k1(i,j)+2.0_rp*p%k2(i,j)+2.0_rp*p%k3(i,j)+p%k4(i,j))
-         q%np1(i,j)= q%n(i,j)+(dt/6.0_rp)*(q%k1(i,j)+2.0_rp*q%k2(i,j)+2.0_rp*q%k3(i,j)+q%k4(i,j))
-         f%np1(i,j)= f%n(i,j)+(dt/6.0_rp)*(f%k1(i,j)+2.0_rp*f%k2(i,j)+2.0_rp*f%k3(i,j)+f%k4(i,j))
+         p%np1(i,j,m_ang)= p%n(i,j,m_ang) &
+         +  (dt/6.0_rp)*(p%k1(i,j,m_ang)+2.0_rp*p%k2(i,j,m_ang)+2.0_rp*p%k3(i,j,m_ang)+p%k4(i,j,m_ang))
+
+         q%np1(i,j,m_ang)= q%n(i,j,m_ang) &
+         +  (dt/6.0_rp)*(q%k1(i,j,m_ang)+2.0_rp*q%k2(i,j,m_ang)+2.0_rp*q%k3(i,j,m_ang)+q%k4(i,j,m_ang))
+
+         f%np1(i,j,m_ang)= f%n(i,j,m_ang) &
+         +  (dt/6.0_rp)*(f%k1(i,j,m_ang)+2.0_rp*f%k2(i,j,m_ang)+2.0_rp*f%k3(i,j,m_ang)+f%k4(i,j,m_ang))
       end do
       end do
    end subroutine teuk_time_step
@@ -280,12 +285,16 @@ contains
 ! independent residula: q - \partial_R f
 !=============================================================================
    pure subroutine compute_q_indep_res(q, f, res) 
-      type(Field), intent(in)    :: q 
-      type(Field), intent(inout) :: f
-      type(Field), intent(out)   :: res
+      type(field), intent(in)    :: q 
+      type(field), intent(inout) :: f
+      type(field), intent(out)   :: res
 
-      call compute_DR(f%np1,f%DR)
-   
+      integer(ip) :: m_ang
+
+      do m_ang=min_m,max_m
+         call compute_DR(m_ang,f%np1,f%DR)
+      end do
+      
       res%np1 = f%DR - q%np1
 
    end subroutine compute_q_indep_res

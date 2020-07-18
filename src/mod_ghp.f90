@@ -24,22 +24,21 @@ module mod_ghp
 !=============================================================================
    contains
 !=============================================================================
-   pure subroutine ghp_edth(step, f, f_edth)
-      integer(ip), intent(in)    :: step
+   pure subroutine ghp_edth(step, m_ang, f)
+      integer(ip), intent(in)    :: step, m_ang
       type(field), intent(inout) :: f
-      complex(rp), dimension(nx,ny), intent(out)   :: f_edth
 
       integer(ip) :: i, j
       real(rp) :: R, cy, sy, p
 
       p = (f%spin+f%boost)
 
-      call set_level(step, f)
-      call set_DT(   step, f)
+      call set_level(step, m_ang, f)
+      call set_DT(   step, m_ang, f)
 
-      call compute_DR(f%level, f%DR)
+      call compute_DR(m_ang, f%level, f%DR)
 
-      call swal_lower(f%spin, f%m_ang, f%level, f%coefs, f%lowered)
+      call swal_lower(f%spin, m_ang, f%level, f%coefs, f%lowered)
 
       y_loop: do j=1,ny
       x_loop: do i=1,nx
@@ -48,36 +47,35 @@ module mod_ghp
          cy = cyvec(j)
          sy = syvec(j)
 
-         f_edth(i,j) = &
+         f%edth(i,j,m_ang) = &
             (r/sqrt(2.0_rp)) * (1.0_rp/((cl**2)-ci*bhs*r*cy)) * ( &
-               - ci*bhs*sy*(f%DT(i,j)) &
-               + (f%lowered(i,j)) &
+               - ci*bhs*sy*(f%DT(i,j,m_ang)) &
+               + (f%lowered(i,j,m_ang)) &
             ) &
          -  ( &
                (ci*p/sqrt(2.0_rp)) * bhs * (R**2) * sy  &
             /  (((cl**2) - ci*bhs*R*cy)**2) &
-            ) * (f%level(i,j))
+            ) * (f%level(i,j,m_ang))
 
       end do x_loop
       end do y_loop
    end subroutine ghp_edth
 !=============================================================================
-   pure subroutine ghp_edth_prime(step, f, f_edth_prime)
-      integer(ip), intent(in)    :: step
+   pure subroutine ghp_edth_prime(step, m_ang, f)
+      integer(ip), intent(in)    :: step, m_ang
       type(field), intent(inout) :: f
-      complex(rp), dimension(nx,ny), intent(out)   :: f_edth_prime
 
       integer(ip) :: i, j
       real(rp) :: R, cy, sy, q
 
       q = (-f%spin+f%boost)
 
-      call set_level(step, f)
-      call set_DT(   step, f)
+      call set_level(step, m_ang, f)
+      call set_DT(   step, m_ang, f)
 
-      call compute_DR(f%level, f%DR)
+      call compute_DR(m_ang, f%level, f%DR)
 
-      call swal_raise(f%spin, f%m_ang, f%level, f%coefs, f%raised)
+      call swal_raise(f%spin, m_ang, f%level, f%coefs, f%raised)
 
       y_loop: do j=1,ny
       x_loop: do i=1,nx
@@ -86,38 +84,35 @@ module mod_ghp
          cy = cyvec(j)
          sy = syvec(j)
 
-         f_edth_prime(i,j) = &
+         f%edth_prime(i,j,m_ang) = &
             (r/sqrt(2.0_rp)) * (1.0_rp/((cl**2)+ci*bhs*r*cy)) * ( &
-                 ci*bhs*sy*(f%DT(i,j)) &
-               + (f%raised(i,j)) &
+                 ci*bhs*sy*(f%DT(i,j,m_ang)) &
+               + (f%raised(i,j,m_ang)) &
             ) &
          -  ( &
                (ci*q/sqrt(2.0_rp)) * bhs * (R**2) * sy  &
             /  (((cl**2) + ci*bhs*R*cy)**2) &
-            ) * (f%level(i,j))
+            ) * (f%level(i,j,m_ang))
 
       end do x_loop
       end do y_loop
    end subroutine ghp_edth_prime
 !=============================================================================
-   pure subroutine ghp_thorn(step, f, f_thorn)
-      integer(ip), intent(in)    :: step
+   pure subroutine ghp_thorn(step, m_ang, f)
+      integer(ip), intent(in)    :: step, m_ang
       type(field), intent(inout) :: f
-      complex(rp), dimension(nx,ny), intent(out)   :: f_thorn
 
-      integer(ip) :: i, j, m_ang
+      integer(ip) :: i, j
       real(rp)    :: R, cy, p, q
       complex(rp) :: ep, ep_cc
-
-      m_ang = f%m_ang
 
       p = ( f%spin+f%boost)
       q = (-f%spin+f%boost)
 
-      call set_level(step, f)
-      call set_DT(   step, f)
+      call set_level(step, m_ang, f)
+      call set_DT(   step, m_ang, f)
 
-      call compute_DR(f%level, f%DR)
+      call compute_DR(m_ang, f%level, f%DR)
 
       y_loop: do j=1,ny
       x_loop: do i=1,nx
@@ -128,38 +123,37 @@ module mod_ghp
          ep = ep_0(i,j)
          ep_cc = conjg(ep)
 
-         f_thorn(i,j) = &
+         f%thorn(i,j,m_ang) = &
             (r**2)/((cl**4)+((bhs*r*cy)**2)) * ( &
-               2.0_rp*bhm*(2.0_rp*bhm-((bhs/cl)**2)*r) * f%DT(i,j) &
-            -  0.5_rp*((cl**2)-(2.0_rp*bhm*r) + ((bhs/cl)**2)*r) * f%DR(i,j) &
+               2.0_rp*bhm*(2.0_rp*bhm-((bhs/cl)**2)*r) * f%DT(i,j,m_ang) &
+            -  0.5_rp*((cl**2)-(2.0_rp*bhm*r) + ((bhs/cl)**2)*r) * f%DR(i,j,m_ang) &
             ) &
-            +  (ci*bhs*m_ang - p*ep - q*ep_cc)*f%level(i,j)
+            +  (ci*bhs*m_ang - p*ep - q*ep_cc)*f%level(i,j,m_ang)
 
       end do x_loop
       end do y_loop
    end subroutine ghp_thorn
 !=============================================================================
-   pure subroutine ghp_thorn_prime(step, f, f_thorn_prime)
-      integer(ip), intent(in)    :: step
+   pure subroutine ghp_thorn_prime(step, m_ang, f)
+      integer(ip), intent(in)    :: step, m_ang
       type(field), intent(inout) :: f
-      complex(rp), dimension(nx,ny), intent(out)   :: f_thorn_prime
 
       integer(ip) :: i, j
       real(rp)    :: R
 
-      call set_level(step, f)
-      call set_DT(   step, f)
+      call set_level(step, m_ang, f)
+      call set_DT(   step, m_ang, f)
 
-      call compute_DR(f%level, f%DR)
+      call compute_DR(m_ang, f%level, f%DR)
 
       y_loop: do j=1,ny
       x_loop: do i=1,nx
 
          R = Rvec(i)
 
-         f_thorn_prime(i,j) = &
-            (2.0_rp + (4.0_rp*bhm*r/(cl**2))) * f%DT(i,j) &
-         +  ((r/cl)**2)*f%DR(i,j)
+         f%thorn_prime(i,j,m_ang) = &
+            (2.0_rp + (4.0_rp*bhm*r/(cl**2))) * f%DT(i,j,m_ang) &
+         +  ((r/cl)**2)*f%DR(i,j,m_ang)
 
       end do x_loop
       end do y_loop

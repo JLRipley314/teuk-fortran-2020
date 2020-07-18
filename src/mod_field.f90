@@ -4,7 +4,7 @@
 module mod_field
 !=============================================================================
    use mod_prec
-   use mod_params, only: nx, ny, lmax
+   use mod_params, only: nx, ny, lmax, min_m, max_m
    implicit none
 !=============================================================================
    private
@@ -17,32 +17,50 @@ module mod_field
    ! evolution. k1, etc. are the time derivatives (note 1==n, 5==np1).
    ! These functions are complex as we work in NP formalism
 
-   integer(ip) :: m_ang, spin, boost, falloff
+   integer(ip) :: error
+
+   integer(ip) :: spin, boost, falloff
 
    complex(rp) :: &
-   n( nx,ny), l2(nx,ny), l3(nx,ny), l4(nx,ny), np1(nx,ny), &
-   k1(nx,ny), k2(nx,ny), k3(nx,ny), k4(nx,ny), k5( nx,ny), &
+      n(  nx,ny,min_m:max_m), &
+      l2( nx,ny,min_m:max_m), &
+      l3( nx,ny,min_m:max_m), &
+      l4( nx,ny,min_m:max_m), &
+      np1(nx,ny,min_m:max_m), &
 
-   level(nx,ny), &
-   DT(nx,ny), DR(nx,ny), &
-   raised(nx,ny), lowered(nx,ny), lap(nx,ny), coefs(nx,0:lmax)
+      k1( nx,ny,min_m:max_m), &
+      k2( nx,ny,min_m:max_m), &
+      k3( nx,ny,min_m:max_m), &
+      k4( nx,ny,min_m:max_m), &
+      k5( nx,ny,min_m:max_m), &
+
+      level(  nx,ny,min_m:max_m), &
+      DT(     nx,ny,min_m:max_m), &
+      DR(     nx,ny,min_m:max_m), &
+      raised( nx,ny,min_m:max_m), &
+      lowered(nx,ny,min_m:max_m), & 
+      lap(    nx,ny,min_m:max_m), &
+
+      coefs(nx,0:lmax,min_m:max_m), &
+
+      edth(       nx,ny,min_m:max_m), &
+      edth_prime( nx,ny,min_m:max_m), &
+      thorn(      nx,ny,min_m:max_m), &
+      thorn_prime(nx,ny,min_m:max_m) 
 
    end type field
-
-   interface set_level
-      module procedure set_level_interior, set_level_exterior 
-   end interface set_level
 !=============================================================================
 contains
 !=============================================================================
-   pure subroutine set_field(name, m_ang, spin, boost, falloff, f)
+   pure subroutine set_field(name, spin, boost, falloff, f)
       character(*), intent(in)  :: name ! field name
-      integer(ip),  intent(in)  :: m_ang, spin, boost, falloff
+      integer(ip),  intent(in)  :: spin, boost, falloff
       type(field),  intent(out) :: f
+
+      f % error = 1.0_ip
 
       f % name = name 
 
-      f % m_ang = m_ang
       f % spin  = spin
       f % boost = boost
       f % falloff = falloff
@@ -71,64 +89,43 @@ contains
 
    end subroutine set_field
 !=============================================================================
-   pure subroutine set_level_interior(step, f)
-      integer(ip), intent(in)    :: step
+   pure subroutine set_level(step, m_ang, f)
+      integer(ip), intent(in)    :: step, m_ang
       type(field), intent(inout) :: f
 
       select case (step)
          case (1)
-            f % level = f % n 
+            f % level(:,:,m_ang) = f % n(:,:,m_ang) 
          case (2)
-            f % level = f % l2 
+            f % level(:,:,m_ang) = f % l2(:,:,m_ang) 
          case (3)
-            f % level = f % l3 
+            f % level(:,:,m_ang) = f % l3(:,:,m_ang) 
          case (4)
-            f % level = f % l4 
+            f % level(:,:,m_ang) = f % l4(:,:,m_ang) 
          case (5)
-            f % level = f % np1 
+            f % level(:,:,m_ang) = f % np1(:,:,m_ang)  
          case default
-            f % level = -1.0_rp
+            f % level(:,:,m_ang) = -1.0_rp
       end select
-   end subroutine set_level_interior
+   end subroutine set_level
 !=============================================================================
-   pure subroutine set_level_exterior(step, f, ex)
-      integer(ip), intent(in)  :: step
-      type(field), intent(in)  :: f
-      complex(rp), dimension(nx,ny), intent(out) :: ex
-
-      select case (step)
-         case (1)
-            ex = f % n 
-         case (2)
-            ex = f % l2 
-         case (3)
-            ex = f % l3 
-         case (4)
-            ex = f % l4 
-         case (5)
-            ex = f % np1 
-         case default
-            ex = -1.0_rp
-      end select
-   end subroutine set_level_exterior
-!=============================================================================
-   pure subroutine set_DT(step, f)
-      integer(ip), intent(in)    :: step
+   pure subroutine set_DT(step, m_ang, f)
+      integer(ip), intent(in)    :: step, m_ang
       type(field), intent(inout) :: f
 
       select case (step)
          case (1)
-            f % DT = f % k1 
+            f % DT(:,:,m_ang) = f % k1(:,:,m_ang) 
          case (2)
-            f % DT = f % k2 
+            f % DT(:,:,m_ang) = f % k2(:,:,m_ang) 
          case (3)
-            f % DT = f % k3 
+            f % DT(:,:,m_ang) = f % k3(:,:,m_ang) 
          case (4)
-            f % DT = f % k4 
+            f % DT(:,:,m_ang) = f % k4(:,:,m_ang) 
          case (5)
-            f % DT = f % k5
+            f % DT(:,:,m_ang) = f % k5(:,:,m_ang) 
          case default
-            f % DT = -1.0_rp
+            f % DT(:,:,m_ang) = -1.0_rp
       end select
    end subroutine set_DT
 !=============================================================================

@@ -28,11 +28,11 @@ clean_memory: block
 !=============================================================================
    write (*,*) "Initializing fields"   
 !-----------------------------------------------------------------------------
-   call set_field("p",pm_ang,-2_ip,2_ip,1_ip,p)
-   call set_field("q",pm_ang,-2_ip,2_ip,2_ip,q)
-   call set_field("f",pm_ang,-2_ip,2_ip,1_ip,f)
+   call set_field("p",-2_ip,2_ip,1_ip,p)
+   call set_field("q",-2_ip,2_ip,2_ip,q)
+   call set_field("f",-2_ip,2_ip,1_ip,f)
 
-   call set_field("q_indep_res",pm_ang,-2_ip,2_ip,2_rp,q_indep_res)
+   call set_field("q_indep_res",-2_ip,2_ip,2_rp,q_indep_res)
 !-----------------------------------------------------------------------------
    call cheb_init()
    call swal_init()
@@ -45,13 +45,15 @@ clean_memory: block
 !-----------------------------------------------------------------------------
    time = 0.0_rp
 
-   call set_initial_data(p, q, f)
+   call set_initial_data(pm_ang,p, q, f)
 
    call compute_q_indep_res(q,f,q_indep_res)
 
-   call write_csv(time,p)
-   call write_csv(time,q)
-   call write_csv(time,f)
+   call write_csv(time,pm_ang,p)
+   call write_csv(time,pm_ang,q)
+   call write_csv(time,pm_ang,f)
+   
+   call write_csv(time,pm_ang,q_indep_res)
 !-----------------------------------------------------------------------------
 !   write (*,*) "Performing tests"
 !   call cheb_test()
@@ -69,11 +71,11 @@ clean_memory: block
 
          call compute_q_indep_res(q,f,q_indep_res)
 
-         call write_csv(time,p)
-         call write_csv(time,q)
-         call write_csv(time,f)
+         call write_csv(time,pm_ang,p)
+         call write_csv(time,pm_ang,q)
+         call write_csv(time,pm_ang,f)
 
-         call write_csv(time,q_indep_res)
+         call write_csv(time,pm_ang,q_indep_res)
       end if
       !-----------------------------------------------------------------------
       call shift_time_step(p)
