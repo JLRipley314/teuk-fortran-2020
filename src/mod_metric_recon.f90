@@ -7,7 +7,7 @@ module mod_metric_recon
    use mod_prec
    use mod_cheb,     only: Rvec=>R, compute_DR
    use mod_field,    only: field, set_field, set_level
-   use mod_ghp,      only: ghp_edth, ghp_edth_prime, ghp_thorn, ghp_thorn_prime
+   use mod_ghp,      only: set_edth, set_edth_prime, set_thorn, set_thorn_prime
    use mod_bkgrd_np, only: mu_0, ta_0, pi_0, rh_0, thorn_prime_ta_0, psi2_0
    use mod_teuk,     only: psi4_f
    use mod_params,   only: &
@@ -20,10 +20,13 @@ module mod_metric_recon
    implicit none
    private
 
+   public :: metric_recon_time_step, metric_recon_indep_res
+
    type(field), public :: &
       psi3, psi2,         &
       la, pi,             &
-      muhll, hlmb, hmbmb  
+      muhll, hlmb, hmbmb, &
+      bianci3_res, bianci2_res, hll_res 
 !=============================================================================
    contains
 !=============================================================================
@@ -154,24 +157,53 @@ module mod_metric_recon
 
    end subroutine set_k
 !=============================================================================
+! RK4 evolution
+!=============================================================================
    pure subroutine take_step(step, m_ang, f)
       integer(ip), intent(in)    :: step, m_ang
       type(field), intent(inout) :: f
+      
+      integer(ip) :: i, j
 
       !-----------------------------------------------------------------------
       select_field: select case (step)
          !--------------------------------------------------------------------
          case (1)
             call set_k(m_ang, f%name, f%falloff, f%n,   f%DR, f%k1)
+
+            do j=1,ny
+            do i=1,nx
+               f%l2(i,j,m_ang)= f%n(i,j,m_ang)+0.5_rp*dt*f%k1(i,j,m_ang)
+            end do
+            end do
          !--------------------------------------------------------------------
          case (2)
             call set_k(m_ang, f%name, f%falloff, f%l2,  f%DR, f%k2)
+
+            do j=1,ny
+            do i=1,nx
+               f%l3(i,j,m_ang)= f%l2(i,j,m_ang)+0.5_rp*dt*f%k2(i,j,m_ang)
+            end do
+            end do
          !--------------------------------------------------------------------
          case (3)
             call set_k(m_ang, f%name, f%falloff, f%l3,  f%DR, f%k3)
+
+            do j=1,ny
+            do i=1,nx
+               f%l4(i,j,m_ang)= f%l3(i,j,m_ang)+dt*f%k3(i,j,m_ang)
+            end do
+            end do
          !--------------------------------------------------------------------
          case (4)
             call set_k(m_ang, f%name, f%falloff, f%l4,  f%DR, f%k4)
+
+            do j=1,ny
+            do i=1,nx
+               f%np1(i,j,m_ang)= f%n(i,j,m_ang) &
+               +  (dt/6.0_rp)*(f%k1(i,j,m_ang)+2.0_rp*f%k2(i,j,m_ang)+2.0_rp*f%k3(i,j,m_ang)+f%k4(i,j,m_ang))
+            end do
+            end do
          !--------------------------------------------------------------------
          case (5)
             call set_k(m_ang, f%name, f%falloff, f%np1, f%DR, f%k5)
@@ -182,8 +214,63 @@ module mod_metric_recon
       !-----------------------------------------------------------------------
    end subroutine take_step
 !=============================================================================
-   pure subroutine step_all_fields(step, m_ang)
+   subroutine step_all_fields(step, m_ang)
       integer(ip), intent(in) :: step, m_ang
+
+      !-----------------------------------------------------------------------
+      call set_level(step,m_ang,psi4_f)
+      call set_edth( step,m_ang,psi4_f)
+
+      call take_step(step,m_ang,psi3)
+      call take_step(step,m_ang,la)
+      !-----------------------------------------------------------------------
+      call set_level(step,m_ang,psi3)
+      call set_edth( step,m_ang,psi3)
+
+      call take_step(step,m_ang,psi2)
+      !-----------------------------------------------------------------------
+      call set_level(step,m_ang,la)
+
+      call take_step(step,m_ang,hmbmb)
+      !-----------------------------------------------------------------------
+      call set_level(step,m_ang,hmbmb)
+
+      call take_step(step,m_ang,pi)
+      !-----------------------------------------------------------------------
+      call set_level(step,m_ang,pi)
+
+      call take_step(step,m_ang,hlmb)
+      !-----------------------------------------------------------------------
+      call set_level(step,m_ang,psi2)
+      call set_level(step,m_ang,hlmb)
+
+      call set_edth( step,m_ang,pi)
+      call set_edth( step,m_ang,hlmb)
+
+      call take_step(step,m_ang,muhll)
+
    end subroutine step_all_fields
+!=============================================================================
+   subroutine metric_recon_time_step(m_ang)
+      integer(ip), intent(in) :: m_ang
+
+      call step_all_fields(1_ip,m_ang)
+      call step_all_fields(2_ip,m_ang)
+      call step_all_fields(3_ip,m_ang)
+      call step_all_fields(4_ip,m_ang)
+      call step_all_fields(5_ip,m_ang)
+
+   end subroutine metric_recon_time_step
+!=============================================================================
+   subroutine metric_recon_indep_res(m_ang)
+      integer(ip), intent(in) :: m_ang
+
+      call step_all_fields(1_ip,m_ang)
+      call step_all_fields(2_ip,m_ang)
+      call step_all_fields(3_ip,m_ang)
+      call step_all_fields(4_ip,m_ang)
+      call step_all_fields(5_ip,m_ang)
+
+   end subroutine metric_recon_indep_res
 !=============================================================================
 end module mod_metric_recon 

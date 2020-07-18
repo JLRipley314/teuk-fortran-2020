@@ -20,13 +20,13 @@ module mod_ghp
    
    complex(rp), parameter :: ci = (0.0_rp, 1.0_rp) 
 
-   public :: ghp_edth, ghp_edth_prime, ghp_thorn, ghp_thorn_prime
+   public :: set_edth, set_edth_prime, set_thorn, set_thorn_prime
 !=============================================================================
    contains
 !=============================================================================
 ! edth rescaled by R
 !=============================================================================
-   pure subroutine ghp_edth(step, m_ang, f)
+   pure subroutine set_edth(step, m_ang, f)
       integer(ip), intent(in)    :: step, m_ang
       type(field), intent(inout) :: f
 
@@ -59,11 +59,11 @@ module mod_ghp
 
       end do x_loop
       end do y_loop
-   end subroutine ghp_edth
+   end subroutine set_edth
 !=============================================================================
 ! edth_prime rescaled by R
 !=============================================================================
-   pure subroutine ghp_edth_prime(step, m_ang, f)
+   pure subroutine set_edth_prime(step, m_ang, f)
       integer(ip), intent(in)    :: step, m_ang
       type(field), intent(inout) :: f
 
@@ -96,11 +96,11 @@ module mod_ghp
 
       end do x_loop
       end do y_loop
-   end subroutine ghp_edth_prime
+   end subroutine set_edth_prime
 !=============================================================================
 ! thorn rescaled by R^2
 !=============================================================================
-   pure subroutine ghp_thorn(step, m_ang, f)
+   pure subroutine set_thorn(step, m_ang, f)
       integer(ip), intent(in)    :: step, m_ang
       type(field), intent(inout) :: f
 
@@ -134,9 +134,9 @@ module mod_ghp
 
       end do x_loop
       end do y_loop
-   end subroutine ghp_thorn
+   end subroutine set_thorn
 !=============================================================================
-   pure subroutine ghp_thorn_prime(step, m_ang, f)
+   pure subroutine set_thorn_prime(step, m_ang, f)
       integer(ip), intent(in)    :: step, m_ang
       type(field), intent(inout) :: f
 
@@ -159,6 +159,6 @@ module mod_ghp
 
       end do x_loop
       end do y_loop
-   end subroutine ghp_thorn_prime
+   end subroutine set_thorn_prime
 !=============================================================================
 end module mod_ghp

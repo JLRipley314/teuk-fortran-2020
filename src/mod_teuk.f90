@@ -17,7 +17,7 @@ module mod_teuk
 !=============================================================================
    implicit none
    private
-   public :: teuk_init, teuk_time_step, compute_q_indep_res 
+   public :: teuk_init, teuk_time_step, compute_q_res 
 
    type(field), public :: psi4_f, psi4_p, psi4_q
 !=============================================================================
@@ -286,7 +286,7 @@ contains
 !=============================================================================
 ! independent residula: q - \partial_R f
 !=============================================================================
-   pure subroutine compute_q_indep_res(q, f, res) 
+   pure subroutine compute_q_res(q, f, res) 
       type(field), intent(in)    :: q 
       type(field), intent(inout) :: f
       type(field), intent(out)   :: res
@@ -299,6 +299,6 @@ contains
       
       res%np1 = f%DR - q%np1
 
-   end subroutine compute_q_indep_res
+   end subroutine compute_q_res
 !=============================================================================
 end module mod_teuk

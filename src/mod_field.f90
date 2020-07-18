@@ -53,9 +53,9 @@ module mod_field
 contains
 !=============================================================================
    pure subroutine set_field(name, spin, boost, falloff, f)
-      character(*), intent(in)    :: name ! field name
-      integer(ip),  intent(in)    :: spin, boost, falloff
-      type(field),  intent(inout) :: f
+      character(*), intent(in)  :: name ! field name
+      integer(ip),  intent(in)  :: spin, boost, falloff
+      type(field),  intent(out) :: f
 
       f % error = 1.0_ip
 
