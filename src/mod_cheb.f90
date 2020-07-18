@@ -24,8 +24,6 @@ module mod_cheb
 contains
 !-----------------------------------------------------------------------------
    subroutine cheb_init()
-      complex(rp), dimension(nx,ny) :: fftw_test
-
       call set_arr('cheb_pts.txt', nx,     R)
       call set_arr('cheb_D.txt',nx,nx,D_cheb)
 

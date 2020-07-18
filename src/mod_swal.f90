@@ -117,11 +117,12 @@ contains
       call swal_coef_to_real(spin,m_ang,coefs,vals_lap) 
    end subroutine swal_laplacian
 !=============================================================================
-   pure subroutine swal_lower(spin,m_ang,coefs,vals)
+   pure subroutine swal_lower(spin,m_ang,vals,coefs,vals_lowered)
       integer(ip), intent(in) :: spin
       integer(ip), intent(in) :: m_ang
+      complex(rp), dimension(nx,ny),     intent(in)    :: vals
       complex(rp), dimension(nx,0:lmax), intent(inout) :: coefs
-      complex(rp), dimension(nx,ny),     intent(inout) :: vals
+      complex(rp), dimension(nx,ny),     intent(out)   :: vals_lowered 
 
       real(rp)    :: pre
       integer(ip) :: k
@@ -136,14 +137,15 @@ contains
          coefs(:,k) = pre*coefs(:,k)
       end do
 
-      call swal_coef_to_real(spin-1,m_ang,coefs,vals) 
+      call swal_coef_to_real(spin-1,m_ang,coefs,vals_lowered) 
    end subroutine swal_lower
 !=============================================================================
-   pure subroutine swal_raise(spin,m_ang,coefs,vals)
+   pure subroutine swal_raise(spin,m_ang,vals,coefs,vals_raised)
       integer(ip), intent(in) :: spin
       integer(ip), intent(in) :: m_ang
+      complex(rp), dimension(nx,ny),     intent(in)    :: vals
       complex(rp), dimension(nx,0:lmax), intent(inout) :: coefs
-      complex(rp), dimension(nx,ny),     intent(inout) :: vals
+      complex(rp), dimension(nx,ny),     intent(out)   :: vals_raised
 
       real(rp)    :: pre
       integer(ip) :: k
@@ -158,7 +160,7 @@ contains
          coefs(:,k) = pre*coefs(:,k)
       end do
 
-      call swal_coef_to_real(spin+1,m_ang,coefs,vals) 
+      call swal_coef_to_real(spin+1,m_ang,coefs,vals_raised) 
    end subroutine swal_raise
 !=============================================================================
 ! Low pass filter. A smooth filter helps prevent Gibbs-like ringing

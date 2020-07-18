@@ -42,6 +42,8 @@ OBJ= $(addprefix $(OBJDIR), \
 	mod_bkgrd.o \
 	mod_teuk.o \
 	mod_initial_data.o \
+	mod_ghp.o \
+	mod_metric_recon.o \
 	)
 
 DEPS = $(addprefix $(SRC), \
@@ -54,6 +56,8 @@ DEPS = $(addprefix $(SRC), \
 	mod_bkgrd.f90 \
 	mod_teuk.f90 \
 	initial_data.f90 \
+	mod_ghp.f90 \
+	mod_metric_recon.f90 \
 	)
 
 all: $(RUN)

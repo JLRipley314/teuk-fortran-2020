@@ -7,7 +7,7 @@ program main
 !=============================================================================
    use mod_prec
    use mod_params,       only: nt, dt, t_step_save, black_hole_mass, pm_ang
-   use mod_field,        only: field, shift_time_step
+   use mod_field,        only: field, set_field, shift_time_step
    use mod_cheb,         only: cheb_init, cheb_test
    use mod_swal,         only: swal_init
    use mod_bkgrd_np,     only: bkgrd_np_init
@@ -28,11 +28,11 @@ clean_memory: block
 !=============================================================================
    write (*,*) "Initializing fields"   
 !-----------------------------------------------------------------------------
-   p = field("p")!,-2,2)
-   q = field("q")!,-2,2)
-   f = field("f")!,-2,2)
+   call set_field("p",pm_ang,-2_ip,2_ip,1_ip,p)
+   call set_field("q",pm_ang,-2_ip,2_ip,2_ip,q)
+   call set_field("f",pm_ang,-2_ip,2_ip,1_ip,f)
 
-   q_indep_res = field("q_indep_res")!,-2,2)
+   call set_field("q_indep_res",pm_ang,-2_ip,2_ip,2_rp,q_indep_res)
 !-----------------------------------------------------------------------------
    call cheb_init()
    call swal_init()
