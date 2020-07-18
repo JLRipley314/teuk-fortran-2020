@@ -62,23 +62,21 @@ if (sim.run_type == "basic_run"):
    sim.launch_run()
 #=============================================================================
 elif (sim.run_type == "multiple_runs"):
-   nx_vals= [64, 80]
-   ny_vals= [12, 16]
-   m_vals=  [0, 1, 2]
+   m_vals = [0,1,2]
 
    sim.nx = 64
    sim.ny = 12
    for m in m_vals:
       sim.pm_ang = m
       sim.launch_run() 
-      time.sleep(180)
+      time.sleep(120)
 
-   sim.nx = 80
-   sim.ny = 16
-   for m in m_vals:
-      sim.pm_ang = m
-      sim.launch_run() 
-      time.sleep(180)
+#   sim.nx = 80
+#   sim.ny = 16
+#   for m in m_vals:
+#      sim.pm_ang = m
+#      sim.launch_run() 
+#      time.sleep(180)
 #=============================================================================
 elif (sim.run_type == "convergence_test"):
    nx_vals= [64, 80, 96]

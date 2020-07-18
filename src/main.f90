@@ -10,10 +10,12 @@ program main
    use mod_field,        only: field, set_field, shift_time_step
    use mod_cheb,         only: cheb_init, cheb_test
    use mod_swal,         only: swal_init
-   use mod_bkgrd_np,     only: bkgrd_np_init
-   use mod_teuk,         only: teuk_init, teuk_time_step, compute_q_indep_res
-   use mod_initial_data, only: set_initial_data
    use mod_io,           only: write_csv
+   use mod_teuk,         only: psi4_f, psi4_p, psi4_q, &
+                               teuk_init, teuk_time_step, compute_q_indep_res
+   use mod_initial_data, only: set_initial_data
+   use mod_bkgrd_np,     only: bkgrd_np_init
+   use mod_metric_recon, only: psi3, psi2, la, pi, muhll, hlmb, hmbmb
 
    implicit none
 !=============================================================================
@@ -24,15 +26,31 @@ clean_memory: block
 !=============================================================================
    integer(ip) :: t_step
    real(rp) :: time
-   type(field) :: p, q, f, q_indep_res
+   type(field) :: q_indep_res
 !=============================================================================
    write (*,*) "Initializing fields"   
 !-----------------------------------------------------------------------------
-   call set_field("p",-2_ip,2_ip,1_ip,p)
-   call set_field("q",-2_ip,2_ip,2_ip,q)
-   call set_field("f",-2_ip,2_ip,1_ip,f)
-
+! first order metric field
+!-----------------------------------------------------------------------------
+   call set_field("p",-2_ip,2_ip,1_ip,psi4_p)
+   call set_field("q",-2_ip,2_ip,2_ip,psi4_q)
+   call set_field("f",-2_ip,2_ip,1_ip,psi4_f)
+!-----------------------------------------------------------------------------
+! independent residual fields
+!-----------------------------------------------------------------------------
    call set_field("q_indep_res",-2_ip,2_ip,2_rp,q_indep_res)
+!-----------------------------------------------------------------------------
+! metric reconstructed fields
+!-----------------------------------------------------------------------------
+   call set_field("psi3",-1_ip,1_ip,2_ip,psi3)
+   call set_field("psi2", 0_ip,0_ip,3_ip,psi2)
+
+   call set_field("la",-2_ip,-1_ip,1_ip,la)
+   call set_field("pi",-1_ip, 0_ip,2_ip,pi)
+
+   call set_field("muhll", 0_ip,2_ip,3_ip,muhll)
+   call set_field("hlmb" ,-1_ip,1_ip,2_ip, hlmb)
+   call set_field("hmbmb",-2_ip,0_ip,1_ip,hmbmb)
 !-----------------------------------------------------------------------------
    call cheb_init()
    call swal_init()
@@ -45,13 +63,13 @@ clean_memory: block
 !-----------------------------------------------------------------------------
    time = 0.0_rp
 
-   call set_initial_data(pm_ang,p, q, f)
+   call set_initial_data(pm_ang,psi4_p, psi4_q, psi4_f)
 
-   call compute_q_indep_res(q,f,q_indep_res)
+   call compute_q_indep_res(psi4_q,psi4_f,q_indep_res)
 
-   call write_csv(time,pm_ang,p)
-   call write_csv(time,pm_ang,q)
-   call write_csv(time,pm_ang,f)
+   call write_csv(time,pm_ang,psi4_p)
+   call write_csv(time,pm_ang,psi4_q)
+   call write_csv(time,pm_ang,psi4_f)
    
    call write_csv(time,pm_ang,q_indep_res)
 !-----------------------------------------------------------------------------
@@ -64,23 +82,23 @@ clean_memory: block
    time_evolve: do t_step=1,nt
       time = t_step*dt
 
-      call teuk_time_step(pm_ang, p, q, f)
+      call teuk_time_step(pm_ang, psi4_p, psi4_q, psi4_f)
       !-----------------------------------------------------------------------
       if (mod(t_step,t_step_save)==0) then
          write (*,*) time / black_hole_mass
 
-         call compute_q_indep_res(q,f,q_indep_res)
+         call compute_q_indep_res(psi4_q,psi4_f,q_indep_res)
 
-         call write_csv(time,pm_ang,p)
-         call write_csv(time,pm_ang,q)
-         call write_csv(time,pm_ang,f)
+         call write_csv(time,pm_ang,psi4_p)
+         call write_csv(time,pm_ang,psi4_q)
+         call write_csv(time,pm_ang,psi4_f)
 
          call write_csv(time,pm_ang,q_indep_res)
       end if
       !-----------------------------------------------------------------------
-      call shift_time_step(p)
-      call shift_time_step(q)
-      call shift_time_step(f)
+      call shift_time_step(psi4_p)
+      call shift_time_step(psi4_q)
+      call shift_time_step(psi4_f)
    end do time_evolve
 !=============================================================================
 end block clean_memory

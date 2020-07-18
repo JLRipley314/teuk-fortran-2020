@@ -18,6 +18,8 @@ module mod_teuk
    implicit none
    private
    public :: teuk_init, teuk_time_step, compute_q_indep_res 
+
+   type(field), public :: psi4_f, psi4_p, psi4_q
 !=============================================================================
    real(rp) :: &
       A_pp(nx,ny,min_m:max_m), A_pq(nx,ny,min_m:max_m), A_pf(nx,ny,min_m:max_m), &

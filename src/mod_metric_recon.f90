@@ -2,13 +2,14 @@
 ! Metric reconstruction evolution equations
 !
 !=============================================================================
-module metric_recon
+module mod_metric_recon
 !=============================================================================
    use mod_prec
    use mod_cheb,     only: Rvec=>R, compute_DR
-   use mod_field,    only: field, set_level, set_DT
+   use mod_field,    only: field, set_field, set_level
    use mod_ghp,      only: ghp_edth, ghp_edth_prime, ghp_thorn, ghp_thorn_prime
    use mod_bkgrd_np, only: mu_0, ta_0, pi_0, rh_0, thorn_prime_ta_0, psi2_0
+   use mod_teuk,     only: psi4_f
    use mod_params,   only: &
       dt, nx, ny, min_m, max_m, &
       cl=>compactification_length, &
@@ -20,7 +21,7 @@ module metric_recon
    private
 
    type(field), public :: &
-      psi4, psi3, psi2,   &
+      psi3, psi2,         &
       la, pi,             &
       muhll, hlmb, hmbmb  
 !=============================================================================
@@ -47,8 +48,8 @@ module metric_recon
 
                kl(i,j,m_ang) = &
                -  R*4.0_rp*mu_0(i,j)*level(i,j,m_ang) &
-               -  R*ta_0(i,j)*(psi4%level(i,j,m_ang)) &
-               +    (psi4%edth(i,j,m_ang))
+               -  R*ta_0(i,j)*(psi4_f%level(i,j,m_ang)) &
+               +    (psi4_f%edth(i,j,m_ang))
             end do 
             end do
          !--------------------------------------------------------------------
@@ -59,7 +60,7 @@ module metric_recon
 
                kl(i,j,m_ang) = &
                -  R*(mu_0(i,j) + conjg(mu_0(i,j)))*level(i,j,m_ang) &
-               -    (psi4%level(i,j,m_ang))
+               -    (psi4_f%level(i,j,m_ang))
             end do
             end do
          !--------------------------------------------------------------------
@@ -185,4 +186,4 @@ module metric_recon
       integer(ip), intent(in) :: step, m_ang
    end subroutine step_all_fields
 !=============================================================================
-end module metric_recon 
+end module mod_metric_recon 

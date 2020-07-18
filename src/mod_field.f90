@@ -53,16 +53,16 @@ module mod_field
 contains
 !=============================================================================
    pure subroutine set_field(name, spin, boost, falloff, f)
-      character(*), intent(in)  :: name ! field name
-      integer(ip),  intent(in)  :: spin, boost, falloff
-      type(field),  intent(out) :: f
+      character(*), intent(in)    :: name ! field name
+      integer(ip),  intent(in)    :: spin, boost, falloff
+      type(field),  intent(inout) :: f
 
       f % error = 1.0_ip
 
       f % name = name 
 
-      f % spin  = spin
-      f % boost = boost
+      f % spin    = spin
+      f % boost   = boost
       f % falloff = falloff
 
       f % n   = 0.0_rp
@@ -78,8 +78,8 @@ contains
       f % k5 = 0.0_rp
 
       f % level = 0.0_rp
-      f % DT = 0.0_rp
-      f % DR = 0.0_rp
+      f % DT    = 0.0_rp
+      f % DR    = 0.0_rp
 
       f % raised  = 0.0_rp
       f % lowered = 0.0_rp
