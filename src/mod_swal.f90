@@ -29,6 +29,12 @@ module mod_swal
 !=============================================================================
 contains
 !=============================================================================
+   integer(ip) pure function compute_lmin(spin, m_ang) result(lmin)
+      integer(ip), intent(in)  :: spin, m_ang
+
+      lmin = max(abs(spin),abs(m_ang))
+   end function compute_lmin
+!=============================================================================
    subroutine swal_init()
       integer(ip) :: m_ang = 0
       character(:), allocatable :: mstr
@@ -105,11 +111,16 @@ contains
       complex(rp), dimension(nx,ny,min_m:max_m),     intent(out)   :: vals_lap
 
       real(rp)    :: pre
-      integer(ip) :: k
+      integer(ip) :: lmin, k
 
       call swal_real_to_coef(spin,m_ang,vals,coefs) 
 
-      do k=0,lmax
+      lmin = compute_lmin(spin,m_ang)
+
+      do k=0,lmin
+         coefs(:,k,m_ang) = 0.0_rp
+      end do
+      do k=lmin,lmax
          pre = - (k - spin) * (k + spin + 1.0_rp)
          coefs(:,k,m_ang) = pre*coefs(:,k,m_ang)
       end do
@@ -125,11 +136,17 @@ contains
       complex(rp), dimension(nx,ny,min_m:max_m),     intent(out)   :: vals_lowered 
 
       real(rp)    :: pre
-      integer(ip) :: k
+      integer(ip) :: lmin, k
 
       call swal_real_to_coef(spin,m_ang,vals,coefs) 
 
-      do k=0,lmax
+      lmin = compute_lmin(spin,m_ang)
+
+      do k=0,lmin
+         coefs(:,k,m_ang) = 0.0_rp
+      end do
+
+      do k=lmin,lmax
          pre = -sqrt( &
                (real(k,rp)+real(spin,rp)) &
             *  (real(k,rp)-real(spin,rp)+1.0_rp) &
@@ -148,9 +165,15 @@ contains
       complex(rp), dimension(nx,ny,min_m:max_m),     intent(out)   :: vals_raised
 
       real(rp)    :: pre
-      integer(ip) :: k
+      integer(ip) :: lmin, k
 
       call swal_real_to_coef(spin,m_ang,vals,coefs) 
+
+      lmin = compute_lmin(spin,m_ang)
+
+      do k=0,lmin
+         coefs(:,k,m_ang) = 0.0_rp
+      end do
 
       do k=0,lmax
          pre = sqrt( &

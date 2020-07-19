@@ -5,9 +5,11 @@
 !=============================================================================
 program main
 !=============================================================================
-   use, intrinsic :: iso_fortran_env, only: stdout=>output_unit
+   use, intrinsic :: iso_fortran_env, only: &
+      stdout=>output_unit, stdin=>input_unit, stderr=>error_unit
+
    use mod_prec
-   use mod_params,       only: nt, dt, t_step_save, black_hole_mass, pm_ang
+   use mod_params,       only: nt, nx, ny, dt, t_step_save, black_hole_mass, pm_ang
    use mod_field,        only: field, set_field, shift_time_step
    use mod_cheb,         only: cheb_init, cheb_test
    use mod_swal,         only: swal_init
@@ -28,8 +30,8 @@ clean_memory: block
 !=============================================================================
 ! declare variables, fields, etc.
 !=============================================================================
-   integer(ip) :: t_step
-   real(rp) :: time
+   integer(ip) :: t_step, i, j
+   real(rp)    :: time
    type(field) :: q_res
 !=============================================================================
 ! fields initialization format: name, spin, boost, falloff, field
