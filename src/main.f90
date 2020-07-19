@@ -19,7 +19,7 @@ program main
    use mod_initial_data, only: set_initial_data
    use mod_bkgrd_np,     only: bkgrd_np_init
    use mod_metric_recon, only: psi3, psi2, la, pi, muhll, hlmb, hmbmb, &
-                               bianci3_res, bianci2_res, hll_res,      &
+                               bianchi3_res, bianchi2_res, hll_res,    &
                                metric_recon_time_step, &
                                metric_recon_indep_res
 
@@ -60,8 +60,8 @@ clean_memory: block
 !-----------------------------------------------------------------------------
    call set_field("q_res",-2_ip,2_ip,2_rp,q_res)
 
-   call set_field("bianci3_res",-2_ip,2_ip,2_rp,bianci3_res)
-   call set_field("bianci2_res",-2_ip,2_ip,2_rp,bianci2_res)
+   call set_field("bianchi3_res",-2_ip,2_ip,2_rp,bianchi3_res)
+   call set_field("bianchi2_res",-2_ip,2_ip,2_rp,bianchi2_res)
    call set_field("hll_res",    -2_ip,2_ip,2_rp,hll_res)
 !-----------------------------------------------------------------------------
 ! initialize chebyshev diff matrices, swal matrices, etc.
@@ -88,7 +88,7 @@ clean_memory: block
    call write_csv(time,pm_ang,q_res)
 
    call write_csv(time,pm_ang,psi3)
-   call write_csv(time,pm_ang,bianci3_res)
+   call write_csv(time,pm_ang,bianchi3_res)
 !-----------------------------------------------------------------------------
 !   write (*,*) "Performing tests"
 !   call cheb_test()
@@ -119,7 +119,7 @@ clean_memory: block
          call write_csv(time,pm_ang,q_res)
 
          call write_csv(time,pm_ang,psi3)
-         call write_csv(time,pm_ang,bianci3_res)
+         call write_csv(time,pm_ang,bianchi3_res)
       end if
       !-----------------------------------------------------------------------
       call shift_time_step(psi4_p)

@@ -26,7 +26,7 @@ module mod_metric_recon
       psi3, psi2,         &
       la, pi,             &
       muhll, hlmb, hmbmb, &
-      bianci3_res, bianci2_res, hll_res 
+      bianchi3_res, bianchi2_res, hll_res 
 !=============================================================================
    contains
 !=============================================================================
@@ -223,12 +223,12 @@ module mod_metric_recon
       !-----------------------------------------------------------------------
       select_field: select case (fname)
          !--------------------------------------------------------------------
-         case ("bianci3_res")
+         case ("bianchi3_res")
             do j=1,ny
             do i=1,nx
                R = Rvec(i)
 
-               bianci3_res%np1(i,j,m_ang) = &
+               bianchi3_res%np1(i,j,m_ang) = &
                        R*psi3%edth_prime(i,j,m_ang) &
                +  (R**2)*4.0_rp*pi_0(i,j)*psi3%level(i,j,m_ang) &
                -       R*psi4_f%thorn(i,j,m_ang) &
@@ -237,18 +237,24 @@ module mod_metric_recon
             end do
             end do
          !--------------------------------------------------------------------
-         case ("bianci2_res")
+         case ("bianchi2_res")
             do j=1,ny
             do i=1,nx
                R = Rvec(i)
 
-               bianci2_res%np1(i,j,m_ang) = 0.0_rp 
+               bianchi2_res%np1(i,j,m_ang) = 0.0_rp 
             end do
             end do
-
          !--------------------------------------------------------------------
          case ("hll_res")
-         
+            do j=1,ny
+            do i=1,nx
+               R = Rvec(i)
+
+               hll_res%np1(i,j,m_ang) = 0.0_rp 
+            end do
+            end do
+         !-------------------------------------------------------------------- 
          case default
             continue
       end select select_field
@@ -311,9 +317,9 @@ module mod_metric_recon
       call set_thorn(     5_ip,m_ang,psi4_f)
       call set_edth_prime(5_ip,m_ang,psi3)
 
-      call set_indep_res(m_ang,"bianci3_res")
+      call set_indep_res(m_ang,"bianchi3_res")
       !-----------------------------------------------------------------------
-      call set_indep_res(m_ang,"bianci2_res")
+      call set_indep_res(m_ang,"bianchi2_res")
 
    end subroutine metric_recon_indep_res
 !=============================================================================
