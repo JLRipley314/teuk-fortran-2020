@@ -25,7 +25,8 @@ class Sim:
    def make_output_dir(self)->None:
       self.output_stem= str(
         '_'.join('_'.join(time.asctime().split(' ')).split(':'))
-      +	'_a'+str(self.black_hole_spin/self.black_hole_mass)
+      +	'_bhm'+str(self.black_hole_mass)
+      +	'_bhs'+str(self.black_hole_spin)
       +	'_nx'+str(self.nx)
       +	'_ny'+str(self.ny)
       +	'_nl'+str(self.nl)

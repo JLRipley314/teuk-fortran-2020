@@ -8,6 +8,7 @@ module mod_field
    implicit none
 !=============================================================================
    private
+
    public :: field, set_field, set_level, set_DT, shift_time_step
 !=============================================================================
    type :: field
@@ -17,7 +18,7 @@ module mod_field
    ! evolution. k1, etc. are the time derivatives (note 1==n, 5==np1).
    ! These functions are complex as we work in NP formalism
 
-   integer(ip) :: error
+   character(:), allocatable :: error
 
    integer(ip) :: spin, boost, falloff
 
@@ -57,9 +58,10 @@ contains
       integer(ip),  intent(in)  :: spin, boost, falloff
       type(field),  intent(out) :: f
 
-      f % error = 1.0_ip
-
       f % name = name 
+
+      ! make empty string long enough to hold error message
+      f % error = "                                                                               "
 
       f % spin    = spin
       f % boost   = boost

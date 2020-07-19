@@ -48,7 +48,7 @@ module mod_ghp
          sy = syvec(j)
 
          f%edth(i,j,m_ang) = &
-            (1.0_rp/sqrt(2.0_rp)) * (1.0_rp/((cl**2)-ci*bhs*r*cy)) * ( &
+            (1.0_rp/sqrt(2.0_rp))*(1.0_rp/((cl**2)-ci*bhs*R*cy)) * ( &
                - ci*bhs*sy*(f%DT(i,j,m_ang)) &
                + (f%raised(i,j,m_ang)) &
             ) &
@@ -85,12 +85,12 @@ module mod_ghp
          sy = syvec(j)
 
          f%edth_prime(i,j,m_ang) = &
-            (1.0_rp/sqrt(2.0_rp)) * (1.0_rp/((cl**2)+ci*bhs*R*cy)) * ( &
+            (1.0_rp/sqrt(2.0_rp))*(1.0_rp/((cl**2)+ci*bhs*R*cy)) * ( &
                  ci*bhs*sy*(f%DT(i,j,m_ang)) &
                + (f%lowered(i,j,m_ang)) &
             ) &
-         -  ( &
-               (ci*q/sqrt(2.0_rp)) * bhs * R * sy  &
+         +  ( &
+               (ci*q*bhs*R*sy/sqrt(2.0_rp)) &
             /  (((cl**2) + ci*bhs*R*cy)**2) &
             ) * (f%level(i,j,m_ang))
 
@@ -126,11 +126,12 @@ module mod_ghp
          ep_cc = conjg(ep)
 
          f%thorn(i,j,m_ang) = &
-            (1.0_rp/((cl**4)+((bhs*R*cy)**2))) * ( &
-               2.0_rp*bhm*(2.0_rp*bhm-((bhs/cl)**2)*R) * f%DT(i,j,m_ang) &
-            -  0.5_rp*((cl**2)-(2.0_rp*bhm*R) + ((bhs/cl)**2)*R) * f%DR(i,j,m_ang) &
-            +  (ci*bhs*m_ang - p*ep - q*ep_cc)*f%level(i,j,m_ang) &
-            )
+            (1.0_rp/((cl**4)+((bhs*R*cy)**2)))*( &
+               2.0_rp*bhm*(2.0_rp*bhm-((bhs/cl)**2)*R)*(f%DT(i,j,m_ang)) &
+            -  0.5_rp*((cl**2)-(2.0_rp*bhm*R) + ((bhs*R/cl)**2))*(f%DR(i,j,m_ang)) &
+            +  (ci*bhs*m_ang)*(f%level(i,j,m_ang)) &
+            ) &
+          - (p*ep + q*ep_cc)*(f%level(i,j,m_ang))
 
       end do x_loop
       end do y_loop
@@ -154,8 +155,8 @@ module mod_ghp
          R = Rvec(i)
 
          f%thorn_prime(i,j,m_ang) = &
-            (2.0_rp + (4.0_rp*bhm*r/(cl**2))) * f%DT(i,j,m_ang) &
-         +  ((r/cl)**2)*f%DR(i,j,m_ang)
+            (2.0_rp + (4.0_rp*bhm*R/(cl**2)))*(f%DT(i,j,m_ang)) &
+         +  ((R/cl)**2)*(f%DR(i,j,m_ang))
 
       end do x_loop
       end do y_loop

@@ -30,7 +30,8 @@ module mod_metric_recon
 !=============================================================================
    contains
 !=============================================================================
-   pure subroutine set_k(m_ang, fname, falloff, level, level_DR, kl)
+   pure subroutine set_k(error, m_ang, fname, falloff, level, level_DR, kl)
+      character(*), intent(inout) :: error
       integer(ip),  intent(in) :: m_ang
       character(*), intent(in) :: fname
       integer(ip),  intent(in) :: falloff
@@ -51,8 +52,8 @@ module mod_metric_recon
 
                kl(i,j,m_ang) = &
                -  R*4.0_rp*mu_0(i,j)*level(i,j,m_ang) &
-               -  R*ta_0(i,j)*(psi4_f%level(i,j,m_ang)) &
-               +    (psi4_f%edth(i,j,m_ang))
+               -  R*ta_0(i,j)       *(psi4_f%level(i,j,m_ang)) &
+               +                     (psi4_f%edth(i,j,m_ang))
             end do 
             end do
          !--------------------------------------------------------------------
@@ -62,8 +63,8 @@ module mod_metric_recon
                R = Rvec(i)
 
                kl(i,j,m_ang) = &
-               -  R*(mu_0(i,j) + conjg(mu_0(i,j)))*level(i,j,m_ang) &
-               -    (psi4_f%level(i,j,m_ang))
+               -  R*(mu_0(i,j)+conjg(mu_0(i,j)))*level(i,j,m_ang) &
+               -                                 (psi4_f%level(i,j,m_ang))
             end do
             end do
          !--------------------------------------------------------------------
@@ -73,9 +74,9 @@ module mod_metric_recon
                R = Rvec(i)
 
                kl(i,j,m_ang) = &
-               -  R*(3.0_rp*mu_0(i,j))*level(i,j,m_ang) &
+               -  R*3.0_rp*mu_0(i,j)*level(i,j,m_ang) &
                -  R*2.0_rp*ta_0(i,j)*(psi3%level(i,j,m_ang)) &
-               +    (psi3%edth(i,j,m_ang))
+               +                     (psi3%edth(i,j,m_ang))
             end do
             end do
          !--------------------------------------------------------------------
@@ -85,8 +86,8 @@ module mod_metric_recon
                R = Rvec(i)
 
                kl(i,j,m_ang) = & 
-                  R*(mu_0(i,j) - conjg(mu_0(i,j)))*level(i,j,m_ang) &
-               -    2.0_rp*(la%level(i,j,m_ang))
+                  R*(mu_0(i,j)-conjg(mu_0(i,j)))*level(i,j,m_ang) &
+               -    2.0_rp                      *(la%level(i,j,m_ang))
             end do
             end do
          !--------------------------------------------------------------------
@@ -96,9 +97,10 @@ module mod_metric_recon
                R = Rvec(i)
 
                kl(i,j,m_ang) = &
-               -       R*(conjg(pi_0(i,j)) + ta_0(i,j))*(la%level(i,j,m_ang)) &
-               +  (R**2)*0.5_rp*mu_0(i,j)*(conjg(pi_0(i,j))+ta_0(i,j))*(hmbmb%level(i,j,m_ang)) &
-               -         (psi3%level(i,j,m_ang))
+               -  R*(conjg(pi_0(i,j))+ta_0(i,j))*(la%level(i,j,m_ang)) &
+               +  R*(0.5_rp*mu_0(i,j)*(conjg(pi_0(i,j))+ta_0(i,j))) &
+                                                *(hmbmb%level(i,j,m_ang)) &
+               -                                 (psi3%level(i,j,m_ang))
             end do
             end do
          !--------------------------------------------------------------------
@@ -109,8 +111,8 @@ module mod_metric_recon
 
                kl(i,j,m_ang) = &
                -  R*conjg(mu_0(i,j))*level(i,j,m_ang) &
-               -    2.0_rp*(pi%level(i,j,m_ang)) &
-               -  R*ta_0(i,j)*(hmbmb%level(i,j,m_ang)) 
+               -    2.0_rp          *(pi%level(i,j,m_ang)) &
+               -  R*ta_0(i,j)       *(hmbmb%level(i,j,m_ang)) 
             end do
             end do
          !--------------------------------------------------------------------
@@ -121,23 +123,28 @@ module mod_metric_recon
 
                kl(i,j,m_ang) = &
                -       R*conjg(mu_0(i,j))*level(i,j,m_ang) &
-               -       R*mu_0(i,j)*(hlmb%edth(i,j,m_ang)) &
-               -  (R**2)*mu_0(i,j)*(conjg(pi_0(i,j))+2.0_rp*ta_0(i,j))*(hlmb%level(i,j,m_ang)) &
-               -         2.0_rp*(pi%edth(i,j,m_ang)) &
-               -       R*2.0_rp*conjg(pi_0(i,j))*(pi%level(i,j,m_ang)) &
-               -         2.0_rp*(psi2%level(i,j,m_ang)) &
-               -  (R**2)*pi_0(i,j)*conjg(hmbmb%edth(i,j,-m_ang)) &
-               +  (R**2)*(pi_0(i,j)**2)*conjg(hmbmb%level(i,j,-m_ang)) &
-               +       R*mu_0(i,j)*conjg(hlmb%edth(i,j,-m_ang))  &
-               -  (R**2)*3.0_rp*mu_0(i,j)*pi_0(i,j)*conjg(hlmb%level(i,j,-m_ang)) &
-               +  (R**2)*2.0_rp*conjg(mu_0(i,j))*pi_0(i,j)*conjg(hlmb%level(i,j,-m_ang)) &
-               -  (R**2)*2.0_rp*mu_0(i,j)*conjg(ta_0(i,j))*conjg(hlmb%level(i,j,-m_ang)) &
+               -       R*mu_0(i,j)       *(hlmb%edth(i,j,m_ang)) &
+               -  (R**2)*mu_0(i,j)*(conjg(pi_0(i,j))+2.0_rp*ta_0(i,j)) &
+                                         *(hlmb%level(i,j,m_ang)) &
+               -         2.0_rp          *(psi2%level(i,j,m_ang)) &
+               -       R*(pi_0(i,j))     *conjg(hmbmb%edth( i,j,-m_ang)) &
+               +  (R**2)*(pi_0(i,j)**2)  *conjg(hmbmb%level(i,j,-m_ang)) &
+               +       R*mu_0(i,j)       *conjg(hlmb%edth(i,j,-m_ang))  &
+               -  (R**2)*3.0_rp*mu_0(i,j)*pi_0(i,j) &
+                                         *conjg(hlmb%level(i,j,-m_ang)) &
+               +  (R**2)*2.0_rp*conjg(mu_0(i,j))*pi_0(i,j) &
+                                         *conjg(hlmb%level(i,j,-m_ang)) &
+               -  (R**2)*2.0_rp*mu_0(i,j)*conjg(ta_0(i,j)) &
+                                         *conjg(hlmb%level(i,j,-m_ang)) &
+               -         2.0_rp          *(pi%edth(i,j,m_ang)) &
+               -       R*2.0_rp*conjg(pi_0(i,j)) &
+                                         *(pi%level(i,j,m_ang)) &
                -       R*2.0_rp*pi_0(i,j)*conjg(pi%level(i,j,-m_ang))
             end do
             end do
          !--------------------------------------------------------------------
          case default
-            kl = -1.0_rp
+            write(error,*) "ERROR: set_k, " // fname // ", not in list"
 
       end select select_field
       !-----------------------------------------------------------------------
@@ -169,7 +176,7 @@ module mod_metric_recon
       select_step: select case (step)
          !--------------------------------------------------------------------
          case (1)
-            call set_k(m_ang, f%name, f%falloff, f%n, f%DR, f%k1)
+            call set_k(f%error, m_ang, f%name, f%falloff, f%n, f%DR, f%k1)
 
             do j=1,ny
             do i=1,nx
@@ -178,7 +185,7 @@ module mod_metric_recon
             end do
          !--------------------------------------------------------------------
          case (2)
-            call set_k(m_ang, f%name, f%falloff, f%l2, f%DR, f%k2)
+            call set_k(f%error, m_ang, f%name, f%falloff, f%l2, f%DR, f%k2)
 
             do j=1,ny
             do i=1,nx
@@ -187,7 +194,7 @@ module mod_metric_recon
             end do
          !--------------------------------------------------------------------
          case (3)
-            call set_k(m_ang, f%name, f%falloff, f%l3, f%DR, f%k3)
+            call set_k(f%error, m_ang, f%name, f%falloff, f%l3, f%DR, f%k3)
 
             do j=1,ny
             do i=1,nx
@@ -196,7 +203,7 @@ module mod_metric_recon
             end do
          !--------------------------------------------------------------------
          case (4)
-            call set_k(m_ang, f%name, f%falloff, f%l4, f%DR, f%k4)
+            call set_k(f%error, m_ang, f%name, f%falloff, f%l4, f%DR, f%k4)
 
             do j=1,ny
             do i=1,nx
@@ -206,10 +213,10 @@ module mod_metric_recon
             end do
          !--------------------------------------------------------------------
          case (5)
-            call set_k(m_ang, f%name, f%falloff, f%np1, f%DR, f%k5)
+            call set_k(f%error, m_ang, f%name, f%falloff, f%np1, f%DR, f%k5)
          !--------------------------------------------------------------------
          case default
-            f%error = -1.0_ip
+            write(f%error,*) "Error: take_step, " // f%name // ", step != 1,..,5"
       end select select_step
       !-----------------------------------------------------------------------
    end subroutine take_step
@@ -294,6 +301,36 @@ module mod_metric_recon
       call set_edth( step,m_ang,hlmb)
 
       call take_step(step,m_ang,muhll)
+      !-----------------------------------------------------------------------
+      ! check if there were any errors in take_step routines
+      !-----------------------------------------------------------------------
+      if (psi4_f%error/="") then
+         write (*,*) psi4_f%error
+         stop
+      else if (psi3%error/="") then
+         write (*,*) psi3%error
+         stop
+      else if (psi2%error/="") then
+         write (*,*) psi2%error
+         stop
+      else if (la%error/="") then
+         write (*,*) la%error
+         stop
+      else if (pi%error/="") then
+         write (*,*) pi%error
+         stop
+      else if (hmbmb%error/="") then
+         write (*,*) hmbmb%error 
+         stop
+      else if (hlmb%error/="") then
+         write (*,*) hlmb%error 
+         stop
+      else if (muhll%error/="") then
+         write (*,*) muhll%error
+         stop
+      else
+         continue
+      end if
 
    end subroutine step_all_fields
 !=============================================================================
