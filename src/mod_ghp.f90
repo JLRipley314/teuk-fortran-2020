@@ -50,7 +50,7 @@ module mod_ghp
          f%edth(i,j,m_ang) = &
             (1.0_rp/sqrt(2.0_rp)) * (1.0_rp/((cl**2)-ci*bhs*r*cy)) * ( &
                - ci*bhs*sy*(f%DT(i,j,m_ang)) &
-!               + (f%lowered(i,j,m_ang)) &
+               + (f%lowered(i,j,m_ang)) &
             ) &
          -  ( &
                (ci*p/sqrt(2.0_rp)) * bhs * R * sy  &

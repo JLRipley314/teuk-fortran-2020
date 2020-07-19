@@ -30,7 +30,7 @@ clean_memory: block
 !=============================================================================
 ! declare variables, fields, etc.
 !=============================================================================
-   integer(ip) :: t_step, i, j
+   integer(ip) :: t_step !i, j
    real(rp)    :: time
    type(field) :: q_res
 !=============================================================================
@@ -104,8 +104,10 @@ clean_memory: block
       call metric_recon_time_step(pm_ang)
       !-----------------------------------------------------------------------
       if (mod(t_step,t_step_save)==0) then
+
          write (stdout,*) time / black_hole_mass
          flush (stdout)
+
          call compute_q_res(psi4_q,psi4_f,q_res)
 
          call metric_recon_indep_res(pm_ang)
