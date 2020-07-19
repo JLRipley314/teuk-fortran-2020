@@ -221,15 +221,23 @@ contains
 ! RK4 time integrator
 !=============================================================================
    pure subroutine teuk_time_step(m_ang, p, q, f) 
-      integer(ip), intent(in) :: m_ang
+      integer(ip), intent(in)    :: m_ang
       type(field), intent(inout) :: p, q, f 
 
       integer(ip) :: i, j
    !--------------------------------------------------------
-      call set_k(m_ang, &
-         p%n,  q%n,  f%n, & 
-         p%DR, q%DR, f%DR, f%coefs, f%lap, &
-         p%k1, q%k1, f%k1) 
+   ! if first time then k1 has not been set from k5
+   !--------------------------------------------------------
+      if (f%first_time) then
+         call set_k(m_ang, &
+            p%n,  q%n,  f%n, & 
+            p%DR, q%DR, f%DR, f%coefs, f%lap, &
+            p%k1, q%k1, f%k1) 
+
+         p%first_time = .false.
+         q%first_time = .false.
+         f%first_time = .false.
+      end if
 
       do j=1,ny
       do i=1,nx
@@ -282,6 +290,14 @@ contains
          +  (dt/6.0_rp)*(f%k1(i,j,m_ang)+2.0_rp*f%k2(i,j,m_ang)+2.0_rp*f%k3(i,j,m_ang)+f%k4(i,j,m_ang))
       end do
       end do
+   !------------------------------------------------------------
+   ! want k5 for computing source term and independent residuals
+   !------------------------------------------------------------
+      call set_k(m_ang, &
+         p%np1, q%np1, f%np1, & 
+         p%DR,  q%DR,  f%DR, f%coefs, f%lap, &
+         p%k5,  q%k5,  f%k5) 
+
    end subroutine teuk_time_step
 !=============================================================================
 ! independent residula: q - \partial_R f

@@ -11,14 +11,17 @@ module mod_field
 
    public :: field, set_field, set_level, set_DT, shift_time_step
 !=============================================================================
+! field type:
+! always have two levels: n, np1 and intermediate levels for RK4 time
+! evolution. k1, etc. are the time derivatives (note 1==n, 5==np1).
+! These functions are complex as we work in NP formalism
+!-----------------------------------------------------------------------------
    type :: field
 
    character(:), allocatable :: name
-   ! always have two levels: n, np1 and intermediate levels for RK4 time
-   ! evolution. k1, etc. are the time derivatives (note 1==n, 5==np1).
-   ! These functions are complex as we work in NP formalism
 
    character(:), allocatable :: error
+   logical :: first_time
 
    integer(ip) :: spin, boost, falloff
 
@@ -62,6 +65,8 @@ contains
 
       ! make empty string long enough to hold error message
       f % error = "                                                                               "
+
+      f % first_time = .true.
 
       f % spin    = spin
       f % boost   = boost

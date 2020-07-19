@@ -125,6 +125,17 @@ clean_memory: block
       call shift_time_step(psi4_p)
       call shift_time_step(psi4_q)
       call shift_time_step(psi4_f)
+
+      call shift_time_step(psi3)
+      call shift_time_step(psi2)
+
+      call shift_time_step(la)
+      call shift_time_step(pi)
+
+      call shift_time_step(hmbmb)
+      call shift_time_step(hlmb)
+      call shift_time_step(muhll)
+
    end do time_evolve
 !=============================================================================
 end block clean_memory

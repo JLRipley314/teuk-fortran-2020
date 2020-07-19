@@ -158,7 +158,7 @@ module mod_metric_recon
          -  ((R/cl)**2)*level_DR(i,j,m_ang) &
          -  (falloff*R/(cl**2))*level(i,j,m_ang)
       
-         kl(i,j,m_ang) = kl(i,j,m_ang) / (2.0_rp*(1.0_rp+(2.0_rp*bhm*R/(cl**2))))
+         kl(i,j,m_ang) = kl(i,j,m_ang) / (2.0_rp+(4.0_rp*bhm*R/(cl**2)))
       end do
       end do
 
@@ -176,7 +176,14 @@ module mod_metric_recon
       select_step: select case (step)
          !--------------------------------------------------------------------
          case (1)
-            call set_k(f%error, m_ang, f%name, f%falloff, f%n, f%DR, f%k1)
+            !--------------------------------------------------------
+            ! if first time then k1 has not been set from k5
+            !--------------------------------------------------------
+            if (f%first_time) then
+               call set_k(f%error, m_ang, f%name, f%falloff, f%n, f%DR, f%k1)
+
+               f%first_time = .false.
+            end if
 
             do j=1,ny
             do i=1,nx
@@ -213,6 +220,9 @@ module mod_metric_recon
             end do
          !--------------------------------------------------------------------
          case (5)
+            !-----------------------------------------------------------------
+            ! need k5 for source term and independent residual
+            !-----------------------------------------------------------------
             call set_k(f%error, m_ang, f%name, f%falloff, f%np1, f%DR, f%k5)
          !--------------------------------------------------------------------
          case default
@@ -236,10 +246,10 @@ module mod_metric_recon
                R = Rvec(i)
 
                bianchi3_res%np1(i,j,m_ang) = &
-                       R*psi3%edth_prime(i,j,m_ang) &
-               +  (R**2)*4.0_rp*pi_0(i,j)*psi3%level(i,j,m_ang) &
-               -       R*psi4_f%thorn(i,j,m_ang) &
-               +         rh_0(i,j)*psi4_f%level(i,j,m_ang) &
+                       R                   *psi3%edth_prime(i,j,m_ang) &
+               +  (R**2)*4.0_rp*pi_0(i,j)  *psi3%level(i,j,m_ang) &
+               -       R                   *psi4_f%thorn(i,j,m_ang) &
+               +         rh_0(i,j)         *psi4_f%level(i,j,m_ang) &
                -  (R**2)*3.0_rp*psi2_0(i,j)*la%level(i,j,m_ang) 
             end do
             end do
