@@ -9,7 +9,7 @@ program main
       stdout=>output_unit, stdin=>input_unit, stderr=>error_unit
 
    use mod_prec
-   use mod_params,       only: nt, nx, ny, dt, t_step_save, black_hole_mass, pm_ang
+   use mod_params,       only: nt, dt, t_step_save, black_hole_mass, pm_ang !, nx, ny
    use mod_field,        only: field, set_field, shift_time_step
    use mod_cheb,         only: cheb_init, cheb_test
    use mod_swal,         only: swal_init

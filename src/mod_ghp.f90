@@ -38,7 +38,7 @@ module mod_ghp
       call set_level(step, m_ang, f)
       call set_DT(   step, m_ang, f)
 
-      call swal_lower(f%spin, m_ang, f%level, f%coefs, f%lowered)
+      call swal_raise(f%spin, m_ang, f%level, f%coefs, f%raised)
 
       y_loop: do j=1,ny
       x_loop: do i=1,nx
@@ -50,10 +50,10 @@ module mod_ghp
          f%edth(i,j,m_ang) = &
             (1.0_rp/sqrt(2.0_rp)) * (1.0_rp/((cl**2)-ci*bhs*r*cy)) * ( &
                - ci*bhs*sy*(f%DT(i,j,m_ang)) &
-               + (f%lowered(i,j,m_ang)) &
+               + (f%raised(i,j,m_ang)) &
             ) &
          -  ( &
-               (ci*p/sqrt(2.0_rp)) * bhs * R * sy  &
+               (ci*p*bhs*R*sy/sqrt(2.0_rp)) &
             /  (((cl**2) - ci*bhs*R*cy)**2) &
             ) * (f%level(i,j,m_ang))
 
@@ -75,7 +75,7 @@ module mod_ghp
       call set_level(step, m_ang, f)
       call set_DT(   step, m_ang, f)
 
-      call swal_raise(f%spin, m_ang, f%level, f%coefs, f%raised)
+      call swal_lower(f%spin, m_ang, f%level, f%coefs, f%lowered)
 
       y_loop: do j=1,ny
       x_loop: do i=1,nx
@@ -87,7 +87,7 @@ module mod_ghp
          f%edth_prime(i,j,m_ang) = &
             (1.0_rp/sqrt(2.0_rp)) * (1.0_rp/((cl**2)+ci*bhs*R*cy)) * ( &
                  ci*bhs*sy*(f%DT(i,j,m_ang)) &
-               + (f%raised(i,j,m_ang)) &
+               + (f%lowered(i,j,m_ang)) &
             ) &
          -  ( &
                (ci*q/sqrt(2.0_rp)) * bhs * R * sy  &
