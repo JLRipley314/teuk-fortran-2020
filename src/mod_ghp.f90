@@ -55,7 +55,7 @@ module mod_ghp
          -  ( &
                (ci*p*bhs*R*sy/sqrt(2.0_rp)) &
             /  (((cl**2) - ci*bhs*R*cy)**2) &
-            ) * (f%level(i,j,m_ang))
+            )*(f%level(i,j,m_ang))
 
       end do x_loop
       end do y_loop
@@ -92,13 +92,13 @@ module mod_ghp
          +  ( &
                (ci*q*bhs*R*sy/sqrt(2.0_rp)) &
             /  (((cl**2) + ci*bhs*R*cy)**2) &
-            ) * (f%level(i,j,m_ang))
+            )*(f%level(i,j,m_ang))
 
       end do x_loop
       end do y_loop
    end subroutine set_edth_prime
 !=============================================================================
-! thorn rescaled by R^2
+! thorn rescaled by R
 !=============================================================================
    pure subroutine set_thorn(step, m_ang, f)
       integer(ip), intent(in)    :: step, m_ang
@@ -127,15 +127,20 @@ module mod_ghp
 
          f%thorn(i,j,m_ang) = &
             (1.0_rp/((cl**4)+((bhs*R*cy)**2)))*( &
-               2.0_rp*bhm*(2.0_rp*bhm-((bhs/cl)**2)*R)*(f%DT(i,j,m_ang)) &
-            -  0.5_rp*((cl**2)-(2.0_rp*bhm*R) + ((bhs*R/cl)**2))*(f%DR(i,j,m_ang)) &
-            +  (ci*bhs*m_ang)*(f%level(i,j,m_ang)) &
+               R*2.0_rp*bhm*(2.0_rp*bhm-((bhs/cl)**2)*R)*(f%DT(i,j,m_ang)) &
+            -  0.5_rp*((cl**2)-(2.0_rp*bhm*R) + ((bhs*R/cl)**2))*( &
+                  R*f%DR(i,j,m_ang) &
+               +  (f%falloff)*(f%level(i,j,m_ang)) &
+               ) &
+            +  R*(ci*bhs*m_ang)*(f%level(i,j,m_ang)) &
             ) &
-          - (p*ep + q*ep_cc)*(f%level(i,j,m_ang))
+          - R*(p*ep + q*ep_cc)*(f%level(i,j,m_ang))
 
       end do x_loop
       end do y_loop
    end subroutine set_thorn
+!=============================================================================
+! no rescaling in R for thorn prime
 !=============================================================================
    pure subroutine set_thorn_prime(step, m_ang, f)
       integer(ip), intent(in)    :: step, m_ang
@@ -156,7 +161,10 @@ module mod_ghp
 
          f%thorn_prime(i,j,m_ang) = &
             (2.0_rp + (4.0_rp*bhm*R/(cl**2)))*(f%DT(i,j,m_ang)) &
-         +  ((R/cl)**2)*(f%DR(i,j,m_ang))
+         +  ((1.0_rp/cl)**2)*( &
+               (R**2)*(f%DR(i,j,m_ang)) &
+            +  R*(f%falloff)*(f%level(i,j,m_ang)) &
+         )
 
       end do x_loop
       end do y_loop

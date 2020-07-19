@@ -88,6 +88,7 @@ clean_memory: block
    call write_csv(time,pm_ang,q_res)
 
    call write_csv(time,pm_ang,psi3)
+   call write_csv(time,pm_ang,la)
    call write_csv(time,pm_ang,bianchi3_res)
 !-----------------------------------------------------------------------------
 !   write (*,*) "Performing tests"
@@ -119,6 +120,7 @@ clean_memory: block
          call write_csv(time,pm_ang,q_res)
 
          call write_csv(time,pm_ang,psi3)
+         call write_csv(time,pm_ang,la)
          call write_csv(time,pm_ang,bianchi3_res)
       end if
       !-----------------------------------------------------------------------

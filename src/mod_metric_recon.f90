@@ -248,7 +248,7 @@ module mod_metric_recon
                bianchi3_res%np1(i,j,m_ang) = &
                        R                   *psi3%edth_prime(i,j,m_ang) &
                +  (R**2)*4.0_rp*pi_0(i,j)  *psi3%level(i,j,m_ang) &
-               -       R                   *psi4_f%thorn(i,j,m_ang) &
+               -                            psi4_f%thorn(i,j,m_ang) &
                +         rh_0(i,j)         *psi4_f%level(i,j,m_ang) &
                -  (R**2)*3.0_rp*psi2_0(i,j)*la%level(i,j,m_ang) 
             end do
@@ -360,6 +360,8 @@ module mod_metric_recon
       !-----------------------------------------------------------------------
       call set_level(5_ip,m_ang,psi4_f)
       call set_level(5_ip,m_ang,psi3)
+
+      call set_level(5_ip,m_ang,la)
 
       call set_thorn(     5_ip,m_ang,psi4_f)
       call set_edth_prime(5_ip,m_ang,psi3)
