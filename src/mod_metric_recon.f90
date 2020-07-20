@@ -8,7 +8,7 @@ module mod_metric_recon
    use mod_cheb,     only: Rvec=>R, compute_DR
    use mod_field,    only: field, set_field, set_level
    use mod_ghp,      only: set_edth, set_edth_prime, set_thorn, set_thorn_prime
-   use mod_bkgrd_np, only: mu_0, ta_0, pi_0, rh_0, thorn_prime_ta_0, psi2_0
+   use mod_bkgrd_np, only: mu_0, ta_0, pi_0, rh_0, psi2_0
    use mod_teuk,     only: psi4_f
    use mod_params,   only: &
       dt, nx, ny, min_m, max_m, &

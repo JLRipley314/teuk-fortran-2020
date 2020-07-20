@@ -34,35 +34,33 @@ clean_memory: block
    real(rp)    :: time
    type(field) :: q_res
 !=============================================================================
-! fields initialization format: name, spin, boost, falloff, field
-!-----------------------------------------------------------------------------
    write (*,*) "Initializing fields"   
 !-----------------------------------------------------------------------------
 ! first order metric field
 !-----------------------------------------------------------------------------
-   call set_field("p",-2_ip,2_ip,1_ip,psi4_p)
-   call set_field("q",-2_ip,2_ip,2_ip,psi4_q)
-   call set_field("f",-2_ip,2_ip,1_ip,psi4_f)
+   call set_field(name="p",spin=-2_ip,boost=2_ip,falloff=1_ip,f=psi4_p)
+   call set_field(name="q",spin=-2_ip,boost=2_ip,falloff=2_ip,f=psi4_q)
+   call set_field(name="f",spin=-2_ip,boost=2_ip,falloff=1_ip,f=psi4_f)
 !-----------------------------------------------------------------------------
 ! metric reconstructed fields
 !-----------------------------------------------------------------------------
-   call set_field("psi3",-1_ip,1_ip,2_ip,psi3)
-   call set_field("psi2", 0_ip,0_ip,3_ip,psi2)
+   call set_field(name="psi3",spin=-1_ip,boost=1_ip,falloff=2_ip,f=psi3)
+   call set_field(name="psi2",spin= 0_ip,boost=0_ip,falloff=3_ip,f=psi2)
 
-   call set_field("la",-2_ip,-1_ip,1_ip,la)
-   call set_field("pi",-1_ip, 0_ip,2_ip,pi)
+   call set_field(name="la",spin=-2_ip,boost=-1_ip,falloff=1_ip,f=la)
+   call set_field(name="pi",spin=-1_ip,boost= 0_ip,falloff=2_ip,f=pi)
 
-   call set_field("muhll", 0_ip,2_ip,3_ip,muhll)
-   call set_field("hlmb" ,-1_ip,1_ip,2_ip, hlmb)
-   call set_field("hmbmb",-2_ip,0_ip,1_ip,hmbmb)
+   call set_field(name="muhll",spin= 0_ip,boost=2_ip,falloff=3_ip,f=muhll)
+   call set_field(name="hlmb" ,spin=-1_ip,boost=1_ip,falloff=2_ip,f= hlmb)
+   call set_field(name="hmbmb",spin=-2_ip,boost=0_ip,falloff=1_ip,f=hmbmb)
 !-----------------------------------------------------------------------------
 ! independent residual fields
 !-----------------------------------------------------------------------------
-   call set_field("q_res",-2_ip,2_ip,2_rp,q_res)
+   call set_field(name="q_res",spin=-2_ip,boost=2_ip,falloff=2_rp,f=q_res)
 
-   call set_field("bianchi3_res",-2_ip,2_ip,2_rp,bianchi3_res)
-   call set_field("bianchi2_res",-2_ip,2_ip,2_rp,bianchi2_res)
-   call set_field("hll_res",    -2_ip,2_ip,2_rp,hll_res)
+   call set_field(name="bianchi3_res",spin=-2_ip,boost=2_ip,falloff=2_rp,f=bianchi3_res)
+   call set_field(name="bianchi2_res",spin=-2_ip,boost=2_ip,falloff=2_rp,f=bianchi2_res)
+   call set_field(name="hll_res",     spin=-2_ip,boost=2_ip,falloff=2_rp,f=hll_res)
 !-----------------------------------------------------------------------------
 ! initialize chebyshev diff matrices, swal matrices, etc.
 !-----------------------------------------------------------------------------
