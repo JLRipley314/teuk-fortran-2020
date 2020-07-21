@@ -7,7 +7,7 @@ implicit none
    character(*), parameter :: home_dir = '/home/jripley/teuk-fortran'
    character(*), parameter :: run_type = 'basic_run'
    character(*), parameter :: computer = 'home'
-   character(*), parameter :: output_dir = 'output/Mon_Jul_20_21_35_00_2020_bhm0.5_bhs0.35_nx48_ny20_nl12_s-2_lpm2_lnm2_pm0'
+   character(*), parameter :: output_dir = 'output/Tue_Jul_21_10_38_13_2020_bhm0.5_bhs0.35_nx192_ny20_nl12_s-2_lpm2_lnm2_pm0'
    real(rp), parameter :: black_hole_mass = 0.5_rp
    real(rp), parameter :: black_hole_spin = 0.35_rp
    real(rp), parameter :: compactification_length = 1.0_rp
@@ -25,7 +25,7 @@ implicit none
    integer(ip), parameter :: l_ang_nm = 2_ip
    integer(ip), parameter :: pm_ang = 0_ip
    integer(ip), parameter :: spin = -2_ip
-   integer(ip), parameter :: nx = 48_ip
+   integer(ip), parameter :: nx = 192_ip
    integer(ip), parameter :: nl = 12_ip
    character(*), parameter :: save_indep_res = 'true'
    character(*), parameter :: save_coefs = 'true'
@@ -39,14 +39,14 @@ implicit none
    real(rp), parameter :: R_max = 1.1667639067172042_rp
    integer(ip), parameter :: lmin = 2_ip
    integer(ip), parameter :: ny = 20_ip
-   real(rp), parameter :: dt = 0.003472222222222222_rp
-   integer(ip), parameter :: nt = 14400_ip
-   integer(ip), parameter :: t_step_save = 28_ip
+   real(rp), parameter :: dt = 0.00021701388888888888_rp
+   integer(ip), parameter :: nt = 230400_ip
+   integer(ip), parameter :: t_step_save = 460_ip
    integer(ip), parameter :: max_m = 0_ip
    integer(ip), parameter :: min_m = 0_ip
    integer(ip), parameter :: max_s = 2_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Mon_Jul_20_21_35_00_2020_bhm0.5_bhs0.35_nx48_ny20_nl12_s-2_lpm2_lnm2_pm0'
-   character(*), parameter :: bin = 'Mon_Jul_20_21_35_00_2020_bhm0.5_bhs0.35_nx48_ny20_nl12_s-2_lpm2_lnm2_pm0.run'
-   character(*), parameter :: tables_dir = 'output/Mon_Jul_20_21_35_00_2020_bhm0.5_bhs0.35_nx48_ny20_nl12_s-2_lpm2_lnm2_pm0/tables'
+   character(*), parameter :: output_stem = 'Tue_Jul_21_10_38_13_2020_bhm0.5_bhs0.35_nx192_ny20_nl12_s-2_lpm2_lnm2_pm0'
+   character(*), parameter :: bin = 'Tue_Jul_21_10_38_13_2020_bhm0.5_bhs0.35_nx192_ny20_nl12_s-2_lpm2_lnm2_pm0.run'
+   character(*), parameter :: tables_dir = 'output/Tue_Jul_21_10_38_13_2020_bhm0.5_bhs0.35_nx192_ny20_nl12_s-2_lpm2_lnm2_pm0/tables'
 end module mod_params

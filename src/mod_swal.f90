@@ -110,16 +110,15 @@ contains
       complex(rp), dimension(nx,0:lmax,min_m:max_m), intent(inout) :: coefs
       complex(rp), dimension(nx,ny,min_m:max_m),     intent(out)   :: vals_lap
 
-      real(rp)    :: pre
       integer(ip) :: lmin, k
 
       call swal_real_to_coef(spin,m_ang,vals,coefs) 
 
       lmin = compute_lmin(spin,m_ang)
 
-      do concurrent (k=lmin:lmax)
-         pre = - (k - spin) * (k + spin + 1.0_rp)
-         coefs(:,k,m_ang) = pre*coefs(:,k,m_ang)
+      do k=lmin,lmax
+         coefs(:,k,m_ang) = &
+         - real(k-spin,rp)*real(k+spin+1.0_rp,rp)*coefs(:,k,m_ang)
       end do
 
       call swal_coef_to_real(spin,m_ang,coefs,vals_lap) 
@@ -132,19 +131,15 @@ contains
       complex(rp), dimension(nx,0:lmax,min_m:max_m), intent(inout) :: coefs
       complex(rp), dimension(nx,ny,min_m:max_m),     intent(out)   :: vals_lowered 
 
-      real(rp)    :: pre
       integer(ip) :: lmin, k
 
       call swal_real_to_coef(spin,m_ang,vals,coefs) 
 
       lmin = compute_lmin(spin,m_ang)
 
-      do concurrent (k=lmin:lmax)
-         pre = -sqrt( &
-               (real(k,rp)+real(spin,rp)) &
-            *  (real(k,rp)-real(spin,rp)+1.0_rp) &
-            ) 
-         coefs(:,k,m_ang) = pre*coefs(:,k,m_ang)
+      do k=lmin,lmax
+         coefs(:,k,m_ang) = &
+         -  sqrt(real(k+spin,rp)*real(k-spin+1.0_rp,rp))*coefs(:,k,m_ang)
       end do
 
       call swal_coef_to_real(spin-1,m_ang,coefs,vals_lowered) 
@@ -157,19 +152,15 @@ contains
       complex(rp), dimension(nx,0:lmax,min_m:max_m), intent(inout) :: coefs
       complex(rp), dimension(nx,ny,min_m:max_m),     intent(out)   :: vals_raised
 
-      real(rp)    :: pre
       integer(ip) :: lmin, k
 
       call swal_real_to_coef(spin,m_ang,vals,coefs) 
 
       lmin = compute_lmin(spin,m_ang)
 
-      do concurrent (k=lmin:lmax)
-         pre = sqrt( &
-               (real(k,rp)-real(spin,rp)) &
-            *  (real(k,rp)+real(spin,rp)+1.0_rp) &
-            ) 
-         coefs(:,k,m_ang) = pre*coefs(:,k,m_ang)
+      do k=lmin,lmax
+         coefs(:,k,m_ang) = &
+            sqrt(real(k-spin,rp)*real(k+spin+1.0_rp,rp))*coefs(:,k,m_ang)
       end do
 
       call swal_coef_to_real(spin+1,m_ang,coefs,vals_raised) 
@@ -183,14 +174,13 @@ contains
       complex(rp), dimension(nx,ny,min_m:max_m),     intent(inout) :: vals
       complex(rp), dimension(nx,0:lmax,min_m:max_m), intent(inout) :: coefs
 
-      real(rp)    :: pre
       integer(ip) :: k
 
       call swal_real_to_coef(spin,m_ang,vals,coefs) 
 
-      do concurrent (k=0:lmax)
-         pre = exp(-36.0_rp*(real(k,rp)/real(lmax,rp))**25)
-         coefs(:,k,m_ang) = pre*coefs(:,k,m_ang)
+      do k=0,lmax
+         coefs(:,k,m_ang) = &
+            exp(-36.0_rp*(real(k,rp)/real(lmax,rp))**25)*coefs(:,k,m_ang)
       end do
 
       call swal_coef_to_real(spin,m_ang,coefs,vals) 

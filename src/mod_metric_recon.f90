@@ -44,54 +44,67 @@ module mod_metric_recon
       select_field: select case (fname)
          !-------------------------------------------------------------------
          case ("psi3")
-            do concurrent (i=1:nx, j=1:ny)
+            do j=1,ny
+            do i=1,nx
                kl(i,j,m_ang) = &
                -  R(i)*4.0_rp*mu_0(i,j)*level(i,j,m_ang) &
                -  R(i)*ta_0(i,j)       *(psi4_f%level(i,j,m_ang)) &
                +                        (psi4_f%edth(i,j,m_ang))
             end do
+            end do
          !--------------------------------------------------------------------
          case ("la")
-            do concurrent (i=1:nx, j=1:ny)
+            do j=1,ny
+            do i=1,nx
                kl(i,j,m_ang) = &
                -  R(i)*(mu_0(i,j)+conjg(mu_0(i,j)))*level(i,j,m_ang) &
                -                                    (psi4_f%level(i,j,m_ang))
             end do
+            end do
          !--------------------------------------------------------------------
          case ("psi2")
-            do concurrent (i=1:nx, j=1:ny)
+            do j=1,ny
+            do i=1,nx
                kl(i,j,m_ang) = &
                -  R(i)*3.0_rp*mu_0(i,j)*level(i,j,m_ang) &
                -  R(i)*2.0_rp*ta_0(i,j)*(psi3%level(i,j,m_ang)) &
                +                     (psi3%edth(i,j,m_ang))
             end do
+            end do
          !--------------------------------------------------------------------
          case ("hmbmb")
-            do concurrent (i=1:nx, j=1:ny)
+            do j=1,ny
+            do i=1,nx
                kl(i,j,m_ang) = & 
                   R(i)*(mu_0(i,j)-conjg(mu_0(i,j)))*level(i,j,m_ang) &
                -       2.0_rp                      *(la%level(i,j,m_ang))
             end do
+            end do
          !--------------------------------------------------------------------
          case ("pi")
-            do concurrent (i=1:nx, j=1:ny)
+            do j=1,ny
+            do i=1,nx
                kl(i,j,m_ang) = &
                -  R(i)*(conjg(pi_0(i,j))+ta_0(i,j))*(la%level(i,j,m_ang)) &
                +  R(i)*(0.5_rp*mu_0(i,j)*(conjg(pi_0(i,j))+ta_0(i,j))) &
                                                    *(hmbmb%level(i,j,m_ang)) &
                -                                    (psi3%level(i,j,m_ang))
             end do
+            end do
          !--------------------------------------------------------------------
          case ("hlmb")
-            do concurrent (i=1:nx, j=1:ny)
+            do j=1,ny
+            do i=1,nx
                kl(i,j,m_ang) = &
                -  R(i)*conjg(mu_0(i,j))*level(i,j,m_ang) &
                -       2.0_rp          *(pi%level(i,j,m_ang)) &
                -  R(i)*ta_0(i,j)       *(hmbmb%level(i,j,m_ang)) 
             end do
+            end do
          !--------------------------------------------------------------------
          case ("muhll")
-            do concurrent (i=1:nx, j=1:ny)
+            do j=1,ny
+            do i=1,nx
                kl(i,j,m_ang) = &
                -       R(i)*conjg(mu_0(i,j))*level(i,j,m_ang) &
                -       R(i)*mu_0(i,j)       *(hlmb%edth(i,j,m_ang)) &
@@ -111,6 +124,7 @@ module mod_metric_recon
                -       R(i)*2.0_rp*conjg(pi_0(i,j)) &
                                             *(pi%level(i,j,m_ang)) &
                -       R(i)*2.0_rp*pi_0(i,j)*conjg(pi%level(i,j,-m_ang))
+            end do
             end do
          !--------------------------------------------------------------------
          case default
@@ -153,30 +167,38 @@ module mod_metric_recon
                f%first_time = .false.
             end if
 
-            do concurrent (i=1:nx, j=1:ny)
+            do j=1,ny
+            do i=1,nx
                f%l2(i,j,m_ang)= f%n(i,j,m_ang)+0.5_rp*dt*f%k1(i,j,m_ang)
+            end do
             end do
          !--------------------------------------------------------------------
          case (2)
             call set_k(f%error, m_ang, f%name, f%falloff, f%l2, f%DR, f%k2)
 
-            do concurrent (i=1:nx, j=1:ny)
+            do j=1,ny
+            do i=1,nx
                f%l3(i,j,m_ang)= f%l2(i,j,m_ang)+0.5_rp*dt*f%k2(i,j,m_ang)
+            end do
             end do
          !--------------------------------------------------------------------
          case (3)
             call set_k(f%error, m_ang, f%name, f%falloff, f%l3, f%DR, f%k3)
 
-            do concurrent (i=1:nx, j=1:ny)
+            do j=1,ny
+            do i=1,nx
                f%l4(i,j,m_ang)= f%l3(i,j,m_ang)+dt*f%k3(i,j,m_ang)
+            end do
             end do
          !--------------------------------------------------------------------
          case (4)
             call set_k(f%error, m_ang, f%name, f%falloff, f%l4, f%DR, f%k4)
 
-            do concurrent (i=1:nx, j=1:ny)
+            do j=1,ny
+            do i=1,nx
                f%np1(i,j,m_ang)= f%n(i,j,m_ang) &
                +  (dt/6.0_rp)*(f%k1(i,j,m_ang)+2.0_rp*f%k2(i,j,m_ang)+2.0_rp*f%k3(i,j,m_ang)+f%k4(i,j,m_ang))
+            end do
             end do
          !--------------------------------------------------------------------
          case (5)
@@ -200,7 +222,8 @@ module mod_metric_recon
       select_field: select case (fname)
          !--------------------------------------------------------------------
          case ("bianchi3_res")
-            do concurrent (i=1:nx, j=1:ny)
+            do j=1,ny
+            do i=1,nx
                bianchi3_res%np1(i,j,m_ang) = &
                        R(i)                   *psi3%edth_prime(i,j,m_ang) &
                +  (R(i)**2)*4.0_rp*pi_0(i,j)  *psi3%level(i,j,m_ang) &
@@ -208,15 +231,20 @@ module mod_metric_recon
                +            rh_0(i,j)         *psi4_f%level(i,j,m_ang) &
                -  (R(i)**2)*3.0_rp*psi2_0(i,j)*la%level(i,j,m_ang) 
             end do
+            end do
          !--------------------------------------------------------------------
          case ("bianchi2_res")
-            do concurrent (i=1:nx, j=1:ny)
+            do j=1,ny
+            do i=1,nx
                bianchi2_res%np1(i,j,m_ang) = 0.0_rp 
+            end do
             end do
          !--------------------------------------------------------------------
          case ("hll_res")
-            do concurrent (i=1:nx, j=1:ny)
+            do j=1,ny
+            do i=1,nx
                hll_res%np1(i,j,m_ang) = 0.0_rp 
+            end do
             end do
          !-------------------------------------------------------------------- 
          case default

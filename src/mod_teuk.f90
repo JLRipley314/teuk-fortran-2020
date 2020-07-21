@@ -187,7 +187,8 @@ contains
 
       call swal_laplacian(spin,m_ang,f,f_coefs,f_laplacian)
 
-      do concurrent (i=1:nx, j=1:ny)
+      do j=1,ny
+      do i=1,nx
          kp(i,j,m_ang) = &
             A_pp(i,j,m_ang) * p_DR(i,j,m_ang) &
          +  A_pq(i,j,m_ang) * q_DR(i,j,m_ang) &
@@ -213,6 +214,7 @@ contains
          +  B_fq(i,j,m_ang) * q(i,j,m_ang) &
          +  B_ff(i,j,m_ang) * f(i,j,m_ang) 
       end do
+      end do
 
    end subroutine set_k
 !=============================================================================
@@ -237,10 +239,12 @@ contains
          f%first_time = .false.
       end if
 
-      do concurrent (i=1:nx, j=1:ny)
+      do j=1,ny
+      do i=1,nx
          p%l2(i,j,m_ang)= p%n(i,j,m_ang)+0.5_rp*dt*p%k1(i,j,m_ang)
          q%l2(i,j,m_ang)= q%n(i,j,m_ang)+0.5_rp*dt*q%k1(i,j,m_ang)
          f%l2(i,j,m_ang)= f%n(i,j,m_ang)+0.5_rp*dt*f%k1(i,j,m_ang)
+      end do
       end do
    !--------------------------------------------------------
       call set_k(m_ang, &
@@ -248,10 +252,12 @@ contains
          p%DR, q%DR, f%DR, f%coefs, f%lap, &
          p%k2, q%k2, f%k2) 
 
-      do concurrent (i=1:nx, j=1:ny)
+      do j=1,ny
+      do i=1,nx
          p%l3(i,j,m_ang)= p%l2(i,j,m_ang)+0.5_rp*dt*p%k2(i,j,m_ang)
          q%l3(i,j,m_ang)= q%l2(i,j,m_ang)+0.5_rp*dt*q%k2(i,j,m_ang)
          f%l3(i,j,m_ang)= f%l2(i,j,m_ang)+0.5_rp*dt*f%k2(i,j,m_ang)
+      end do
       end do
    !--------------------------------------------------------
       call set_k(m_ang, &
@@ -259,10 +265,12 @@ contains
          p%DR, q%DR, f%DR, f%coefs, f%lap, &
          p%k3, q%k3, f%k3) 
 
-      do concurrent (i=1:nx, j=1:ny)
+      do j=1,ny
+      do i=1,nx
          p%l4(i,j,m_ang)= p%l3(i,j,m_ang)+dt*p%k3(i,j,m_ang)
          q%l4(i,j,m_ang)= q%l3(i,j,m_ang)+dt*q%k3(i,j,m_ang)
          f%l4(i,j,m_ang)= f%l3(i,j,m_ang)+dt*f%k3(i,j,m_ang)
+      end do
       end do
    !--------------------------------------------------------
       call set_k(m_ang, &
@@ -270,7 +278,8 @@ contains
          p%DR, q%DR, f%DR, f%coefs, f%lap, &
          p%k4, q%k4, f%k4) 
 
-      do concurrent (i=1:nx, j=1:ny)
+      do j=1,ny
+      do i=1,nx
          p%np1(i,j,m_ang)= p%n(i,j,m_ang) &
          +  (dt/6.0_rp)*(p%k1(i,j,m_ang)+2.0_rp*p%k2(i,j,m_ang)+2.0_rp*p%k3(i,j,m_ang)+p%k4(i,j,m_ang))
 
@@ -279,6 +288,7 @@ contains
 
          f%np1(i,j,m_ang)= f%n(i,j,m_ang) &
          +  (dt/6.0_rp)*(f%k1(i,j,m_ang)+2.0_rp*f%k2(i,j,m_ang)+2.0_rp*f%k3(i,j,m_ang)+f%k4(i,j,m_ang))
+      end do
       end do
    !------------------------------------------------------------
    ! want k5 for computing source term and independent residuals
@@ -299,7 +309,7 @@ contains
 
       integer(ip) :: m_ang
 
-      do concurrent (m_ang=min_m:max_m)
+      do m_ang=min_m,max_m
          call compute_DR(m_ang,f%np1,f%DR)
       end do
       

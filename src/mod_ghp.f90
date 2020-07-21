@@ -40,8 +40,8 @@ module mod_ghp
 
       call swal_raise(f%spin, m_ang, f%level, f%coefs, f%raised)
 
-      do concurrent (i=1:nx, j=1:ny)
-   
+      do j=1,ny
+      do i=1,nx
          f%edth(i,j,m_ang) = &
             (1.0_rp/sqrt(2.0_rp))*(1.0_rp/((cl**2)-ci*bhs*R(i)*cy(j))) * ( &
                - ci*bhs*sy(j)*(f%DT(i,j,m_ang)) &
@@ -51,7 +51,7 @@ module mod_ghp
                (ci*p*bhs*R(i)*sy(j)/sqrt(2.0_rp)) &
             /  (((cl**2) - ci*bhs*R(i)*cy(j))**2) &
             )*(f%level(i,j,m_ang))
-
+      end do 
       end do 
    end subroutine set_edth
 !=============================================================================
@@ -71,8 +71,8 @@ module mod_ghp
 
       call swal_lower(f%spin, m_ang, f%level, f%coefs, f%lowered)
 
-      do concurrent (i=1:nx, j=1:ny)
-
+      do j=1,ny
+      do i=1,nx
          f%edth_prime(i,j,m_ang) = &
             (1.0_rp/sqrt(2.0_rp))*(1.0_rp/((cl**2)+ci*bhs*R(i)*cy(j))) * ( &
                  ci*bhs*sy(j)*(f%DT(i,j,m_ang)) &
@@ -83,6 +83,7 @@ module mod_ghp
             /  (((cl**2) + ci*bhs*R(i)*cy(j))**2) &
             )*(f%level(i,j,m_ang))
 
+      end do
       end do
    end subroutine set_edth_prime
 !=============================================================================
@@ -103,8 +104,8 @@ module mod_ghp
 
       call compute_DR(m_ang, f%level, f%DR)
 
-      do concurrent (i=1:nx, j=1:ny)
-
+      do j=1,ny
+      do i=1,nx
          f%thorn(i,j,m_ang) = &
             (1.0_rp/((cl**4)+((bhs*R(i)*cy(j))**2)))*( &
                R(i)*2.0_rp*bhm*(2.0_rp*bhm-((bhs/cl)**2)*R(i))*(f%DT(i,j,m_ang)) &
@@ -115,7 +116,7 @@ module mod_ghp
             +  R(i)*(ci*bhs*m_ang)*(f%level(i,j,m_ang)) &
             ) &
           - R(i)*(p*ep_0(i,j) + q*conjg(ep_0(i,j)))*(f%level(i,j,m_ang))
-
+      end do
       end do
    end subroutine set_thorn
 !=============================================================================
@@ -132,15 +133,15 @@ module mod_ghp
 
       call compute_DR(m_ang, f%level, f%DR)
 
-      do concurrent (i=1:nx, j=1:ny)
-
+      do j=1,ny
+      do i=1,nx
          f%thorn_prime(i,j,m_ang) = &
             (2.0_rp + (4.0_rp*bhm*R(i)/(cl**2)))*(f%DT(i,j,m_ang)) &
          +  ((1.0_rp/cl)**2)*( &
                (R(i)**2)*(f%DR(i,j,m_ang)) &
             +  R(i)*(f%falloff)*(f%level(i,j,m_ang)) &
          )
-
+      end do
       end do
    end subroutine set_thorn_prime
 !=============================================================================
