@@ -40,10 +40,26 @@ def cheb_D(n:int)->List[mp.mpf]:
 
    return Dmat
 #=============================================================================
+def clenshaw_curtis(cheb_D_matrix: List[mp.mpf])->List[mp.mpf]:
+   clcu = mp.matrix(n-1,n-1)
+
+   for i in range(0,n-1):
+      for j in range(0,n-1):
+         clcu(i,j) = cheb_D_matri[i][j]
+
+   clcu = clcu**-1
+
+   weights = [pt for pt in clcu[0][i]]
+   weights.append(mp.mpf(0))
+
+   return weights
+#=============================================================================
 def save_cheb(dir_name:str,n:int)->None:
    pts= cheb_pts(n)
 
    cheb_D_matrix= cheb_D(n)
+
+   weights= clenshaw_curtis(cheb_D_matrix)
 
    with open(dir_name+"/cheb_pts.txt","w") as f:
       for val in pts:
@@ -54,3 +70,7 @@ def save_cheb(dir_name:str,n:int)->None:
          for val in line:
             f.write(mp.nstr(val,32)+' ')
          f.write('\n')
+
+   with open(dir_name+"/weights_clenshaw_curtis.txt","w") as f:
+      for val in weights:
+         f.write(mp.nstr(val,32)+'\n')
