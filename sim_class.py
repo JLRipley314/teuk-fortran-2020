@@ -1,5 +1,5 @@
 #=============================================================================
-import subprocess, os, sys, time
+import subprocess, os, sys, time, shutil
 from typing import List 
 
 sys.path.insert(1,os.getcwd()+'/src/tables/')
@@ -23,8 +23,11 @@ class Sim:
          self.debug=False
 #=============================================================================
    def make_output_dir(self)->None:
+      time_of_day= time.asctime().split(' ')
       self.output_stem= str(
-        '_'.join('_'.join(time.asctime().split(' ')).split(':'))
+        time_of_day[0] # day of week
+      + '_'+time_of_day[3].split(':')[0] # hour
+      + '_'+time_of_day[3].split(':')[1] # minute
       +	'_bhm'+str(self.black_hole_mass)
       +	'_bhs'+str(self.black_hole_spin)
       +	'_nx'+str(self.nx)
@@ -35,7 +38,12 @@ class Sim:
       +	'_lnm'+str(self.l_ang_nm)
       +	'_pm'+str(self.pm_ang)
       )
-      self.output_dir= 'output/'+self.output_stem
+      if (self.computer=="home"):
+         self.output_dir= "output/"+self.output_stem
+      elif (self.computer=="feynman"):
+         self.output_dir="/mnt/grtheory/tf-out/"+self.output_stem
+      else:
+         raise ValueError("self.computer="+self.computer+" not supported")
       os.makedirs(self.output_dir)
 #=============================================================================
    def set_derived_params(self)->None:
@@ -101,14 +109,37 @@ class Sim:
          for param in attrs:
             f.write('{} {}\n'.format(param,attrs[param]))	
 #=============================================================================
+   def write_slurm_script(self):
+      with open('{}/run.slurm'.format(self.home_dir), 'w') as f:
+         f.write('#!/bin/sh\n')
+         f.write('#SBATCH -N 1\t\t# nodes={}\n'.format(self.num_nodes))
+         f.write('#SBATCH --ntasks-per-node={}\n'.format(self.num_tasks_per_node))
+         f.write('#SBATCH -J fteuk\t\t# job name\n')
+         f.write('#SBATCH -t {}\t\t# walltime (dd:hh:mm:ss)\n'.format(self.walltime))
+         f.write('#SBATCH -p dept\t\t# partition/queue name\n')
+         f.write('#SBATCH --mem={}MB\t\t# memory in MB\n'.format(self.memory))
+         f.write('#SBATCH --output={}\t\t# file for STDOUT\n'.format(self.output_file))
+         f.write('#SBATCH --mail-user=jripley@princeton.edu\t\t# Mail  id of the user\n')
+         #f.write('#SBATCH --mail-type=begin\t\t# Slurm will send mail at the beginning of the job\n')
+         #f.write('#SBATCH --mail-type=end\t\t# Slurm will send at the completion of your job\n')
+         run_str= './bin/{} {}\n\n'.format(self.bin_name, self.output_dir)
+         if (self.debug):
+            run_str= 'valgrind -v --track-origins=yes --leak-check=full '+run_str
+         f.write('\n'+run_str)
+
+         shutil.copyfile(
+         '{}/run.slurm'.format(self.home_dir),
+         '{}/run.slurm'.format(self.output_dir)
+         )
+#=============================================================================
    def compile(self)->None:
-      subprocess.call('make '+self.bin,shell=True)
+      subprocess.call('make '+self.bin_name,shell=True)
 #=============================================================================
    def launch_run(self)->None:
       self.set_derived_params()
 
       self.make_output_dir()
-      self.bin= self.output_stem+'.run'
+      self.bin_name= self.output_stem+'.run'
 
       self.make_tables_dir()
       save_cheb(self.tables_dir,self.nx)
@@ -118,15 +149,18 @@ class Sim:
       self.write_sim_params()
       self.write_mod_params()
 
+      self.output_file= self.output_dir+'/output.txt'
       if (self.computer=='home'):
-         output_file= self.output_dir+'/output.txt'
          run_str= (
-            './bin/'+self.bin+' > '+output_file+' 2>&1 &'
+            './bin/'+self.bin_name+' > '+self.output_file+' 2>&1 &'
          )
          if (self.debug):
             run_str= 'valgrind -v --track-origins=yes --leak-check=full '+run_str
          print(run_str)
          subprocess.call(run_str,shell=True) 
+      elif (self.computer=='feynman'):
+         self.write_slurm_script()
+         subprocess.call('sbatch run.slurm', shell='True')		
       else:
          raise ValueError('computer= '+self.computer+' not yet supported')
 #=============================================================================
@@ -158,4 +192,4 @@ class Sim:
                f.write("   complex(rp), parameter :: {} = ({}_rp,{}_rp)\n".format(param,attrs[param].real,attrs[param].imag))
          f.write('end module mod_params\n')
       subprocess.call('make clean_obj',shell=True)
-      subprocess.call('make '+self.bin,shell=True)
+      subprocess.call('make '+self.bin_name,shell=True)
