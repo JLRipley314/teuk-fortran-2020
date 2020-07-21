@@ -5,7 +5,7 @@
 module mod_metric_recon
 !=============================================================================
    use mod_prec
-   use mod_cheb,     only: Rvec=>R, compute_DR
+   use mod_cheb,     only: R, compute_DR
    use mod_field,    only: field, set_field, set_level
    use mod_ghp,      only: set_edth, set_edth_prime, set_thorn, set_thorn_prime
    use mod_bkgrd_np, only: mu_0, ta_0, pi_0, rh_0, psi2_0
@@ -39,108 +39,78 @@ module mod_metric_recon
       complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: level_DR
       complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: kl
 
-      real(rp) :: R
-
       integer(ip) :: i,j
 
       select_field: select case (fname)
          !-------------------------------------------------------------------
          case ("psi3")
-            do j=1,ny
-            do i=1,nx
-               R = Rvec(i)
-
+            do concurrent (i=1:nx, j=1:ny)
                kl(i,j,m_ang) = &
-               -  R*4.0_rp*mu_0(i,j)*level(i,j,m_ang) &
-               -  R*ta_0(i,j)       *(psi4_f%level(i,j,m_ang)) &
-               +                     (psi4_f%edth(i,j,m_ang))
-            end do 
+               -  R(i)*4.0_rp*mu_0(i,j)*level(i,j,m_ang) &
+               -  R(i)*ta_0(i,j)       *(psi4_f%level(i,j,m_ang)) &
+               +                        (psi4_f%edth(i,j,m_ang))
             end do
          !--------------------------------------------------------------------
          case ("la")
-            do j=1,ny
-            do i=1,nx
-               R = Rvec(i)
-
+            do concurrent (i=1:nx, j=1:ny)
                kl(i,j,m_ang) = &
-               -  R*(mu_0(i,j)+conjg(mu_0(i,j)))*level(i,j,m_ang) &
-               -                                 (psi4_f%level(i,j,m_ang))
-            end do
+               -  R(i)*(mu_0(i,j)+conjg(mu_0(i,j)))*level(i,j,m_ang) &
+               -                                    (psi4_f%level(i,j,m_ang))
             end do
          !--------------------------------------------------------------------
          case ("psi2")
-            do j=1,ny
-            do i=1,nx
-               R = Rvec(i)
-
+            do concurrent (i=1:nx, j=1:ny)
                kl(i,j,m_ang) = &
-               -  R*3.0_rp*mu_0(i,j)*level(i,j,m_ang) &
-               -  R*2.0_rp*ta_0(i,j)*(psi3%level(i,j,m_ang)) &
+               -  R(i)*3.0_rp*mu_0(i,j)*level(i,j,m_ang) &
+               -  R(i)*2.0_rp*ta_0(i,j)*(psi3%level(i,j,m_ang)) &
                +                     (psi3%edth(i,j,m_ang))
-            end do
             end do
          !--------------------------------------------------------------------
          case ("hmbmb")
-            do j=1,ny
-            do i=1,nx
-               R = Rvec(i)
-
+            do concurrent (i=1:nx, j=1:ny)
                kl(i,j,m_ang) = & 
-                  R*(mu_0(i,j)-conjg(mu_0(i,j)))*level(i,j,m_ang) &
-               -    2.0_rp                      *(la%level(i,j,m_ang))
-            end do
+                  R(i)*(mu_0(i,j)-conjg(mu_0(i,j)))*level(i,j,m_ang) &
+               -       2.0_rp                      *(la%level(i,j,m_ang))
             end do
          !--------------------------------------------------------------------
          case ("pi")
-            do j=1,ny
-            do i=1,nx
-               R = Rvec(i)
-
+            do concurrent (i=1:nx, j=1:ny)
                kl(i,j,m_ang) = &
-               -  R*(conjg(pi_0(i,j))+ta_0(i,j))*(la%level(i,j,m_ang)) &
-               +  R*(0.5_rp*mu_0(i,j)*(conjg(pi_0(i,j))+ta_0(i,j))) &
-                                                *(hmbmb%level(i,j,m_ang)) &
-               -                                 (psi3%level(i,j,m_ang))
-            end do
+               -  R(i)*(conjg(pi_0(i,j))+ta_0(i,j))*(la%level(i,j,m_ang)) &
+               +  R(i)*(0.5_rp*mu_0(i,j)*(conjg(pi_0(i,j))+ta_0(i,j))) &
+                                                   *(hmbmb%level(i,j,m_ang)) &
+               -                                    (psi3%level(i,j,m_ang))
             end do
          !--------------------------------------------------------------------
          case ("hlmb")
-            do j=1,ny
-            do i=1,nx
-               R = Rvec(i)
-
+            do concurrent (i=1:nx, j=1:ny)
                kl(i,j,m_ang) = &
-               -  R*conjg(mu_0(i,j))*level(i,j,m_ang) &
-               -    2.0_rp          *(pi%level(i,j,m_ang)) &
-               -  R*ta_0(i,j)       *(hmbmb%level(i,j,m_ang)) 
-            end do
+               -  R(i)*conjg(mu_0(i,j))*level(i,j,m_ang) &
+               -       2.0_rp          *(pi%level(i,j,m_ang)) &
+               -  R(i)*ta_0(i,j)       *(hmbmb%level(i,j,m_ang)) 
             end do
          !--------------------------------------------------------------------
          case ("muhll")
-            do j=1,ny
-            do i=1,nx
-               R = Rvec(i)
-
+            do concurrent (i=1:nx, j=1:ny)
                kl(i,j,m_ang) = &
-               -       R*conjg(mu_0(i,j))*level(i,j,m_ang) &
-               -       R*mu_0(i,j)       *(hlmb%edth(i,j,m_ang)) &
-               -  (R**2)*mu_0(i,j)*(conjg(pi_0(i,j))+2.0_rp*ta_0(i,j)) &
-                                         *(hlmb%level(i,j,m_ang)) &
-               -         2.0_rp          *(psi2%level(i,j,m_ang)) &
-               -       R*(pi_0(i,j))     *conjg(hmbmb%edth( i,j,-m_ang)) &
-               +  (R**2)*(pi_0(i,j)**2)  *conjg(hmbmb%level(i,j,-m_ang)) &
-               +       R*mu_0(i,j)       *conjg(hlmb%edth(i,j,-m_ang))  &
-               -  (R**2)*3.0_rp*mu_0(i,j)*pi_0(i,j) &
-                                         *conjg(hlmb%level(i,j,-m_ang)) &
-               +  (R**2)*2.0_rp*conjg(mu_0(i,j))*pi_0(i,j) &
-                                         *conjg(hlmb%level(i,j,-m_ang)) &
-               -  (R**2)*2.0_rp*mu_0(i,j)*conjg(ta_0(i,j)) &
-                                         *conjg(hlmb%level(i,j,-m_ang)) &
-               -         2.0_rp          *(pi%edth(i,j,m_ang)) &
-               -       R*2.0_rp*conjg(pi_0(i,j)) &
-                                         *(pi%level(i,j,m_ang)) &
-               -       R*2.0_rp*pi_0(i,j)*conjg(pi%level(i,j,-m_ang))
-            end do
+               -       R(i)*conjg(mu_0(i,j))*level(i,j,m_ang) &
+               -       R(i)*mu_0(i,j)       *(hlmb%edth(i,j,m_ang)) &
+               -  (R(i)**2)*mu_0(i,j)*(conjg(pi_0(i,j))+2.0_rp*ta_0(i,j)) &
+                                            *(hlmb%level(i,j,m_ang)) &
+               -            2.0_rp          *(psi2%level(i,j,m_ang)) &
+               -       R(i)*(pi_0(i,j))     *conjg(hmbmb%edth( i,j,-m_ang)) &
+               +  (R(i)**2)*(pi_0(i,j)**2)  *conjg(hmbmb%level(i,j,-m_ang)) &
+               +       R(i)*mu_0(i,j)       *conjg(hlmb%edth(i,j,-m_ang))  &
+               -  (R(i)**2)*3.0_rp*mu_0(i,j)*pi_0(i,j) &
+                                            *conjg(hlmb%level(i,j,-m_ang)) &
+               +  (R(i)**2)*2.0_rp*conjg(mu_0(i,j))*pi_0(i,j) &
+                                            *conjg(hlmb%level(i,j,-m_ang)) &
+               -  (R(i)**2)*2.0_rp*mu_0(i,j)*conjg(ta_0(i,j)) &
+                                            *conjg(hlmb%level(i,j,-m_ang)) &
+               -            2.0_rp          *(pi%edth(i,j,m_ang)) &
+               -       R(i)*2.0_rp*conjg(pi_0(i,j)) &
+                                            *(pi%level(i,j,m_ang)) &
+               -       R(i)*2.0_rp*pi_0(i,j)*conjg(pi%level(i,j,-m_ang))
             end do
          !--------------------------------------------------------------------
          case default
@@ -152,13 +122,11 @@ module mod_metric_recon
 
       do j=1,ny
       do i=1,nx
-         R = Rvec(i)
-
          kl(i,j,m_ang) = kl(i,j,m_ang) &
-         -  ((R/cl)**2)*level_DR(i,j,m_ang) &
-         -  (falloff*R/(cl**2))*level(i,j,m_ang)
+         -  ((R(i)/cl)**2)*level_DR(i,j,m_ang) &
+         -  (falloff*R(i)/(cl**2))*level(i,j,m_ang)
       
-         kl(i,j,m_ang) = kl(i,j,m_ang) / (2.0_rp+(4.0_rp*bhm*R/(cl**2)))
+         kl(i,j,m_ang) = kl(i,j,m_ang) / (2.0_rp+(4.0_rp*bhm*R(i)/(cl**2)))
       end do
       end do
 
@@ -185,38 +153,30 @@ module mod_metric_recon
                f%first_time = .false.
             end if
 
-            do j=1,ny
-            do i=1,nx
+            do concurrent (i=1:nx, j=1:ny)
                f%l2(i,j,m_ang)= f%n(i,j,m_ang)+0.5_rp*dt*f%k1(i,j,m_ang)
-            end do
             end do
          !--------------------------------------------------------------------
          case (2)
             call set_k(f%error, m_ang, f%name, f%falloff, f%l2, f%DR, f%k2)
 
-            do j=1,ny
-            do i=1,nx
+            do concurrent (i=1:nx, j=1:ny)
                f%l3(i,j,m_ang)= f%l2(i,j,m_ang)+0.5_rp*dt*f%k2(i,j,m_ang)
-            end do
             end do
          !--------------------------------------------------------------------
          case (3)
             call set_k(f%error, m_ang, f%name, f%falloff, f%l3, f%DR, f%k3)
 
-            do j=1,ny
-            do i=1,nx
+            do concurrent (i=1:nx, j=1:ny)
                f%l4(i,j,m_ang)= f%l3(i,j,m_ang)+dt*f%k3(i,j,m_ang)
-            end do
             end do
          !--------------------------------------------------------------------
          case (4)
             call set_k(f%error, m_ang, f%name, f%falloff, f%l4, f%DR, f%k4)
 
-            do j=1,ny
-            do i=1,nx
+            do concurrent (i=1:nx, j=1:ny)
                f%np1(i,j,m_ang)= f%n(i,j,m_ang) &
                +  (dt/6.0_rp)*(f%k1(i,j,m_ang)+2.0_rp*f%k2(i,j,m_ang)+2.0_rp*f%k3(i,j,m_ang)+f%k4(i,j,m_ang))
-            end do
             end do
          !--------------------------------------------------------------------
          case (5)
@@ -236,40 +196,27 @@ module mod_metric_recon
       character(*), intent(in) :: fname
 
       integer(ip) :: i, j
-      real(rp) :: R
       !-----------------------------------------------------------------------
       select_field: select case (fname)
          !--------------------------------------------------------------------
          case ("bianchi3_res")
-            do j=1,ny
-            do i=1,nx
-               R = Rvec(i)
-
+            do concurrent (i=1:nx, j=1:ny)
                bianchi3_res%np1(i,j,m_ang) = &
-                       R                   *psi3%edth_prime(i,j,m_ang) &
-               +  (R**2)*4.0_rp*pi_0(i,j)  *psi3%level(i,j,m_ang) &
-               -                            psi4_f%thorn(i,j,m_ang) &
-               +         rh_0(i,j)         *psi4_f%level(i,j,m_ang) &
-               -  (R**2)*3.0_rp*psi2_0(i,j)*la%level(i,j,m_ang) 
-            end do
+                       R(i)                   *psi3%edth_prime(i,j,m_ang) &
+               +  (R(i)**2)*4.0_rp*pi_0(i,j)  *psi3%level(i,j,m_ang) &
+               -                               psi4_f%thorn(i,j,m_ang) &
+               +            rh_0(i,j)         *psi4_f%level(i,j,m_ang) &
+               -  (R(i)**2)*3.0_rp*psi2_0(i,j)*la%level(i,j,m_ang) 
             end do
          !--------------------------------------------------------------------
          case ("bianchi2_res")
-            do j=1,ny
-            do i=1,nx
-               R = Rvec(i)
-
+            do concurrent (i=1:nx, j=1:ny)
                bianchi2_res%np1(i,j,m_ang) = 0.0_rp 
-            end do
             end do
          !--------------------------------------------------------------------
          case ("hll_res")
-            do j=1,ny
-            do i=1,nx
-               R = Rvec(i)
-
+            do concurrent (i=1:nx, j=1:ny)
                hll_res%np1(i,j,m_ang) = 0.0_rp 
-            end do
             end do
          !-------------------------------------------------------------------- 
          case default

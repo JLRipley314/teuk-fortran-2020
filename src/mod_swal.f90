@@ -117,7 +117,7 @@ contains
 
       lmin = compute_lmin(spin,m_ang)
 
-      do k=lmin,lmax
+      do concurrent (k=lmin:lmax)
          pre = - (k - spin) * (k + spin + 1.0_rp)
          coefs(:,k,m_ang) = pre*coefs(:,k,m_ang)
       end do
@@ -139,7 +139,7 @@ contains
 
       lmin = compute_lmin(spin,m_ang)
 
-      do k=lmin,lmax
+      do concurrent (k=lmin:lmax)
          pre = -sqrt( &
                (real(k,rp)+real(spin,rp)) &
             *  (real(k,rp)-real(spin,rp)+1.0_rp) &
@@ -164,7 +164,7 @@ contains
 
       lmin = compute_lmin(spin,m_ang)
 
-      do k=lmin,lmax
+      do concurrent (k=lmin:lmax)
          pre = sqrt( &
                (real(k,rp)-real(spin,rp)) &
             *  (real(k,rp)+real(spin,rp)+1.0_rp) &
@@ -188,7 +188,7 @@ contains
 
       call swal_real_to_coef(spin,m_ang,vals,coefs) 
 
-      do k=0,lmax
+      do concurrent (k=0:lmax)
          pre = exp(-36.0_rp*(real(k,rp)/real(lmax,rp))**25)
          coefs(:,k,m_ang) = pre*coefs(:,k,m_ang)
       end do
