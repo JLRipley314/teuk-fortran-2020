@@ -18,7 +18,7 @@ FC = gfortran#ifort#
 FFLAGS= -g -fmax-errors=5 -O2 #-fopenmp #-lfftw3 
 #==========================================================================
 ifeq ($(FC),gfortran)
-	FFLAGS+= -std=f2008 -Wall -Wextra -fimplicit-none -fbounds-check \
+	FFLAGS+= -std=f2008 -Wall -Wextra -fimplicit-none -fcheck=all \
 		-J$(OBJDIR) 
 endif
 
