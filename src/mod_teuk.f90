@@ -254,9 +254,9 @@ contains
 
       do j=1,ny
       do i=1,nx
-         p%l3(i,j,m_ang)= p%l2(i,j,m_ang)+0.5_rp*dt*p%k2(i,j,m_ang)
-         q%l3(i,j,m_ang)= q%l2(i,j,m_ang)+0.5_rp*dt*q%k2(i,j,m_ang)
-         f%l3(i,j,m_ang)= f%l2(i,j,m_ang)+0.5_rp*dt*f%k2(i,j,m_ang)
+         p%l3(i,j,m_ang)= p%n(i,j,m_ang)+0.5_rp*dt*p%k2(i,j,m_ang)
+         q%l3(i,j,m_ang)= q%n(i,j,m_ang)+0.5_rp*dt*q%k2(i,j,m_ang)
+         f%l3(i,j,m_ang)= f%n(i,j,m_ang)+0.5_rp*dt*f%k2(i,j,m_ang)
       end do
       end do
    !--------------------------------------------------------
@@ -267,9 +267,9 @@ contains
 
       do j=1,ny
       do i=1,nx
-         p%l4(i,j,m_ang)= p%l3(i,j,m_ang)+dt*p%k3(i,j,m_ang)
-         q%l4(i,j,m_ang)= q%l3(i,j,m_ang)+dt*q%k3(i,j,m_ang)
-         f%l4(i,j,m_ang)= f%l3(i,j,m_ang)+dt*f%k3(i,j,m_ang)
+         p%l4(i,j,m_ang)= p%n(i,j,m_ang)+dt*p%k3(i,j,m_ang)
+         q%l4(i,j,m_ang)= q%n(i,j,m_ang)+dt*q%k3(i,j,m_ang)
+         f%l4(i,j,m_ang)= f%n(i,j,m_ang)+dt*f%k3(i,j,m_ang)
       end do
       end do
    !--------------------------------------------------------

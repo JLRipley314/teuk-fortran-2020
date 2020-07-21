@@ -68,7 +68,7 @@ module mod_metric_recon
                kl(i,j,m_ang) = &
                -  R(i)*3.0_rp*mu_0(i,j)*level(i,j,m_ang) &
                -  R(i)*2.0_rp*ta_0(i,j)*(psi3%level(i,j,m_ang)) &
-               +                     (psi3%edth(i,j,m_ang))
+               +                        (psi3%edth(i,j,m_ang))
             end do
             end do
          !--------------------------------------------------------------------
@@ -85,10 +85,10 @@ module mod_metric_recon
             do j=1,ny
             do i=1,nx
                kl(i,j,m_ang) = &
-               -  R(i)*(conjg(pi_0(i,j))+ta_0(i,j))*(la%level(i,j,m_ang)) &
-               +  R(i)*(0.5_rp*mu_0(i,j)*(conjg(pi_0(i,j))+ta_0(i,j))) &
-                                                   *(hmbmb%level(i,j,m_ang)) &
-               -                                    (psi3%level(i,j,m_ang))
+               -  R(i)     *(conjg(pi_0(i,j))+ta_0(i,j))*(la%level(i,j,m_ang)) &
+               +  (R(i)**2)*(0.5_rp*mu_0(i,j)*(conjg(pi_0(i,j))+ta_0(i,j))) &
+                                                        *(hmbmb%level(i,j,m_ang)) &
+               -                                         (psi3%level(i,j,m_ang))
             end do
             end do
          !--------------------------------------------------------------------
@@ -178,7 +178,7 @@ module mod_metric_recon
 
             do j=1,ny
             do i=1,nx
-               f%l3(i,j,m_ang)= f%l2(i,j,m_ang)+0.5_rp*dt*f%k2(i,j,m_ang)
+               f%l3(i,j,m_ang)= f%n(i,j,m_ang)+0.5_rp*dt*f%k2(i,j,m_ang)
             end do
             end do
          !--------------------------------------------------------------------
@@ -187,7 +187,7 @@ module mod_metric_recon
 
             do j=1,ny
             do i=1,nx
-               f%l4(i,j,m_ang)= f%l3(i,j,m_ang)+dt*f%k3(i,j,m_ang)
+               f%l4(i,j,m_ang)= f%n(i,j,m_ang)+dt*f%k3(i,j,m_ang)
             end do
             end do
          !--------------------------------------------------------------------
@@ -259,7 +259,6 @@ module mod_metric_recon
       call set_edth( step,m_ang,psi4_f)
 
       call take_step(step,m_ang,psi3)
-
       call take_step(step,m_ang,la)
       !-----------------------------------------------------------------------
       call set_level(step,m_ang,psi3)
@@ -284,6 +283,11 @@ module mod_metric_recon
 
       call set_edth( step,m_ang,pi)
       call set_edth( step,m_ang,hlmb)
+
+      call set_level(step,-m_ang,hmbmb)
+      call set_edth( step,-m_ang,hmbmb)
+      call set_level(step,-m_ang, hlmb)
+      call set_level(step,-m_ang,   pi)
 
       call take_step(step,m_ang,muhll)
       !-----------------------------------------------------------------------
