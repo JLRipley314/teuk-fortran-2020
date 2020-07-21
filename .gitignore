@@ -4,3 +4,4 @@ output/*
 *.mod
 *.o
 *.slurm
+plotting/*
