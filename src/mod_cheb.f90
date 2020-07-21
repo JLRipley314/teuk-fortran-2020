@@ -82,9 +82,9 @@ contains
          do j=1,nx
 
             vals(i,:,m_ang) = vals(i,:,m_ang) &
-            +  weights_clenshaw_curtis(j)*smooth(i,j)*tmp(j,:,m_ang)
+            +  weights_clenshaw_curtis(abs(i-j))*smooth(i,j)*tmp(j,:,m_ang)
 
-            norm = norm + weights_clenshaw_curtis(j)*smooth(i,j)
+            norm = norm + weights_clenshaw_curtis(abs(i-j))*smooth(i,j)
 
          end do
          vals(i,:,m_ang) = vals(i,:,m_ang) / norm
