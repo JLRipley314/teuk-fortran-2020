@@ -118,10 +118,10 @@ contains
          open(unit=uf,file=fn_re,status='new',action='write',iostat=ierror) 
       end if
 
-      write (uf,'(e12.6,a1,i3,a1,i3,a1)',advance='no',iostat=ierror) time, ',', nx, ',', ny, ','
+      write (uf,'(e14.6,a1,i3,a1,i3,a1)',advance='no',iostat=ierror) time, ',', nx, ',', ny, ','
       do i=1,nx
       do j=1,ny
-         write (uf,'(e12.6,a1)',advance='no',iostat=ierror) real(f%np1(i,j,m_ang)), ','
+         write (uf,'(e14.6,a1)',advance='no',iostat=ierror) real(f%np1(i,j,m_ang)), ','
       end do
       end do
       ! line break
@@ -144,10 +144,10 @@ contains
          open(unit=uf,file=fn_im,status='new',action='write',iostat=ierror) 
       end if
 
-      write (uf,'(e12.6,a1,i3,a1,i3,a1)',advance='no',iostat=ierror) time, ',', nx, ',', ny, ','
+      write (uf,'(e14.6,a1,i3,a1,i3,a1)',advance='no',iostat=ierror) time, ',', nx, ',', ny, ','
       do i=1,nx
       do j=1,ny
-         write (uf,'(e12.6,a1)',advance='no',iostat=ierror) aimag(f%np1(i,j,m_ang)), ','
+         write (uf,'(e14.6,a1)',advance='no',iostat=ierror) aimag(f%np1(i,j,m_ang)), ','
       end do
       end do
       ! line break
@@ -185,10 +185,10 @@ contains
          open(unit=uf,file=rn_re,status='new',action='write',iostat=ierror) 
       end if
 
-      write (uf,'(e12.6,a1,i3,a1,i3,a1)',advance='no',iostat=ierror) time, ',', nx, ',', ny, ','
+      write (uf,'(e14.6,a1,i3,a1,i3,a1)',advance='no',iostat=ierror) time, ',', nx, ',', ny, ','
       do i=1,nx
       do j=1,ny
-         write (uf,'(e12.6,a1)',advance='no',iostat=ierror) aimag(arr(i,j)), ','
+         write (uf,'(e14.6,a1)',advance='no',iostat=ierror) aimag(arr(i,j)), ','
       end do
       end do
       ! line break 
@@ -211,10 +211,10 @@ contains
          open(unit=uf,file=rn_im,status='new',action='write',iostat=ierror) 
       end if
 
-      write (uf,'(e12.6,a1,i3,a1,i3,a1)',advance='no',iostat=ierror) time, ',', nx, ',', ny, ','
+      write (uf,'(e14.6,a1,i3,a1,i3,a1)',advance='no',iostat=ierror) time, ',', nx, ',', ny, ','
       do i=1,nx
       do j=1,ny
-         write (uf,'(e12.6,a1)',advance='no',iostat=ierror) aimag(arr(i,j)), ','
+         write (uf,'(e14.6,a1)',advance='no',iostat=ierror) aimag(arr(i,j)), ','
       end do
       end do
       ! line break      
