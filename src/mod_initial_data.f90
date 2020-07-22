@@ -47,11 +47,12 @@ contains
 
          f%n(i,j,m_ang) = (((r-rl_pm)/width)**2) * (((ru_pm-r)/width)**2) * bump
          
-         q%n(i,j,m_ang) = ((2.0_rp*(((r-rl_pm)/width)   )*(((ru_pm-r)/width)**2)) &
-                  -  (2.0_rp*(((r-rl_pm)/width)**2)*( (ru_pm-r)/width    )) &
-                  +  (1.0_rp*(1.0_rp              )*(((ru_pm-r)/width)**2)) &
-                  -  (2.0_rp*(((r-rl_pm)/width)**2)*(1.0_rp              )) &
-                  )*bump/width
+         q%n(i,j,m_ang) = ( &
+            (2.0_rp*(((r-rl_pm)/width)   )*(((ru_pm-r)/width)**2)) &
+         -  (2.0_rp*(((r-rl_pm)/width)**2)*( (ru_pm-r)/width    )) &
+         +  (1.0_rp*(1.0_rp              )*(((ru_pm-r)/width)**2)) &
+         -  (2.0_rp*(((r-rl_pm)/width)**2)*(1.0_rp              )) &
+         )*bump/width
       ! rescale q as q = \partial_R f = -(r/cl)^2 partial_r f
          q%n(i,j,m_ang) = q%n(i,j,m_ang)*(-(r**2)/(cl**2))
 

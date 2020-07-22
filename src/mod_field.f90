@@ -112,7 +112,7 @@ contains
          case (5)
             f % level(:,:,m_ang) = f % np1(:,:,m_ang)  
          case default
-            f % level(:,:,m_ang) = -1.0_rp
+            write(f%error,*) "ERROR(set_level), step=", step 
       end select
    end subroutine set_level
 !=============================================================================
@@ -132,7 +132,7 @@ contains
          case (5)
             f % DT(:,:,m_ang) = f % k5(:,:,m_ang) 
          case default
-            f % DT(:,:,m_ang) = -1.0_rp
+            write(f%error,*) "ERROR(set_DT), step=", step 
       end select
    end subroutine set_DT
 !=============================================================================

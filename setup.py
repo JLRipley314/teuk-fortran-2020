@@ -12,7 +12,7 @@ sim= Sim(args)
 sim.computer= 'home'#'feynman'#
 #-----------------------------------------------------------------------------
 sim.black_hole_mass= float(0.5)	
-sim.black_hole_spin= float(0.0)
+sim.black_hole_spin= float(0.35)
 sim.compactification_length= float(1)
 #-----------------------------------------------------------------------------
 ## evolve time: in units of black hole mass
@@ -35,14 +35,14 @@ sim.ru_nm=  float( 1.5)  ## compact support: upper r value
 sim.l_ang_nm= int(2)     ## support over single spin weighted spherical harmonic
 #-----------------------------------------------------------------------------
 ##  Teukolsky equation preserves m 
-sim.pm_ang= int(0)
+sim.pm_ang= int(2)
 assert(sim.pm_ang>=0)
 #-----------------------------------------------------------------------------
 ## psi_4 is spin -2, psi_0 is spin +2 (code only reconstructs for psi_4) 
 sim.spin= int(-2)
 #-----------------------------------------------------------------------------
 sim.nx= int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
-sim.nl= int(pow(2,2)*pow(3,1)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
+sim.nl= int(pow(2,2)*pow(3,0)*pow(5,1)*pow(7,0)) ## num swaL angular pts 
 #-----------------------------------------------------------------------------
 ## further diagnostics
 sim.save_indep_res= "true"#"false"#

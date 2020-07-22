@@ -76,6 +76,8 @@ contains
          psi2_0(i,j) = &
          -  bhm / ((cl**2 - IM*bhs*R*cy)**3)
 
+         write (*,*) pi_0(i,j)
+
       end do x_loop
       end do y_loop
 

@@ -134,7 +134,7 @@ module mod_metric_recon
       call compute_DR(m_ang, level, level_DR)
 
       do i=1,nx
-         kl(i,:,m_ang) =           kl(i,:,m_ang) &
+         kl(i,:,m_ang) = kl(i,:,m_ang) &
          -          ((R(i)/cl)**2)*level_DR(i,:,m_ang) &
          -  (falloff*R(i)/(cl**2))*level(i,:,m_ang)
       
@@ -230,11 +230,12 @@ module mod_metric_recon
             do j=1,ny
             do i=1,nx
                bianchi3_res%np1(i,j,m_ang) = &
-                       R(i)                   *psi3%edth_prime(i,j,m_ang) &
-               +  (R(i)**2)*4.0_rp*pi_0(i,j)  *psi3%level(i,j,m_ang) &
-               -                               psi4_f%thorn(i,j,m_ang) &
-               +            rh_0(i,j)         *psi4_f%level(i,j,m_ang) &
-               -  (R(i)**2)*3.0_rp*psi2_0(i,j)*la%level(i,j,m_ang) 
+                                                psi3%edth_prime(i,j,m_ang) !&
+         !                                 R(i)*psi3%edth_prime(i,j,m_ang) !&
+         !      +    4.0_rp*(R(i)**2)*pi_0(i,j)*psi3%level(i,j,m_ang) &
+         !      -                               psi4_f%thorn(i,j,m_ang) &
+         !      +                     rh_0(i,j)*psi4_f%level(i,j,m_ang) &
+         !      -  3.0_rp*(R(i)**2)*psi2_0(i,j)*la%level(i,j,m_ang) 
             end do
             end do
          !--------------------------------------------------------------------

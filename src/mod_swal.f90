@@ -65,17 +65,20 @@ contains
       end do
    end subroutine swal_init
 !=============================================================================
+! Gaussian quadrature
+!=============================================================================
    pure subroutine swal_real_to_coef(spin,m_ang,vals,coefs)
       integer(ip), intent(in) :: spin
       integer(ip), intent(in) :: m_ang
-      complex(rp), dimension(nx,ny,min_m:max_m),     intent(in)  :: vals
+      complex(rp), dimension(nx,    ny,min_m:max_m), intent(in)  :: vals
       complex(rp), dimension(nx,0:lmax,min_m:max_m), intent(out) :: coefs
 
-      integer(ip) :: j, k
+      integer(ip) :: lmin, j, k
 
-      ! Gaussian quadrature
-      coefs = 0
-      do k=0,lmax
+      lmin  = compute_lmin(spin,m_ang)
+      coefs = 0.0_rp
+
+      do k=lmin,lmax
       do j=1,ny
          coefs(:,k,m_ang) =  &
             coefs(:,k,m_ang) &
@@ -84,18 +87,21 @@ contains
       end do
    end subroutine swal_real_to_coef
 !=============================================================================
+! coefficient synthesis
+!=============================================================================
    pure subroutine swal_coef_to_real(spin,m_ang,coefs,vals)
       integer(ip), intent(in) :: spin
       integer(ip), intent(in) :: m_ang
       complex(rp), dimension(nx,0:lmax,min_m:max_m), intent(in)  :: coefs
-      complex(rp), dimension(nx,ny,min_m:max_m),     intent(out) :: vals
+      complex(rp), dimension(nx,    ny,min_m:max_m), intent(out) :: vals
 
-      integer(ip) :: j, k
+      integer(ip) :: lmin, j, k
 
-      ! coefficient synthesis
-      vals = 0
+      lmin = compute_lmin(spin,m_ang)
+      vals = 0.0_rp
+
       do j=1,ny
-      do k=0,lmax
+      do k=lmin,lmax
          vals(:,j,m_ang) = &
             vals(:,j,m_ang) &
          + (coefs(:,k,m_ang) * swal(j,k,m_ang,spin))
@@ -106,9 +112,9 @@ contains
    pure subroutine swal_laplacian(spin,m_ang,vals,coefs,vals_lap)
       integer(ip), intent(in) :: spin
       integer(ip), intent(in) :: m_ang
-      complex(rp), dimension(nx,ny,min_m:max_m),     intent(in)    :: vals
+      complex(rp), dimension(nx,    ny,min_m:max_m), intent(in)    :: vals
       complex(rp), dimension(nx,0:lmax,min_m:max_m), intent(inout) :: coefs
-      complex(rp), dimension(nx,ny,min_m:max_m),     intent(out)   :: vals_lap
+      complex(rp), dimension(nx,    ny,min_m:max_m), intent(out)   :: vals_lap
 
       integer(ip) :: lmin, k
 
@@ -127,36 +133,51 @@ contains
    pure subroutine swal_lower(spin,m_ang,vals,coefs,vals_lowered)
       integer(ip), intent(in) :: spin
       integer(ip), intent(in) :: m_ang
-      complex(rp), dimension(nx,ny,min_m:max_m),     intent(in)    :: vals
+      complex(rp), dimension(nx,    ny,min_m:max_m), intent(in)    :: vals
       complex(rp), dimension(nx,0:lmax,min_m:max_m), intent(inout) :: coefs
-      complex(rp), dimension(nx,ny,min_m:max_m),     intent(out)   :: vals_lowered 
+      complex(rp), dimension(nx,    ny,min_m:max_m), intent(out)   :: vals_lowered 
 
       integer(ip) :: lmin, k
+
 
       call swal_real_to_coef(spin,m_ang,vals,coefs) 
 
       lmin = compute_lmin(spin,m_ang)
+!      lmin = compute_lmin(spin-1,m_ang)
+
+!      if (lmin>=1) then
+!         do k=0,lmin-1
+!            coefs(:,k,m_ang) = 0.0_rp
+!         end do
+!      end if
 
       do k=lmin,lmax
-         coefs(:,k,m_ang) = &
-         -  sqrt(real(k+spin,rp)*real(k-spin+1.0_rp,rp))*coefs(:,k,m_ang)
+!         coefs(:,k,m_ang) = &
+!         -  sqrt(real(k+spin,rp)*real(k-spin+1.0_rp,rp))*coefs(:,k,m_ang)
       end do
 
-      call swal_coef_to_real(spin-1,m_ang,coefs,vals_lowered) 
+      call swal_coef_to_real(spin,m_ang,coefs,vals_lowered) 
+      !call swal_coef_to_real(spin-1,m_ang,coefs,vals_lowered) 
    end subroutine swal_lower
 !=============================================================================
    pure subroutine swal_raise(spin,m_ang,vals,coefs,vals_raised)
       integer(ip), intent(in) :: spin
       integer(ip), intent(in) :: m_ang
-      complex(rp), dimension(nx,ny,min_m:max_m),     intent(in)    :: vals
+      complex(rp), dimension(nx,    ny,min_m:max_m), intent(in)    :: vals
       complex(rp), dimension(nx,0:lmax,min_m:max_m), intent(inout) :: coefs
-      complex(rp), dimension(nx,ny,min_m:max_m),     intent(out)   :: vals_raised
+      complex(rp), dimension(nx,    ny,min_m:max_m), intent(out)   :: vals_raised
 
       integer(ip) :: lmin, k
 
       call swal_real_to_coef(spin,m_ang,vals,coefs) 
 
-      lmin = compute_lmin(spin,m_ang)
+      lmin = compute_lmin(spin+1,m_ang)
+
+      if (lmin>=1) then
+         do k=0,lmin-1
+            coefs(:,k,m_ang) = 0.0_rp
+         end do
+      end if
 
       do k=lmin,lmax
          coefs(:,k,m_ang) = &
@@ -171,7 +192,7 @@ contains
    pure subroutine swal_filter(spin,m_ang,vals,coefs)
       integer(ip), intent(in) :: spin
       integer(ip), intent(in) :: m_ang
-      complex(rp), dimension(nx,ny,min_m:max_m),     intent(inout) :: vals
+      complex(rp), dimension(nx,    ny,min_m:max_m), intent(inout) :: vals
       complex(rp), dimension(nx,0:lmax,min_m:max_m), intent(inout) :: coefs
 
       integer(ip) :: k
