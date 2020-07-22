@@ -35,7 +35,7 @@ sim.ru_nm=  float( 1.5)  ## compact support: upper r value
 sim.l_ang_nm= int(2)     ## support over single spin weighted spherical harmonic
 #-----------------------------------------------------------------------------
 ##  Teukolsky equation preserves m 
-sim.pm_ang= int(2)
+sim.pm_ang= int(0)
 assert(sim.pm_ang>=0)
 #-----------------------------------------------------------------------------
 ## psi_4 is spin -2, psi_0 is spin +2 (code only reconstructs for psi_4) 

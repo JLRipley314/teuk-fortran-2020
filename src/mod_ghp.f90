@@ -48,9 +48,9 @@ module mod_ghp
       do j=1,ny
       do i=1,nx
          f%edth(i,j,m_ang) = &
-            (1.0_rp/sqrt(2.0_rp))*(1.0_rp/((cl**2)-IM*bhs*R(i)*cy(j))) * ( &
-               - IM*bhs*sy(j)*(f%DT(i,j,m_ang)) &
-               + (f%raised(i,j,m_ang)) &
+            (1.0_rp/sqrt(2.0_rp))*(1.0_rp/((cl**2) - IM*bhs*R(i)*cy(j))) * ( &
+               -  IM*bhs*sy(j)*(f%DT(i,j,m_ang)) &
+               +  (f%raised(i,j,m_ang)) &
             ) &
          +  ( &
                (IM*p*bhs*R(i)*sy(j)/sqrt(2.0_rp)) &
@@ -79,9 +79,9 @@ module mod_ghp
       do j=1,ny
       do i=1,nx
          f%edth_prime(i,j,m_ang) = &
-            (1.0_rp/sqrt(2.0_rp))*(1.0_rp/((cl**2)+IM*bhs*R(i)*cy(j))) * ( &
-                 IM*bhs*sy(j)*(f%DT(i,j,m_ang)) &
-               + (f%lowered(i,j,m_ang)) &
+            (1.0_rp/sqrt(2.0_rp))*(1.0_rp/((cl**2) + IM*bhs*R(i)*cy(j))) * ( &
+                  IM*bhs*sy(j)*(f%DT(i,j,m_ang)) &
+               +  (f%lowered(i,j,m_ang)) &
             ) &
          +  ( &
                (IM*q*bhs*R(i)*sy(j)/sqrt(2.0_rp)) &

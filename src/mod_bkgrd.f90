@@ -46,7 +46,7 @@ contains
       y_loop: do j=1,ny
       x_loop: do i=1,nx
 
-         r = Rvec(i)
+         R  = Rvec(i)
          cy = cyvec(j)
          sy = syvec(j)
       !----------------------------
@@ -68,9 +68,9 @@ contains
       !----------------------------
          ep_0(i,j) = &
             0.5_rp*( &
-               (cl**2)*bhm - (bhs**2)*R - IM*bhs*((cl**2)-bhm*R)*cy &
+               (cl**2)*bhm - (bhs**2)*R - IM*bhs*(cl**2-bhm*R)*cy &
             )/( &
-               ((cl*2 - IM*bhs*R*cy)**2)*(cl**2 + IM*bhs*R*cy) &
+               ((cl**2 - IM*bhs*R*cy)**2)*(cl**2 + IM*bhs*R*cy) &
             )
       !----------------------------
          psi2_0(i,j) = &
