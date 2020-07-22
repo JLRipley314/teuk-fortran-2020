@@ -45,11 +45,13 @@ def clenshaw_curtis(n, cheb_D_matrix: List[mp.mpf])->List[mp.mpf]:
 
    for i in range(0,n-1):
       for j in range(0,n-1):
-         clcu[i,j] = cheb_D_matri[i][j]
+         clcu[i,j] = cheb_D_matrix[i][j]
 
    clcu = clcu**-1
 
-   weights = [pt for pt in clcu[0,i]]
+   weights = []
+   for i in range(0,n-1):
+      weights.append(clcu[0,i])
    weights.append(mp.mpf(0))
 
    return weights

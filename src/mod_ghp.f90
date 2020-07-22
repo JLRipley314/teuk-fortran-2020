@@ -113,7 +113,7 @@ module mod_ghp
                   R(i)*f%DR(i,j,m_ang) &
                +  (f%falloff)*(f%level(i,j,m_ang)) &
                ) &
-            +  R(i)*(ci*bhs*m_ang)*(f%level(i,j,m_ang)) &
+            +  R(i)*(ci*m_ang*bhs)*(f%level(i,j,m_ang)) &
             ) &
           - R(i)*(p*ep_0(i,j) + q*conjg(ep_0(i,j)))*(f%level(i,j,m_ang))
       end do

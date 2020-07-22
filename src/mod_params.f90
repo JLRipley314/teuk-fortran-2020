@@ -8,7 +8,7 @@ implicit none
    character(*), parameter :: run_type = 'basic_run'
    character(*), parameter :: computer = 'home'
    real(rp), parameter :: black_hole_mass = 0.5_rp
-   real(rp), parameter :: black_hole_spin = 0.35_rp
+   real(rp), parameter :: black_hole_spin = 0.0_rp
    real(rp), parameter :: compactification_length = 1.0_rp
    real(rp), parameter :: evolve_time = 30.0_rp
    integer(ip), parameter :: num_saved_times = 100_ip
@@ -36,8 +36,8 @@ implicit none
    character(*), parameter :: num_nodes = '1'
    character(*), parameter :: num_tasks_per_node = '1'
    integer(ip), parameter :: lmax = 11_ip
-   real(rp), parameter :: horizon = 0.8570714214271424_rp
-   real(rp), parameter :: R_max = 1.1667639067172042_rp
+   real(rp), parameter :: horizon = 1.0_rp
+   real(rp), parameter :: R_max = 1.0_rp
    integer(ip), parameter :: lmin = 2_ip
    integer(ip), parameter :: ny = 24_ip
    real(rp), parameter :: dt = 0.003472222222222222_rp
@@ -47,8 +47,8 @@ implicit none
    integer(ip), parameter :: min_m = -2_ip
    integer(ip), parameter :: max_s = 2_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Tue_15_24_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_lpm2_lnm2_pm2'
-   character(*), parameter :: output_dir = 'output/Tue_15_24_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_lpm2_lnm2_pm2'
-   character(*), parameter :: bin_name = 'Tue_15_24_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_lpm2_lnm2_pm2.run'
-   character(*), parameter :: tables_dir = 'output/Tue_15_24_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_lpm2_lnm2_pm2/tables'
+   character(*), parameter :: output_stem = 'Tue_21_52_bhm0.5_bhs0.0_nx48_ny24_nl12_s-2_lpm2_lnm2_pm2'
+   character(*), parameter :: output_dir = 'output/Tue_21_52_bhm0.5_bhs0.0_nx48_ny24_nl12_s-2_lpm2_lnm2_pm2'
+   character(*), parameter :: bin_name = 'Tue_21_52_bhm0.5_bhs0.0_nx48_ny24_nl12_s-2_lpm2_lnm2_pm2.run'
+   character(*), parameter :: tables_dir = 'output/Tue_21_52_bhm0.5_bhs0.0_nx48_ny24_nl12_s-2_lpm2_lnm2_pm2/tables'
 end module mod_params
