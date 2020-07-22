@@ -13,8 +13,7 @@ module mod_metric_recon
    use mod_params,   only: &
       dt, nx, ny, min_m, max_m, &
       cl=>compactification_length, &
-      bhm=>black_hole_mass, &
-      bhs=>black_hole_spin
+      bhm=>black_hole_mass
 
 !=============================================================================
    implicit none

@@ -24,13 +24,17 @@ module mod_bkgrd_np
    use mod_cheb, only: Rvec=>R
    use mod_swal, only: cyvec=>cy, syvec=>sy
 
+!-----------------------------------------------------------------------------
    implicit none
-!-----------------------------------------------------------------------------
-! all variables are public
-!-----------------------------------------------------------------------------
-   complex(rp), dimension(nx,ny), protected :: &
+   private
+
+   public :: bkgrd_np_init
+
+   complex(rp), dimension(nx,ny), public, protected :: &
       mu_0, ta_0, pi_0, rh_0, ep_0, &
       psi2_0
+
+   complex(rp), parameter :: IM = (0.0_rp, 1.0_rp) 
 !-----------------------------------------------------------------------------
 contains
 !-----------------------------------------------------------------------------
@@ -41,84 +45,37 @@ contains
 
       y_loop: do j=1,ny
       x_loop: do i=1,nx
+
          r = Rvec(i)
          cy = cyvec(j)
          sy = syvec(j)
       !----------------------------
-         mu_0(i,j) = cmplx( &
-            -(cl**2/(cl**4 + bhs**2*cy**2*R**2)) &
-            , &
-            -((bhs*cy*R)/(cl**4 + bhs**2*cy**2*R**2)) &
-            , & 
-            kind=rp)
+         mu_0(i,j) = &
+            1.0_rp / (-(cl**2) + IM*bhs*R*cy)
       !----------------------------
-         ta_0(i,j) = cmplx( &
-            -( &
-               (sqrt(2.0_rp)*bhs**2*cy*cl**2*R*sy) &
-            /  &
-               (cl**4 + bhs**2*cy**2*R**2)**2 &
-            ) &
-            , &
-            ( &
-               bhs*sy*(4.0_rp*cl**4 + bhs**2*R**2*(-1.0_rp - 3.0_rp*cy**2 + sy**2)) &
-            )/( &
-               sqrt(2.0_rp)*(2.0_rp*cl**4 + bhs**2*R**2*(1.0_rp + cy**2 - sy**2))**2 &
-            ) &
-            ,&
-            kind=rp)
+         ta_0(i,j) = &
+            (IM*bhs*sy/sqrt(2.0_rp)) / ((cl**2 - IM*bhs*R*cy)**2)
       !----------------------------
-         pi_0(i,j) = cmplx( &
-            0.0_rp &
-            , &
-            -((bhs*sy)/(sqrt(2.0_rp)*(cl**4 + bhs**2*cy**2*R**2))) &
-            , &
-            kind=rp)
+         pi_0(i,j) = &
+         -  (IM*bhs*sy/sqrt(2.0_rp)) / (cl**4 + (bhs*cy*R)**2)
       !----------------------------
-         rh_0(i,j) = cmplx( &
-            ( &
-               -2.0_rp*(cl**6 - 2.0_rp*cl**4*bhm*R + bhs**2*cl**2*R**2) &
+         rh_0(i,j) = &
+         -  0.5_rp*( &
+               cl**4 - 2.0_rp*(cl**2)*bhm*R + (bhs*R)**2 &
             )/( &
-               2.0_rp*cl**4 + bhs**2*R**2*(1.0_rp + cy**2 - sy**2) &
-            )**2 &
-            , & 
-            ( &
-               -2.0_rp*bhs*cy*R*(cl**4 - 2.0_rp*cl**2*bhm*R + bhs**2*R**2) &
-            )/( &
-               2.0_rp*cl**4 + bhs**2*R**2*(1.0_rp + cy**2 - sy**2) &
-            )**2 &
-            , &
-            kind=rp)
+               ((cl**2 - IM*bhs*R*cy)**2)*(cl**2 + IM*bhs*R*cy) &
+            )
       !----------------------------
-         ep_0(i,j) = cmplx( &
-            ( &
-               2.0_rp*cl**4*bhm + bhs**2*cl**2*R*(-1.0_rp + cy**2 - sy**2) &
-            +  bhs**2*bhm*R**2*(-1.0_rp - cy**2 + sy**2) &
+         ep_0(i,j) = &
+            0.5_rp*( &
+               (cl**2)*bhm - (bhs**2)*R - IM*bhs*((cl**2)-bhm*R)*cy &
             )/( &
-               2.0_rp*cl**4 + bhs**2*R**2*(1.0_rp + cy**2 - sy**2) &
-            )**2 &
-            , &
-            ( &
-               -2.0_rp*bhs*cy*(cl**4 - 2.0_rp*cl**2*bhm*R + bhs**2*R**2) &
-            )/( &
-               2.0_rp*cl**4 + bhs**2*R**2*(1.0_rp + cy**2 - sy**2) &
-            )**2 &
-            , &
-            kind=rp)
+               ((cl*2 - IM*bhs*R*cy)**2)*(cl**2 + IM*bhs*R*cy) &
+            )
       !----------------------------
-         psi2_0(i,j) = cmplx( &
-            ( &
-               4.0_rp*cl**2*bhm*(-2.0_rp*cl**4 + 3.0_rp*bhs**2*R**2*(1.0_rp + cy**2 - sy**2)) &
-            )/( &
-               2.0_rp*cl**4 + bhs**2*R**2*(1.0_rp + cy**2 - sy**2) &
-            )**3 &
-            , &
-            ( &
-               2.0_rp*bhs*cy*bhm*R*(-12.0_rp*cl**4 + bhs**2*R**2*(3.0_rp + cy**2 - 3.0_rp*sy**2)) &
-            )/( &
-               2.0_rp*cl**4 + bhs**2*R**2*(1.0_rp + cy**2 - sy**2) &
-            )**3 &
-            , &
-            kind=rp)
+         psi2_0(i,j) = &
+         -  bhm / ((cl**2 - IM*bhs*R*cy)**3)
+
       end do x_loop
       end do y_loop
 
