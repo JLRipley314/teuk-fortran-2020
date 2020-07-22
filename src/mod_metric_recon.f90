@@ -35,9 +35,9 @@ module mod_metric_recon
       integer(ip),  intent(in) :: m_ang
       character(*), intent(in) :: fname
       integer(ip),  intent(in) :: falloff
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)    :: level
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: level_DR
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: kl
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: level
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: level_DR
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: kl
 
       integer(ip) :: i,j
 
@@ -47,8 +47,8 @@ module mod_metric_recon
             do j=1,ny
             do i=1,nx
                kl(i,j,m_ang) = &
-               -  R(i)*4.0_rp*mu_0(i,j)*level(i,j,m_ang) &
-               -  R(i)*ta_0(i,j)       *(psi4_f%level(i,j,m_ang)) &
+               -  4.0_rp*R(i)*mu_0(i,j)*level(i,j,m_ang) &
+               -         R(i)*ta_0(i,j)*(psi4_f%level(i,j,m_ang)) &
                +                        (psi4_f%edth(i,j,m_ang))
             end do
             end do
@@ -66,8 +66,8 @@ module mod_metric_recon
             do j=1,ny
             do i=1,nx
                kl(i,j,m_ang) = &
-               -  R(i)*3.0_rp*mu_0(i,j)*level(i,j,m_ang) &
-               -  R(i)*2.0_rp*ta_0(i,j)*(psi3%level(i,j,m_ang)) &
+               -  3.0_rp*R(i)*mu_0(i,j)*level(i,j,m_ang) &
+               -  2.0_rp*R(i)*ta_0(i,j)*(psi3%level(i,j,m_ang)) &
                +                        (psi3%edth(i,j,m_ang))
             end do
             end do
@@ -77,7 +77,7 @@ module mod_metric_recon
             do i=1,nx
                kl(i,j,m_ang) = & 
                   R(i)*(mu_0(i,j)-conjg(mu_0(i,j)))*level(i,j,m_ang) &
-               -       2.0_rp                      *(la%level(i,j,m_ang))
+               -                             2.0_rp*(la%level(i,j,m_ang))
             end do
             end do
          !--------------------------------------------------------------------
@@ -97,8 +97,8 @@ module mod_metric_recon
             do i=1,nx
                kl(i,j,m_ang) = &
                -  R(i)*conjg(mu_0(i,j))*level(i,j,m_ang) &
-               -       2.0_rp          *(pi%level(i,j,m_ang)) &
-               -  R(i)*ta_0(i,j)       *(hmbmb%level(i,j,m_ang)) 
+               -                 2.0_rp*(pi%level(i,j,m_ang)) &
+               -         R(i)*ta_0(i,j)*(hmbmb%level(i,j,m_ang)) 
             end do
             end do
          !--------------------------------------------------------------------
@@ -107,20 +107,20 @@ module mod_metric_recon
             do i=1,nx
                kl(i,j,m_ang) = &
                -       R(i)*conjg(mu_0(i,j))*level(i,j,m_ang) &
-               -       R(i)*mu_0(i,j)       *(hlmb%edth(i,j,m_ang)) &
+               -              R(i)*mu_0(i,j)*(hlmb%edth(i,j,m_ang)) &
                -  (R(i)**2)*mu_0(i,j)*(conjg(pi_0(i,j))+2.0_rp*ta_0(i,j)) &
                                             *(hlmb%level(i,j,m_ang)) &
-               -            2.0_rp          *(psi2%level(i,j,m_ang)) &
-               -       R(i)*(pi_0(i,j))     *conjg(hmbmb%edth( i,j,-m_ang)) &
-               +  (R(i)**2)*(pi_0(i,j)**2)  *conjg(hmbmb%level(i,j,-m_ang)) &
-               +       R(i)*mu_0(i,j)       *conjg(hlmb%edth(i,j,-m_ang))  &
+               -                      2.0_rp*(psi2%level(i,j,m_ang)) &
+               -            R(i)*(pi_0(i,j))*conjg(hmbmb%edth( i,j,-m_ang)) &
+               +    (R(i)**2)*(pi_0(i,j)**2)*conjg(hmbmb%level(i,j,-m_ang)) &
+               +              R(i)*mu_0(i,j)*conjg(hlmb%edth(i,j,-m_ang))  &
                -  (R(i)**2)*3.0_rp*mu_0(i,j)*pi_0(i,j) &
                                             *conjg(hlmb%level(i,j,-m_ang)) &
                +  (R(i)**2)*2.0_rp*conjg(mu_0(i,j))*pi_0(i,j) &
                                             *conjg(hlmb%level(i,j,-m_ang)) &
                -  (R(i)**2)*2.0_rp*mu_0(i,j)*conjg(ta_0(i,j)) &
                                             *conjg(hlmb%level(i,j,-m_ang)) &
-               -            2.0_rp          *(pi%edth(i,j,m_ang)) &
+               -                      2.0_rp*(pi%edth(i,j,m_ang)) &
                -       R(i)*2.0_rp*conjg(pi_0(i,j)) &
                                             *(pi%level(i,j,m_ang)) &
                -       R(i)*2.0_rp*pi_0(i,j)*conjg(pi%level(i,j,-m_ang))
@@ -134,14 +134,12 @@ module mod_metric_recon
       !-----------------------------------------------------------------------
       call compute_DR(m_ang, level, level_DR)
 
-      do j=1,ny
       do i=1,nx
-         kl(i,j,m_ang) = kl(i,j,m_ang) &
-         -  ((R(i)/cl)**2)*level_DR(i,j,m_ang) &
-         -  (falloff*R(i)/(cl**2))*level(i,j,m_ang)
+         kl(i,:,m_ang) =           kl(i,:,m_ang) &
+         -          ((R(i)/cl)**2)*level_DR(i,:,m_ang) &
+         -  (falloff*R(i)/(cl**2))*level(i,:,m_ang)
       
-         kl(i,j,m_ang) = kl(i,j,m_ang) / (2.0_rp+(4.0_rp*bhm*R(i)/(cl**2)))
-      end do
+         kl(i,:,m_ang) = kl(i,:,m_ang) / (2.0_rp+(4.0_rp*bhm*R(i)/(cl**2)))
       end do
 
    end subroutine set_k
@@ -222,6 +220,14 @@ module mod_metric_recon
       select_field: select case (fname)
          !--------------------------------------------------------------------
          case ("bianchi3_res")
+
+            call set_level(5_ip,m_ang,psi4_f)
+            call set_level(5_ip,m_ang,psi3)
+            call set_level(5_ip,m_ang,la)
+
+            call set_thorn(     5_ip,m_ang,psi4_f)
+            call set_edth_prime(5_ip,m_ang,psi3)
+
             do j=1,ny
             do i=1,nx
                bianchi3_res%np1(i,j,m_ang) = &
@@ -337,14 +343,6 @@ module mod_metric_recon
    subroutine metric_recon_indep_res(m_ang)
       integer(ip), intent(in) :: m_ang
       !-----------------------------------------------------------------------
-      call set_level(5_ip,m_ang,psi4_f)
-      call set_level(5_ip,m_ang,psi3)
-
-      call set_level(5_ip,m_ang,la)
-
-      call set_thorn(     5_ip,m_ang,psi4_f)
-      call set_edth_prime(5_ip,m_ang,psi3)
-
       call set_indep_res(m_ang,"bianchi3_res")
       !-----------------------------------------------------------------------
       call set_indep_res(m_ang,"bianchi2_res")

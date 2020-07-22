@@ -1,6 +1,11 @@
 !
 ! Geroch-Held-Penrose (GHP) operators
 !
+! edth:        rescaled by R
+! edth_prime:  rescaled by R
+! thorn:       rescaled by R
+! thorn_prime: not rescaled (is already nonzero at future null infinity)
+!
 module mod_ghp
 !=============================================================================
    use mod_prec

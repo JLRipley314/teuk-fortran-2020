@@ -1,5 +1,16 @@
 !
-! Newman-Penrose fields for the background manifold
+! Newman-Penrose fields of definite spin and boost weight 
+! for the background Kerr spacetime.
+! The fields have been rescaled by the highest power of R that allows
+! them to remain regular and nonzero from the black hole horizon to
+! future null infinity.
+!
+! rh_0:   rescaled by R
+! mu_0:   rescaled by R
+! ta_0:   rescaled by R^2
+! pi_0:   rescaled by R^2
+! ep_0:   rescaled by R^2
+! psi2_0: rescaled by R^3
 !
 module mod_bkgrd_np
 !-----------------------------------------------------------------------------
