@@ -119,13 +119,11 @@ contains
       complex(rp), dimension(nx,0:lmax,min_m:max_m), intent(inout) :: coefs
       complex(rp), dimension(nx,    ny,min_m:max_m), intent(out)   :: vals_lap
 
-      integer(ip) :: lmin, k
+      integer(ip) :: k
 
       call swal_real_to_coef(spin,m_ang,vals,coefs) 
 
-      lmin = compute_lmin(spin,m_ang)
-
-      do k=lmin,lmax
+      do k=0,lmax
          coefs(:,k,m_ang) = &
          - real(k-spin,rp)*real(k+spin+1.0_rp,rp)*coefs(:,k,m_ang)
       end do
@@ -139,13 +137,11 @@ contains
       complex(rp), dimension(nx,    ny,min_m:max_m), intent(in)    :: vals
       complex(rp), dimension(nx,0:lmax,min_m:max_m), intent(inout) :: coefs
       complex(rp), dimension(nx,    ny,min_m:max_m), intent(out)   :: vals_lowered 
-
       integer(ip) :: lmin, k
-
 
       call swal_real_to_coef(spin,m_ang,vals,coefs) 
 
-      lmin = compute_lmin(spin-1,m_ang)
+      lmin = max(-spin,spin-1_ip)
 
       do k=lmin,lmax
          coefs(:,k,m_ang) = &
@@ -166,13 +162,7 @@ contains
 
       call swal_real_to_coef(spin,m_ang,vals,coefs) 
 
-      lmin = compute_lmin(spin+1,m_ang)
-
-      if (lmin>=1) then
-         do k=0,lmin-1
-            coefs(:,k,m_ang) = 0.0_rp
-         end do
-      end if
+      lmin = max(spin,-spin-1_ip)
 
       do k=lmin,lmax
          coefs(:,k,m_ang) = &
