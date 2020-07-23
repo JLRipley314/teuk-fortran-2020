@@ -6,7 +6,7 @@ module mod_metric_recon
 !=============================================================================
    use mod_prec
 
-   use mod_swal, only: swal_test_to_from
+   use mod_swal, only: swal_high_pass_filter
 
    use mod_cheb,     only: R, compute_DR
    use mod_field,    only: field, set_field, set_level
@@ -230,8 +230,6 @@ module mod_metric_recon
             call set_thorn(     5_ip,m_ang,psi4_f)
             call set_edth_prime(5_ip,m_ang,psi3)
    
-            call swal_test_to_from(psi3%spin,m_ang,psi3%np1,psi3%coefs,psi3%level)
-
             do j=1,ny
             do i=1,nx
                bianchi3_res%np1(i,j,m_ang) = &
@@ -242,18 +240,44 @@ module mod_metric_recon
                -  3.0_rp*(R(i)**2)*psi2_0(i,j)*la%level(i,j,m_ang) 
             end do
             end do
+
+            call swal_high_pass_filter(bianchi3_res%spin,m_ang,bianchi3_res%np1,bianchi3_res%coefs)
          !--------------------------------------------------------------------
          case ("bianchi2_res")
+
+            call set_level(5_ip,m_ang,pi)
+
+            call set_level(5_ip,m_ang,psi2)
+            call set_level(5_ip,m_ang,psi3)
+
+            call set_level(5_ip,m_ang,hlmb)
+            call set_level(5_ip,m_ang,hmbmb)
+
+            call set_thorn(     5_ip,m_ang,psi3)
+            call set_edth_prime(5_ip,m_ang,psi2)
+
             do j=1,ny
             do i=1,nx
-               bianchi2_res%np1(i,j,m_ang) = 0.0_rp 
+               bianchi2_res%np1(i,j,m_ang) = &
+                  psi2_0(i,j)*( &
+                  -  3.0_rp*(R(i)**3)*mu_0(i,j)*hlmb%level(i,j,m_ang) &
+                  -  1.5_rp*(R(i)**3)*ta_0(i,j)*hmbmb%level(i,j,m_ang) &
+                  -            3.0_rp*(R(i)**2)*pi%level(i,j,m_ang) &
+                  ) &
+               -                        R(i)*psi2%edth_prime(i,j,m_ang) &
+               -  3.0_rp*(R(i)**2)*pi_0(i,j)*psi2%level(i,j,m_ang) &
+               +                             psi3%thorn(i,j,m_ang) &
+               -            2.0_rp*rh_0(i,j)*psi3%level(i,j,m_ang)
             end do
             end do
          !--------------------------------------------------------------------
          case ("hll_res")
+
+            call set_level(5_ip, m_ang,muhll)
+
             do j=1,ny
             do i=1,nx
-               hll_res%np1(i,j,m_ang) = 0.0_rp 
+               hll_res%np1(i,j,m_ang) = muhll%level(i,j,m_ang) / mu_0(i,j)
             end do
             end do
          !-------------------------------------------------------------------- 
@@ -350,6 +374,8 @@ module mod_metric_recon
       call set_indep_res(m_ang,"bianchi3_res")
       !-----------------------------------------------------------------------
       call set_indep_res(m_ang,"bianchi2_res")
+      !-----------------------------------------------------------------------
+      call set_indep_res(m_ang,"hll_res")
 
    end subroutine metric_recon_indep_res
 !=============================================================================

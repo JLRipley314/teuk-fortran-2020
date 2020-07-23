@@ -58,9 +58,9 @@ clean_memory: block
 !-----------------------------------------------------------------------------
    call set_field(name="res_q",spin=-2_ip,boost=-2_ip,falloff=2_rp,f=q_res)
 
-   call set_field(name="bianchi3_res",spin=-2_ip,boost=2_ip,falloff=2_rp,f=bianchi3_res)
-   call set_field(name="bianchi2_res",spin=-2_ip,boost=2_ip,falloff=2_rp,f=bianchi2_res)
-   call set_field(name="hll_res",     spin=-2_ip,boost=2_ip,falloff=2_rp,f=hll_res)
+   call set_field(name="bianchi3_res",spin=-2_ip,boost=-1_ip,falloff=2_rp,f=bianchi3_res)
+   call set_field(name="bianchi2_res",spin=-1_ip,boost= 0_ip,falloff=2_rp,f=bianchi2_res)
+   call set_field(name="hll_res",     spin= 0_ip,boost= 2_ip,falloff=2_rp,f=hll_res)
 !-----------------------------------------------------------------------------
 ! initialize chebyshev diff matrices, swal matrices, etc.
 !-----------------------------------------------------------------------------
@@ -102,23 +102,25 @@ clean_memory: block
       call metric_recon_time_step(pm_ang)
       !-----------------------------------------------------------------------
       if (mod(t_step,t_step_save)==0) then
-
+         !--------------------------------------------------------------------
          write (stdout,*) time / black_hole_mass
          flush (stdout)
-
+         !--------------------------------------------------------------------
          call compute_q_res(psi4_q,psi4_f,q_res)
 
          call metric_recon_indep_res(pm_ang)
-
-         call write_csv(time,pm_ang,psi4_p)
-         call write_csv(time,pm_ang,psi4_q)
+         !--------------------------------------------------------------------
          call write_csv(time,pm_ang,psi4_f)
 
          call write_csv(time,pm_ang,q_res)
 
          call write_csv(time,pm_ang,psi3)
-         call write_csv(time,pm_ang,la)
+         call write_csv(time,pm_ang,psi2)
+
          call write_csv(time,pm_ang,bianchi3_res)
+         call write_csv(time,pm_ang,bianchi2_res)
+         call write_csv(time,pm_ang,hll_res)
+         !--------------------------------------------------------------------
       end if
       !-----------------------------------------------------------------------
       call shift_time_step(psi4_p)

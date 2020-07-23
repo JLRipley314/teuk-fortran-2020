@@ -19,7 +19,9 @@ module mod_swal
    real(rp), dimension(ny), protected, public :: Y, cy, sy
 
    ! subroutines 
-   public :: swal_init, swal_laplacian, swal_lower, swal_raise, swal_filter
+   public :: swal_init, swal_laplacian, swal_lower, swal_raise
+
+   public :: swal_filter, swal_high_pass_filter
 
    public :: swal_test_orthonormal, swal_test_to_from
 
@@ -193,6 +195,26 @@ contains
 
       call swal_coef_to_real(spin,m_ang,coefs,vals) 
    end subroutine swal_filter
+!=============================================================================
+! High pass filter. To see if we are getting converging in high l modes 
+!=============================================================================
+   pure subroutine swal_high_pass_filter(spin,m_ang,vals,coefs)
+      integer(ip), intent(in) :: spin
+      integer(ip), intent(in) :: m_ang
+      complex(rp), dimension(nx,    ny,min_m:max_m), intent(inout) :: vals
+      complex(rp), dimension(nx,0:lmax,min_m:max_m), intent(inout) :: coefs
+
+      integer(ip) :: k
+
+      call swal_real_to_coef(spin,m_ang,vals,coefs) 
+
+      do k=0,2
+         coefs(:,k,m_ang) = 0.0_rp 
+      end do
+
+      call swal_coef_to_real(spin,m_ang,coefs,vals) 
+
+   end subroutine swal_high_pass_filter
 !=============================================================================
 ! test that the swal are orthogonal
 !=============================================================================
