@@ -41,7 +41,7 @@ def save_Gauss_quad_vals_swaL(
 
    roots, weights= roots_weights_Legendre(gauss_pts)
 
-   cy = [-pt for pt in roots]
+   cy = [-pt                                   for pt in roots]
    sy = [mp.sqrt(mp.fadd(1,-pt)*mp.fadd(1,pt)) for pt in roots]
 
    with open(dir_name+'/cos.txt','w') as f:
