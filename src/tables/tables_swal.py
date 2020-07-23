@@ -41,6 +41,17 @@ def save_Gauss_quad_vals_swaL(
 
    roots, weights= roots_weights_Legendre(gauss_pts)
 
+   cy = [-pt for pt in roots]
+   sy = [mp.sqrt(mp.fadd(1,-pt)*mp.fadd(1,pt)) for pt in roots]
+
+   with open(dir_name+'/cos.txt','w') as f:
+      for i in range(len(cy)):
+         f.write(mp.nstr(cy[i],32)+'\n')
+
+   with open(dir_name+'/sin.txt','w') as f:
+      for i in range(len(sy)):
+         f.write(mp.nstr(sy[i],32)+'\n')
+
    swaL_vals= [ 
       [swaL(spin,m_ang,l_ang,root) for l_ang in range(0,nl)]
       for root in roots 

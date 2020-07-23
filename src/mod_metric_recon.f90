@@ -5,6 +5,9 @@
 module mod_metric_recon
 !=============================================================================
    use mod_prec
+
+   use mod_swal, only: swal_test_to_from
+
    use mod_cheb,     only: R, compute_DR
    use mod_field,    only: field, set_field, set_level
    use mod_ghp,      only: set_edth, set_edth_prime, set_thorn, set_thorn_prime
@@ -46,8 +49,8 @@ module mod_metric_recon
             do j=1,ny
             do i=1,nx
                kl(i,j,m_ang) = &
-               -  4.0_rp*R(i)*mu_0(i,j)*level(i,j,m_ang) &
-               -         R(i)*ta_0(i,j)*(psi4_f%level(i,j,m_ang)) &
+!               -  4.0_rp*R(i)*mu_0(i,j)*level(i,j,m_ang) &
+!               -         R(i)*ta_0(i,j)*(psi4_f%level(i,j,m_ang)) &
                +                        (psi4_f%edth(i,j,m_ang))
             end do
             end do
@@ -226,15 +229,17 @@ module mod_metric_recon
 
             call set_thorn(     5_ip,m_ang,psi4_f)
             call set_edth_prime(5_ip,m_ang,psi3)
+   
+            call swal_test_to_from(psi3%spin,m_ang,psi3%np1,psi3%coefs,psi3%level)
 
             do j=1,ny
             do i=1,nx
-               bianchi3_res%np1(i,j,m_ang) = &
-                                          R(i)*psi3%edth_prime(i,j,m_ang) &
-               +    4.0_rp*(R(i)**2)*pi_0(i,j)*psi3%level(i,j,m_ang)   &
-               -                               psi4_f%thorn(i,j,m_ang) &
-               +                     rh_0(i,j)*psi4_f%level(i,j,m_ang) &
-               -  3.0_rp*(R(i)**2)*psi2_0(i,j)*la%level(i,j,m_ang) 
+               bianchi3_res%np1(i,j,m_ang) = psi3%level(i,j,m_ang) !&
+!                                          R(i)*psi3%edth_prime(i,j,m_ang) &
+!               +    4.0_rp*(R(i)**2)*pi_0(i,j)*psi3%level(i,j,m_ang)   &
+!               -                               psi4_f%thorn(i,j,m_ang) &
+!               +                     rh_0(i,j)*psi4_f%level(i,j,m_ang) &
+!               -  3.0_rp*(R(i)**2)*psi2_0(i,j)*la%level(i,j,m_ang) 
             end do
             end do
          !--------------------------------------------------------------------

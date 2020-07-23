@@ -12,7 +12,7 @@ program main
    use mod_params,       only: nt, dt, t_step_save, black_hole_mass, pm_ang
    use mod_field,        only: field, set_field, shift_time_step
    use mod_cheb,         only: cheb_init, cheb_test
-   use mod_swal,         only: swal_init, swal_test
+   use mod_swal,         only: swal_init, swal_test_orthonormal
    use mod_io,           only: write_csv
    use mod_teuk,         only: psi4_f, psi4_p, psi4_q, &
                                teuk_init, teuk_time_step, compute_q_res
@@ -56,7 +56,7 @@ clean_memory: block
 !-----------------------------------------------------------------------------
 ! independent residual fields
 !-----------------------------------------------------------------------------
-   call set_field(name="q_res",spin=-2_ip,boost=-2_ip,falloff=2_rp,f=q_res)
+   call set_field(name="res_q",spin=-2_ip,boost=-2_ip,falloff=2_rp,f=q_res)
 
    call set_field(name="bianchi3_res",spin=-2_ip,boost=2_ip,falloff=2_rp,f=bianchi3_res)
    call set_field(name="bianchi2_res",spin=-2_ip,boost=2_ip,falloff=2_rp,f=bianchi2_res)
@@ -90,8 +90,7 @@ clean_memory: block
    call write_csv(time,pm_ang,bianchi3_res)
 !-----------------------------------------------------------------------------
 !   write (*,*) "Performing tests"
-!   call cheb_test()
-!   stop
+!   call swal_test_orthonormal()
 !-----------------------------------------------------------------------------
    write (stdout,*) "Beginning time evolution"
 !-----------------------------------------------------------------------------

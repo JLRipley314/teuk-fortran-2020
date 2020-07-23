@@ -19,7 +19,9 @@ module mod_swal
    real(rp), dimension(ny), protected, public :: Y, cy, sy
 
    ! subroutines 
-   public :: swal_init, swal_laplacian, swal_lower, swal_raise, swal_filter, swal_test
+   public :: swal_init, swal_laplacian, swal_lower, swal_raise, swal_filter
+
+   public :: swal_test_orthonormal, swal_test_to_from
 
    ! weights for Gaussian integration 
    real(rp), dimension(ny) :: weights
@@ -43,8 +45,8 @@ contains
       ! weights for Gaussian quadrature
       call set_arr('roots_legendre.txt', ny, Y)
 
-      cy = cos(Y)
-      sy = sin(Y)
+      call set_arr('cos.txt', ny, cy)
+      call set_arr('sin.txt', ny, sy)
 
       ! weights for Gaussian quadrature
       call set_arr('weights_legendre.txt', ny, weights)
@@ -68,7 +70,7 @@ contains
    end subroutine swal_init
 !=============================================================================
 ! Gaussian quadrature.
-! Integrate against complex conjugate cc[s_Y^m_l]=(-1)^{m+2} {-s}_Y^{-m}_l
+! Integrate against complex conjugate cc[s_Y^m_l]=(-1)^{m+s} {-s}_Y^{-m}_l
 !=============================================================================
    pure subroutine swal_real_to_coef(spin,m_ang,vals,coefs)
       integer(ip), intent(in) :: spin
@@ -194,25 +196,40 @@ contains
 !=============================================================================
 ! test that the swal are orthogonal
 !=============================================================================
-   subroutine swal_test()
+   subroutine swal_test_orthonormal()
 
       integer(ip) :: s, m, l1, l2, j
       real(rp)    :: integral
 
-      do s=-2,2
+      do s=min_s,max_s
       do m=min_m,max_m
       do l1=0,lmax
       do l2=0,lmax
          integral = 0.0_rp
          do j=1,ny 
-            integral = integral + weights(j)*swal(j,l1,m,s)*(((-1.0_rp)**(m+s))*swal(j,l2,-m,-s))
+            integral = integral + weights(j)*swal(j,l1,m,s)*swal(j,l2,m,s)!*(((-1.0_rp)**(m+s))*swal(j,l2,-m,-s))
          end do
-         write (*,*) s,m,l1,l2,integral
+         if (abs(integral)>1e-14) then
+            write (*,*) s,m,l1,l2,integral
+         end if
       end do 
       end do 
       end do 
       end do 
 
-   end subroutine swal_test
+   end subroutine swal_test_orthonormal
+!=============================================================================
+   subroutine swal_test_to_from(spin,m_ang,vals_in,coefs,vals_out)
+      integer(ip), intent(in) :: spin, m_ang
+      complex(rp), dimension(nx,ny,min_m:max_m),     intent(in)    :: vals_in
+      complex(rp), dimension(nx,0:lmax,min_m:max_m), intent(inout) :: coefs
+      complex(rp), dimension(nx,ny,min_m:max_m),     intent(out)   :: vals_out
+
+      write(*,*) "swal_test_to_from. spin: ", spin, ", m_ang: ", m_ang
+
+      call swal_real_to_coef(spin,m_ang,vals_in,coefs)
+      call swal_coef_to_real(spin,m_ang,coefs,vals_out)
+
+   end subroutine swal_test_to_from
 !=============================================================================
 end module mod_swal
