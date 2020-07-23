@@ -41,8 +41,6 @@ def save_Gauss_quad_vals_swaL(
 
    roots, weights= roots_weights_Legendre(gauss_pts)
 
-   lmin= max(abs(m_ang),abs(spin))
-
    swaL_vals= [ 
       [swaL(spin,m_ang,l_ang,root) for l_ang in range(0,nl)]
       for root in roots 

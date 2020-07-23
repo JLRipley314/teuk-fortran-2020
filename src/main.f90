@@ -12,7 +12,7 @@ program main
    use mod_params,       only: nt, dt, t_step_save, black_hole_mass, pm_ang
    use mod_field,        only: field, set_field, shift_time_step
    use mod_cheb,         only: cheb_init, cheb_test
-   use mod_swal,         only: swal_init
+   use mod_swal,         only: swal_init, swal_test
    use mod_io,           only: write_csv
    use mod_teuk,         only: psi4_f, psi4_p, psi4_q, &
                                teuk_init, teuk_time_step, compute_q_res

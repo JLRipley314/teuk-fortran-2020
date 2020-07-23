@@ -19,7 +19,7 @@ module mod_swal
    real(rp), dimension(ny), protected, public :: Y, cy, sy
 
    ! subroutines 
-   public :: swal_init, swal_laplacian, swal_lower, swal_raise, swal_filter, swal_write
+   public :: swal_init, swal_laplacian, swal_lower, swal_raise, swal_filter, swal_test
 
    ! weights for Gaussian integration 
    real(rp), dimension(ny) :: weights
@@ -37,7 +37,8 @@ contains
 !=============================================================================
    subroutine swal_init()
       integer(ip) :: m_ang = 0
-      character(:), allocatable :: mstr
+      integer(ip) :: spin  = 0
+      character(:), allocatable :: mstr, sstr
 
       ! weights for Gaussian quadrature
       call set_arr('roots_legendre.txt', ny, Y)
@@ -49,23 +50,25 @@ contains
       call set_arr('weights_legendre.txt', ny, weights)
 
       ! spin-weighted spherical associated Legendre polynomials 
-      do m_ang=min_m,max_m
+      do spin=min_s,max_s
 
-         ! inelegant int to str conversion
-         mstr = '     '
-         write (mstr,'(i5)') m_ang
-         mstr = trim(adjustl(mstr))
+         sstr = '     '
+         write (sstr,'(i5)') spin
+         sstr = trim(adjustl(sstr))
 
-         call set_arr('s_2_m_' //mstr//'.txt', ny, nl, swal(:,:,m_ang,  2))
-         call set_arr('s_1_m_' //mstr//'.txt', ny, nl, swal(:,:,m_ang,  1))
-         call set_arr('s_0_m_' //mstr//'.txt', ny, nl, swal(:,:,m_ang,  0))
-         call set_arr('s_-1_m_'//mstr//'.txt', ny, nl, swal(:,:,m_ang, -1))
-         call set_arr('s_-2_m_'//mstr//'.txt', ny, nl, swal(:,:,m_ang, -2))
-         call set_arr('s_-3_m_'//mstr//'.txt', ny, nl, swal(:,:,m_ang, -3))
+         do m_ang=min_m,max_m
+
+            mstr = '     '
+            write (mstr,'(i5)') m_ang
+            mstr = trim(adjustl(mstr))
+
+            call set_arr('s_'//sstr//'_m_' //mstr//'.txt', ny,nl,swal(:,:,m_ang,spin))
+         end do
       end do
    end subroutine swal_init
 !=============================================================================
-! Gaussian quadrature
+! Gaussian quadrature.
+! Integrate against complex conjugate cc[s_Y^m_l]=(-1)^{m+2} {-s}_Y^{-m}_l
 !=============================================================================
    pure subroutine swal_real_to_coef(spin,m_ang,vals,coefs)
       integer(ip), intent(in) :: spin
@@ -82,7 +85,7 @@ contains
       do j=1,ny
          coefs(:,k,m_ang) =  &
             coefs(:,k,m_ang) &
-         +  (vals(:,j,m_ang) * weights(j) * swal(j,k,m_ang,spin))
+         +  (vals(:,j,m_ang) * weights(j) * ((-1.0_rp)**(spin+m_ang))*swal(j,k,-m_ang,-spin))
       end do
       end do
    end subroutine swal_real_to_coef
@@ -142,22 +145,14 @@ contains
 
       call swal_real_to_coef(spin,m_ang,vals,coefs) 
 
-      lmin = compute_lmin(spin,m_ang)
-!      lmin = compute_lmin(spin-1,m_ang)
-
-!      if (lmin>=1) then
-!         do k=0,lmin-1
-!            coefs(:,k,m_ang) = 0.0_rp
-!         end do
-!      end if
+      lmin = compute_lmin(spin-1,m_ang)
 
       do k=lmin,lmax
-!         coefs(:,k,m_ang) = &
-!         -  sqrt(real(k+spin,rp)*real(k-spin+1.0_rp,rp))*coefs(:,k,m_ang)
+         coefs(:,k,m_ang) = &
+         -  sqrt(real(k+spin,rp)*real(k-spin+1.0_rp,rp))*coefs(:,k,m_ang)
       end do
 
-      call swal_coef_to_real(spin,m_ang,coefs,vals_lowered) 
-      !call swal_coef_to_real(spin-1,m_ang,coefs,vals_lowered) 
+      call swal_coef_to_real(spin-1,m_ang,coefs,vals_lowered) 
    end subroutine swal_lower
 !=============================================================================
    pure subroutine swal_raise(spin,m_ang,vals,coefs,vals_raised)
@@ -207,11 +202,27 @@ contains
       call swal_coef_to_real(spin,m_ang,coefs,vals) 
    end subroutine swal_filter
 !=============================================================================
-   subroutine swal_write()
-      integer(ip) :: j
-      do j=1,ny
-         write (*,*) swal(j,:,0,0)
-      end do
-   end subroutine swal_write
+! test that the swal are orthogonal
+!=============================================================================
+   subroutine swal_test()
+
+      integer(ip) :: s, m, l1, l2, j
+      real(rp)    :: integral
+
+      do s=-2,2
+      do m=min_m,max_m
+      do l1=0,lmax
+      do l2=0,lmax
+         integral = 0.0_rp
+         do j=1,ny 
+            integral = integral + weights(j)*swal(j,l1,m,s)*(((-1.0_rp)**(m+s))*swal(j,l2,-m,-s))
+         end do
+         write (*,*) s,m,l1,l2,integral
+      end do 
+      end do 
+      end do 
+      end do 
+
+   end subroutine swal_test
 !=============================================================================
 end module mod_swal

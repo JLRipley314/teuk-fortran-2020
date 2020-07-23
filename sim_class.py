@@ -96,7 +96,7 @@ class Sim:
       self.max_m=  self.pm_ang
       self.min_m= -self.pm_ang
 #-----------------------------------------------------------------------------
-      self.max_s=  2
+      self.max_s=  3
       self.min_s= -3
 #=============================================================================
    def make_tables_dir(self)->None:
@@ -165,7 +165,7 @@ class Sim:
          raise ValueError('computer= '+self.computer+' not yet supported')
 #=============================================================================
    def make_Gauss_pts(self)->None:
-      for spin in [-3,-2,-1,0,1,2]:
+      for spin in [-3,-2,-1,0,1,2,3]:
          for m_ang in range(-2*self.pm_ang,2*self.pm_ang+1):
             save_Gauss_quad_vals_swaL(self.tables_dir,spin,m_ang,self.nl,self.ny) 
 #=============================================================================
