@@ -113,19 +113,20 @@ module mod_metric_recon
                -  (R(i)**2)*mu_0(i,j)*(conjg(pi_0(i,j))+2.0_rp*ta_0(i,j)) &
                                             *(hlmb%level(i,j,m_ang)) &
                -                      2.0_rp*(psi2%level(i,j,m_ang)) &
+               -                      2.0_rp*(pi%edth(i,j,m_ang)) &
+               -       2.0_rp*R(i)*conjg(pi_0(i,j)) &
+                                            *(pi%level(i,j,m_ang)) &
+
                -            R(i)*(pi_0(i,j))*conjg(hmbmb%edth( i,j,-m_ang)) &
                +    (R(i)**2)*(pi_0(i,j)**2)*conjg(hmbmb%level(i,j,-m_ang)) &
                +              R(i)*mu_0(i,j)*conjg(hlmb%edth(i,j,-m_ang))  &
-               -  (R(i)**2)*3.0_rp*mu_0(i,j)*pi_0(i,j) &
+               +  (R(i)**2)*mu_0(i,j)*( &
+                              -  3.0_rp*pi_0(i,j) &
+                              -  2.0_rp*conjg(ta_0(i,j)) &
+                                           )*conjg(hlmb%level(i,j,-m_ang)) &
+               +  2.0_rp*(R(i)**2)*conjg(mu_0(i,j))*pi_0(i,j) &
                                             *conjg(hlmb%level(i,j,-m_ang)) &
-               +  (R(i)**2)*2.0_rp*conjg(mu_0(i,j))*pi_0(i,j) &
-                                            *conjg(hlmb%level(i,j,-m_ang)) &
-               -  (R(i)**2)*2.0_rp*mu_0(i,j)*conjg(ta_0(i,j)) &
-                                            *conjg(hlmb%level(i,j,-m_ang)) &
-               -                      2.0_rp*(pi%edth(i,j,m_ang)) &
-               -       R(i)*2.0_rp*conjg(pi_0(i,j)) &
-                                            *(pi%level(i,j,m_ang)) &
-               -       R(i)*2.0_rp*pi_0(i,j)*conjg(pi%level(i,j,-m_ang))
+               -       2.0_rp*R(i)*pi_0(i,j)*conjg(pi%level(i,j,-m_ang))
             end do
             end do
          !--------------------------------------------------------------------
@@ -315,13 +316,15 @@ module mod_metric_recon
       call set_level(step,m_ang,psi2)
       call set_level(step,m_ang,hlmb)
 
-      call set_edth( step,m_ang,pi)
-      call set_edth( step,m_ang,hlmb)
+      call set_edth(step,m_ang,pi)
+      call set_edth(step,m_ang,hlmb)
 
-      call set_level(step,-m_ang,hmbmb)
-      call set_edth( step,-m_ang,hmbmb)
-      call set_level(step,-m_ang, hlmb)
       call set_level(step,-m_ang,   pi)
+      call set_level(step,-m_ang, hlmb)
+      call set_level(step,-m_ang,hmbmb)
+
+      call set_edth(step,-m_ang, hlmb)
+      call set_edth(step,-m_ang,hmbmb)
 
       call take_step(step,m_ang,muhll)
       !-----------------------------------------------------------------------

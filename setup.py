@@ -17,8 +17,8 @@ sim.compactification_length= float(1)
 #-----------------------------------------------------------------------------
 ## evolve time: in units of black hole mass
 #-----------------------------------------------------------------------------
-sim.evolve_time= float(20.0)
-sim.num_saved_times= int(100)
+sim.evolve_time= float(100.0)
+sim.num_saved_times= int(500)
 #-----------------------------------------------------------------------------
 ## initial data
 #-----------------------------------------------------------------------------
@@ -41,7 +41,7 @@ assert(sim.pm_ang>=0)
 ## psi_4 is spin -2, psi_0 is spin +2 (code only reconstructs for psi_4) 
 sim.spin= int(-2)
 #-----------------------------------------------------------------------------
-sim.nx= int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
+sim.nx= int(pow(2,3)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
 sim.nl= int(pow(2,4)*pow(3,0)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
 #-----------------------------------------------------------------------------
 ## further diagnostics
