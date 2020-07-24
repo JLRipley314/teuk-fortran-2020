@@ -34,7 +34,7 @@ module mod_bkgrd_np
       mu_0, ta_0, pi_0, rh_0, ep_0, &
       psi2_0
 
-   complex(rp), parameter :: IM = (0.0_rp, 1.0_rp) 
+   complex(rp), parameter :: ZI = (0.0_rp, 1.0_rp) 
 !-----------------------------------------------------------------------------
 contains
 !-----------------------------------------------------------------------------
@@ -51,30 +51,30 @@ contains
          sy = syvec(j)
       !----------------------------
          mu_0(i,j) = &
-            1.0_rp / (-(cl**2) + IM*bhs*R*cy)
+            1.0_rp / (-(cl**2) + ZI*bhs*R*cy)
       !----------------------------
          ta_0(i,j) = &
-            (IM*bhs*sy/sqrt(2.0_rp)) / ((cl**2 - IM*bhs*R*cy)**2)
+            (ZI*bhs*sy/sqrt(2.0_rp)) / ((cl**2 - ZI*bhs*R*cy)**2)
       !----------------------------
          pi_0(i,j) = &
-         -  (IM*bhs*sy/sqrt(2.0_rp)) / (cl**4 + (bhs*cy*R)**2)
+         -  (ZI*bhs*sy/sqrt(2.0_rp)) / (cl**4 + (bhs*cy*R)**2)
       !----------------------------
          rh_0(i,j) = &
          -  0.5_rp*( &
                cl**4 - 2.0_rp*(cl**2)*bhm*R + (bhs*R)**2 &
             )/( &
-               ((cl**2 - IM*bhs*R*cy)**2)*(cl**2 + IM*bhs*R*cy) &
+               ((cl**2 - ZI*bhs*R*cy)**2)*(cl**2 + ZI*bhs*R*cy) &
             )
       !----------------------------
          ep_0(i,j) = &
             0.5_rp*( &
-               (cl**2)*bhm - (bhs**2)*R - IM*bhs*(cl**2-bhm*R)*cy &
+               (cl**2)*bhm - (bhs**2)*R - ZI*bhs*(cl**2-bhm*R)*cy &
             )/( &
-               ((cl**2 - IM*bhs*R*cy)**2)*(cl**2 + IM*bhs*R*cy) &
+               ((cl**2 - ZI*bhs*R*cy)**2)*(cl**2 + ZI*bhs*R*cy) &
             )
       !----------------------------
          psi2_0(i,j) = &
-         -  bhm / ((cl**2 - IM*bhs*R*cy)**3)
+         -  bhm / ((cl**2 - ZI*bhs*R*cy)**3)
 
       end do x_loop
       end do y_loop

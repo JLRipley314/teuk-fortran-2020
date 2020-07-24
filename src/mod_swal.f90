@@ -208,7 +208,7 @@ contains
 
       call swal_real_to_coef(spin,m_ang,vals,coefs) 
 
-      do k=0,2
+      do k=0,8
          coefs(:,k,m_ang) = 0.0_rp 
       end do
 

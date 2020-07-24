@@ -240,8 +240,6 @@ module mod_metric_recon
                -  3.0_rp*(R(i)**2)*psi2_0(i,j)*la%level(i,j,m_ang) 
             end do
             end do
-
-            call swal_high_pass_filter(bianchi3_res%spin,m_ang,bianchi3_res%np1,bianchi3_res%coefs)
          !--------------------------------------------------------------------
          case ("bianchi2_res")
 
@@ -270,6 +268,8 @@ module mod_metric_recon
                -            2.0_rp*rh_0(i,j)*psi3%level(i,j,m_ang)
             end do
             end do
+         !--------------------------------------------------------------------
+         ! hll should be real
          !--------------------------------------------------------------------
          case ("hll_res")
 

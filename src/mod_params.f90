@@ -22,7 +22,7 @@ implicit none
    real(rp), parameter :: rl_nm = -1.5_rp
    real(rp), parameter :: ru_nm = 1.5_rp
    integer(ip), parameter :: l_ang_nm = 3_ip
-   integer(ip), parameter :: pm_ang = 1_ip
+   integer(ip), parameter :: pm_ang = 2_ip
    integer(ip), parameter :: spin = -2_ip
    integer(ip), parameter :: nx = 48_ip
    integer(ip), parameter :: nl = 16_ip
@@ -39,16 +39,16 @@ implicit none
    real(rp), parameter :: horizon = 0.8570714214271424_rp
    real(rp), parameter :: R_max = 1.1667639067172042_rp
    integer(ip), parameter :: lmin = 2_ip
-   integer(ip), parameter :: ny = 24_ip
+   integer(ip), parameter :: ny = 28_ip
    real(rp), parameter :: dt = 0.003472222222222222_rp
    integer(ip), parameter :: nt = 2880_ip
    integer(ip), parameter :: t_step_save = 28_ip
-   integer(ip), parameter :: max_m = 1_ip
-   integer(ip), parameter :: min_m = -1_ip
+   integer(ip), parameter :: max_m = 2_ip
+   integer(ip), parameter :: min_m = -2_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Thu_16_02_bhm0.5_bhs0.35_nx48_ny24_nl16_s-2_lpm3_lnm3_pm1'
-   character(*), parameter :: output_dir = 'output/Thu_16_02_bhm0.5_bhs0.35_nx48_ny24_nl16_s-2_lpm3_lnm3_pm1'
-   character(*), parameter :: bin_name = 'Thu_16_02_bhm0.5_bhs0.35_nx48_ny24_nl16_s-2_lpm3_lnm3_pm1.run'
-   character(*), parameter :: tables_dir = 'output/Thu_16_02_bhm0.5_bhs0.35_nx48_ny24_nl16_s-2_lpm3_lnm3_pm1/tables'
+   character(*), parameter :: output_stem = 'Thu_18_45_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm3_lnm3_pm2'
+   character(*), parameter :: output_dir = 'output/Thu_18_45_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm3_lnm3_pm2'
+   character(*), parameter :: bin_name = 'Thu_18_45_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm3_lnm3_pm2.run'
+   character(*), parameter :: tables_dir = 'output/Thu_18_45_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm3_lnm3_pm2/tables'
 end module mod_params

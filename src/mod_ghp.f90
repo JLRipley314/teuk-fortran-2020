@@ -23,7 +23,7 @@ module mod_ghp
    implicit none
    private
    
-   complex(rp), parameter :: IM = (0.0_rp, 1.0_rp) 
+   complex(rp), parameter :: ZI = (0.0_rp, 1.0_rp) 
 
    public :: set_edth, set_edth_prime, set_thorn, set_thorn_prime
 !=============================================================================
@@ -48,13 +48,13 @@ module mod_ghp
       do j=1,ny
       do i=1,nx
          f%edth(i,j,m_ang) = &
-            (1.0_rp/sqrt(2.0_rp))*(1.0_rp/((cl**2) - IM*bhs*R(i)*cy(j))) * ( &
-               -  IM*bhs*sy(j)*(f%DT(i,j,m_ang)) &
+            (1.0_rp/sqrt(2.0_rp))*(1.0_rp/((cl**2) - ZI*bhs*R(i)*cy(j))) * ( &
+               -  ZI*bhs*sy(j)*(f%DT(i,j,m_ang)) &
                +  (f%raised(i,j,m_ang)) &
             ) &
          +  ( &
-               (IM*p*bhs*R(i)*sy(j)/sqrt(2.0_rp)) &
-            /  ((IM*(cl**2) + bhs*R(i)*cy(j))**2) &
+               (ZI*p*bhs*R(i)*sy(j)/sqrt(2.0_rp)) &
+            /  ((ZI*(cl**2) + bhs*R(i)*cy(j))**2) &
             )*(f%level(i,j,m_ang))
       end do 
       end do 
@@ -79,13 +79,13 @@ module mod_ghp
       do j=1,ny
       do i=1,nx
          f%edth_prime(i,j,m_ang) = &
-            (1.0_rp/sqrt(2.0_rp))*(1.0_rp/((cl**2) + IM*bhs*R(i)*cy(j))) * ( &
-                  IM*bhs*sy(j)*(f%DT(i,j,m_ang)) &
+            (1.0_rp/sqrt(2.0_rp))*(1.0_rp/((cl**2) + ZI*bhs*R(i)*cy(j))) * ( &
+                  ZI*bhs*sy(j)*(f%DT(i,j,m_ang)) &
                +  (f%lowered(i,j,m_ang)) &
             ) &
          +  ( &
-               (IM*q*bhs*R(i)*sy(j)/sqrt(2.0_rp)) &
-            /  ((cl**2 + IM*bhs*R(i)*cy(j))**2) &
+               (ZI*q*bhs*R(i)*sy(j)/sqrt(2.0_rp)) &
+            /  ((cl**2 + ZI*bhs*R(i)*cy(j))**2) &
             )*(f%level(i,j,m_ang))
 
       end do
@@ -118,7 +118,7 @@ module mod_ghp
                   R(i)*f%DR(i,j,m_ang) &
                +  (f%falloff)*(f%level(i,j,m_ang)) &
                ) &
-            +  R(i)*(IM*m_ang*bhs)*(f%level(i,j,m_ang)) &
+            +  R(i)*(ZI*m_ang*bhs)*(f%level(i,j,m_ang)) &
             ) &
           - R(i)*(p*ep_0(i,j) + q*conjg(ep_0(i,j)))*(f%level(i,j,m_ang))
       end do
