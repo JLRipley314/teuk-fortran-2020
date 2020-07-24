@@ -27,12 +27,12 @@ sim.initial_data_type= str("compact_bump")
 sim.amp_pm= float(10.0)  ## amplitude of the initial perturbation
 sim.rl_pm=  float(-1.5)  ## compact support: lower r value
 sim.ru_pm=  float( 1.5)  ## compact support: upper r value 
-sim.l_ang_pm= int(3)     ## support over single spin weighted spherical harmonic
+sim.l_ang_pm= int(2)     ## support over single spin weighted spherical harmonic
 
 sim.amp_nm= float( 0.0)  ## amplitude of the initial perturbation
 sim.rl_nm=  float(-1.5)  ## compact support: lower r value
 sim.ru_nm=  float( 1.5)  ## compact support: upper r value 
-sim.l_ang_nm= int(3)     ## support over single spin weighted spherical harmonic
+sim.l_ang_nm= int(2)     ## support over single spin weighted spherical harmonic
 #-----------------------------------------------------------------------------
 ##  Teukolsky equation preserves m 
 sim.pm_ang= int(2)
@@ -41,13 +41,13 @@ assert(sim.pm_ang>=0)
 ## psi_4 is spin -2, psi_0 is spin +2 (code only reconstructs for psi_4) 
 sim.spin= int(-2)
 #-----------------------------------------------------------------------------
-sim.nx= int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
+sim.nx= int(pow(2,2)*pow(3,1)*pow(5,1)*pow(7,0)) ## num radial pts 
 sim.nl= int(pow(2,4)*pow(3,0)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
 #-----------------------------------------------------------------------------
 ## further diagnostics
-sim.write_indep_res= True#False#
-sim.write_fields= True#False#
-sim.write_source= True#False#
+sim.write_indep_res= False#True#
+sim.write_fields= False#True#
+sim.write_source= False#True#
 #-----------------------------------------------------------------------------
 ## change start time
 sim.start_multiple= float(1.0)

@@ -190,9 +190,9 @@ class Sim:
 
             if (type(attrs[param])==bool):
                if attrs[param]==True:
-                  f.write("   logical(ip), parameter :: {} = .true.\n".format(param))
+                  f.write("   logical, parameter :: {} = .true.\n".format(param))
                if attrs[param]==False:
-                  f.write("   logical(ip), parameter :: {} = .false.\n".format(param))
+                  f.write("   logical, parameter :: {} = .false.\n".format(param))
 
             if (type(attrs[param])==float):
                f.write("   real(rp), parameter :: {} = {}_rp\n".format(param,attrs[param]))

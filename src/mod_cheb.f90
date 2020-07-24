@@ -1,6 +1,6 @@
 module mod_cheb 
 !=============================================================================
-!   use, intrinsic :: iso_c_binding ! for fftw
+   use mod_fftw3
 
    use mod_prec
    use mod_io, only: set_arr
@@ -8,9 +8,10 @@ module mod_cheb
 
    implicit none
 !=============================================================================
-!   include 'fftw3.f03'
-!=============================================================================
    private
+
+   ! fftw3 objects
+   type(c_ptr) :: plan
 
    ! radial points
    real(rp), dimension(nx), protected, public :: R = 0
@@ -20,7 +21,7 @@ module mod_cheb
 
    ! Chebyshev differentiation matrix  
    real(rp), dimension(nx,nx) :: D_cheb  = 0
-   real(rp), dimension(nx)    :: weights_clenshaw_curtis  = 0
+   real(rp), dimension(nx)    :: weights = 0
 
    ! For radial smoothing 
    real(rp), parameter :: width = R_max/real(nx,rp)
@@ -30,15 +31,20 @@ contains
 !=============================================================================
    subroutine cheb_init()
 
+      integer(ip), parameter :: N = 10
+      complex(rp), dimension(N) :: test_in,test_out
+
       call set_arr('cheb_pts.txt', nx,     R)
       call set_arr('cheb_D.txt',nx,nx,D_cheb)
-      call set_arr('weights_clenshaw_curtis.txt', nx, weights_clenshaw_curtis)
+      call set_arr('weights_clenshaw_curtis.txt', nx, weights)
 
       D_cheb = (2.0_rp/R_max) * D_cheb
 
       R = (R_max/2.0_rp) * (R + 1.0_rp)
 
-      weights_clenshaw_curtis = (2.0_rp/R_max) * weights_clenshaw_curtis
+      weights = (2.0_rp/R_max) * weights
+
+      call dfftw_plan_dft_1d(plan,N,test_in,test_out,FFTW_FORWARD,FFTW_ESTIMATE)
 
    end subroutine cheb_init
 !=============================================================================
@@ -82,9 +88,9 @@ contains
          do j=1,nx
 
             vals(i,:,m_ang) = vals(i,:,m_ang) &
-            +  weights_clenshaw_curtis(abs(i-j))*smooth(i,j)*tmp(j,:,m_ang)
+            +  weights(abs(i-j)+1_ip)*smooth(i,j)*tmp(j,:,m_ang)
 
-            norm = norm + weights_clenshaw_curtis(abs(i-j))*smooth(i,j)
+            norm = norm + weights(abs(i-j)+1_ip)*smooth(i,j)
 
          end do
          vals(i,:,m_ang) = vals(i,:,m_ang) / norm

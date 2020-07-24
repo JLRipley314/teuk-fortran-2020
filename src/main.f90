@@ -56,11 +56,11 @@ clean_memory: block
 !-----------------------------------------------------------------------------
 ! independent residual fields
 !-----------------------------------------------------------------------------
-   call set_field(name="res_q",spin=-2_ip,boost=-2_ip,falloff=2_rp,f=q_res)
+   call set_field(name="res_q",spin=-2_ip,boost=-2_ip,falloff=2_ip,f=q_res)
 
-   call set_field(name="bianchi3_res",spin=-2_ip,boost=-1_ip,falloff=2_rp,f=bianchi3_res)
-   call set_field(name="bianchi2_res",spin=-1_ip,boost= 0_ip,falloff=2_rp,f=bianchi2_res)
-   call set_field(name="hll_res",     spin= 0_ip,boost= 2_ip,falloff=2_rp,f=hll_res)
+   call set_field(name="bianchi3_res",spin=-2_ip,boost=-1_ip,falloff=2_ip,f=bianchi3_res)
+   call set_field(name="bianchi2_res",spin=-1_ip,boost= 0_ip,falloff=2_ip,f=bianchi2_res)
+   call set_field(name="hll_res",     spin= 0_ip,boost= 2_ip,falloff=2_ip,f=hll_res)
 !-----------------------------------------------------------------------------
 ! initialize chebyshev diff matrices, swal matrices, etc.
 !-----------------------------------------------------------------------------
@@ -79,8 +79,6 @@ clean_memory: block
    !--------------------------------------------------------------------------
    ! write to file
    !--------------------------------------------------------------------------
-   call write_csv(time,pm_ang,psi4_p)
-   call write_csv(time,pm_ang,psi4_q)
    call write_csv(time,pm_ang,psi4_f)
    !--------------------------------------------------------------------------
    if (write_fields) then
