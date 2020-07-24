@@ -11,7 +11,7 @@ module mod_cheb
    private
 
    ! fftw3 objects
-   type(c_ptr) :: plan
+   type(c_ptr) :: plan_forward, plan_backward
 
    ! radial points
    real(rp), dimension(nx), protected, public :: R = 0
@@ -31,8 +31,7 @@ contains
 !=============================================================================
    subroutine cheb_init()
 
-      integer(ip), parameter :: N = 10
-      complex(rp), dimension(N) :: test_in,test_out
+      complex(rp), dimension(nx) :: test_in,test_out
 
       call set_arr('cheb_pts.txt', nx,     R)
       call set_arr('cheb_D.txt',nx,nx,D_cheb)
@@ -44,7 +43,8 @@ contains
 
       weights = (2.0_rp/R_max) * weights
 
-      call dfftw_plan_dft_1d(plan,N,test_in,test_out,FFTW_FORWARD,FFTW_ESTIMATE)
+      call dfftw_plan_dft_1d(plan_forward, nx,test_in,test_out,FFTW_FORWARD, FFTW_ESTIMATE)
+      call dfftw_plan_dft_1d(plan_backward,nx,test_in,test_out,FFTW_BACKWARD,FFTW_ESTIMATE)
 
    end subroutine cheb_init
 !=============================================================================
