@@ -17,8 +17,8 @@ sim.compactification_length= float(1)
 #-----------------------------------------------------------------------------
 ## evolve time: in units of black hole mass
 #-----------------------------------------------------------------------------
-sim.evolve_time= float(0.5)
-sim.num_saved_times= int(2)
+sim.evolve_time= float(30)
+sim.num_saved_times= int(100)
 #-----------------------------------------------------------------------------
 ## initial data
 #-----------------------------------------------------------------------------
@@ -45,10 +45,9 @@ sim.nx= int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts
 sim.nl= int(pow(2,4)*pow(3,0)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
 #-----------------------------------------------------------------------------
 ## further diagnostics
-sim.save_indep_res= "true"#"false"#
-sim.save_coefs= "true"#"false"#
-sim.save_metric= "true"#"false"#
-sim.save_source= "true"#"false"#
+sim.write_indep_res= True#False#
+sim.write_fields= True#False#
+sim.write_source= True#False#
 #-----------------------------------------------------------------------------
 ## change start time
 sim.start_multiple= float(1.0)

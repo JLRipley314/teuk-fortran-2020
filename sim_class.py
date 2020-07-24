@@ -124,7 +124,7 @@ class Sim:
          #f.write('#SBATCH --mail-type=end\t\t# Slurm will send at the completion of your job\n')
          run_str= './bin/{} {}\n\n'.format(self.bin_name, self.output_dir)
          if (self.debug):
-            run_str= 'valgrind -v --track-origins=yes --leak-check=full --show-leak-kinds=all '+run_str
+            run_str= 'valgrind -v --track-origins=yes --leak-check=full '+run_str
          f.write('\n'+run_str)
 
          shutil.copyfile(
@@ -155,7 +155,7 @@ class Sim:
             './bin/'+self.bin_name+' > '+self.output_file+' 2>&1 &'
          )
          if (self.debug):
-            run_str= 'valgrind -v --track-origins=yes --leak-check=full --show-leak-kinds=all '+run_str
+            run_str= 'valgrind -v --track-origins=yes --leak-check=full '+run_str
          print(run_str)
          subprocess.call(run_str,shell=True) 
       elif (self.computer=='feynman'):
@@ -184,10 +184,19 @@ class Sim:
          for param in attrs:
             if (type(attrs[param])==str):
                f.write("   character(*), parameter :: {} = '{}'\n".format(param,attrs[param]))
+
             if (type(attrs[param])==int):
                f.write("   integer(ip), parameter :: {} = {}_ip\n".format(param,attrs[param]))
+
+            if (type(attrs[param])==bool):
+               if attrs[param]==True:
+                  f.write("   logical(ip), parameter :: {} = .true.\n".format(param))
+               if attrs[param]==False:
+                  f.write("   logical(ip), parameter :: {} = .false.\n".format(param))
+
             if (type(attrs[param])==float):
                f.write("   real(rp), parameter :: {} = {}_rp\n".format(param,attrs[param]))
+
             if (type(attrs[param])==complex):
                f.write("   complex(rp), parameter :: {} = ({}_rp,{}_rp)\n".format(param,attrs[param].real,attrs[param].imag))
          f.write('end module mod_params\n')

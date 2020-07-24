@@ -9,7 +9,8 @@ program main
       stdout=>output_unit, stdin=>input_unit, stderr=>error_unit
 
    use mod_prec
-   use mod_params,       only: nt, dt, t_step_save, black_hole_mass, pm_ang
+   use mod_params,       only: nt, dt, t_step_save, black_hole_mass, pm_ang, &
+                           write_fields, write_indep_res
    use mod_field,        only: field, set_field, shift_time_step
    use mod_cheb,         only: cheb_init, cheb_test
    use mod_swal,         only: swal_init, swal_test_orthonormal
@@ -75,18 +76,31 @@ clean_memory: block
    time = 0.0_rp
 
    call set_initial_data(pm_ang,psi4_p, psi4_q, psi4_f)
-
-   call compute_q_res(psi4_q,psi4_f,q_res)
-
+   !--------------------------------------------------------------------------
+   ! write to file
+   !--------------------------------------------------------------------------
    call write_csv(time,pm_ang,psi4_p)
    call write_csv(time,pm_ang,psi4_q)
    call write_csv(time,pm_ang,psi4_f)
-   
-   call write_csv(time,pm_ang,q_res)
+   !--------------------------------------------------------------------------
+   if (write_fields) then
+      call write_csv(time,pm_ang,psi3)
+      call write_csv(time,pm_ang,psi2)
 
-   call write_csv(time,pm_ang,psi3)
-   call write_csv(time,pm_ang,la)
-   call write_csv(time,pm_ang,bianchi3_res)
+      call write_csv(time,pm_ang,muhll)
+      call write_csv(time,pm_ang, hlmb)
+      call write_csv(time,pm_ang,hmbmb)
+   end if
+   !--------------------------------------------------------------------------
+   if (write_indep_res) then
+      call compute_q_res(psi4_q,psi4_f,q_res)
+
+      call write_csv(time,pm_ang,q_res)
+
+      call write_csv(time,pm_ang,bianchi3_res)
+      call write_csv(time,pm_ang,bianchi2_res)
+      call write_csv(time,pm_ang,hll_res)
+   end if
 !-----------------------------------------------------------------------------
    write (stdout,*) "Beginning time evolution"
 !-----------------------------------------------------------------------------
@@ -102,24 +116,28 @@ clean_memory: block
          write (stdout,*) time / black_hole_mass
          flush (stdout)
          !--------------------------------------------------------------------
-         call compute_q_res(psi4_q,psi4_f,q_res)
-
-         call metric_recon_indep_res(pm_ang)
-         !--------------------------------------------------------------------
          call write_csv(time,pm_ang,psi4_f)
+         !--------------------------------------------------------------------
+         if (write_fields) then
+            call write_csv(time,pm_ang,psi3)
+            call write_csv(time,pm_ang,psi2)
 
-         call write_csv(time,pm_ang,q_res)
+            call write_csv(time,pm_ang,muhll)
+            call write_csv(time,pm_ang, hlmb)
+            call write_csv(time,pm_ang,hmbmb)
+         end if
+         !--------------------------------------------------------------------
+         if (write_indep_res) then
+            call compute_q_res(psi4_q,psi4_f,q_res)
 
-         call write_csv(time,pm_ang,psi3)
-         call write_csv(time,pm_ang,psi2)
+            call write_csv(time,pm_ang,q_res)
+            !-----------------------------------------------------------------
+            call metric_recon_indep_res(pm_ang)
 
-!         call write_csv(time,pm_ang,muhll)
-!         call write_csv(time,pm_ang, hlmb)
-!         call write_csv(time,pm_ang,hmbmb)
-
-         call write_csv(time,pm_ang,bianchi3_res)
-         call write_csv(time,pm_ang,bianchi2_res)
-         call write_csv(time,pm_ang,hll_res)
+            call write_csv(time,pm_ang,bianchi3_res)
+            call write_csv(time,pm_ang,bianchi2_res)
+            call write_csv(time,pm_ang,hll_res)
+         end if
          !--------------------------------------------------------------------
       end if
       !-----------------------------------------------------------------------
