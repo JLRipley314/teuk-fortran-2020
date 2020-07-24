@@ -10,8 +10,8 @@ implicit none
    real(rp), parameter :: black_hole_mass = 0.5_rp
    real(rp), parameter :: black_hole_spin = 0.35_rp
    real(rp), parameter :: compactification_length = 1.0_rp
-   real(rp), parameter :: evolve_time = 100.0_rp
-   integer(ip), parameter :: num_saved_times = 500_ip
+   real(rp), parameter :: evolve_time = 0.5_rp
+   integer(ip), parameter :: num_saved_times = 2_ip
    character(*), parameter :: initial_data_direction = 'ingoing'
    character(*), parameter :: initial_data_type = 'compact_bump'
    real(rp), parameter :: amp_pm = 10.0_rp
@@ -24,7 +24,7 @@ implicit none
    integer(ip), parameter :: l_ang_nm = 3_ip
    integer(ip), parameter :: pm_ang = 2_ip
    integer(ip), parameter :: spin = -2_ip
-   integer(ip), parameter :: nx = 24_ip
+   integer(ip), parameter :: nx = 48_ip
    integer(ip), parameter :: nl = 16_ip
    character(*), parameter :: save_indep_res = 'true'
    character(*), parameter :: save_coefs = 'true'
@@ -40,15 +40,15 @@ implicit none
    real(rp), parameter :: R_max = 1.1667639067172042_rp
    integer(ip), parameter :: lmin = 2_ip
    integer(ip), parameter :: ny = 28_ip
-   real(rp), parameter :: dt = 0.01020408163265306_rp
-   integer(ip), parameter :: nt = 4900_ip
-   integer(ip), parameter :: t_step_save = 9_ip
+   real(rp), parameter :: dt = 0.003472222222222222_rp
+   integer(ip), parameter :: nt = 72_ip
+   integer(ip), parameter :: t_step_save = 36_ip
    integer(ip), parameter :: max_m = 2_ip
    integer(ip), parameter :: min_m = -2_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Thu_21_10_bhm0.5_bhs0.35_nx24_ny28_nl16_s-2_lpm3_lnm3_pm2'
-   character(*), parameter :: output_dir = 'output/Thu_21_10_bhm0.5_bhs0.35_nx24_ny28_nl16_s-2_lpm3_lnm3_pm2'
-   character(*), parameter :: bin_name = 'Thu_21_10_bhm0.5_bhs0.35_nx24_ny28_nl16_s-2_lpm3_lnm3_pm2.run'
-   character(*), parameter :: tables_dir = 'output/Thu_21_10_bhm0.5_bhs0.35_nx24_ny28_nl16_s-2_lpm3_lnm3_pm2/tables'
+   character(*), parameter :: output_stem = 'Fri_11_56_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm3_lnm3_pm2'
+   character(*), parameter :: output_dir = 'output/Fri_11_56_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm3_lnm3_pm2'
+   character(*), parameter :: bin_name = 'Fri_11_56_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm3_lnm3_pm2.run'
+   character(*), parameter :: tables_dir = 'output/Fri_11_56_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm3_lnm3_pm2/tables'
 end module mod_params

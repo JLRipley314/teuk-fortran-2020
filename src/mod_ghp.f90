@@ -23,9 +23,9 @@ module mod_ghp
    implicit none
    private
    
-   complex(rp), parameter :: ZI = (0.0_rp, 1.0_rp) 
-
    public :: set_edth, set_edth_prime, set_thorn, set_thorn_prime
+  
+   complex(rp), parameter :: ZI = (0.0_rp, 1.0_rp) 
 !=============================================================================
    contains
 !=============================================================================

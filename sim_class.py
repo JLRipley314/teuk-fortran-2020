@@ -124,7 +124,7 @@ class Sim:
          #f.write('#SBATCH --mail-type=end\t\t# Slurm will send at the completion of your job\n')
          run_str= './bin/{} {}\n\n'.format(self.bin_name, self.output_dir)
          if (self.debug):
-            run_str= 'valgrind -v --track-origins=yes --leak-check=full '+run_str
+            run_str= 'valgrind -v --track-origins=yes --leak-check=full --show-leak-kinds=all '+run_str
          f.write('\n'+run_str)
 
          shutil.copyfile(
@@ -155,7 +155,7 @@ class Sim:
             './bin/'+self.bin_name+' > '+self.output_file+' 2>&1 &'
          )
          if (self.debug):
-            run_str= 'valgrind -v --track-origins=yes --leak-check=full '+run_str
+            run_str= 'valgrind -v --track-origins=yes --leak-check=full --show-leak-kinds=all '+run_str
          print(run_str)
          subprocess.call(run_str,shell=True) 
       elif (self.computer=='feynman'):

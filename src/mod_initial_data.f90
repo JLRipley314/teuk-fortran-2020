@@ -21,8 +21,6 @@ module mod_initial_data
 !=============================================================================
 contains
 !=============================================================================
-
-!=============================================================================
    subroutine set_initial_data(m_ang,p,q,f)
       integer(ip), intent(in) :: m_ang
       type(field), intent(inout) :: p, q, f
@@ -36,7 +34,7 @@ contains
       width = ru_pm-rl_pm
 !-----------------------------------------------------------------------------
       y_loop: do j=1,ny
-      x_loop: do i=1,nx-1 ! last index is at 'r=infinity'
+      x_loop: do i=1,nx-1 ! index 'i=nx' is at 'r=infinity'
          r = (cl**2) / Rvec(i)
 
          if ((r<ru_pm).and.(r>rl_pm)) then
@@ -53,7 +51,9 @@ contains
          +  (1.0_rp*(1.0_rp              )*(((ru_pm-r)/width)**2)) &
          -  (2.0_rp*(((r-rl_pm)/width)**2)*(1.0_rp              )) &
          )*bump/width
-      ! rescale q as q = \partial_R f = -(r/cl)^2 partial_r f
+         !--------------------------------------------------------------------
+         ! rescale q as q = \partial_R f = -(r/cl)^2 partial_r f
+         !--------------------------------------------------------------------
          q%n(i,j,m_ang) = q%n(i,j,m_ang)*(-(r**2)/(cl**2))
 
          p%n(i,j,m_ang) = 0.0_rp
