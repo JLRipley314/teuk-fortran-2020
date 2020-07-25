@@ -37,8 +37,8 @@ contains
       call set_arr('cheb_D.txt',nx,nx,D_cheb)
       call set_arr('weights_clenshaw_curtis.txt', nx, weights)
 
-      call set_arr('to_cheb.txt',nx,nx,to_cheb)
-      call set_arr('to_real.txt',nx,nx,to_real)
+      call set_arr('real_to_cheb.txt',nx,nx,to_cheb)
+      call set_arr('cheb_to_real.txt',nx,nx,to_real)
 
       D_cheb = (2.0_rp/R_max) * D_cheb
 
