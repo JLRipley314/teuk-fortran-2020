@@ -45,7 +45,9 @@ module mod_field
       lowered(nx,ny,min_m:max_m), & 
       lap(    nx,ny,min_m:max_m), &
 
-      coefs(nx,0:lmax,min_m:max_m), &
+      coefs_swal(nx,0:lmax,min_m:max_m), &
+      coefs_cheb(nx,    ny,min_m:max_m), &
+      coefs_both(nx,0:lmax,min_m:max_m), &
 
       edth(       nx,ny,min_m:max_m), &
       edth_prime( nx,ny,min_m:max_m), &
@@ -92,7 +94,9 @@ contains
       f % lowered = 0.0_rp
       f % lap     = 0.0_rp
 
-      f % coefs = 0.0_rp
+      f % coefs_swal = 0.0_rp
+      f % coefs_cheb = 0.0_rp
+      f % coefs_both = 0.0_rp
 
    end subroutine set_field
 !=============================================================================

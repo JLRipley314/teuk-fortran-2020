@@ -231,7 +231,7 @@ contains
       if (f%first_time) then
          call set_k(m_ang, &
             p%n,  q%n,  f%n, & 
-            p%DR, q%DR, f%DR, f%coefs, f%lap, &
+            p%DR, q%DR, f%DR, f%coefs_swal, f%lap, &
             p%k1, q%k1, f%k1) 
 
          p%first_time = .false.
@@ -249,7 +249,7 @@ contains
    !--------------------------------------------------------
       call set_k(m_ang, &
          p%l2, q%l2, f%l2, & 
-         p%DR, q%DR, f%DR, f%coefs, f%lap, &
+         p%DR, q%DR, f%DR, f%coefs_swal, f%lap, &
          p%k2, q%k2, f%k2) 
 
       do j=1,ny
@@ -262,7 +262,7 @@ contains
    !--------------------------------------------------------
       call set_k(m_ang, &
          p%l3, q%l3, f%l3, & 
-         p%DR, q%DR, f%DR, f%coefs, f%lap, &
+         p%DR, q%DR, f%DR, f%coefs_swal, f%lap, &
          p%k3, q%k3, f%k3) 
 
       do j=1,ny
@@ -275,7 +275,7 @@ contains
    !--------------------------------------------------------
       call set_k(m_ang, &
          p%l4, q%l4, f%l4, & 
-         p%DR, q%DR, f%DR, f%coefs, f%lap, &
+         p%DR, q%DR, f%DR, f%coefs_swal, f%lap, &
          p%k4, q%k4, f%k4) 
 
       do j=1,ny
@@ -295,7 +295,7 @@ contains
    !------------------------------------------------------------
       call set_k(m_ang, &
          p%np1, q%np1, f%np1, & 
-         p%DR,  q%DR,  f%DR, f%coefs, f%lap, &
+         p%DR,  q%DR,  f%DR, f%coefs_swal, f%lap, &
          p%k5,  q%k5,  f%k5) 
 
    end subroutine teuk_time_step

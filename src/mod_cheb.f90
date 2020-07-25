@@ -1,7 +1,5 @@
 module mod_cheb 
 !=============================================================================
-   use mod_fftw3
-
    use mod_prec
    use mod_io, only: set_arr
    use mod_params, only: tables_dir, R_max, nx, ny, min_m, max_m 
@@ -11,16 +9,18 @@ module mod_cheb
    private
 
    ! fftw3 objects
-   type(c_ptr) :: plan_forward, plan_backward
+!   type(c_ptr) :: plan_forward, plan_backward
 
    ! radial points
    real(rp), dimension(nx), protected, public :: R = 0
 
    ! subroutines
-   public :: cheb_init, compute_DR, radial_smooth, cheb_test
+   public :: cheb_init, compute_DR, cheb_filter, cheb_test
 
-   ! Chebyshev differentiation matrix  
+   ! Chebyshev matrices  
    real(rp), dimension(nx,nx) :: D_cheb  = 0
+   real(rp), dimension(nx,nx) :: to_cheb = 0
+   real(rp), dimension(nx,nx) :: to_real = 0
    real(rp), dimension(nx)    :: weights = 0
 
    ! For radial smoothing 
@@ -31,11 +31,14 @@ contains
 !=============================================================================
    subroutine cheb_init()
 
-      complex(rp), dimension(nx) :: test_in,test_out
+!      complex(rp), dimension(nx) :: test_in,test_out
 
       call set_arr('cheb_pts.txt', nx,     R)
       call set_arr('cheb_D.txt',nx,nx,D_cheb)
       call set_arr('weights_clenshaw_curtis.txt', nx, weights)
+
+      call set_arr('to_cheb.txt',nx,nx,to_cheb)
+      call set_arr('to_real.txt',nx,nx,to_real)
 
       D_cheb = (2.0_rp/R_max) * D_cheb
 
@@ -43,10 +46,42 @@ contains
 
       weights = (2.0_rp/R_max) * weights
 
-      call dfftw_plan_dft_1d(plan_forward, nx,test_in,test_out,FFTW_FORWARD, FFTW_ESTIMATE)
-      call dfftw_plan_dft_1d(plan_backward,nx,test_in,test_out,FFTW_BACKWARD,FFTW_ESTIMATE)
+!      call dfftw_plan_dft_1d(plan_forward, nx,test_in,test_out,FFTW_FORWARD, FFTW_ESTIMATE)
+!      call dfftw_plan_dft_1d(plan_backward,nx,test_in,test_out,FFTW_BACKWARD,FFTW_ESTIMATE)
 
    end subroutine cheb_init
+!=============================================================================
+   pure subroutine cheb_real_to_coef(m_ang,vals,coefs)
+      integer(ip), intent(in) :: m_ang
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: vals
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: coefs
+
+      integer(ip) :: i,j 
+
+      coefs = 0.0_rp
+
+      do i=1,nx
+      do j=1,nx
+         coefs(i,:,m_ang) = coefs(i,:,m_ang) + to_cheb(i,j)*vals(j,:,m_ang) 
+      end do
+      end do
+   end subroutine cheb_real_to_coef
+!=============================================================================
+   pure subroutine cheb_coef_to_real(m_ang,vals,coefs)
+      integer(ip), intent(in) :: m_ang
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: coefs
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: vals 
+
+      integer(ip) :: i,j 
+
+      vals = 0.0_rp
+
+      do i=1,nx
+      do j=1,nx
+         vals(i,:,m_ang) = vals(i,:,m_ang) + to_real(i,j)*coefs(j,:,m_ang) 
+      end do
+      end do
+   end subroutine cheb_coef_to_real
 !=============================================================================
    pure subroutine compute_DR(m_ang,vals,D_vals)
       integer(ip), intent(in) :: m_ang
@@ -62,41 +97,22 @@ contains
       end do
    end subroutine compute_DR
 !=============================================================================
-   real(rp) pure function smooth(i,j) result(res)
-      integer(ip), intent(in) :: i, j
-
-      res = exp(abs((R(i)-R(j))/width)**20)
-
-   end function smooth
-!=============================================================================
-! Convolve functions with Gaussian in radial direction.
-! Radial integration is done via Clenshaw-Curtis quadrature
-!=============================================================================
-   pure subroutine radial_smooth(m_ang, tmp, vals)
+   pure subroutine cheb_filter(m_ang,vals,coefs)
       integer(ip), intent(in) :: m_ang
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: tmp
       complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: vals
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: coefs
 
-      integer(ip) :: i, j
-      real(rp) :: norm
+      integer(ip) :: i
 
-      tmp  = vals
-      vals = 0.0_rp
+      call cheb_real_to_coef(m_ang,vals,coefs) 
 
       do i=1,nx
-         norm = 0.0_rp
-         do j=1,nx
-
-            vals(i,:,m_ang) = vals(i,:,m_ang) &
-            +  weights(abs(i-j)+1_ip)*smooth(i,j)*tmp(j,:,m_ang)
-
-            norm = norm + weights(abs(i-j)+1_ip)*smooth(i,j)
-
-         end do
-         vals(i,:,m_ang) = vals(i,:,m_ang) / norm
+         coefs(i,:,m_ang) = &
+            exp(-36.0_rp*(real(i-1,rp)/real(nx-1,rp))**25)*coefs(i,:,m_ang)
       end do
 
-   end subroutine radial_smooth
+      call cheb_coef_to_real(m_ang,coefs,vals) 
+   end subroutine cheb_filter
 !=============================================================================
    subroutine cheb_test()
       complex(rp), dimension(nx,ny,min_m:max_m) :: vals, DR_vals, computed_DR_vals

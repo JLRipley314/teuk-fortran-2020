@@ -6,8 +6,8 @@ BIN= $(TOP)bin/
 OBJDIR= $(TOP)obj/
 
 ## for fftw
-INCFFTW= /usr/include
-LIBFFTW= /lib/x86_64-linux-gnu
+#INCFFTW= /usr/include
+#LIBFFTW= /lib/x86_64-linux-gnu
 
 vpath %.f90 $(SRC)
 vpath %.mod $(OBJDIR)
@@ -17,7 +17,7 @@ FC = gfortran#ifort#
 
 FFLAGS= -g -fmax-errors=5 -O2
 
-SYSLIB= -lfftw3 #-fopenmp 
+#SYSLIB= -lfftw3 #-fopenmp 
 #==========================================================================
 ifeq ($(FC),gfortran)
 	FFLAGS+= -std=f2008 -Wall -Wextra -fimplicit-none -fcheck=all \
@@ -35,7 +35,6 @@ RUN = $(BIN)default.run
 MAIN = main.f90
 
 OBJ= $(addprefix $(OBJDIR), \
-	mod_fftw3.o \
 	mod_prec.o \
 	mod_params.o \
 	mod_field.o \
@@ -50,7 +49,6 @@ OBJ= $(addprefix $(OBJDIR), \
 	)
 
 DEPS = $(addprefix $(SRC), \
-	mod_fftw3.f90 \
 	mod_prec.f90 \
 	mod_params.f90 \
 	mod_field.f90 \
@@ -67,13 +65,16 @@ DEPS = $(addprefix $(SRC), \
 all: $(RUN)
 
 %.run: $(MAIN) $(OBJ)
-	$(FC) -o $(BIN)$@ $^ -I$(INCFFTW) -L$(LIBFFTW) $(SYSLIB)$(FFLAGS)   
+	$(FC) -o $(BIN)$@ $^ $(FFLAGS)   
+#	$(FC) -o $(BIN)$@ $^ -I$(INCFFTW) -L$(LIBFFTW) $(SYSLIB) $(FFLAGS)   
 
 $(RUN): $(MAIN) $(OBJ)
-	$(FC) -o $@ $^ -I$(INCFFTW) -L$(LIBFFTW) $(SYSLIB) $(FFLAGS)  
+	$(FC) -o $@ $^ $(FFLAGS)  
+#	$(FC) -o $@ $^ -I$(INCFFTW) -L$(LIBFFTW) $(SYSLIB) $(FFLAGS)  
 
 $(OBJDIR)%.o: %.f90
-	$(FC) $(FFLAGS) -I$(INCFFTW) -L$(LIBFFTW) $(SYSLIB) -c -o $@ $^ 
+	$(FC) $(FFLAGS) -c -o $@ $^ 
+#	$(FC) $(FFLAGS) -I$(INCFFTW) -L$(LIBFFTW) $(SYSLIB) -c -o $@ $^ 
 #==========================================================================
 clean_obj:
 	rm -f $(OBJDIR)*.o

@@ -43,7 +43,7 @@ module mod_ghp
       call set_level(step, m_ang, f)
       call set_DT(   step, m_ang, f)
 
-      call swal_raise(f%spin, m_ang, f%level, f%coefs, f%raised)
+      call swal_raise(f%spin, m_ang, f%level, f%coefs_swal, f%raised)
 
       do j=1,ny
       do i=1,nx
@@ -74,7 +74,7 @@ module mod_ghp
       call set_level(step, m_ang, f)
       call set_DT(   step, m_ang, f)
 
-      call swal_lower(f%spin, m_ang, f%level, f%coefs, f%lowered)
+      call swal_lower(f%spin, m_ang, f%level, f%coefs_swal, f%lowered)
 
       do j=1,ny
       do i=1,nx

@@ -15,6 +15,32 @@ def cheb_pts(n:int)->List[mp.mpf]:
 def diff_cheb(n:int,x:float)->mp.mpf:
    return mp.diff(lambda x: mp.chebyt(n,x), x)
 #=============================================================================
+def pm(m:int) -> mp.mpf:
+   if m==0:
+      return mp.mpf(1)
+   else:
+      return mp.mpf(2)
+#=============================================================================
+def compute_to_cheb_to_real(n:int)->List[mp.mpf],List[mp.mpf]:
+   to_cheb= [[0 for i in range(n)] for j in range(n)] 
+   to_real= [[0 for i in range(n)] for j in range(n)] 
+
+   N = n-1
+
+   for i in range(0,N+1):
+      to_cheb[i][0]= pm(i)*mp.div(0.5,N)*mp.power(-1,i)
+      to_cheb[i][N]= mp.div(pm(i)/(2*N))
+
+   for i in range(1,N):
+      for j in range(1,N):
+         to_cheb[i][j]= pm(i)*mp.cos(mp.div(i*j*mp.pi,N))
+
+   for i in range(0,N+1):
+      for j in range(0,N+1):
+         to_real[i][j]= mp.cos(mp.div(i*j*mp.pi,N))
+
+   return (to_cheb,to_real)
+#=============================================================================
 def cheb_D(n:int)->List[mp.mpf]:
    pts= cheb_pts(n)
    Dmat = [[0 for i in range(n)] for j in range(n)] 
