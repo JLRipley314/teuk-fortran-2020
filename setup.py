@@ -12,13 +12,13 @@ sim= Sim(args)
 sim.computer= 'home'#'feynman'#
 #-----------------------------------------------------------------------------
 sim.black_hole_mass= float(0.5)	
-sim.black_hole_spin= float(0.35)
+sim.black_hole_spin= float(0.499)
 sim.compactification_length= float(1)
 #-----------------------------------------------------------------------------
 ## evolve time: in units of black hole mass
 #-----------------------------------------------------------------------------
-sim.evolve_time= float(30)
-sim.num_saved_times= int(100)
+sim.evolve_time= float(60)
+sim.num_saved_times= int(200)
 #-----------------------------------------------------------------------------
 ## initial data
 #-----------------------------------------------------------------------------
