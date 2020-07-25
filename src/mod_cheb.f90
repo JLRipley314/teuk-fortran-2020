@@ -97,21 +97,22 @@ contains
       end do
    end subroutine compute_DR
 !=============================================================================
-   pure subroutine cheb_filter(m_ang,vals,coefs)
-      integer(ip), intent(in) :: m_ang
+   pure subroutine cheb_filter(vals,coefs)
       complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: vals
       complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: coefs
 
-      integer(ip) :: i
+      integer(ip) :: m_ang, i
 
-      call cheb_real_to_coef(m_ang,vals,coefs) 
+      do m_ang=min_m,max_m
 
-      do i=1,nx
-         coefs(i,:,m_ang) = &
-            exp(-36.0_rp*(real(i-1,rp)/real(nx-1,rp))**25)*coefs(i,:,m_ang)
+         call cheb_real_to_coef(m_ang,vals,coefs) 
+         do i=1,nx
+            coefs(i,:,m_ang) = &
+               exp(-36.0_rp*(real(i-1,rp)/real(nx-1,rp))**25)*coefs(i,:,m_ang)
+         end do
+         call cheb_coef_to_real(m_ang,coefs,vals) 
+
       end do
-
-      call cheb_coef_to_real(m_ang,coefs,vals) 
    end subroutine cheb_filter
 !=============================================================================
    subroutine cheb_test()

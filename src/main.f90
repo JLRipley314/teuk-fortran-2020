@@ -10,7 +10,7 @@ program main
 
    use mod_prec
    use mod_params,       only: nt, dt, t_step_save, black_hole_mass, pm_ang, &
-                           write_fields, write_indep_res
+                           write_fields, write_indep_res!, write_source
    use mod_field,        only: field, set_field, shift_time_step
    use mod_cheb,         only: cheb_init, cheb_filter, cheb_test
    use mod_swal,         only: swal_init, swal_test_orthonormal
@@ -105,7 +105,8 @@ clean_memory: block
    time_evolve: do t_step=1,nt
       time = t_step*dt
 
-      call teuk_time_step(pm_ang, psi4_p, psi4_q, psi4_f)
+      call teuk_time_step(-pm_ang, psi4_p, psi4_q, psi4_f)
+      call teuk_time_step( pm_ang, psi4_p, psi4_q, psi4_f)
    
       call metric_recon_time_step(pm_ang)
       !-----------------------------------------------------------------------
@@ -139,9 +140,9 @@ clean_memory: block
          !--------------------------------------------------------------------
       end if
       !-----------------------------------------------------------------------
-      call cheb_filter(pm_ang,psi4_p%np1,psi4_f%coefs_cheb)
-      call cheb_filter(pm_ang,psi4_q%np1,psi4_f%coefs_cheb)
-      call cheb_filter(pm_ang,psi4_f%np1,psi4_f%coefs_cheb)
+!      call cheb_filter(psi4_p%np1,psi4_f%coefs_cheb)
+!      call cheb_filter(psi4_q%np1,psi4_f%coefs_cheb)
+!      call cheb_filter(psi4_f%np1,psi4_f%coefs_cheb)
       !-----------------------------------------------------------------------
       call shift_time_step(psi4_p)
       call shift_time_step(psi4_q)

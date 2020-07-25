@@ -143,9 +143,9 @@ module mod_metric_recon
 
                -  2.0_rp*R(i)*pi_0(i,j)*conjg(pi%level(i,j,-m_ang)) &
 
-               +  (R(i)**2)*(pi_0(i,j)**2)*conjg(hmbmb%level(i,j,-m_ang)) &
-
                -  R(i)*pi_0(i,j)*conjg(hmbmb%edth(i,j,-m_ang)) &
+
+               +  (R(i)**2)*(pi_0(i,j)**2)*conjg(hmbmb%level(i,j,-m_ang)) &
 
                +  R(i)*mu_0(i,j)*conjg(hlmb%edth(i,j,-m_ang))  &
 
@@ -386,16 +386,12 @@ module mod_metric_recon
    subroutine step_all_fields_mix_m_ang(step, m_ang)
       integer(ip), intent(in) :: step, m_ang
       !-----------------------------------------------------------------------
-      call set_level(step,m_ang,psi2); call set_level(step,-m_ang,psi2)
-      call set_level(step,m_ang,hlmb); call set_level(step,-m_ang,hlmb)
-
-      call set_edth(step,m_ang,pi);   call set_edth(step,-m_ang,pi)
-      call set_edth(step,m_ang,hlmb); call set_edth(step,-m_ang,hlmb)
-
       call set_level(step,m_ang,   pi); call set_level(step,-m_ang,   pi)
+      call set_level(step,m_ang, psi2); call set_level(step,-m_ang, psi2)
       call set_level(step,m_ang, hlmb); call set_level(step,-m_ang, hlmb)
       call set_level(step,m_ang,hmbmb); call set_level(step,-m_ang,hmbmb)
 
+      call set_edth(step,m_ang,   pi); call set_edth(step,-m_ang,   pi)
       call set_edth(step,m_ang, hlmb); call set_edth(step,-m_ang, hlmb)
       call set_edth(step,m_ang,hmbmb); call set_edth(step,-m_ang,hmbmb)
 
