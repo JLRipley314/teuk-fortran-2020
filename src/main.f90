@@ -109,7 +109,6 @@ clean_memory: block
       call teuk_lin_time_step(-pm_ang, psi4_lin_p, psi4_lin_q, psi4_lin_f)
       call teuk_lin_time_step( pm_ang, psi4_lin_p, psi4_lin_q, psi4_lin_f)
    
-      call metric_recon_time_step(-pm_ang)
       call metric_recon_time_step( pm_ang)
       !-----------------------------------------------------------------------
       if (mod(t_step,t_step_save)==0) then

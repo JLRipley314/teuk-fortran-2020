@@ -313,6 +313,7 @@ module mod_metric_recon
          !--------------------------------------------------------------------
          case ("hll_res")
 
+            call set_level(5_ip,-m_ang,muhll)
             call set_level(5_ip, m_ang,muhll)
 
             do j=1,ny
