@@ -10,7 +10,7 @@ module mod_metric_recon
    use mod_field,    only: field, set_field, set_level
    use mod_ghp,      only: set_edth, set_edth_prime, set_thorn, set_thorn_prime
    use mod_bkgrd_np, only: mu_0, ta_0, pi_0, rh_0, psi2_0
-   use mod_teuk,     only: psi4_f
+   use mod_teuk,     only: psi4_lin_f
    use mod_params,   only: &
       dt, nx, ny, min_m, max_m, &
       cl=>compactification_length, &
@@ -49,9 +49,9 @@ module mod_metric_recon
                kl(i,j,m_ang) = &
                -  4.0_rp*R(i)*mu_0(i,j)*level(i,j,m_ang) &
 
-               -  R(i)*ta_0(i,j)*(psi4_f%level(i,j,m_ang)) &
+               -  R(i)*ta_0(i,j)*(psi4_lin_f%level(i,j,m_ang)) &
 
-               +  (psi4_f%edth(i,j,m_ang))
+               +  (psi4_lin_f%edth(i,j,m_ang))
             end do
             end do
          !--------------------------------------------------------------------
@@ -64,7 +64,7 @@ module mod_metric_recon
                   +  conjg(mu_0(i,j)) &
                   )*level(i,j,m_ang) &
 
-               - (psi4_f%level(i,j,m_ang))
+               - (psi4_lin_f%level(i,j,m_ang))
             end do
             end do
          !--------------------------------------------------------------------
@@ -255,11 +255,11 @@ module mod_metric_recon
          !--------------------------------------------------------------------
          case ("bianchi3_res")
 
-            call set_level(5_ip,m_ang,psi4_f)
+            call set_level(5_ip,m_ang,psi4_lin_f)
             call set_level(5_ip,m_ang,psi3)
             call set_level(5_ip,m_ang,la)
 
-            call set_thorn(     5_ip,m_ang,psi4_f)
+            call set_thorn(     5_ip,m_ang,psi4_lin_f)
             call set_edth_prime(5_ip,m_ang,psi3)
    
             do j=1,ny
@@ -269,9 +269,9 @@ module mod_metric_recon
 
                +  4.0_rp*(R(i)**2)*pi_0(i,j)*psi3%level(i,j,m_ang) &
 
-               -  psi4_f%thorn(i,j,m_ang) &
+               -  psi4_lin_f%thorn(i,j,m_ang) &
 
-               +  rh_0(i,j)*psi4_f%level(i,j,m_ang) &
+               +  rh_0(i,j)*psi4_lin_f%level(i,j,m_ang) &
 
                -  3.0_rp*(R(i)**2)*psi2_0(i,j)*la%level(i,j,m_ang) 
             end do
@@ -329,8 +329,8 @@ module mod_metric_recon
    subroutine step_all_fields_preserve_m_ang(step, m_ang)
       integer(ip), intent(in) :: step, m_ang
       !-----------------------------------------------------------------------
-      call set_level(step,m_ang,psi4_f)
-      call set_edth( step,m_ang,psi4_f)
+      call set_level(step,m_ang,psi4_lin_f)
+      call set_edth( step,m_ang,psi4_lin_f)
 
       call take_step(step,m_ang,psi3)
       call take_step(step,m_ang,la)
@@ -354,8 +354,8 @@ module mod_metric_recon
       !-----------------------------------------------------------------------
       ! check if there were any errors in take_step routines
       !-----------------------------------------------------------------------
-      if (psi4_f%error/="") then
-         write (*,*) psi4_f%error
+      if (psi4_lin_f%error/="") then
+         write (*,*) psi4_lin_f%error
          stop
       else if (psi3%error/="") then
          write (*,*) psi3%error

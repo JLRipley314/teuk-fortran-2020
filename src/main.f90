@@ -15,8 +15,8 @@ program main
    use mod_cheb,         only: cheb_init, cheb_filter, cheb_test
    use mod_swal,         only: swal_init, swal_test_orthonormal
    use mod_io,           only: write_csv
-   use mod_teuk,         only: psi4_f, psi4_p, psi4_q, q_res, &
-                               teuk_init, teuk_time_step, compute_q_res
+   use mod_teuk,         only: psi4_lin_f, psi4_lin_p, psi4_lin_q, q_res, &
+                               teuk_init, teuk_lin_time_step, compute_q_res
    use mod_initial_data, only: set_initial_data
    use mod_bkgrd_np,     only: bkgrd_np_init
    use mod_metric_recon, only: psi3, psi2, la, pi, muhll, hlmb, hmbmb, &
@@ -38,9 +38,9 @@ clean_memory: block
 !-----------------------------------------------------------------------------
 ! first order metric field
 !-----------------------------------------------------------------------------
-   call set_field(name="p",spin=-2_ip,boost=-2_ip,falloff=1_ip,f=psi4_p)
-   call set_field(name="q",spin=-2_ip,boost=-2_ip,falloff=2_ip,f=psi4_q)
-   call set_field(name="f",spin=-2_ip,boost=-2_ip,falloff=1_ip,f=psi4_f)
+   call set_field(name="p",spin=-2_ip,boost=-2_ip,falloff=1_ip,f=psi4_lin_p)
+   call set_field(name="q",spin=-2_ip,boost=-2_ip,falloff=2_ip,f=psi4_lin_q)
+   call set_field(name="f",spin=-2_ip,boost=-2_ip,falloff=1_ip,f=psi4_lin_f)
 !-----------------------------------------------------------------------------
 ! metric reconstructed fields
 !-----------------------------------------------------------------------------
@@ -75,11 +75,11 @@ clean_memory: block
 !-----------------------------------------------------------------------------
    time = 0.0_rp
 
-   call set_initial_data(pm_ang,psi4_p, psi4_q, psi4_f)
+   call set_initial_data(pm_ang,psi4_lin_p, psi4_lin_q, psi4_lin_f)
    !--------------------------------------------------------------------------
    ! write to file
    !--------------------------------------------------------------------------
-   call write_csv(time,pm_ang,psi4_f)
+   call write_csv(time,pm_ang,psi4_lin_f)
    !--------------------------------------------------------------------------
    if (write_fields) then
       call write_csv(time,pm_ang,psi3)
@@ -91,7 +91,7 @@ clean_memory: block
    end if
    !--------------------------------------------------------------------------
    if (write_indep_res) then
-      call compute_q_res(psi4_q,psi4_f,q_res)
+      call compute_q_res(psi4_lin_q,psi4_lin_f,q_res)
 
       call write_csv(time,pm_ang,q_res)
 
@@ -105,8 +105,8 @@ clean_memory: block
    time_evolve: do t_step=1,nt
       time = t_step*dt
 
-      call teuk_time_step(-pm_ang, psi4_p, psi4_q, psi4_f)
-      call teuk_time_step( pm_ang, psi4_p, psi4_q, psi4_f)
+      call teuk_lin_time_step(-pm_ang, psi4_lin_p, psi4_lin_q, psi4_lin_f)
+      call teuk_lin_time_step( pm_ang, psi4_lin_p, psi4_lin_q, psi4_lin_f)
    
       call metric_recon_time_step(pm_ang)
       !-----------------------------------------------------------------------
@@ -115,7 +115,7 @@ clean_memory: block
          write (stdout,*) time / black_hole_mass
          flush (stdout)
          !--------------------------------------------------------------------
-         call write_csv(time,pm_ang,psi4_f)
+         call write_csv(time,pm_ang,psi4_lin_f)
          !--------------------------------------------------------------------
          if (write_fields) then
             call write_csv(time,pm_ang,psi3)
@@ -127,7 +127,7 @@ clean_memory: block
          end if
          !--------------------------------------------------------------------
          if (write_indep_res) then
-            call compute_q_res(psi4_q,psi4_f,q_res)
+            call compute_q_res(psi4_lin_q,psi4_lin_f,q_res)
 
             call write_csv(time,pm_ang,q_res)
             !-----------------------------------------------------------------
@@ -140,13 +140,13 @@ clean_memory: block
          !--------------------------------------------------------------------
       end if
       !-----------------------------------------------------------------------
-!      call cheb_filter(psi4_p%np1,psi4_f%coefs_cheb)
-!      call cheb_filter(psi4_q%np1,psi4_f%coefs_cheb)
-!      call cheb_filter(psi4_f%np1,psi4_f%coefs_cheb)
+!      call cheb_filter(psi4_lin_p%np1,psi4_lin_f%coefs_cheb)
+!      call cheb_filter(psi4_lin_q%np1,psi4_lin_f%coefs_cheb)
+!      call cheb_filter(psi4_lin_f%np1,psi4_lin_f%coefs_cheb)
       !-----------------------------------------------------------------------
-      call shift_time_step(psi4_p)
-      call shift_time_step(psi4_q)
-      call shift_time_step(psi4_f)
+      call shift_time_step(psi4_lin_p)
+      call shift_time_step(psi4_lin_q)
+      call shift_time_step(psi4_lin_f)
 
       call shift_time_step(psi3)
       call shift_time_step(psi2)

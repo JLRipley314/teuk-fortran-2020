@@ -97,6 +97,8 @@ contains
       end do
    end subroutine compute_DR
 !=============================================================================
+! Low pass filter. A smooth filter appears to help prevent Gibbs-like ringing
+!=============================================================================
    pure subroutine cheb_filter(vals,coefs)
       complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: vals
       complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: coefs

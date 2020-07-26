@@ -176,7 +176,7 @@ contains
       call swal_coef_to_real(spin+1,m_ang,coefs,vals_raised) 
    end subroutine swal_raise
 !=============================================================================
-! Low pass filter. A smooth filter helps prevent Gibbs-like ringing
+! Low pass filter. A smooth filter appears to help prevent Gibbs-like ringing
 !=============================================================================
    pure subroutine swal_filter(spin,vals,coefs)
       integer(ip), intent(in) :: spin

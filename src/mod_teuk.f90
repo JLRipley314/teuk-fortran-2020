@@ -17,9 +17,9 @@ module mod_teuk
 !=============================================================================
    implicit none
    private
-   public :: teuk_init, teuk_time_step, compute_q_res 
+   public :: teuk_init, teuk_lin_time_step, compute_q_res 
 
-   type(field), public :: psi4_f, psi4_p, psi4_q, q_res
+   type(field), public :: psi4_lin_f, psi4_lin_p, psi4_lin_q, q_res
 !=============================================================================
    real(rp) :: &
       A_pp(nx,ny,min_m:max_m), A_pq(nx,ny,min_m:max_m), A_pf(nx,ny,min_m:max_m), &
@@ -220,7 +220,7 @@ contains
 !=============================================================================
 ! RK4 time integrator
 !=============================================================================
-   pure subroutine teuk_time_step(m_ang, p, q, f) 
+   pure subroutine teuk_lin_time_step(m_ang, p, q, f) 
       integer(ip), intent(in)    :: m_ang
       type(field), intent(inout) :: p, q, f 
 
@@ -298,7 +298,7 @@ contains
          p%DR,  q%DR,  f%DR, f%coefs_swal, f%lap, &
          p%k5,  q%k5,  f%k5) 
 
-   end subroutine teuk_time_step
+   end subroutine teuk_lin_time_step
 !=============================================================================
 ! independent residula: q - \partial_R f
 !=============================================================================
