@@ -75,7 +75,8 @@ clean_memory: block
 !-----------------------------------------------------------------------------
    time = 0.0_rp
 
-   call set_initial_data(pm_ang,psi4_lin_p, psi4_lin_q, psi4_lin_f)
+   call set_initial_data(-pm_ang, psi4_lin_p, psi4_lin_q, psi4_lin_f)
+   call set_initial_data( pm_ang, psi4_lin_p, psi4_lin_q, psi4_lin_f)
    !--------------------------------------------------------------------------
    ! write to file
    !--------------------------------------------------------------------------
@@ -108,7 +109,8 @@ clean_memory: block
       call teuk_lin_time_step(-pm_ang, psi4_lin_p, psi4_lin_q, psi4_lin_f)
       call teuk_lin_time_step( pm_ang, psi4_lin_p, psi4_lin_q, psi4_lin_f)
    
-      call metric_recon_time_step(pm_ang)
+      call metric_recon_time_step(-pm_ang)
+      call metric_recon_time_step( pm_ang)
       !-----------------------------------------------------------------------
       if (mod(t_step,t_step_save)==0) then
          !--------------------------------------------------------------------
@@ -131,7 +133,8 @@ clean_memory: block
 
             call write_csv(time,pm_ang,q_res)
             !-----------------------------------------------------------------
-            call metric_recon_indep_res(pm_ang)
+            call metric_recon_indep_res(-pm_ang)
+            call metric_recon_indep_res( pm_ang)
 
             call write_csv(time,pm_ang,bianchi3_res)
             call write_csv(time,pm_ang,bianchi2_res)
@@ -140,9 +143,9 @@ clean_memory: block
          !--------------------------------------------------------------------
       end if
       !-----------------------------------------------------------------------
-!      call cheb_filter(psi4_lin_p%np1,psi4_lin_f%coefs_cheb)
-!      call cheb_filter(psi4_lin_q%np1,psi4_lin_f%coefs_cheb)
-!      call cheb_filter(psi4_lin_f%np1,psi4_lin_f%coefs_cheb)
+      !call cheb_filter(psi4_lin_p%np1,psi4_lin_f%coefs_cheb)
+      !call cheb_filter(psi4_lin_q%np1,psi4_lin_p%coefs_cheb)
+      !call cheb_filter(psi4_lin_f%np1,psi4_lin_q%coefs_cheb)
       !-----------------------------------------------------------------------
       call shift_time_step(psi4_lin_p)
       call shift_time_step(psi4_lin_q)

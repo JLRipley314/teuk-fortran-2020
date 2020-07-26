@@ -317,7 +317,9 @@ module mod_metric_recon
 
             do j=1,ny
             do i=1,nx
-               hll_res%np1(i,j,m_ang) = muhll%level(i,j,m_ang) / mu_0(i,j)
+               hll_res%np1(i,j,m_ang) = &
+                       (muhll%level(i,j, m_ang) / mu_0(i,j)) &
+               -  conjg(muhll%level(i,j,-m_ang) / mu_0(i,j)) 
             end do
             end do
          !-------------------------------------------------------------------- 
