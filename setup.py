@@ -29,7 +29,7 @@ sim.rl_pm=  float(-1.5)  ## compact support: lower r value
 sim.ru_pm=  float( 1.5)  ## compact support: upper r value 
 sim.l_ang_pm= int(2)     ## support over single spin weighted spherical harmonic
 
-sim.amp_nm= float( 0.0)  ## amplitude of the initial perturbation
+sim.amp_nm= float(10.0)  ## amplitude of the initial perturbation
 sim.rl_nm=  float(-1.5)  ## compact support: lower r value
 sim.ru_nm=  float( 1.5)  ## compact support: upper r value 
 sim.l_ang_nm= int(2)     ## support over single spin weighted spherical harmonic
