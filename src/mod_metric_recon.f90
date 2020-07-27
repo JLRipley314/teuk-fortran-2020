@@ -26,7 +26,7 @@ module mod_metric_recon
       psi3, psi2,         &
       la, pi,             &
       muhll, hlmb, hmbmb, &
-      bianchi3_res, bianchi2_res, hll_res 
+      res_bianchi3, res_bianchi2, res_hll 
 !=============================================================================
    contains
 !=============================================================================
@@ -140,7 +140,9 @@ module mod_metric_recon
                -  2.0_rp*R(i)*conjg(pi_0(i,j))*(pi%level(i,j,m_ang)) &
 
                -  2.0_rp*(psi2%level(i,j,m_ang)) &
-
+               !
+               ! complex conjugate of fields
+               !
                -  2.0_rp*R(i)*pi_0(i,j)*conjg(pi%level(i,j,-m_ang)) &
 
                -  R(i)*pi_0(i,j)*conjg(hmbmb%edth(i,j,-m_ang)) &
@@ -253,7 +255,7 @@ module mod_metric_recon
       !-----------------------------------------------------------------------
       select_field: select case (fname)
          !--------------------------------------------------------------------
-         case ("bianchi3_res")
+         case ("res_bianchi3")
 
             call set_level(5_ip,m_ang,psi4_lin_f)
             call set_level(5_ip,m_ang,psi3)
@@ -264,7 +266,7 @@ module mod_metric_recon
    
             do j=1,ny
             do i=1,nx
-               bianchi3_res%np1(i,j,m_ang) = &
+               res_bianchi3%np1(i,j,m_ang) = &
                   R(i)*psi3%edth_prime(i,j,m_ang) &
 
                +  4.0_rp*(R(i)**2)*pi_0(i,j)*psi3%level(i,j,m_ang) &
@@ -277,7 +279,7 @@ module mod_metric_recon
             end do
             end do
          !--------------------------------------------------------------------
-         case ("bianchi2_res")
+         case ("res_bianchi2")
 
             call set_level(5_ip,m_ang,pi)
 
@@ -292,7 +294,7 @@ module mod_metric_recon
 
             do j=1,ny
             do i=1,nx
-               bianchi2_res%np1(i,j,m_ang) = &
+               res_bianchi2%np1(i,j,m_ang) = &
                   psi2_0(i,j)*( &
                   -  3.0_rp*(R(i)**3)*mu_0(i,j)*hlmb%level(i,j,m_ang) &
                   -  1.5_rp*(R(i)**3)*ta_0(i,j)*hmbmb%level(i,j,m_ang) &
@@ -311,14 +313,14 @@ module mod_metric_recon
          !--------------------------------------------------------------------
          ! hll should be real
          !--------------------------------------------------------------------
-         case ("hll_res")
+         case ("res_hll")
 
             call set_level(5_ip,-m_ang,muhll)
             call set_level(5_ip, m_ang,muhll)
 
             do j=1,ny
             do i=1,nx
-               hll_res%np1(i,j,m_ang) = &
+               res_hll%np1(i,j,m_ang) = &
                        (muhll%level(i,j, m_ang) / mu_0(i,j)) &
                -  conjg(muhll%level(i,j,-m_ang) / mu_0(i,j)) 
             end do
@@ -441,11 +443,11 @@ module mod_metric_recon
    subroutine metric_recon_indep_res(m_ang)
       integer(ip), intent(in) :: m_ang
       !-----------------------------------------------------------------------
-      call set_indep_res(m_ang,"bianchi3_res")
+      call set_indep_res(m_ang,"res_bianchi3")
       !-----------------------------------------------------------------------
-      call set_indep_res(m_ang,"bianchi2_res")
+      call set_indep_res(m_ang,"res_bianchi2")
       !-----------------------------------------------------------------------
-      call set_indep_res(m_ang,"hll_res")
+      call set_indep_res(m_ang,"res_hll")
 
    end subroutine metric_recon_indep_res
 !=============================================================================

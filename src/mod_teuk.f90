@@ -17,9 +17,9 @@ module mod_teuk
 !=============================================================================
    implicit none
    private
-   public :: teuk_init, teuk_lin_time_step, compute_q_res 
+   public :: teuk_init, teuk_lin_time_step, compute_res_q 
 
-   type(field), public :: psi4_lin_f, psi4_lin_p, psi4_lin_q, q_res
+   type(field), public :: psi4_lin_f, psi4_lin_p, psi4_lin_q, res_q
 !=============================================================================
    real(rp) :: &
       A_pp(nx,ny,min_m:max_m), A_pq(nx,ny,min_m:max_m), A_pf(nx,ny,min_m:max_m), &
@@ -74,13 +74,13 @@ contains
             -2*R*(-1 - spin + (R*(-2*bhs**2*R + cl**2*bhm*(3 + spin)))/cl**4) &
          ,&
             (-2*bhs*m_ang*R**2)/cl**2 &
-         ,rp)
+         ,kind=rp)
 
          B_pf(i,j,m_ang) = cmplx(&
             (-2*R*(-(bhs**2*R) + cl**2*bhm*(1 + spin)))/cl**4 &
          ,&
             (-2*bhs*m_ang*R)/cl**2 &
-         ,rp)
+         ,kind=rp)
       !----------------------------
          B_qp(i,j,m_ang) = cmplx( &
             -( &
@@ -88,7 +88,7 @@ contains
          /  (16*cl**2*bhm**2*(cl**2 + 2*bhm*R) + bhs**2*(-(cl**2 + 4*bhm*R)**2 + cl**4*Y**2))**2) &
          , &
             0.0_rp &
-         ,rp)
+         ,kind=rp)
 
          B_qq(i,j,m_ang) = cmplx( &
             -( &
@@ -108,7 +108,7 @@ contains
             )/( &
                16*cl**2*bhm**2*(cl**2 + 2*bhm*R) + bhs**2*(-(cl**2 + 4*bhm*R)**2 + cl**4*Y**2) &
             ) &
-         ,rp)
+         ,kind=rp)
 
          B_qf(i,j,m_ang) = cmplx(&
             ( &
@@ -131,7 +131,7 @@ contains
             )/( &
                16*cl**2*bhm**2*(cl**2 + 2*bhm*R) + bhs**2*(-(cl**2 + 4*bhm*R)**2 + cl**4*Y**2) &
             )**2 &
-         ,rp)
+         ,kind=rp)
       !----------------------------
          B_fp(i,j,m_ang) = cmplx( &
             cl**4 &
@@ -139,7 +139,7 @@ contains
             (16*cl**2*bhm**2*(cl**2 + 2*bhm*R) + bhs**2*(-(cl**2 + 4*bhm*R)**2 + cl**4*Y**2)) &
          , &
             0.0_rp &
-         ,rp)
+         ,kind=rp)
 
          B_fq(i,j,m_ang) = cmplx( &
             (2*(cl**6 + cl**2*(bhs**2 - 8*bhm**2)*R**2 + 4*bhs**2*bhm*R**3)) &
@@ -147,7 +147,7 @@ contains
             (16*cl**2*bhm**2*(cl**2 + 2*bhm*R) + bhs**2*(-(cl**2 + 4*bhm*R)**2 + cl**4*Y**2)) &
          , &
             0.0_rp &
-         ,rp)
+         ,kind=rp)
 
          B_ff(i,j,m_ang) = cmplx( &
             -( & 
@@ -159,7 +159,7 @@ contains
             (-2*bhs*cl**2*(4*m_ang*bhm*R + cl**2*(m_ang - spin*Y))) &
          /  &
             (16*cl**2*bhm**2*(cl**2 + 2*bhm*R) + bhs**2*(-(cl**2 + 4*bhm*R)**2 + cl**4*Y**2)) &
-         ,rp)
+         ,kind=rp)
       end do x_loop
       end do y_loop
       end do m_loop
@@ -302,7 +302,7 @@ contains
 !=============================================================================
 ! independent residula: q - \partial_R f
 !=============================================================================
-   pure subroutine compute_q_res(q, f, res) 
+   pure subroutine compute_res_q(q, f, res) 
       type(field), intent(in)    :: q 
       type(field), intent(inout) :: f
       type(field), intent(out)   :: res
@@ -315,6 +315,6 @@ contains
       
       res%np1 = f%DR - q%np1
 
-   end subroutine compute_q_res
+   end subroutine compute_res_q
 !=============================================================================
 end module mod_teuk
