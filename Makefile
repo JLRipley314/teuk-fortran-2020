@@ -46,6 +46,7 @@ OBJ= $(addprefix $(OBJDIR), \
 	mod_initial_data.o \
 	mod_ghp.o \
 	mod_metric_recon.o \
+	mod_scnd_order_source.o \
 	)
 
 DEPS = $(addprefix $(SRC), \
@@ -60,6 +61,7 @@ DEPS = $(addprefix $(SRC), \
 	initial_data.f90 \
 	mod_ghp.f90 \
 	mod_metric_recon.f90 \
+	mod_scnd_order_source.f90 \
 	)
 
 all: $(RUN)

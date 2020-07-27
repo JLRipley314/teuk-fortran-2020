@@ -47,7 +47,7 @@ class Sim:
       os.makedirs(self.output_dir)
 #=============================================================================
    def set_derived_params(self)->None:
-      self.lmax = int(self.nl - 1)
+      self.max_l = int(self.nl - 1)
 #-----------------------------------------------------------------------------
 ## put the R_max slightly inside the outer horizon.
 ## if near extremal limit then put R_max a m, which is in between
@@ -67,9 +67,9 @@ class Sim:
 ## Gauss points for integration
 ## want to exactly integrate polynomials of order
 ## 2l + 2m(i.e. lmin) + alpha + beta (so being a bit conservative here) 
-      self.lmin= max(abs(self.pm_ang),abs(self.spin))
+      lmin= max(abs(self.pm_ang),abs(self.spin))
       self.ny= (self.nl
-      +	int(abs(2*self.lmin))
+      +	int(abs(2*lmin))
       + int(abs(2*self.pm_ang+self.spin))
       +	int(abs(2*self.pm_ang-self.spin))
       )

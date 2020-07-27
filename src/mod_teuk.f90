@@ -6,7 +6,7 @@ module mod_teuk
    use mod_prec
    use mod_field, only: field
    use mod_params, only: &
-      dt, nx, ny, lmax, &
+      dt, nx, ny, max_l, &
       spin, min_m, max_m, &
       cl=>compactification_length, &
       bhm=>black_hole_mass, &
@@ -177,7 +177,7 @@ contains
          p_DR, q_DR, f_DR, f_laplacian, &
          kp, kq, kf 
 
-      complex(rp), dimension(nx,0:lmax,min_m:max_m), intent(inout) :: f_coefs
+      complex(rp), dimension(nx,0:max_l,min_m:max_m), intent(inout) :: f_coefs
 
       integer(ip) :: i, j
 

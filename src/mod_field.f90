@@ -4,7 +4,7 @@
 module mod_field
 !=============================================================================
    use mod_prec
-   use mod_params, only: nx, ny, lmax, min_m, max_m
+   use mod_params, only: nx, ny, max_l, min_m, max_m
    implicit none
 !=============================================================================
    private
@@ -45,9 +45,9 @@ module mod_field
       lowered(nx,ny,min_m:max_m), & 
       lap(    nx,ny,min_m:max_m), &
 
-      coefs_swal(nx,0:lmax,min_m:max_m), &
-      coefs_cheb(nx,    ny,min_m:max_m), &
-      coefs_both(nx,0:lmax,min_m:max_m), &
+      coefs_swal(nx,0:max_l,min_m:max_m), &
+      coefs_cheb(nx,    ny, min_m:max_m), &
+      coefs_both(nx,0:max_l,min_m:max_m), &
 
       edth(       nx,ny,min_m:max_m), &
       edth_prime( nx,ny,min_m:max_m), &
@@ -66,7 +66,7 @@ contains
       f % name = name 
 
       ! make empty string long enough to hold error message
-      f % error = "                                                                               "
+      f % error = "                                                              "
 
       f % first_time = .true.
 
@@ -116,7 +116,7 @@ contains
          case (5)
             f % level(:,:,m_ang) = f % np1(:,:,m_ang)  
          case default
-            write(f%error,*) "ERROR(set_level), step=", step 
+            write(f%error,*) "ERROR(set_field_level), step=", step 
       end select
    end subroutine set_level
 !=============================================================================
@@ -136,7 +136,7 @@ contains
          case (5)
             f % DT(:,:,m_ang) = f % k5(:,:,m_ang) 
          case default
-            write(f%error,*) "ERROR(set_DT), step=", step 
+            write(f%error,*) "ERROR(set_field_DT), step=", step 
       end select
    end subroutine set_DT
 !=============================================================================
