@@ -37,8 +37,8 @@ module mod_scnd_order_source
    character(:), allocatable :: error
 
    integer(ip) :: &
-      pre_edth_spin,  pre_edth_boost,  pre_edth_falloff, &
-      pre_thorn_spin, pre_thorn_boost, pre_thorn_falloff
+      pre_edth_prime_spin,  pre_edth_prime_boost,  pre_edth_prime_falloff, &
+      pre_thorn_prime_spin, pre_thorn_prime_boost, pre_thorn_prime_falloff
 
    complex(rp) :: &
       n1h(nx,ny,min_m:max_m), &
@@ -83,14 +83,14 @@ module mod_scnd_order_source
       ! make empty string long enough to hold error message
       sf % error = "                                                              "
 
-      sf % pre_edth_spin  = 0_ip
-      sf % pre_thorn_spin = 0_ip
+      sf % pre_edth_prime_spin  = 0_ip
+      sf % pre_thorn_prime_spin = 0_ip
 
-      sf % pre_edth_boost  = 0_ip
-      sf % pre_thorn_boost = 0_ip
+      sf % pre_edth_prime_boost  = 0_ip
+      sf % pre_thorn_prime_boost = 0_ip
 
-      sf % pre_edth_falloff  = 0_ip
-      sf % pre_thorn_falloff = 0_ip
+      sf % pre_edth_prime_falloff  = 0_ip
+      sf % pre_thorn_prime_falloff = 0_ip
 
       sf % n1h = 0.0_rp
       sf % n   = 0.0_rp
@@ -315,7 +315,10 @@ module mod_scnd_order_source
       end do
       end do
 
+      call set_edth_prime_arr(m_ang, sf%pre_edth_prime_spin, sf%pre_edth_prime_boost, sf%pre_edth_prime_np1, sf%DT, sf%lowered, sf%edth_prime)
 
+      call set_thorn_prime_arr(m_ang, sf%pre_thorn_prime_falloff, sf%pre_thorn_prime_np1, sf%DT, sf%DR, sf%thorn_prime)
+   
 
    end subroutine scnd_order_source_compute
 !=============================================================================
