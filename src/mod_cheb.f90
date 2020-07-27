@@ -85,11 +85,12 @@ contains
 !=============================================================================
    pure subroutine compute_DR(m_ang,vals,D_vals)
       integer(ip), intent(in) :: m_ang
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: vals
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: D_vals 
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)    :: vals
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: D_vals 
       integer(ip) :: i, j
 
-      D_vals = 0
+      D_vals(:,:,m_ang) = 0
+
       do j=1,nx
       do i=1,nx
          D_vals(i,:,m_ang) = D_vals(i,:,m_ang) + (D_cheb(i,j) * vals(j,:,m_ang))

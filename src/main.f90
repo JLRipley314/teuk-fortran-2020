@@ -106,9 +106,14 @@ clean_memory: block
       call write_csv(time,-pm_ang,res_q)
       call write_csv(time, pm_ang,res_q)
 
-      call write_csv(time,pm_ang,res_bianchi3)
-      call write_csv(time,pm_ang,res_bianchi2)
-      call write_csv(time,pm_ang,res_hll)
+      call write_csv(time,-pm_ang,res_bianchi3)
+      call write_csv(time, pm_ang,res_bianchi3)
+
+      call write_csv(time,-pm_ang,res_bianchi2)
+      call write_csv(time, pm_ang,res_bianchi2)
+
+      call write_csv(time,-pm_ang,res_hll)
+      call write_csv(time, pm_ang,res_hll)
    end if
 !-----------------------------------------------------------------------------
    write (stdout,*) "Beginning time evolution"
@@ -155,16 +160,31 @@ clean_memory: block
             call metric_recon_indep_res(-pm_ang)
             call metric_recon_indep_res( pm_ang)
 
-            call write_csv(time,pm_ang,res_bianchi3)
-            call write_csv(time,pm_ang,res_bianchi2)
-            call write_csv(time,pm_ang,res_hll)
+            call write_csv(time,-pm_ang,res_bianchi3)
+            call write_csv(time, pm_ang,res_bianchi3)
+
+            call write_csv(time,-pm_ang,res_bianchi2)
+            call write_csv(time, pm_ang,res_bianchi2)
+
+            call write_csv(time,-pm_ang,res_hll)
+            call write_csv(time, pm_ang,res_hll)
          end if
          !--------------------------------------------------------------------
       end if
       !-----------------------------------------------------------------------
-      !call cheb_filter(psi4_lin_p%np1,psi4_lin_f%coefs_cheb)
-      !call cheb_filter(psi4_lin_q%np1,psi4_lin_p%coefs_cheb)
-      !call cheb_filter(psi4_lin_f%np1,psi4_lin_q%coefs_cheb)
+      call cheb_filter(psi4_lin_p%np1,psi4_lin_f%coefs_cheb)
+      call cheb_filter(psi4_lin_q%np1,psi4_lin_p%coefs_cheb)
+      call cheb_filter(psi4_lin_f%np1,psi4_lin_q%coefs_cheb)
+
+      call cheb_filter(psi3%np1,psi3%coefs_cheb)
+      call cheb_filter(psi2%np1,psi2%coefs_cheb)
+
+      call cheb_filter(la%np1,la%coefs_cheb)
+      call cheb_filter(pi%np1,pi%coefs_cheb)
+
+      call cheb_filter(hmbmb%np1,hmbmb%coefs_cheb)
+      call cheb_filter( hlmb%np1, hlmb%coefs_cheb)
+      call cheb_filter(muhll%np1,muhll%coefs_cheb)
       !-----------------------------------------------------------------------
       call shift_time_step(psi4_lin_p)
       call shift_time_step(psi4_lin_q)
