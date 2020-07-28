@@ -10,7 +10,9 @@ program main
 
    use mod_prec
    use mod_params,       only: nt, dt, t_step_save, black_hole_mass, pm_ang, &
-                           write_fields, write_indep_res!, write_source
+                           metric_recon, &
+                           write_metric_recon_fields, &
+                           write_indep_res!, write_source
    use mod_field,        only: field, set_field, shift_time_step
    use mod_cheb,         only: cheb_init, cheb_filter, cheb_test
    use mod_swal,         only: swal_init, swal_test_orthonormal
@@ -83,7 +85,7 @@ clean_memory: block
    call write_csv(time,-pm_ang,psi4_lin_f)
    call write_csv(time, pm_ang,psi4_lin_f)
    !--------------------------------------------------------------------------
-   if (write_fields) then
+   if (write_metric_recon_fields) then
       call write_csv(time,-pm_ang,psi3)
       call write_csv(time, pm_ang,psi3)
 
@@ -106,14 +108,16 @@ clean_memory: block
       call write_csv(time,-pm_ang,res_q)
       call write_csv(time, pm_ang,res_q)
 
-      call write_csv(time,-pm_ang,res_bianchi3)
-      call write_csv(time, pm_ang,res_bianchi3)
+      if (metric_recon) then
+         call write_csv(time,-pm_ang,res_bianchi3)
+         call write_csv(time, pm_ang,res_bianchi3)
 
-      call write_csv(time,-pm_ang,res_bianchi2)
-      call write_csv(time, pm_ang,res_bianchi2)
+         call write_csv(time,-pm_ang,res_bianchi2)
+         call write_csv(time, pm_ang,res_bianchi2)
 
-      call write_csv(time,-pm_ang,res_hll)
-      call write_csv(time, pm_ang,res_hll)
+         call write_csv(time,-pm_ang,res_hll)
+         call write_csv(time, pm_ang,res_hll)
+      end if
    end if
 !-----------------------------------------------------------------------------
    write (stdout,*) "Beginning time evolution"
@@ -123,8 +127,10 @@ clean_memory: block
 
       call teuk_lin_time_step(-pm_ang, psi4_lin_p, psi4_lin_q, psi4_lin_f)
       call teuk_lin_time_step( pm_ang, psi4_lin_p, psi4_lin_q, psi4_lin_f)
-   
-      call metric_recon_time_step(pm_ang)
+
+      if (metric_recon) then 
+         call metric_recon_time_step(pm_ang)
+      end if
       !-----------------------------------------------------------------------
       if (mod(t_step,t_step_save)==0) then
          !--------------------------------------------------------------------
@@ -134,7 +140,7 @@ clean_memory: block
          call write_csv(time,-pm_ang,psi4_lin_f)
          call write_csv(time, pm_ang,psi4_lin_f)
          !--------------------------------------------------------------------
-         if (write_fields) then
+         if (write_metric_recon_fields) then
             call write_csv(time,-pm_ang,psi3)
             call write_csv(time, pm_ang,psi3)
 
@@ -157,17 +163,19 @@ clean_memory: block
             call write_csv(time,-pm_ang,res_q)
             call write_csv(time, pm_ang,res_q)
             !-----------------------------------------------------------------
-            call metric_recon_indep_res(-pm_ang)
-            call metric_recon_indep_res( pm_ang)
+            if (metric_recon) then
+               call metric_recon_indep_res(-pm_ang)
+               call metric_recon_indep_res( pm_ang)
 
-            call write_csv(time,-pm_ang,res_bianchi3)
-            call write_csv(time, pm_ang,res_bianchi3)
+               call write_csv(time,-pm_ang,res_bianchi3)
+               call write_csv(time, pm_ang,res_bianchi3)
 
-            call write_csv(time,-pm_ang,res_bianchi2)
-            call write_csv(time, pm_ang,res_bianchi2)
+               call write_csv(time,-pm_ang,res_bianchi2)
+               call write_csv(time, pm_ang,res_bianchi2)
 
-            call write_csv(time,-pm_ang,res_hll)
-            call write_csv(time, pm_ang,res_hll)
+               call write_csv(time,-pm_ang,res_hll)
+               call write_csv(time, pm_ang,res_hll)
+            end if
          end if
          !--------------------------------------------------------------------
       end if
@@ -176,30 +184,33 @@ clean_memory: block
       call cheb_filter(psi4_lin_q%np1,psi4_lin_p%coefs_cheb)
       call cheb_filter(psi4_lin_f%np1,psi4_lin_q%coefs_cheb)
 
-      call cheb_filter(psi3%np1,psi3%coefs_cheb)
-      call cheb_filter(psi2%np1,psi2%coefs_cheb)
+      if (metric_recon) then
+         call cheb_filter(psi3%np1,psi3%coefs_cheb)
+         call cheb_filter(psi2%np1,psi2%coefs_cheb)
 
-      call cheb_filter(la%np1,la%coefs_cheb)
-      call cheb_filter(pi%np1,pi%coefs_cheb)
+         call cheb_filter(la%np1,la%coefs_cheb)
+         call cheb_filter(pi%np1,pi%coefs_cheb)
 
-      call cheb_filter(hmbmb%np1,hmbmb%coefs_cheb)
-      call cheb_filter( hlmb%np1, hlmb%coefs_cheb)
-      call cheb_filter(muhll%np1,muhll%coefs_cheb)
+         call cheb_filter(hmbmb%np1,hmbmb%coefs_cheb)
+         call cheb_filter( hlmb%np1, hlmb%coefs_cheb)
+         call cheb_filter(muhll%np1,muhll%coefs_cheb)
+      end if
       !-----------------------------------------------------------------------
       call shift_time_step(psi4_lin_p)
       call shift_time_step(psi4_lin_q)
       call shift_time_step(psi4_lin_f)
 
-      call shift_time_step(psi3)
-      call shift_time_step(psi2)
+      if (metric_recon) then
+         call shift_time_step(psi3)
+         call shift_time_step(psi2)
 
-      call shift_time_step(la)
-      call shift_time_step(pi)
+         call shift_time_step(la)
+         call shift_time_step(pi)
 
-      call shift_time_step(hmbmb)
-      call shift_time_step(hlmb)
-      call shift_time_step(muhll)
-
+         call shift_time_step(hmbmb)
+         call shift_time_step(hlmb)
+         call shift_time_step(muhll)
+      end if
    end do time_evolve
 !=============================================================================
 end block clean_memory
