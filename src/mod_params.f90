@@ -11,8 +11,8 @@ implicit none
    real(rp), parameter :: black_hole_mass = 0.5_rp
    real(rp), parameter :: black_hole_spin = 0.499_rp
    real(rp), parameter :: compactification_length = 1.0_rp
-   real(rp), parameter :: evolve_time = 20.0_rp
-   integer(ip), parameter :: num_saved_times = 50_ip
+   real(rp), parameter :: evolve_time = 100.0_rp
+   integer(ip), parameter :: num_saved_times = 300_ip
    character(*), parameter :: initial_data_direction = 'ingoing'
    character(*), parameter :: initial_data_type = 'compact_bump'
    real(rp), parameter :: amp_pm = 10.0_rp
@@ -38,17 +38,16 @@ implicit none
    integer(ip), parameter :: max_l = 15_ip
    real(rp), parameter :: horizon = 0.5316069612585582_rp
    real(rp), parameter :: R_max = 1.8810889865560452_rp
-   integer(ip), parameter :: lmin = 2_ip
    integer(ip), parameter :: ny = 28_ip
    real(rp), parameter :: dt = 0.003472222222222222_rp
-   integer(ip), parameter :: nt = 2880_ip
-   integer(ip), parameter :: t_step_save = 57_ip
+   integer(ip), parameter :: nt = 14400_ip
+   integer(ip), parameter :: t_step_save = 48_ip
    integer(ip), parameter :: max_m = 2_ip
    integer(ip), parameter :: min_m = -2_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Sun_18_46_bhm0.5_bhs0.499_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2'
-   character(*), parameter :: output_dir = 'output/Sun_18_46_bhm0.5_bhs0.499_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2'
-   character(*), parameter :: bin_name = 'Sun_18_46_bhm0.5_bhs0.499_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2.run'
-   character(*), parameter :: tables_dir = 'output/Sun_18_46_bhm0.5_bhs0.499_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2/tables'
+   character(*), parameter :: output_stem = 'Mon_17_38_bhm0.5_bhs0.499_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2'
+   character(*), parameter :: output_dir = 'output/Mon_17_38_bhm0.5_bhs0.499_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2'
+   character(*), parameter :: bin_name = 'Mon_17_38_bhm0.5_bhs0.499_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2.run'
+   character(*), parameter :: tables_dir = 'output/Mon_17_38_bhm0.5_bhs0.499_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2/tables'
 end module mod_params
