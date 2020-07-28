@@ -83,7 +83,8 @@ contains
       integer(ip) :: lmin, j, k
 
       lmin  = compute_lmin(spin,m_ang)
-      coefs = 0.0_rp
+
+      coefs(:,:,m_ang) = 0.0_rp
 
       do k=lmin,max_l
       do j=1,ny
@@ -105,7 +106,7 @@ contains
       integer(ip) :: lmin, j, k
 
       lmin = compute_lmin(spin,m_ang)
-      vals = 0.0_rp
+      vals(:,:,m_ang) = 0.0_rp
 
       do j=1,ny
       do k=lmin,max_l
@@ -188,10 +189,12 @@ contains
       do m_ang=min_m,max_m
 
          call swal_real_to_coef(spin,m_ang,vals,coefs) 
+
          do k=0,max_l
             coefs(:,k,m_ang) = &
                exp(-36.0_rp*(real(k,rp)/real(max_l,rp))**25)*coefs(:,k,m_ang)
          end do
+
          call swal_coef_to_real(spin,m_ang,coefs,vals) 
 
       end do

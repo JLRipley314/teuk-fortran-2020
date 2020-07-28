@@ -33,7 +33,7 @@ class Sim:
       +	'_nx'+str(self.nx)
       +	'_ny'+str(self.ny)
       +	'_nl'+str(self.nl)
-      +	'_s'+str(self.spin)
+      +	'_s'+str(self.psi_spin)
       +	'_lpm'+str(self.l_ang_pm)
       +	'_lnm'+str(self.l_ang_nm)
       +	'_pm'+str(self.pm_ang)
@@ -67,11 +67,11 @@ class Sim:
 ## Gauss points for integration
 ## want to exactly integrate polynomials of order
 ## 2l + 2m(i.e. lmin) + alpha + beta (so being a bit conservative here) 
-      lmin= max(abs(self.pm_ang),abs(self.spin))
+      lmin= max(abs(self.pm_ang),abs(self.psi_spin))
       self.ny= (self.nl
       +	int(abs(2*lmin))
-      + int(abs(2*self.pm_ang+self.spin))
-      +	int(abs(2*self.pm_ang-self.spin))
+      + int(abs(2*self.pm_ang+self.psi_spin))
+      +	int(abs(2*self.pm_ang-self.psi_spin))
       )
       if (self.ny%2!=0):
          self.ny+= 1

@@ -6,7 +6,8 @@ module mod_initial_data
    use mod_swal, only: Yvec=>Y, swal
    use mod_params, only: &
       dt, nx, ny, &
-      spin, min_m, max_m, &
+      min_m, max_m, &
+      spin=>psi_spin, &
       cl=>compactification_length, &
       bhm=>black_hole_mass, &
       bhs=>black_hole_spin, &
@@ -38,21 +39,22 @@ contains
       ru      = 0.0_rp
       width   = 0.0_rp
 
-      select case (m_ang)
-         case ( pm_ang)
-            amp   = amp_pm
-            ru    = ru_pm
-            rl    = rl_pm
-            l_ang = l_ang_pm
-         case (-pm_ang)
-            amp   = amp_nm
-            ru    = ru_nm
-            rl    = rl_nm
-         case default
-            write (*,*) "ERROR(set_initial_data): m_ang = ", m_ang
-            stop
-      end select
-      
+      if (m_ang==pm_ang) then
+         amp   = amp_pm
+         ru    = ru_pm
+         rl    = rl_pm
+         l_ang = l_ang_pm
+
+      else if (m_ang==-pm_ang) then
+         amp   = amp_nm
+         ru    = ru_nm
+         rl    = rl_nm
+
+      else
+         write (*,*) "ERROR(set_initial_data): m_ang = ", m_ang
+         stop
+      end if
+
       width = ru-rl
 !-----------------------------------------------------------------------------
       y_loop: do j=1,ny

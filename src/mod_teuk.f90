@@ -7,7 +7,8 @@ module mod_teuk
    use mod_field, only: field
    use mod_params, only: &
       dt, nx, ny, max_l, &
-      spin, min_m, max_m, &
+      min_m, max_m, &
+      spin=>psi_spin, & 
       cl=>compactification_length, &
       bhm=>black_hole_mass, &
       bhs=>black_hole_spin

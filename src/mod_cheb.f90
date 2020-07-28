@@ -58,7 +58,7 @@ contains
 
       integer(ip) :: i,j 
 
-      coefs = 0.0_rp
+      coefs(:,:,m_ang) = 0.0_rp
 
       do i=1,nx
       do j=1,nx
@@ -74,7 +74,7 @@ contains
 
       integer(ip) :: i,j 
 
-      vals = 0.0_rp
+      vals(:,:,m_ang) = 0.0_rp
 
       do i=1,nx
       do j=1,nx
@@ -109,10 +109,12 @@ contains
       do m_ang=min_m,max_m
 
          call cheb_real_to_coef(m_ang,vals,coefs) 
+
          do i=1,nx
             coefs(i,:,m_ang) = &
                exp(-36.0_rp*(real(i-1,rp)/real(nx-1,rp))**25)*coefs(i,:,m_ang)
          end do
+
          call cheb_coef_to_real(m_ang,coefs,vals) 
 
       end do

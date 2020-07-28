@@ -9,13 +9,14 @@ program main
       stdout=>output_unit, stdin=>input_unit, stderr=>error_unit
 
    use mod_prec
-   use mod_params,       only: nt, dt, t_step_save, black_hole_mass, pm_ang, &
+   use mod_params,       only: nt, dt, t_step_save, black_hole_mass, &
+                           psi_spin, psi_boost, pm_ang, &
                            metric_recon, &
                            write_metric_recon_fields, &
                            write_indep_res!, write_source
    use mod_field,        only: field, set_field, shift_time_step
    use mod_cheb,         only: cheb_init, cheb_filter, cheb_test
-   use mod_swal,         only: swal_init, swal_test_orthonormal
+   use mod_swal,         only: swal_init, swal_filter, swal_test_orthonormal
    use mod_io,           only: write_csv
    use mod_teuk,         only: psi4_lin_f, psi4_lin_p, psi4_lin_q, res_q, &
                                teuk_init, teuk_lin_time_step, compute_res_q
@@ -40,9 +41,9 @@ clean_memory: block
 !-----------------------------------------------------------------------------
 ! first order metric field
 !-----------------------------------------------------------------------------
-   call set_field(name="p",spin=-2_ip,boost=-2_ip,falloff=1_ip,f=psi4_lin_p)
-   call set_field(name="q",spin=-2_ip,boost=-2_ip,falloff=2_ip,f=psi4_lin_q)
-   call set_field(name="f",spin=-2_ip,boost=-2_ip,falloff=1_ip,f=psi4_lin_f)
+   call set_field(name="psi4_p",spin=psi_spin,boost=psi_boost,falloff=1_ip,f=psi4_lin_p)
+   call set_field(name="psi4_q",spin=psi_spin,boost=psi_boost,falloff=2_ip,f=psi4_lin_q)
+   call set_field(name="psi4_f",spin=psi_spin,boost=psi_boost,falloff=1_ip,f=psi4_lin_f)
 !-----------------------------------------------------------------------------
 ! metric reconstructed fields
 !-----------------------------------------------------------------------------
@@ -180,9 +181,13 @@ clean_memory: block
          !--------------------------------------------------------------------
       end if
       !-----------------------------------------------------------------------
-      call cheb_filter(psi4_lin_p%np1,psi4_lin_f%coefs_cheb)
-      call cheb_filter(psi4_lin_q%np1,psi4_lin_p%coefs_cheb)
-      call cheb_filter(psi4_lin_f%np1,psi4_lin_q%coefs_cheb)
+      call cheb_filter(psi4_lin_p%np1,psi4_lin_p%coefs_cheb)
+      call cheb_filter(psi4_lin_q%np1,psi4_lin_q%coefs_cheb)
+      call cheb_filter(psi4_lin_f%np1,psi4_lin_f%coefs_cheb)
+
+      call swal_filter(psi4_lin_p%spin,psi4_lin_p%np1,psi4_lin_p%coefs_swal)
+      call swal_filter(psi4_lin_q%spin,psi4_lin_q%np1,psi4_lin_q%coefs_swal)
+      call swal_filter(psi4_lin_f%spin,psi4_lin_f%np1,psi4_lin_f%coefs_swal)
 
       if (metric_recon) then
          call cheb_filter(psi3%np1,psi3%coefs_cheb)
