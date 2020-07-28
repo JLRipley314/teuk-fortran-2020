@@ -12,7 +12,7 @@ sim= Sim(args)
 sim.computer= 'home'#'feynman'#
 #-----------------------------------------------------------------------------
 sim.black_hole_mass= float(0.5)	
-sim.black_hole_spin= float(0.35)
+sim.black_hole_spin= float(0.32)
 sim.compactification_length= float(1)
 #-----------------------------------------------------------------------------
 ## evolve time: in units of black hole mass
@@ -27,15 +27,15 @@ sim.initial_data_type= str("compact_bump")
 sim.amp_pm= float(10.0)  ## amplitude of the initial perturbation
 sim.rl_pm=  float(-1.5)  ## compact support: lower r value
 sim.ru_pm=  float( 1.5)  ## compact support: upper r value 
-sim.l_ang_pm= int(0)     ## support over single spin weighted spherical harmonic
+sim.l_ang_pm= int(2)     ## support over single spin weighted spherical harmonic
 
 sim.amp_nm= float(10.0)  ## amplitude of the initial perturbation
 sim.rl_nm=  float(-1.5)  ## compact support: lower r value
 sim.ru_nm=  float( 1.5)  ## compact support: upper r value 
-sim.l_ang_nm= int(0)     ## support over single spin weighted spherical harmonic
+sim.l_ang_nm= int(2)     ## support over single spin weighted spherical harmonic
 #-----------------------------------------------------------------------------
 ##  Teukolsky equation preserves m 
-sim.pm_ang= int(0)
+sim.pm_ang= int(1)
 assert(sim.pm_ang>=0)
 #-----------------------------------------------------------------------------
 ## we can only do metric reconstruction starting from psi4 for now.
@@ -44,8 +44,8 @@ assert(sim.pm_ang>=0)
 ## psi4 is spin -2, boost -2
 ## psi3 is spin -1, boost -1
 ## psi2 is spin  0, boost  0 
-sim.psi_spin=  int(0)
-sim.psi_boost= int(0)
+sim.psi_spin=  int(-2)
+sim.psi_boost= int(-2)
 #-----------------------------------------------------------------------------
 sim.nx= int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
 sim.nl= int(pow(2,4)*pow(3,0)*pow(5,0)*pow(7,0)) ## num swaL angular pts 

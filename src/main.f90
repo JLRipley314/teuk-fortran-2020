@@ -41,9 +41,9 @@ clean_memory: block
 !-----------------------------------------------------------------------------
 ! first order metric field
 !-----------------------------------------------------------------------------
-   call set_field(name="psi4_p",spin=psi_spin,boost=psi_boost,falloff=1_ip,f=psi4_lin_p)
-   call set_field(name="psi4_q",spin=psi_spin,boost=psi_boost,falloff=2_ip,f=psi4_lin_q)
-   call set_field(name="psi4_f",spin=psi_spin,boost=psi_boost,falloff=1_ip,f=psi4_lin_f)
+   call set_field(name="lin_p",spin=psi_spin,boost=psi_boost,falloff=1_ip,f=psi4_lin_p)
+   call set_field(name="lin_q",spin=psi_spin,boost=psi_boost,falloff=2_ip,f=psi4_lin_q)
+   call set_field(name="lin_f",spin=psi_spin,boost=psi_boost,falloff=1_ip,f=psi4_lin_f)
 !-----------------------------------------------------------------------------
 ! metric reconstructed fields
 !-----------------------------------------------------------------------------
