@@ -7,7 +7,8 @@ module mod_scnd_order_source
    use mod_prec
 
    use mod_cheb,     only: R, compute_DR
-   use mod_field,    only: field, set_field, set_level
+   use mod_swal,     only: swal_lower
+   use mod_field,    only: field, set_level
    use mod_ghp,      only: set_edth, set_edth_prime, set_thorn, set_thorn_prime
    use mod_bkgrd_np, only: mu_0, ta_0, pi_0, rh_0, psi2_0
    use mod_teuk,     only: psi4_lin_f
@@ -315,9 +316,34 @@ module mod_scnd_order_source
       end do
       end do
 
-      call set_edth_prime_arr(m_ang, sf%pre_edth_prime_spin, sf%pre_edth_prime_boost, sf%pre_edth_prime_np1, sf%DT, sf%lowered, sf%edth_prime)
+      call compute_DT("pre_edth_prime",m_ang,sf)
+      call compute_DT("pre_edth_prime",m_ang,sf)
+      call swal_lower( &
+         sf%pre_edth_prime_spin, &
+         m_ang, &
+         sf%pre_edth_prime_np1, &
+         sf%coefs_swal, &
+         sf%lowered)
 
-      call set_thorn_prime_arr(m_ang, sf%pre_thorn_prime_falloff, sf%pre_thorn_prime_np1, sf%DT, sf%DR, sf%thorn_prime)
+      call set_edth_prime( &
+         m_ang, &
+         sf%pre_edth_prime_spin, &
+         sf%pre_edth_prime_boost, &
+         sf%pre_edth_prime_np1, &
+         sf%DT, &
+         sf%lowered, &
+         sf%edth_prime)
+
+      call compute_DT("pre_thorn_prime",m_ang,sf)
+      call compute_DR(m_ang,sf%pre_thorn_prime_np1,sf%DR)
+
+      call set_thorn_prime( &
+         m_ang, &
+         sf%pre_thorn_prime_falloff, &
+         sf%pre_thorn_prime_np1, &
+         sf%DT, &
+         sf%DR, &
+         sf%thorn_prime)
    
 
    end subroutine scnd_order_source_compute
