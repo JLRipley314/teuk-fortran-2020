@@ -14,18 +14,21 @@ program main
                            metric_recon, &
                            write_metric_recon_fields, &
                            write_indep_res!, write_source
-   use mod_field,        only: field, set_field, shift_time_step
+   use mod_field,        only: set_field, shift_time_step
    use mod_cheb,         only: cheb_init, cheb_filter, cheb_test
    use mod_swal,         only: swal_init, swal_filter, swal_test_orthonormal
    use mod_io,           only: write_csv
-   use mod_teuk,         only: psi4_lin_f, psi4_lin_p, psi4_lin_q, res_q, &
-                               teuk_init, teuk_lin_time_step, compute_res_q
+   use mod_teuk,         only: teuk_init, teuk_time_step, compute_res_q
    use mod_initial_data, only: set_initial_data
    use mod_bkgrd_np,     only: bkgrd_np_init
-   use mod_metric_recon, only: psi3, psi2, la, pi, muhll, hlmb, hmbmb, &
-                               res_bianchi3, res_bianchi2, res_hll,    &
-                               metric_recon_time_step, &
-                               metric_recon_indep_res
+   use mod_metric_recon, only: 
+
+   use mod_fields_list, only: &
+      psi4_lin_p, psi4_lin_q, psi4_lin_f, &
+      res_lin_q, & 
+
+      psi3, psi2, la, pi, muhll, hlmb, hmbmb, &
+      res_bianchi3, res_bianchi2, res_hll
 
    implicit none
 !=============================================================================
@@ -59,7 +62,7 @@ clean_memory: block
 !-----------------------------------------------------------------------------
 ! independent residual fields
 !-----------------------------------------------------------------------------
-   call set_field(name="res_q",spin=-2_ip,boost=-2_ip,falloff=2_ip,f=res_q)
+   call set_field(name="res_lin_q",spin=-2_ip,boost=-2_ip,falloff=2_ip,f=res_lin_q)
 
    call set_field(name="res_bianchi3",spin=-2_ip,boost=-1_ip,falloff=2_ip,f=res_bianchi3)
    call set_field(name="res_bianchi2",spin=-1_ip,boost= 0_ip,falloff=2_ip,f=res_bianchi2)
@@ -104,10 +107,10 @@ clean_memory: block
    end if
    !--------------------------------------------------------------------------
    if (write_indep_res) then
-      call compute_res_q(psi4_lin_q,psi4_lin_f,res_q)
+      call compute_res_q(psi4_lin_q,psi4_lin_f,res_lin_q)
 
-      call write_csv(time,-pm_ang,res_q)
-      call write_csv(time, pm_ang,res_q)
+      call write_csv(time,-pm_ang,res_lin_q)
+      call write_csv(time, pm_ang,res_lin_q)
 
       if (metric_recon) then
          call write_csv(time,-pm_ang,res_bianchi3)
@@ -129,8 +132,8 @@ clean_memory: block
    time_evolve: do t_step=1,nt
       time = t_step*dt
       !-----------------------------------------------------------------------
-      call teuk_lin_time_step(-pm_ang, psi4_lin_p, psi4_lin_q, psi4_lin_f)
-      call teuk_lin_time_step( pm_ang, psi4_lin_p, psi4_lin_q, psi4_lin_f)
+      call teuk_time_step(-pm_ang, psi4_lin_p, psi4_lin_q, psi4_lin_f)
+      call teuk_time_step( pm_ang, psi4_lin_p, psi4_lin_q, psi4_lin_f)
       !-----------------------------------------------------------------------
       if (metric_recon) then 
          call metric_recon_time_step(pm_ang)
@@ -162,10 +165,10 @@ clean_memory: block
          end if
          !--------------------------------------------------------------------
          if (write_indep_res) then
-            call compute_res_q(psi4_lin_q,psi4_lin_f,res_q)
+            call compute_res_q(psi4_lin_q,psi4_lin_f,res_lin_q)
 
-            call write_csv(time,-pm_ang,res_q)
-            call write_csv(time, pm_ang,res_q)
+            call write_csv(time,-pm_ang,res_lin_q)
+            call write_csv(time, pm_ang,res_lin_q)
             !-----------------------------------------------------------------
             if (metric_recon) then
                call metric_recon_indep_res(-pm_ang)

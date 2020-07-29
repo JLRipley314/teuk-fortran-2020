@@ -15,12 +15,16 @@ module mod_teuk
 
    use mod_cheb, only: Rvec=>r, compute_DR
    use mod_swal, only: Yvec=>y, swal_laplacian
+
+   use mod_scnd_order_source, only: scnd_order_source 
 !=============================================================================
    implicit none
    private
-   public :: teuk_init, teuk_lin_time_step, compute_res_q 
+   public :: teuk_init, teuk_time_step, compute_res_q 
 
-   type(field), public :: psi4_lin_f, psi4_lin_p, psi4_lin_q, res_q
+   interface teuk_time_step 
+      module procedure teuk_lin_time_step, teuk_scnd_time_step
+   end interface
 !=============================================================================
    real(rp) :: &
       A_pp(nx,ny,min_m:max_m), A_pq(nx,ny,min_m:max_m), A_pf(nx,ny,min_m:max_m), &
@@ -219,7 +223,7 @@ contains
 
    end subroutine set_k
 !=============================================================================
-! RK4 time integrator
+! RK4 time integrator: linear teukolsky wave
 !=============================================================================
    pure subroutine teuk_lin_time_step(m_ang, p, q, f) 
       integer(ip), intent(in)    :: m_ang
@@ -300,6 +304,105 @@ contains
          p%k5,  q%k5,  f%k5) 
 
    end subroutine teuk_lin_time_step
+!=============================================================================
+! RK4 time integrator: linear teukolsky wave with second order source term
+!=============================================================================
+   pure subroutine teuk_scnd_time_step(m_ang, src, p, q, f) 
+      integer(ip),             intent(in)    :: m_ang
+      type(scnd_order_source), intent(in)    :: src
+      type(field),             intent(inout) :: p, q, f 
+
+      integer(ip) :: i, j
+   !--------------------------------------------------------
+   ! if first time then k1 has not been set from k5
+   !--------------------------------------------------------
+      if (f%first_time) then
+         call set_k(m_ang, &
+            p%n,  q%n,  f%n, & 
+            p%DR, q%DR, f%DR, f%coefs_swal, f%lap, &
+            p%k1, q%k1, f%k1) 
+
+         do j=1,ny
+         do i=1,nx
+            p%k1(i,j,m_ang) = p%k1(i,j,m_ang) + src%n(i,j,m_ang)
+         end do
+         end do
+
+         p%first_time = .false.
+         q%first_time = .false.
+         f%first_time = .false.
+      end if
+
+      do j=1,ny
+      do i=1,nx
+         p%l2(i,j,m_ang)= p%n(i,j,m_ang)+0.5_rp*dt*p%k1(i,j,m_ang)
+         q%l2(i,j,m_ang)= q%n(i,j,m_ang)+0.5_rp*dt*q%k1(i,j,m_ang)
+         f%l2(i,j,m_ang)= f%n(i,j,m_ang)+0.5_rp*dt*f%k1(i,j,m_ang)
+      end do
+      end do
+   !--------------------------------------------------------
+      call set_k(m_ang, &
+         p%l2, q%l2, f%l2, & 
+         p%DR, q%DR, f%DR, f%coefs_swal, f%lap, &
+         p%k2, q%k2, f%k2) 
+
+      do j=1,ny
+      do i=1,nx
+         p%k2(i,j,m_ang) = p%k2(i,j,m_ang) + src%n1h(i,j,m_ang)
+
+         p%l3(i,j,m_ang)= p%n(i,j,m_ang)+0.5_rp*dt*p%k2(i,j,m_ang)
+         q%l3(i,j,m_ang)= q%n(i,j,m_ang)+0.5_rp*dt*q%k2(i,j,m_ang)
+         f%l3(i,j,m_ang)= f%n(i,j,m_ang)+0.5_rp*dt*f%k2(i,j,m_ang)
+      end do
+      end do
+   !--------------------------------------------------------
+      call set_k(m_ang, &
+         p%l3, q%l3, f%l3, & 
+         p%DR, q%DR, f%DR, f%coefs_swal, f%lap, &
+         p%k3, q%k3, f%k3) 
+
+      do j=1,ny
+      do i=1,nx
+         p%k3(i,j,m_ang) = p%k3(i,j,m_ang) + src%n1h(i,j,m_ang)
+
+         p%l4(i,j,m_ang)= p%n(i,j,m_ang)+dt*p%k3(i,j,m_ang)
+         q%l4(i,j,m_ang)= q%n(i,j,m_ang)+dt*q%k3(i,j,m_ang)
+         f%l4(i,j,m_ang)= f%n(i,j,m_ang)+dt*f%k3(i,j,m_ang)
+      end do
+      end do
+   !--------------------------------------------------------
+      call set_k(m_ang, &
+         p%l4, q%l4, f%l4, & 
+         p%DR, q%DR, f%DR, f%coefs_swal, f%lap, &
+         p%k4, q%k4, f%k4) 
+
+      do j=1,ny
+      do i=1,nx
+         p%k4(i,j,m_ang) = p%k4(i,j,m_ang) + src%np1(i,j,m_ang)
+
+         p%np1(i,j,m_ang)= p%n(i,j,m_ang) &
+         +  (dt/6.0_rp)*(p%k1(i,j,m_ang)+2.0_rp*p%k2(i,j,m_ang)+2.0_rp*p%k3(i,j,m_ang)+p%k4(i,j,m_ang))
+
+         q%np1(i,j,m_ang)= q%n(i,j,m_ang) &
+         +  (dt/6.0_rp)*(q%k1(i,j,m_ang)+2.0_rp*q%k2(i,j,m_ang)+2.0_rp*q%k3(i,j,m_ang)+q%k4(i,j,m_ang))
+
+         f%np1(i,j,m_ang)= f%n(i,j,m_ang) &
+         +  (dt/6.0_rp)*(f%k1(i,j,m_ang)+2.0_rp*f%k2(i,j,m_ang)+2.0_rp*f%k3(i,j,m_ang)+f%k4(i,j,m_ang))
+      end do
+      end do
+   !------------------------------------------------------------
+   ! want k5 for computing source term and independent residuals
+   !------------------------------------------------------------
+      call set_k(m_ang, &
+         p%np1, q%np1, f%np1, & 
+         p%DR,  q%DR,  f%DR, f%coefs_swal, f%lap, &
+         p%k5,  q%k5,  f%k5) 
+      do j=1,ny
+      do i=1,nx
+         p%k5(i,j,m_ang) = p%k1(i,j,m_ang) + src%np1(i,j,m_ang)
+      end do
+      end do
+   end subroutine teuk_scnd_time_step
 !=============================================================================
 ! independent residula: q - \partial_R f
 !=============================================================================

@@ -38,30 +38,32 @@ OBJ= $(addprefix $(OBJDIR), \
 	mod_prec.o \
 	mod_params.o \
 	mod_field.o \
+	mod_fields_list.o \
 	mod_io.o \
 	mod_cheb.o \
 	mod_swal.o \
 	mod_bkgrd.o \
-	mod_teuk.o \
-	mod_initial_data.o \
 	mod_ghp.o \
 	mod_metric_recon.o \
 	mod_scnd_order_source.o \
+	mod_initial_data.o \
+	mod_teuk.o \
 	)
 
 DEPS = $(addprefix $(SRC), \
 	mod_prec.f90 \
 	mod_params.f90 \
 	mod_field.f90 \
+	mod_fields_list.f90 \
 	mod_io.f90 \
 	mod_cheb.f90 \
 	mod_swal.f90 \
 	mod_bkgrd.f90 \
-	mod_teuk.f90 \
-	initial_data.f90 \
 	mod_ghp.f90 \
 	mod_metric_recon.f90 \
 	mod_scnd_order_source.f90 \
+	initial_data.f90 \
+	mod_teuk.f90 \
 	)
 
 all: $(RUN)

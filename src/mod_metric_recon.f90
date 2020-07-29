@@ -10,23 +10,22 @@ module mod_metric_recon
    use mod_field,    only: field, set_field, set_level
    use mod_ghp,      only: set_edth, set_edth_prime, set_thorn, set_thorn_prime
    use mod_bkgrd_np, only: mu_0, ta_0, pi_0, rh_0, psi2_0
-   use mod_teuk,     only: psi4_lin_f
    use mod_params,   only: &
       dt, nx, ny, min_m, max_m, &
       cl=>compactification_length, &
       bhm=>black_hole_mass
 
+   use mod_fields_list, only: &
+      psi4_lin_f, &
+      psi3, psi2,         &
+      la, pi,             &
+      muhll, hlmb, hmbmb, &
+      res_bianchi3, res_bianchi2, res_hll 
 !=============================================================================
    implicit none
    private
 
    public :: metric_recon_time_step, metric_recon_indep_res
-
-   type(field), public :: &
-      psi3, psi2,         &
-      la, pi,             &
-      muhll, hlmb, hmbmb, &
-      res_bianchi3, res_bianchi2, res_hll 
 !=============================================================================
    contains
 !=============================================================================

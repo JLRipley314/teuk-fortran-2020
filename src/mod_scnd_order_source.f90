@@ -11,9 +11,8 @@ module mod_scnd_order_source
    use mod_field,    only: field, set_level
    use mod_ghp,      only: set_edth, set_edth_prime, set_thorn, set_thorn_prime
    use mod_bkgrd_np, only: mu_0, ta_0, pi_0, rh_0, psi2_0
-   use mod_teuk,     only: psi4_lin_f
-   use mod_metric_recon, &
-                     only: psi3, psi2, la, pi, muhll, hlmb, hmbmb
+
+   use mod_fields_list, only: psi4_lin_f, psi3, psi2, la, pi, muhll, hlmb, hmbmb 
 
    use mod_params,   only: &
       dt, nx, ny, min_m, max_m, max_l, &
@@ -24,10 +23,8 @@ module mod_scnd_order_source
    implicit none
    private
 
-   public :: scnd_order_source, set_scnd_order_source, &
-      scnd_order_source_zero, &
-      scnd_order_source_m1_plus_m2,  &
-      scnd_order_source_compute
+   public :: scnd_order_source, &
+      scnd_order_source_init, scnd_order_source_compute
 !=============================================================================
 ! scnd_order_source type:
 ! have 5 levels so can take time derivatives
@@ -75,7 +72,7 @@ module mod_scnd_order_source
 !=============================================================================
    contains
 !=============================================================================
-   pure subroutine set_scnd_order_source(name, sf)
+   pure subroutine scnd_order_source_init(name, sf)
       character(*),            intent(in)  :: name ! field name
       type(scnd_order_source), intent(out) :: sf
 
@@ -84,11 +81,11 @@ module mod_scnd_order_source
       ! make empty string long enough to hold error message
       sf % error = "                                                              "
 
-      sf % pre_edth_prime_spin  = 0_ip
-      sf % pre_thorn_prime_spin = 0_ip
+      sf % pre_edth_prime_spin  = -2_ip
+      sf % pre_thorn_prime_spin = -1_ip
 
-      sf % pre_edth_prime_boost  = 0_ip
-      sf % pre_thorn_prime_boost = 0_ip
+      sf % pre_edth_prime_spin   = -1_ip
+      sf % pre_thorn_prime_boost = -2_ip
 
       sf % pre_edth_prime_falloff  = 0_ip
       sf % pre_thorn_prime_falloff = 0_ip
@@ -122,7 +119,7 @@ module mod_scnd_order_source
       sf % pre_thorn_prime_nm2 = 0.0_rp
       sf % pre_thorn_prime_nm3 = 0.0_rp
 
-   end subroutine set_scnd_order_source
+   end subroutine scnd_order_source_init
 !=============================================================================
    pure subroutine compute_DT(pre_type, m_ang, sf)
       character(*),            intent(in)    :: pre_type
@@ -174,12 +171,10 @@ module mod_scnd_order_source
       !-----------------------------------------------------------------------
       call set_level(step,m1_ang,psi4_lin_f)
       call set_level(step,m1_ang,psi3)
-
       call set_level(step,m1_ang,la)
       call set_level(step,m1_ang,pi)
-
-      call set_level(step,m1_ang,hlmb)
       call set_level(step,m1_ang,hmbmb)
+      call set_level(step,m1_ang,hlmb)
       call set_level(step,m1_ang,muhll)
 
       call set_level(step,-m1_ang,hlmb)
@@ -188,7 +183,9 @@ module mod_scnd_order_source
       call set_level(step,m2_ang,psi4_lin_f)
       call set_level(step,m2_ang,psi3)
       call set_level(step,m2_ang,psi2)
+      call set_level(step,m2_ang,hmbmb)
       call set_level(step,m2_ang,hlmb)
+      call set_level(step,m2_ang,muhll)
 
       call set_thorn_prime(step,m2_ang,psi4_lin_f)
       call set_thorn_prime(step,m2_ang,psi3)
@@ -199,13 +196,14 @@ module mod_scnd_order_source
       call set_edth(step,m2_ang,hmbmb)
       call set_edth(step,m2_ang,hlmb)
 
+      call set_edth_prime(step,m2_ang,psi4_lin_f)
+
       call set_level(step,-m2_ang,pi)
       call set_level(step,-m2_ang,hlmb)
       call set_level(step,-m2_ang,hmbmb)
 
       call set_thorn_prime(step,-m2_ang,hlmb)
 
-      call set_edth(step,-m2_ang,psi4_lin_f)
       call set_edth(step,-m2_ang,hlmb)
       call set_edth(step,-m2_ang,hmbmb)
       !-----------------------------------------------------------------------
@@ -214,52 +212,49 @@ module mod_scnd_order_source
          !--------------------------------------------------------------------
          sf % pre_thorn_prime_np1(i,j,mt_ang) = &
          sf % pre_thorn_prime_np1(i,j,mt_ang) &
-
+         !-------------------------------------------------
          + 0.5_rp*(muhll%level(i,j,m1_ang)/mu_0(i,j))*( &
                psi4_lin_f%thorn_prime(i,j,m1_ang) &
 
             +  mu_0(i,j)*psi4_lin_f%level(i,j,m1_ang) &
             ) &
-
+         !-------------------------------------------------
          + psi4_lin_f%level(i,j,m1_ang)*( &
                0.5_rp*hlmb%edth(i,j,m2_ang) &
-
             +  ( &
                   conjg(pi_0(i,j)) &
                +  2.0_rp*ta_0(i,j) &
-               )*hlmb%level(i,j,m2_ang) &
+               )*conjg(hlmb%level(i,j,-m2_ang)) &
+
 
             +  (muhll%thorn_prime(i,j,m2_ang)/mu_0(i,j)) &
-
             +  conjg(mu_0(i,j))*(muhll%level(i,j,m2_ang)/mu_0(i,j)) &
 
             -  0.5_rp*conjg(hlmb%edth(i,j,-m2_ang)) &
-
             +  0.5_rp*( &
                   5.0_rp*pi_0(i,j) &
                +  4.0_rp*conjg(ta_0(i,j)) &
                )*conjg(hlmb%level(i,j,-m2_ang)) &
-            ) &
 
+            ) &
+         !-------------------------------------------------
          -  0.5_rp*psi3%level(i,j,m1_ang)*( &
                hmbmb%edth(i,j,m2_ang) &
-
             +  ( &
                   conjg(pi_0(i,j)) &
                +  ta_0(i,j) &
                )*hmbmb%level(i,j,m2_ang) &
 
             +  hlmb%thorn_prime(i,j,m2_ang) &
-
             + ( &
                -  2.0_rp*mu_0(i,j) &
                +  conjg(mu_0(i,j)) &
                )*hlmb%level(i,j,m2_ang)  &
             ) &
-
+         !-------------------------------------------------
             -  hlmb%level(i,j,m1_ang)*psi3%thorn_prime(i,j,m2_ang) &
 
-            +  0.5_rp*hmbmb%level(i,j,m1_ang)*psi3%level(i,j,m2_ang) &
+            +  0.5_rp*hmbmb%level(i,j,m1_ang)*psi3%edth(i,j,m2_ang) &
 
             +  4.0_rp*pi%level(i,j,m1_ang)*psi3%level(i,j,m2_ang) &
 
@@ -267,19 +262,20 @@ module mod_scnd_order_source
          !--------------------------------------------------------------------
          sf % pre_edth_prime_np1(i,j,mt_ang) = &
          sf % pre_edth_prime_np1(i,j,mt_ang) &
-
+         !-------------------------------------------------
          -  conjg(hlmb%level(i,j,-m1_ang))*psi4_lin_f%thorn_prime(i,j,m2_ang) &
 
          -  (mu_0(i,j)+2.0_rp*conjg(mu_0(i,j)))*psi4_lin_f%level(i,j,m2_ang) &
 
-         +  0.5_rp*conjg(hmbmb%level(i,j,-m1_ang))*conjg(psi4_lin_f%edth(i,j,-m2_ang)) &
+         +  0.5_rp*conjg(hmbmb%level(i,j,-m1_ang))*psi4_lin_f%edth_prime(i,j,m2_ang) &
 
+         !-------------------------------------------------
          +  psi4_lin_f%level(i,j,m1_ang)*( &
                conjg(pi%level(i,j,-m2_ang)) &
 
             -  conjg(hlmb%thorn_prime(i,j,-m2_ang)) &
 
-            +  conjg(hmbmb%thorn_prime(i,j,-m2_ang)) &
+            +  conjg(hmbmb%edth(i,j,-m2_ang)) &
 
             -  0.5_rp*(pi_0(i,j)+conjg(ta_0(i,j)))*conjg(hmbmb%level(i,j,-m2_ang)) &
          )
@@ -292,7 +288,7 @@ module mod_scnd_order_source
       integer(ip),             intent(in)    :: m_ang
       type(scnd_order_source), intent(inout) :: sf
  
-      integer(ip) :: m1_ang, m2_ang 
+      integer(ip) :: m1_ang, m2_ang, i, j 
  
       sf % n(:,:,m_ang) = sf % np1(:,:,m_ang)
        
@@ -344,8 +340,19 @@ module mod_scnd_order_source
          sf%DT, &
          sf%DR, &
          sf%thorn_prime)
-   
+  
+      do j=1,ny
+      do i=1,nx
+         sf%np1(i,j,m_ang) = &
+            sf%thorn_prime(i,j,m_ang) &
+         +  (4.0_rp*mu_0(i,j)+conjg(mu_0(i,j)))*sf%pre_thorn_prime_np1(i,j,m_ang) &
 
+         +  sf%edth_prime(i,j,m_ang) &
+         +  (4.0_rp*pi_0(i,j)-conjg(ta_0(i,j)))*sf%pre_edth_prime_np1(i,j,m_ang) 
+
+         sf%n1h(i,j,m_ang) = 0.5_rp*(sf%np1(i,j,m_ang) + sf%n(i,j,m_ang))
+      end do
+      end do 
    end subroutine scnd_order_source_compute
 !=============================================================================
 end module mod_scnd_order_source
