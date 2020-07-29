@@ -201,6 +201,7 @@ module mod_metric_recon
                f%first_time = .false.
             end if
 
+
             do j=1,ny
             do i=1,nx
                f%l2(i,j,m_ang)= f%n(i,j,m_ang)+0.5_rp*dt*f%k1(i,j,m_ang)

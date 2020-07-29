@@ -5,7 +5,7 @@ module mod_params
 use mod_prec
 implicit none
    character(*), parameter :: home_dir = '/home/jripley/teuk-fortran'
-   character(*), parameter :: run_type = 'basic_run'
+   character(*), parameter :: run_type = 'spin_ramp'
    logical, parameter :: debug = .false.
    character(*), parameter :: computer = 'home'
    real(rp), parameter :: black_hole_mass = 0.5_rp
@@ -28,7 +28,7 @@ implicit none
    integer(ip), parameter :: psi_boost = -2_ip
    integer(ip), parameter :: nx = 48_ip
    integer(ip), parameter :: nl = 16_ip
-   logical, parameter :: metric_recon = .false.
+   logical, parameter :: metric_recon = .true.
    logical, parameter :: write_indep_res = .true.
    logical, parameter :: write_metric_recon_fields = .false.
    logical, parameter :: write_source = .false.
@@ -40,6 +40,7 @@ implicit none
    integer(ip), parameter :: max_l = 15_ip
    real(rp), parameter :: horizon = 0.8841874542459709_rp
    real(rp), parameter :: R_max = 1.1309818921291903_rp
+   real(rp), parameter :: metric_recon_start_time = 4.577455361488618_rp
    integer(ip), parameter :: ny = 24_ip
    real(rp), parameter :: dt = 0.003472222222222222_rp
    integer(ip), parameter :: nt = 2880_ip
@@ -48,8 +49,9 @@ implicit none
    integer(ip), parameter :: min_m = -1_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Tue_14_01_bhm0.5_bhs0.32_nx48_ny24_nl16_s-2_lpm2_lnm2_pm1'
-   character(*), parameter :: output_dir = 'output/Tue_14_01_bhm0.5_bhs0.32_nx48_ny24_nl16_s-2_lpm2_lnm2_pm1'
-   character(*), parameter :: bin_name = 'Tue_14_01_bhm0.5_bhs0.32_nx48_ny24_nl16_s-2_lpm2_lnm2_pm1.run'
-   character(*), parameter :: tables_dir = 'output/Tue_14_01_bhm0.5_bhs0.32_nx48_ny24_nl16_s-2_lpm2_lnm2_pm1/tables'
+   character(*), parameter :: output_stem = 'Tue_17_24_bhm0.5_bhs0.32_nx48_ny24_nl16_s-2_lpm2_lnm2_pm1'
+   character(*), parameter :: output_dir = 'output/Tue_17_24_bhm0.5_bhs0.32_nx48_ny24_nl16_s-2_lpm2_lnm2_pm1'
+   character(*), parameter :: bin_name = 'Tue_17_24_bhm0.5_bhs0.32_nx48_ny24_nl16_s-2_lpm2_lnm2_pm1.run'
+   character(*), parameter :: tables_dir = 'output/Tue_17_24_bhm0.5_bhs0.32_nx48_ny24_nl16_s-2_lpm2_lnm2_pm1/tables'
+   character(*), parameter :: output_file = 'output/Tue_17_23_bhm0.5_bhs0.16_nx48_ny24_nl16_s-2_lpm2_lnm2_pm1/output.txt'
 end module mod_params

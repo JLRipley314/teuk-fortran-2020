@@ -51,11 +51,11 @@ sim.nx= int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts
 sim.nl= int(pow(2,4)*pow(3,0)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
 #-----------------------------------------------------------------------------
 ## further diagnostics
-sim.metric_recon= False#True# 
+sim.metric_recon=              True#False# 
 
-sim.write_indep_res= True#False#
+sim.write_indep_res=           True#False#
 sim.write_metric_recon_fields= False#True#
-sim.write_source= False#True#
+sim.write_source=              False#True#
 #-----------------------------------------------------------------------------
 ## change start time
 sim.start_multiple= float(1.0)
@@ -86,17 +86,12 @@ elif (sim.run_type == "multiple_runs"):
 #      sim.launch_run() 
 #      time.sleep(180)
 #=============================================================================
-elif (sim.run_type == "convergence_test"):
-   nx_vals= [64, 80, 96]
-   nl_vals= [16, 20, 24]
-
-   for i in range(len(nx_vals)):
-      sim.nx= nx_vals[i]
-      sim.nl= nl_vals[i]
-
+elif (sim.run_type == "spin_ramp"):
+   for bhs in [0,0.01,0.02,0.04,0.08,0.16,0.32]:
+      sim.black_hole_spin= bhs
       sim.launch_run()
 
-      time.sleep(1)
+      time.sleep(60)
 #=============================================================================
 else:
    raise ValueError("run_type = "+str(sim.run_type)) 

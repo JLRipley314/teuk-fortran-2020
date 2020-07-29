@@ -1,6 +1,7 @@
 #=============================================================================
 import subprocess, os, sys, time, shutil
 from typing import List 
+from math import log
 
 sys.path.insert(1,os.getcwd()+'/src/tables/')
 #=============================================================================
@@ -62,6 +63,12 @@ class Sim:
       self.R_max= float(
          pow(self.compactification_length,2)
          /self.horizon
+      )
+#-----------------------------------------------------------------------------
+## when to begin metric reconstruction
+      self.metric_recon_start_time = (
+         (2.0/self.black_hole_mass)*(self.ru_pm - self.horizon)
+      +  4.0*log(self.ru_pm/self.horizon)
       )
 #-----------------------------------------------------------------------------
 ## Gauss points for integration

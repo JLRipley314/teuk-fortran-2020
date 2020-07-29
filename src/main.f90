@@ -72,7 +72,7 @@ clean_memory: block
    call bkgrd_np_init()
    call teuk_init()
 !=============================================================================
-! integrate Teukolsky field in time
+! initial data 
 !=============================================================================
    write (stdout,*) "Setting up initial data"
 !-----------------------------------------------------------------------------
@@ -120,15 +120,18 @@ clean_memory: block
          call write_csv(time, pm_ang,res_hll)
       end if
    end if
+!=============================================================================
+! integrate in time 
+!=============================================================================
 !-----------------------------------------------------------------------------
    write (stdout,*) "Beginning time evolution"
 !-----------------------------------------------------------------------------
    time_evolve: do t_step=1,nt
       time = t_step*dt
-
+      !-----------------------------------------------------------------------
       call teuk_lin_time_step(-pm_ang, psi4_lin_p, psi4_lin_q, psi4_lin_f)
       call teuk_lin_time_step( pm_ang, psi4_lin_p, psi4_lin_q, psi4_lin_f)
-
+      !-----------------------------------------------------------------------
       if (metric_recon) then 
          call metric_recon_time_step(pm_ang)
       end if
