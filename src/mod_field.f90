@@ -54,6 +54,8 @@ module mod_field
       thorn(      nx,ny,min_m:max_m), &
       thorn_prime(nx,ny,min_m:max_m) 
 
+      real(rp) :: re(nx,ny,min_m:max_m), im(nx,ny,min_m:max_m)
+
    end type field
 !=============================================================================
 contains

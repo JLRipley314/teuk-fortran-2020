@@ -8,9 +8,6 @@ module mod_cheb
 !=============================================================================
    private
 
-   ! fftw3 objects
-!   type(c_ptr) :: plan_forward, plan_backward
-
    ! radial points
    real(rp), dimension(nx), protected, public :: R = 0
 
@@ -21,7 +18,6 @@ module mod_cheb
    real(rp), dimension(nx,nx) :: D_cheb  = 0
    real(rp), dimension(nx,nx) :: to_cheb = 0
    real(rp), dimension(nx,nx) :: to_real = 0
-   real(rp), dimension(nx)    :: weights = 0
 
    ! For radial smoothing 
    real(rp), parameter :: width = R_max/real(nx,rp)
@@ -31,11 +27,8 @@ contains
 !=============================================================================
    subroutine cheb_init()
 
-!      complex(rp), dimension(nx) :: test_in,test_out
-
       call set_arr('cheb_pts.txt', nx,     R)
       call set_arr('cheb_D.txt',nx,nx,D_cheb)
-      call set_arr('weights_clenshaw_curtis.txt', nx, weights)
 
       call set_arr('real_to_cheb.txt',nx,nx,to_cheb)
       call set_arr('cheb_to_real.txt',nx,nx,to_real)
@@ -43,11 +36,6 @@ contains
       D_cheb = (2.0_rp/R_max) * D_cheb
 
       R = (R_max/2.0_rp) * (R + 1.0_rp)
-
-      weights = (2.0_rp/R_max) * weights
-
-!      call dfftw_plan_dft_1d(plan_forward, nx,test_in,test_out,FFTW_FORWARD, FFTW_ESTIMATE)
-!      call dfftw_plan_dft_1d(plan_backward,nx,test_in,test_out,FFTW_BACKWARD,FFTW_ESTIMATE)
 
    end subroutine cheb_init
 !=============================================================================

@@ -105,6 +105,9 @@ class Sim:
 #-----------------------------------------------------------------------------
       self.max_s=  3
       self.min_s= -3
+#-----------------------------------------------------------------------------
+      assert(self.l_ang_pm>=max(abs(self.pm_ang),abs(self.psi_spin)))
+      assert(self.l_ang_nm>=max(abs(self.pm_ang),abs(self.psi_spin)))
 #=============================================================================
    def make_tables_dir(self)->None:
       self.tables_dir= self.output_dir+"/tables"

@@ -12,13 +12,13 @@ sim= Sim(args)
 sim.computer= 'home'#'feynman'#
 #-----------------------------------------------------------------------------
 sim.black_hole_mass= float(0.5)	
-sim.black_hole_spin= float(0.32)
+sim.black_hole_spin= float(0.35)
 sim.compactification_length= float(1)
 #-----------------------------------------------------------------------------
 ## evolve time: in units of black hole mass
 #-----------------------------------------------------------------------------
 sim.evolve_time= float(20)
-sim.num_saved_times= int(50)
+sim.num_saved_times= int(100)
 #-----------------------------------------------------------------------------
 ## initial data
 #-----------------------------------------------------------------------------
@@ -35,7 +35,7 @@ sim.ru_nm=  float( 1.5)  ## compact support: upper r value
 sim.l_ang_nm= int(2)     ## support over single spin weighted spherical harmonic
 #-----------------------------------------------------------------------------
 ##  Teukolsky equation preserves m 
-sim.pm_ang= int(1)
+sim.pm_ang= int(2)
 assert(sim.pm_ang>=0)
 #-----------------------------------------------------------------------------
 ## we can only do metric reconstruction starting from psi4 for now.
@@ -50,8 +50,7 @@ sim.psi_boost= int(-2)
 sim.nx= int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
 sim.nl= int(pow(2,4)*pow(3,0)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
 #-----------------------------------------------------------------------------
-## further diagnostics
-sim.metric_recon=              True#False# 
+sim.metric_recon=              False#True# 
 
 sim.write_indep_res=           True#False#
 sim.write_metric_recon_fields= False#True#
@@ -87,7 +86,7 @@ elif (sim.run_type == "multiple_runs"):
 #      time.sleep(180)
 #=============================================================================
 elif (sim.run_type == "spin_ramp"):
-   for bhs in [0,0.01,0.02,0.04,0.08,0.16,0.32]:
+   for bhs in [0,0.01,0.02,0.04,0.08,0.12,0.16,0.2,0.24,0.28,0.32]:
       sim.black_hole_spin= bhs
       sim.launch_run()
 
