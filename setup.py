@@ -17,8 +17,8 @@ sim.compactification_length= float(1)
 #-----------------------------------------------------------------------------
 ## evolve time: in units of black hole mass
 #-----------------------------------------------------------------------------
-sim.evolve_time= float(20)
-sim.num_saved_times= int(100)
+sim.evolve_time= float(10)
+sim.num_saved_times= int(20)
 #-----------------------------------------------------------------------------
 ## initial data
 #-----------------------------------------------------------------------------
@@ -35,7 +35,7 @@ sim.ru_nm=  float( 1.5)  ## compact support: upper r value
 sim.l_ang_nm= int(2)     ## support over single spin weighted spherical harmonic
 #-----------------------------------------------------------------------------
 ##  Teukolsky equation preserves m 
-sim.pm_ang= int(2)
+sim.pm_ang= int(1)
 assert(sim.pm_ang>=0)
 #-----------------------------------------------------------------------------
 ## we can only do metric reconstruction starting from psi4 for now.
@@ -47,12 +47,12 @@ assert(sim.pm_ang>=0)
 sim.psi_spin=  int(-2)
 sim.psi_boost= int(-2)
 #-----------------------------------------------------------------------------
-sim.nx= int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
+sim.nx= int(pow(2,3)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
 sim.nl= int(pow(2,4)*pow(3,0)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
 #-----------------------------------------------------------------------------
-sim.metric_recon=              True# False#
+sim.metric_recon=              False#True# 
 
-sim.write_indep_res=           True#False#
+sim.write_indep_res=           False#True#
 sim.write_metric_recon_fields= False#True#
 sim.write_source=              False#True#
 #-----------------------------------------------------------------------------

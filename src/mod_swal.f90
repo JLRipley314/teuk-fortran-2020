@@ -67,6 +67,8 @@ contains
             mstr = trim(adjustl(mstr))
 
             call set_arr('s_'//sstr//'_m_' //mstr//'.txt', ny,nl,swal(:,:,m_ang,spin))
+
+            write(*,*) swal(:,:,m_ang,spin)
          end do
       end do
    end subroutine swal_init
@@ -90,7 +92,8 @@ contains
       do j=1,ny
          coefs(:,k,m_ang) =  &
             coefs(:,k,m_ang) &
-         +  (vals(:,j,m_ang) * weights(j) * ((-1.0_rp)**(spin+m_ang))*swal(j,k,-m_ang,-spin))
+         +  (vals(:,j,m_ang) * weights(j) * swal(j,k,m_ang,spin))
+!         +  (vals(:,j,m_ang) * weights(j) * ((-1.0_rp)**(spin+m_ang))*swal(j,k,-m_ang,-spin))
       end do
       end do
    end subroutine swal_real_to_coef
@@ -226,6 +229,8 @@ contains
 
       integer(ip) :: s, m, l1, l2, j
       real(rp)    :: integral
+
+      write (*,*) 'swal_test_orthonormal'
 
       do s=min_s,max_s
       do m=min_m,max_m

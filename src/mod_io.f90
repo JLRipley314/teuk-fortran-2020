@@ -1,6 +1,6 @@
 module mod_io
    use mod_prec
-   use mod_params, only: nx, ny, tables_dir, output_dir
+   use mod_params, only: nx, ny, nl, tables_dir, output_dir
    use mod_field, only: field
 
    implicit none
