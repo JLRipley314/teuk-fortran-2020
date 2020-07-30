@@ -40,8 +40,6 @@ clean_memory: block
    integer(ip) :: t_step
    real(rp)    :: time
 !=============================================================================
-   call swal_test_orthonormal()
-!=============================================================================
    write (*,*) "Initializing fields"   
 !-----------------------------------------------------------------------------
 ! first order metric field
@@ -77,52 +75,37 @@ clean_memory: block
    call bkgrd_np_init()
    call teuk_init()
 !=============================================================================
+   call swal_test_orthonormal()
+!=============================================================================
 ! initial data 
 !=============================================================================
    write (stdout,*) "Setting up initial data"
 !-----------------------------------------------------------------------------
    time = 0.0_rp
 
-   call set_initial_data(-pm_ang, psi4_lin_p, psi4_lin_q, psi4_lin_f)
    call set_initial_data( pm_ang, psi4_lin_p, psi4_lin_q, psi4_lin_f)
    !--------------------------------------------------------------------------
    ! write to file
    !--------------------------------------------------------------------------
-   call write_csv(time,-pm_ang,psi4_lin_f)
    call write_csv(time, pm_ang,psi4_lin_f)
    !--------------------------------------------------------------------------
    if (write_metric_recon_fields) then
-      call write_csv(time,-pm_ang,psi3)
-      call write_csv(time, pm_ang,psi3)
-
-      call write_csv(time,-pm_ang,psi2)
-      call write_csv(time, pm_ang,psi2)
-
-      call write_csv(time,-pm_ang,hmbmb)
-      call write_csv(time, pm_ang,hmbmb)
-
-      call write_csv(time,-pm_ang,hlmb)
-      call write_csv(time, pm_ang,hlmb)
-
-      call write_csv(time,-pm_ang,muhll)
-      call write_csv(time, pm_ang,muhll)
+      call write_csv(time,pm_ang,psi3)
+      call write_csv(time,pm_ang,psi2)
+      call write_csv(time,pm_ang,hmbmb)
+      call write_csv(time,pm_ang,hlmb)
+      call write_csv(time,pm_ang,muhll)
    end if
    !--------------------------------------------------------------------------
    if (write_indep_res) then
       call compute_res_q(psi4_lin_q,psi4_lin_f,res_lin_q)
 
-      call write_csv(time,-pm_ang,res_lin_q)
       call write_csv(time, pm_ang,res_lin_q)
 
       if (metric_recon) then
-         call write_csv(time,-pm_ang,res_bianchi3)
-         call write_csv(time, pm_ang,res_bianchi3)
-
-         call write_csv(time,-pm_ang,res_bianchi2)
-         call write_csv(time, pm_ang,res_bianchi2)
-
-         call write_csv(time,-pm_ang,res_hll)
-         call write_csv(time, pm_ang,res_hll)
+         call write_csv(time,pm_ang,res_bianchi3)
+         call write_csv(time,pm_ang,res_bianchi2)
+         call write_csv(time,pm_ang,res_hll)
       end if
    end if
 !=============================================================================
@@ -134,8 +117,7 @@ clean_memory: block
    time_evolve: do t_step=1,nt
       time = t_step*dt
       !-----------------------------------------------------------------------
-      call teuk_time_step(-pm_ang, psi4_lin_p, psi4_lin_q, psi4_lin_f)
-      call teuk_time_step( pm_ang, psi4_lin_p, psi4_lin_q, psi4_lin_f)
+      call teuk_time_step(pm_ang, psi4_lin_p, psi4_lin_q, psi4_lin_f)
       !-----------------------------------------------------------------------
       if (metric_recon) then 
          call metric_recon_time_step(pm_ang)
@@ -146,44 +128,27 @@ clean_memory: block
          write (stdout,*) time / black_hole_mass
          flush (stdout)
          !--------------------------------------------------------------------
-         call write_csv(time,-pm_ang,psi4_lin_f)
-         call write_csv(time, pm_ang,psi4_lin_f)
+         call write_csv(time,pm_ang,psi4_lin_f)
          !--------------------------------------------------------------------
          if (write_metric_recon_fields) then
-            call write_csv(time,-pm_ang,psi3)
-            call write_csv(time, pm_ang,psi3)
-
-            call write_csv(time,-pm_ang,psi2)
-            call write_csv(time, pm_ang,psi2)
-
-            call write_csv(time,-pm_ang,hmbmb)
-            call write_csv(time, pm_ang,hmbmb)
-
-            call write_csv(time,-pm_ang,hlmb)
-            call write_csv(time, pm_ang,hlmb)
-
-            call write_csv(time,-pm_ang,muhll)
-            call write_csv(time, pm_ang,muhll)
+            call write_csv(time,pm_ang,psi3)
+            call write_csv(time,pm_ang,psi2)
+            call write_csv(time,pm_ang,hmbmb)
+            call write_csv(time,pm_ang,hlmb)
+            call write_csv(time,pm_ang,muhll)
          end if
          !--------------------------------------------------------------------
          if (write_indep_res) then
             call compute_res_q(psi4_lin_q,psi4_lin_f,res_lin_q)
 
-            call write_csv(time,-pm_ang,res_lin_q)
-            call write_csv(time, pm_ang,res_lin_q)
+            call write_csv(time,pm_ang,res_lin_q)
             !-----------------------------------------------------------------
             if (metric_recon) then
-               call metric_recon_indep_res(-pm_ang)
-               call metric_recon_indep_res( pm_ang)
+               call metric_recon_indep_res(pm_ang)
 
-               call write_csv(time,-pm_ang,res_bianchi3)
-               call write_csv(time, pm_ang,res_bianchi3)
-
-               call write_csv(time,-pm_ang,res_bianchi2)
-               call write_csv(time, pm_ang,res_bianchi2)
-
-               call write_csv(time,-pm_ang,res_hll)
-               call write_csv(time, pm_ang,res_hll)
+               call write_csv(time,pm_ang,res_bianchi3)
+               call write_csv(time,pm_ang,res_bianchi2)
+               call write_csv(time,pm_ang,res_hll)
             end if
          end if
          !--------------------------------------------------------------------

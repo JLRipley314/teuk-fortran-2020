@@ -67,8 +67,6 @@ contains
             mstr = trim(adjustl(mstr))
 
             call set_arr('s_'//sstr//'_m_' //mstr//'.txt', ny,nl,swal(:,:,m_ang,spin))
-
-            write(*,*) swal(:,:,m_ang,spin)
          end do
       end do
    end subroutine swal_init
@@ -234,8 +232,8 @@ contains
 
       do s=min_s,max_s
       do m=min_m,max_m
-      do l1=0,max_l
-      do l2=0,max_l
+      do l1= 0,max_l
+      do l2=l1,max_l
          integral = 0.0_rp
          do j=1,ny 
             integral = integral + weights(j)*swal(j,l1,m,s)*swal(j,l2,m,s)!*(((-1.0_rp)**(m+s))*swal(j,l2,-m,-s))
