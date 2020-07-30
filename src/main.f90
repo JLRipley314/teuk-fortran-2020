@@ -21,7 +21,7 @@ program main
    use mod_teuk,         only: teuk_init, teuk_time_step, compute_res_q
    use mod_initial_data, only: set_initial_data
    use mod_bkgrd_np,     only: bkgrd_np_init
-   use mod_metric_recon, only: 
+   use mod_metric_recon, only: metric_recon_time_step, metric_recon_indep_res
 
    use mod_fields_list, only: &
       psi4_lin_p, psi4_lin_q, psi4_lin_f, &

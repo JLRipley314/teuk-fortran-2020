@@ -1,3 +1,7 @@
+!
+! List of all dynamical fields
+! (so we don't need to worry about ordering of compilation)
+!
 module mod_fields_list
    use mod_field, only: field
 

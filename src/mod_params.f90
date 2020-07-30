@@ -28,7 +28,7 @@ implicit none
    integer(ip), parameter :: psi_boost = -2_ip
    integer(ip), parameter :: nx = 48_ip
    integer(ip), parameter :: nl = 16_ip
-   logical, parameter :: metric_recon = .false.
+   logical, parameter :: metric_recon = .true.
    logical, parameter :: write_indep_res = .true.
    logical, parameter :: write_metric_recon_fields = .false.
    logical, parameter :: write_source = .false.
@@ -49,8 +49,8 @@ implicit none
    integer(ip), parameter :: min_m = -2_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Wed_14_51_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2'
-   character(*), parameter :: output_dir = 'output/Wed_14_51_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2'
-   character(*), parameter :: bin_name = 'Wed_14_51_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2.run'
-   character(*), parameter :: tables_dir = 'output/Wed_14_51_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2/tables'
+   character(*), parameter :: output_stem = 'Wed_16_14_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2'
+   character(*), parameter :: output_dir = 'output/Wed_16_14_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2'
+   character(*), parameter :: bin_name = 'Wed_16_14_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2.run'
+   character(*), parameter :: tables_dir = 'output/Wed_16_14_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2/tables'
 end module mod_params
