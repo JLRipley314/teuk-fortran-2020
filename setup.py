@@ -22,7 +22,7 @@ sim.num_saved_times= int(750)
 #-----------------------------------------------------------------------------
 ## initial data
 #-----------------------------------------------------------------------------
-sim.initial_data_direction= str("ingoing")#str("time_symmetric")#
+sim.initial_data_direction= str("outgoing")#str("ingoing")#str("time_symmetric")#
 sim.initial_data_type= str("compact_bump")
 sim.amp_pm= float(10.0)  ## amplitude of the initial perturbation
 sim.rl_pm=  float(-1.5)  ## compact support: lower r value

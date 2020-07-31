@@ -20,6 +20,8 @@ module mod_initial_data
    private
 
    public :: set_initial_data
+
+   complex(rp), parameter :: ZI = (0.0_rp, 1.0_rp) 
 !=============================================================================
 contains
 !=============================================================================
@@ -29,7 +31,7 @@ contains
 
       integer(ip) :: i, j
       integer(ip) :: l_ang
-      real(rp) :: max_val, bump, r
+      real(rp) :: max_val, bump, r, y
       real(rp) :: width, amp, rl, ru 
 
       bump    = 0.0_rp
@@ -96,6 +98,88 @@ contains
 !-----------------------------------------------------------------------------
       f%n(:,:,m_ang) = f%n(:,:,m_ang) * (amp / max_val)
       q%n(:,:,m_ang) = q%n(:,:,m_ang) * (amp / max_val)
+!-----------------------------------------------------------------------------
+! set which way psi4 is heading initially
+!-----------------------------------------------------------------------------
+   select case (initial_data_direction)
+      !-----------------------------------------------------------------------
+      case ("ingoing")
+         do j=1,ny
+         do i=1,nx
+            R = Rvec(i)
+            Y = Yvec(j)
+
+            p%n(i,j,m_ang) = &
+               (f%n(i,j,m_ang)*( &
+               -  2*bhs**2*R*(cl**2 + 6*bhm*R) &
+               +  4*cl**2*bhm*(-(cl**2*spin) + 2*bhm*R*(2 + spin)) &
+               +  (0,2)*bhs*(4*cl**2*bhm*m_ang*R + cl**4*(m_ang - spin*Y)) &
+               ))/cl**4 &
+            +  q%n(i,j,m_ang)*( &
+                  (-2*( &
+                     cl**6 &
+                  +  cl**2*(bhs**2 - 8*bhm**2)*R**2 &
+                  +  4*bhs**2*bhm*R**3 &
+                  ))/cl**4 &
+               -  (R**3*( &
+                     8*bhm*(2*bhm - (bhs**2*R)/cl**2)*(1 + (2*bhm*R)/cl**2) &
+                  +  bhs**2*(-1 + Y**2) &
+                  ))/(cl**2*(2 + (4*bhm*R)/cl**2)) &
+               )
+         end do
+         end do
+      !-----------------------------------------------------------------------
+      case ("outgoing")
+         do j=1,ny
+         do i=1,nx
+            R = Rvec(i)
+            Y = Yvec(j)
+
+            p%n(i,j,m_ang) = &
+               (q%n(i,j,m_ang)*( &
+                  64*cl**4*bhm**4*R**2 &
+               +  bhs**4*R**2*(16*bhm**2*R**2 + cl**4*(-1 + Y**2)) &
+               +  bhs**2*(-64*cl**2*bhm**3*R**3 + cl**8*(-1 + Y**2) - 2*cl**6*bhm*R*(-1 + Y**2)) &
+               ))/( &
+                  4.*cl**4*bhm*(2*cl**2*bhm - bhs**2*R) &
+               ) &
+            +  f%n(i,j,m_ang)*( &
+                  (-2*bhs**2*R*(cl**2 + 6*bhm*R))/cl**4 &
+               -  4*bhm*spin &
+               +  (8*bhm**2*R*(2 + spin))/cl**2 &
+               -  (0,2)*bhs*spin*Y &
+               -  (0,0.5)*m_ang*( &
+                     8 &
+                  +  (16*bhm*R)/cl**2 &
+                  +  bhs*(-4 - (16*bhm*R)/cl**2) &
+                  +  (bhs**2*cl**2*(-1 + Y**2))/(bhm*(2*cl**2*bhm - bhs**2*R)) &
+                  ) &
+               )
+         end do
+         end do
+      !-----------------------------------------------------------------------
+      case ("time_symmetric")
+         do j=1,ny
+         do i=1,nx
+            R = Rvec(i)
+            Y = Yvec(j)
+            
+            p%n(i,j,m_ang) = &
+               (-2*q%n(i,j,m_ang)*( &
+                  cl**6 &
+               +  cl**2*(bhs**2 - 8*bhm**2)*R**2 &
+               +  4*bhs**2*bhm*R**3 &
+               ))/cl**4 &
+            +  (f%n(i,j,m_ang)*( &
+               -  2*bhs**2*R*(cl**2 + 6*bhm*R) &
+               +  4*cl**2*bhm*(-(cl**2*spin) + 2*bhm*R*(2 + spin)) &
+               +  (0,2)*bhs*(4*cl**2*bhm*m_ang*R + cl**4*(m_ang - spin*Y)) &
+               ))/cl**4 
+         end do
+         end do
+      case default
+         ! do nothing
+   end select 
 !-----------------------------------------------------------------------------
 ! copy to np1 so can be saved
 !-----------------------------------------------------------------------------
