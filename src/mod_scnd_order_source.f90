@@ -7,7 +7,7 @@ module mod_scnd_order_source
    use mod_prec
 
    use mod_cheb,     only: R, compute_DR
-   use mod_swal,     only: swal_lower
+   use mod_swal,     only: swal_lower, cy
    use mod_field,    only: field, set_level
    use mod_ghp,      only: set_edth, set_edth_prime, set_thorn, set_thorn_prime
    use mod_bkgrd_np, only: mu_0, ta_0, pi_0, rh_0, psi2_0
@@ -17,7 +17,7 @@ module mod_scnd_order_source
    use mod_params,   only: &
       dt, nx, ny, min_m, max_m, max_l, &
       cl=>compactification_length, &
-      bhm=>black_hole_mass
+      bhs=>black_hole_spin
 
 !=============================================================================
    implicit none
@@ -340,7 +340,6 @@ module mod_scnd_order_source
          sf%DT, &
          sf%DR, &
          sf%thorn_prime)
-  
       do j=1,ny
       do i=1,nx
          sf%np1(i,j,m_ang) = &
@@ -349,7 +348,12 @@ module mod_scnd_order_source
 
          +  sf%edth_prime(i,j,m_ang) &
          +  (4.0_rp*pi_0(i,j)-conjg(ta_0(i,j)))*sf%pre_edth_prime_np1(i,j,m_ang) 
-
+         !--------------------------------------------------------------------
+         ! multiply by prefactor
+         sf%np1(i,j,m_ang) = &
+            (cl**4 + (bhs*R(i)*cy(j))**2) * sf%np1(i,j,m_ang) 
+         !--------------------------------------------------------------------
+         ! estimate halfstep value 
          sf%n1h(i,j,m_ang) = 0.5_rp*(sf%np1(i,j,m_ang) + sf%n(i,j,m_ang))
       end do
       end do 

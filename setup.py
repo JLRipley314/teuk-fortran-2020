@@ -22,11 +22,11 @@ sim.num_saved_times= int(100)
 #-----------------------------------------------------------------------------
 ## initial data
 #-----------------------------------------------------------------------------
-sim.initial_data_direction= str("outgoing")#str("time_symmetric")#str("ingoing")#
+sim.initial_data_direction= str("time_symmetric")#str("outgoing")#str("ingoing")#
 sim.initial_data_type= str("compact_bump")
 sim.amp_pm= float( 0.1)  ## amplitude of the initial perturbation
-sim.rl_pm=  float( 1.0)  ## compact support: lower r value
-sim.ru_pm=  float( 1.5)  ## compact support: upper r value 
+sim.rl_pm=  float( 1.1)  ## compact support: lower r value
+sim.ru_pm=  float( 4.0)  ## compact support: upper r value 
 sim.l_ang_pm= int(2)     ## support over single spin weighted spherical harmonic
 
 sim.amp_nm= float(10.0)  ## amplitude of the initial perturbation
@@ -35,7 +35,7 @@ sim.ru_nm=  float( 1.5)  ## compact support: upper r value
 sim.l_ang_nm= int(2)     ## support over single spin weighted spherical harmonic
 #-----------------------------------------------------------------------------
 ##  Teukolsky equation preserves m 
-sim.pm_ang= int(1)
+sim.pm_ang= int(2)
 assert(sim.pm_ang>=0)
 #-----------------------------------------------------------------------------
 ## we can only do metric reconstruction starting from psi4 for now.
@@ -47,7 +47,7 @@ assert(sim.pm_ang>=0)
 sim.psi_spin=  int(-2)
 sim.psi_boost= int(-2)
 #-----------------------------------------------------------------------------
-sim.nx= int(pow(2,6)*pow(3,0)*pow(5,0)*pow(7,0)) ## num radial pts 
+sim.nx= int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
 sim.nl= int(pow(2,4)*pow(3,0)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
 #-----------------------------------------------------------------------------
 sim.metric_recon=              True#False# 
