@@ -13,8 +13,8 @@ module mod_teuk
       bhm=>black_hole_mass, &
       bhs=>black_hole_spin
 
-   use mod_cheb, only: Rvec, compute_DR
-   use mod_swal, only: Yvec, swal_laplacian
+   use mod_cheb, only: R=>Rarr, compute_DR
+   use mod_swal, only: Y=>Yarr, swal_laplacian
 
    use mod_scnd_order_source, only: scnd_order_source 
 !=============================================================================
@@ -39,56 +39,51 @@ module mod_teuk
 contains
 !=============================================================================
    subroutine teuk_init()
-      integer(ip) :: i, j, m_ang
-      real(rp) :: r, y
-
+      integer(ip) :: m_ang
+      !----------------------------
       m_loop: do m_ang=min_m,max_m
-      y_loop: do j=1,ny
-      x_loop: do i=1,nx
-         R = Rvec(i)
-         Y = Yvec(j)
       !----------------------------
-         A_pp(i,j,m_ang) = 0.0_rp
+         A_pp(:,:,m_ang) = 0.0_rp
 
-         A_pq(i,j,m_ang) = ((R**2)*((cl**4) - 2*(cl**2)*bhm*R + (bhs**2)*(R**2)))/(cl**4) 
+         A_pq(:,:,m_ang) = ((R**2)*((cl**4) - 2*(cl**2)*bhm*R + (bhs**2)*(R**2)))/(cl**4) 
 
-         A_pf(i,j,m_ang) = 0.0_rp
+         A_pf(:,:,m_ang) = 0.0_rp
       !----------------------------
-         A_qp(i,j,m_ang) = cl**4/(&
+         A_qp(:,:,m_ang) = cl**4/(&
             16*cl**2*bhm**2*(cl**2 + 2*bhm*R) &
          +  bhs**2*(-(cl**2 + 4*bhm*R)**2 + cl**4*Y**2) &
          )
 
-         A_qq(i,j,m_ang) = (&
+         A_qq(:,:,m_ang) = (&
             2*(cl**6 + cl**2*(bhs**2 - 8*bhm**2)*R**2 + 4*bhs**2*bhm*R**3) &
          )/(&
             16*cl**2*bhm**2*(cl**2 + 2*bhm*R) + bhs**2*(-(cl**2 + 4*bhm*R)**2 + cl**4*Y**2) &
          )
 
-         A_qf(i,j,m_ang) = 0.0_rp
+         A_qf(:,:,m_ang) = 0.0_rp
       !----------------------------
-         A_fp(i,j,m_ang) = 0.0_rp
+         A_fp(:,:,m_ang) = 0.0_rp
 
-         A_fq(i,j,m_ang) = 0.0_rp
+         A_fq(:,:,m_ang) = 0.0_rp
 
-         A_ff(i,j,m_ang) = 0.0_rp
+         A_ff(:,:,m_ang) = 0.0_rp
       !----------------------------
       !----------------------------
-         B_pp(i,j,m_ang) = 0.0_rp 
+         B_pp(:,:,m_ang) = 0.0_rp 
 
-         B_pq(i,j,m_ang) = cmplx(&
+         B_pq(:,:,m_ang) = cmplx(&
             -2*R*(-1 - spin + (R*(-2*bhs**2*R + cl**2*bhm*(3 + spin)))/cl**4) &
          ,&
             (-2*bhs*m_ang*R**2)/cl**2 &
          ,kind=rp)
 
-         B_pf(i,j,m_ang) = cmplx(&
+         B_pf(:,:,m_ang) = cmplx(&
             (-2*R*(-(bhs**2*R) + cl**2*bhm*(1 + spin)))/cl**4 &
          ,&
             (-2*bhs*m_ang*R)/cl**2 &
          ,kind=rp)
       !----------------------------
-         B_qp(i,j,m_ang) = cmplx( &
+         B_qp(:,:,m_ang) = cmplx( &
             -( &
             (32*cl**6*bhm**3 - 8*bhs**2*cl**4*bhm*(cl**2 + 4*bhm*R)) &
          /  (16*cl**2*bhm**2*(cl**2 + 2*bhm*R) + bhs**2*(-(cl**2 + 4*bhm*R)**2 + cl**4*Y**2))**2) &
@@ -96,7 +91,7 @@ contains
             0.0_rp &
          ,kind=rp)
 
-         B_qq(i,j,m_ang) = cmplx( &
+         B_qq(:,:,m_ang) = cmplx( &
             -( &
             ( &
                64*cl**4*bhm**3*(12*cl**2*bhm*R - cl**4*(-1 + spin) + 4*bhm**2*R**2*(4 + spin)) &
@@ -116,7 +111,7 @@ contains
             ) &
          ,kind=rp)
 
-         B_qf(i,j,m_ang) = cmplx(&
+         B_qf(:,:,m_ang) = cmplx(&
             ( &
             -  2*cl**2*( &
                   128*cl**4*bhm**4*(1 + spin) &
@@ -139,7 +134,7 @@ contains
             )**2 &
          ,kind=rp)
       !----------------------------
-         B_fp(i,j,m_ang) = cmplx( &
+         B_fp(:,:,m_ang) = cmplx( &
             cl**4 &
          / &
             (16*cl**2*bhm**2*(cl**2 + 2*bhm*R) + bhs**2*(-(cl**2 + 4*bhm*R)**2 + cl**4*Y**2)) &
@@ -147,7 +142,7 @@ contains
             0.0_rp &
          ,kind=rp)
 
-         B_fq(i,j,m_ang) = cmplx( &
+         B_fq(:,:,m_ang) = cmplx( &
             (2*(cl**6 + cl**2*(bhs**2 - 8*bhm**2)*R**2 + 4*bhs**2*bhm*R**3)) &
          / &
             (16*cl**2*bhm**2*(cl**2 + 2*bhm*R) + bhs**2*(-(cl**2 + 4*bhm*R)**2 + cl**4*Y**2)) &
@@ -155,7 +150,7 @@ contains
             0.0_rp &
          ,kind=rp)
 
-         B_ff(i,j,m_ang) = cmplx( &
+         B_ff(:,:,m_ang) = cmplx( &
             -( & 
                (2*bhs**2*R*(cl**2 + 6*bhm*R) + 4*cl**2*bhm*(cl**2*spin - 2*bhm*R*(2 + spin))) &
          / &
@@ -166,8 +161,6 @@ contains
          /  &
             (16*cl**2*bhm**2*(cl**2 + 2*bhm*R) + bhs**2*(-(cl**2 + 4*bhm*R)**2 + cl**4*Y**2)) &
          ,kind=rp)
-      end do x_loop
-      end do y_loop
       end do m_loop
 
    end subroutine teuk_init

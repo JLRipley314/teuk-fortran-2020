@@ -16,7 +16,8 @@ module mod_swal
    private
 
    ! gauss points y, cos(y), sin(y)
-   real(rp), dimension(ny), protected, public :: Yvec, cyvec, syvec
+   real(rp), dimension(ny),    protected, public :: Yvec, cyvec, syvec
+   real(rp), dimension(nx,ny), protected, public :: Yarr, cyarr, syarr
 
    ! subroutines 
    public :: swal_init, swal_laplacian, swal_lower, swal_raise
@@ -42,6 +43,7 @@ contains
    subroutine swal_init()
       integer(ip) :: m_ang = 0
       integer(ip) :: spin  = 0
+      integer(ip) :: i
       character(:), allocatable :: mstr, sstr
 
       ! weights for Gaussian quadrature
@@ -49,6 +51,12 @@ contains
 
       call set_arr('cos.txt', ny, cyvec)
       call set_arr('sin.txt', ny, syvec)
+
+      do i=1,nx
+         Yarr(i,:)  = Yvec
+         cyarr(i,:) = cyvec
+         syarr(i,:) = syvec
+      end do
 
       ! weights for Gaussian quadrature
       call set_arr('weights_legendre.txt', ny, weights)

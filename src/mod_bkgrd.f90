@@ -12,8 +12,9 @@
 ! ep_0:   rescaled by R^2
 ! psi2_0: rescaled by R^3
 !
+!=============================================================================
 module mod_bkgrd_np
-!-----------------------------------------------------------------------------
+!=============================================================================
    use mod_prec
    use mod_params, only: &
       nx, ny, & 
@@ -21,10 +22,9 @@ module mod_bkgrd_np
       bhm=>black_hole_mass, &
       bhs=>black_hole_spin
 
-   use mod_cheb, only: Rvec
-   use mod_swal, only: cyvec, syvec
-
-!-----------------------------------------------------------------------------
+   use mod_cheb, only: R=>Rarr
+   use mod_swal, only: cy=>cyarr, sy=>syarr
+!=============================================================================
    implicit none
    private
 
@@ -35,50 +35,37 @@ module mod_bkgrd_np
       psi2_0
 
    complex(rp), parameter :: ZI = (0.0_rp, 1.0_rp) 
-!-----------------------------------------------------------------------------
+!=============================================================================
 contains
-!-----------------------------------------------------------------------------
+!=============================================================================
    subroutine bkgrd_np_init()
-
-      integer(ip) :: i, j
-      real(rp) :: r, cy, sy
-
-      y_loop: do j=1,ny
-      x_loop: do i=1,nx
-
-         R  = Rvec(i)
-         cy = cyvec(j)
-         sy = syvec(j)
       !----------------------------
-         mu_0(i,j) = &
-            1.0_rp / (-(cl**2) + ZI*bhs*R*cy)
+      mu_0 = &
+         1.0_rp / (-(cl**2) + ZI*bhs*R*cy)
       !----------------------------
-         ta_0(i,j) = &
-            (ZI*bhs*sy/sqrt(2.0_rp)) / ((cl**2 - ZI*bhs*R*cy)**2)
+      ta_0 = &
+         (ZI*bhs*sy/sqrt(2.0_rp)) / ((cl**2 - ZI*bhs*R*cy)**2)
       !----------------------------
-         pi_0(i,j) = &
-         -  (ZI*bhs*sy/sqrt(2.0_rp)) / (cl**4 + (bhs*cy*R)**2)
+      pi_0 = &
+      -  (ZI*bhs*sy/sqrt(2.0_rp)) / (cl**4 + (bhs*cy*R)**2)
       !----------------------------
-         rh_0(i,j) = &
-         -  0.5_rp*( &
-               cl**4 - 2.0_rp*(cl**2)*bhm*R + (bhs*R)**2 &
-            )/( &
-               ((cl**2 - ZI*bhs*R*cy)**2)*(cl**2 + ZI*bhs*R*cy) &
-            )
+      rh_0 = &
+      -  0.5_rp*( &
+            cl**4 - 2.0_rp*(cl**2)*bhm*R + (bhs*R)**2 &
+         )/( &
+            ((cl**2 - ZI*bhs*R*cy)**2)*(cl**2 + ZI*bhs*R*cy) &
+         )
       !----------------------------
-         ep_0(i,j) = &
-            0.5_rp*( &
-               (cl**2)*bhm - (bhs**2)*R - ZI*bhs*(cl**2-bhm*R)*cy &
-            )/( &
-               ((cl**2 - ZI*bhs*R*cy)**2)*(cl**2 + ZI*bhs*R*cy) &
-            )
+      ep_0 = &
+         0.5_rp*( &
+            (cl**2)*bhm - (bhs**2)*R - ZI*bhs*(cl**2-bhm*R)*cy &
+         )/( &
+            ((cl**2 - ZI*bhs*R*cy)**2)*(cl**2 + ZI*bhs*R*cy) &
+         )
       !----------------------------
-         psi2_0(i,j) = &
-         -  bhm / ((cl**2 - ZI*bhs*R*cy)**3)
-
-      end do x_loop
-      end do y_loop
-
+      psi2_0 = &
+      -  bhm / ((cl**2 - ZI*bhs*R*cy)**3)
+      !----------------------------
    end subroutine bkgrd_np_init
-!-----------------------------------------------------------------------------
+!=============================================================================
 end module mod_bkgrd_np
