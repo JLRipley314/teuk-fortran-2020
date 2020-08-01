@@ -21,8 +21,8 @@ module mod_bkgrd_np
       bhm=>black_hole_mass, &
       bhs=>black_hole_spin
 
-   use mod_cheb, only: Rvec=>R
-   use mod_swal, only: cyvec=>cy, syvec=>sy
+   use mod_cheb, only: Rvec
+   use mod_swal, only: cyvec, syvec
 
 !-----------------------------------------------------------------------------
    implicit none

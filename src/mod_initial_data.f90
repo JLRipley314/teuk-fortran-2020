@@ -2,8 +2,8 @@ module mod_initial_data
 !=============================================================================
    use mod_prec
    use mod_field, only: field
-   use mod_cheb, only: Rvec=>R
-   use mod_swal, only: Yvec=>Y, swal
+   use mod_cheb, only: Rvec
+   use mod_swal, only: Yvec, swal
    use mod_params, only: &
       dt, nx, ny, &
       min_m, max_m, &

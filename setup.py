@@ -25,8 +25,8 @@ sim.num_saved_times= int(100)
 sim.initial_data_direction= str("time_symmetric")#str("outgoing")#str("ingoing")#
 sim.initial_data_type= str("compact_bump")
 sim.amp_pm= float( 0.1)  ## amplitude of the initial perturbation
-sim.rl_pm=  float( 1.1)  ## compact support: lower r value
-sim.ru_pm=  float( 4.0)  ## compact support: upper r value 
+sim.rl_pm=  float(-1.5)  ## compact support: lower r value
+sim.ru_pm=  float( 1.5)  ## compact support: upper r value 
 sim.l_ang_pm= int(2)     ## support over single spin weighted spherical harmonic
 
 sim.amp_nm= float(10.0)  ## amplitude of the initial perturbation

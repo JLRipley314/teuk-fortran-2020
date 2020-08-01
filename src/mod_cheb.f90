@@ -9,7 +9,8 @@ module mod_cheb
    private
 
    ! radial points
-   real(rp), dimension(nx), protected, public :: R = 0
+   real(rp), dimension(nx),    protected, public :: Rvec = 0
+   real(rp), dimension(nx,ny), protected, public :: Rarr = 0
 
    ! subroutines
    public :: cheb_init, compute_DR, cheb_filter, cheb_test
@@ -26,8 +27,9 @@ module mod_cheb
 contains
 !=============================================================================
    subroutine cheb_init()
+      integer :: j
 
-      call set_arr('cheb_pts.txt', nx,     R)
+      call set_arr('cheb_pts.txt', nx,  Rvec)
       call set_arr('cheb_D.txt',nx,nx,D_cheb)
 
       call set_arr('real_to_cheb.txt',nx,nx,to_cheb)
@@ -35,8 +37,11 @@ contains
 
       D_cheb = (2.0_rp/R_max) * D_cheb
 
-      R = (R_max/2.0_rp) * (R + 1.0_rp)
+      Rvec = (R_max/2.0_rp) * (Rvec + 1.0_rp)
 
+      do j=1,ny
+         Rarr(:,j) = Rvec
+      end do
    end subroutine cheb_init
 !=============================================================================
    pure subroutine cheb_real_to_coef(m_ang,vals,coefs)
@@ -113,8 +118,8 @@ contains
       integer(ip) :: i
 
       do i=1,nx
-         vals(i,:,:) = sin(R(i))
-         DR_vals(i,:,:) = cos(R(i))
+         vals(i,:,:) = sin(Rvec(i))
+         DR_vals(i,:,:) = cos(Rvec(i))
       end do
 
       call compute_DR(0_ip, vals, computed_DR_vals)

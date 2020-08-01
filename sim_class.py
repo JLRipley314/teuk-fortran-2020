@@ -25,10 +25,16 @@ class Sim:
 #=============================================================================
    def make_output_dir(self)->None:
       time_of_day= time.asctime().split(' ')
+      day = time_of_day[0]
+      hr_min_sec = (
+         time_of_day[4] 
+         if time_of_day[2]=='' else
+         time_of_day[3]
+      )
       self.output_stem= str(
-        time_of_day[0] # day of week
-      + '_'+time_of_day[3].split(':')[0] # hour
-      + '_'+time_of_day[3].split(':')[1] # minute
+        day 
+      + '_'+hr_min_sec.split(':')[0] 
+      + '_'+hr_min_sec.split(':')[1] 
       +	'_bhm'+str(self.black_hole_mass)
       +	'_bhs'+str(self.black_hole_spin)
       +	'_nx'+str(self.nx)

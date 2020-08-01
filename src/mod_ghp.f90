@@ -9,8 +9,8 @@
 module mod_ghp
 !=============================================================================
    use mod_prec
-   use mod_cheb,   only: R, compute_DR
-   use mod_swal,   only: cy, sy, swal_lower, swal_raise
+   use mod_cheb,   only: R=>Rvec, compute_DR
+   use mod_swal,   only: cy=>cyvec, sy=>syvec, swal_lower, swal_raise
    use mod_field,  only: field, set_level, set_DT
 
    use mod_bkgrd_np, only: ep_0

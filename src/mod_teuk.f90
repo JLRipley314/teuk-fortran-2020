@@ -13,8 +13,8 @@ module mod_teuk
       bhm=>black_hole_mass, &
       bhs=>black_hole_spin
 
-   use mod_cheb, only: Rvec=>r, compute_DR
-   use mod_swal, only: Yvec=>y, swal_laplacian
+   use mod_cheb, only: Rvec, compute_DR
+   use mod_swal, only: Yvec, swal_laplacian
 
    use mod_scnd_order_source, only: scnd_order_source 
 !=============================================================================
@@ -72,6 +72,7 @@ contains
          A_fq(i,j,m_ang) = 0.0_rp
 
          A_ff(i,j,m_ang) = 0.0_rp
+      !----------------------------
       !----------------------------
          B_pp(i,j,m_ang) = 0.0_rp 
 
@@ -181,10 +182,7 @@ contains
       complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: &
          p_DR, q_DR, f_DR, f_laplacian, &
          kp, kq, kf 
-
       complex(rp), dimension(nx,0:max_l,min_m:max_m), intent(inout) :: f_coefs
-
-      integer(ip) :: i, j
 
       call compute_DR(m_ang, p, p_DR)
       call compute_DR(m_ang, q, q_DR)
@@ -192,34 +190,31 @@ contains
 
       call swal_laplacian(spin,m_ang,f,f_coefs,f_laplacian)
 
-      do j=1,ny
-      do i=1,nx
-         kp(i,j,m_ang) = &
-            A_pp(i,j,m_ang) * p_DR(i,j,m_ang) &
-         +  A_pq(i,j,m_ang) * q_DR(i,j,m_ang) &
-         +  A_pf(i,j,m_ang) * f_DR(i,j,m_ang) &
-         +  B_pp(i,j,m_ang) * p(i,j,m_ang) &
-         +  B_pq(i,j,m_ang) * q(i,j,m_ang) &
-         +  B_pf(i,j,m_ang) * f(i,j,m_ang) &
-         +  f_laplacian(i,j,m_ang) 
-
-         kq(i,j,m_ang) = &
-            A_qp(i,j,m_ang) * p_DR(i,j,m_ang) &
-         +  A_qq(i,j,m_ang) * q_DR(i,j,m_ang) &
-         +  A_qf(i,j,m_ang) * f_DR(i,j,m_ang) &
-         +  B_qp(i,j,m_ang) * p(i,j,m_ang) &
-         +  B_qq(i,j,m_ang) * q(i,j,m_ang) &
-         +  B_qf(i,j,m_ang) * f(i,j,m_ang) 
-
-         kf(i,j,m_ang) = &
-            A_fp(i,j,m_ang) * p_DR(i,j,m_ang) &
-         +  A_fq(i,j,m_ang) * q_DR(i,j,m_ang) &
-         +  A_ff(i,j,m_ang) * f_DR(i,j,m_ang) &
-         +  B_fp(i,j,m_ang) * p(i,j,m_ang) &
-         +  B_fq(i,j,m_ang) * q(i,j,m_ang) &
-         +  B_ff(i,j,m_ang) * f(i,j,m_ang) 
-      end do
-      end do
+      !-------------------------------------
+      kp(:,:,m_ang) = &
+         A_pp(:,:,m_ang) * p_DR(:,:,m_ang) &
+      +  A_pq(:,:,m_ang) * q_DR(:,:,m_ang) &
+      +  A_pf(:,:,m_ang) * f_DR(:,:,m_ang) &
+      +  B_pp(:,:,m_ang) * p(:,:,m_ang) &
+      +  B_pq(:,:,m_ang) * q(:,:,m_ang) &
+      +  B_pf(:,:,m_ang) * f(:,:,m_ang) &
+      +  f_laplacian(:,:,m_ang) 
+      !-------------------------------------
+      kq(:,:,m_ang) = &
+         A_qp(:,:,m_ang) * p_DR(:,:,m_ang) &
+      +  A_qq(:,:,m_ang) * q_DR(:,:,m_ang) &
+      +  A_qf(:,:,m_ang) * f_DR(:,:,m_ang) &
+      +  B_qp(:,:,m_ang) * p(:,:,m_ang) &
+      +  B_qq(:,:,m_ang) * q(:,:,m_ang) &
+      +  B_qf(:,:,m_ang) * f(:,:,m_ang) 
+      !-------------------------------------
+      kf(:,:,m_ang) = &
+         A_fp(:,:,m_ang) * p_DR(:,:,m_ang) &
+      +  A_fq(:,:,m_ang) * q_DR(:,:,m_ang) &
+      +  A_ff(:,:,m_ang) * f_DR(:,:,m_ang) &
+      +  B_fp(:,:,m_ang) * p(:,:,m_ang) &
+      +  B_fq(:,:,m_ang) * q(:,:,m_ang) &
+      +  B_ff(:,:,m_ang) * f(:,:,m_ang) 
 
    end subroutine set_k
 !=============================================================================
@@ -228,8 +223,6 @@ contains
    pure subroutine teuk_lin_time_step(m_ang, p, q, f) 
       integer(ip), intent(in)    :: m_ang
       type(field), intent(inout) :: p, q, f 
-
-      integer(ip) :: i, j
    !--------------------------------------------------------
    ! if first time then k1 has not been set from k5
    !--------------------------------------------------------
@@ -244,57 +237,41 @@ contains
          f%first_time = .false.
       end if
 
-      do j=1,ny
-      do i=1,nx
-         p%l2(i,j,m_ang)= p%n(i,j,m_ang)+0.5_rp*dt*p%k1(i,j,m_ang)
-         q%l2(i,j,m_ang)= q%n(i,j,m_ang)+0.5_rp*dt*q%k1(i,j,m_ang)
-         f%l2(i,j,m_ang)= f%n(i,j,m_ang)+0.5_rp*dt*f%k1(i,j,m_ang)
-      end do
-      end do
+      p%l2(:,:,m_ang)= p%n(:,:,m_ang)+0.5_rp*dt*p%k1(:,:,m_ang)
+      q%l2(:,:,m_ang)= q%n(:,:,m_ang)+0.5_rp*dt*q%k1(:,:,m_ang)
+      f%l2(:,:,m_ang)= f%n(:,:,m_ang)+0.5_rp*dt*f%k1(:,:,m_ang)
    !--------------------------------------------------------
       call set_k(m_ang, &
          p%l2, q%l2, f%l2, & 
          p%DR, q%DR, f%DR, f%coefs_swal, f%lap, &
          p%k2, q%k2, f%k2) 
 
-      do j=1,ny
-      do i=1,nx
-         p%l3(i,j,m_ang)= p%n(i,j,m_ang)+0.5_rp*dt*p%k2(i,j,m_ang)
-         q%l3(i,j,m_ang)= q%n(i,j,m_ang)+0.5_rp*dt*q%k2(i,j,m_ang)
-         f%l3(i,j,m_ang)= f%n(i,j,m_ang)+0.5_rp*dt*f%k2(i,j,m_ang)
-      end do
-      end do
+      p%l3(:,:,m_ang)= p%n(:,:,m_ang)+0.5_rp*dt*p%k2(:,:,m_ang)
+      q%l3(:,:,m_ang)= q%n(:,:,m_ang)+0.5_rp*dt*q%k2(:,:,m_ang)
+      f%l3(:,:,m_ang)= f%n(:,:,m_ang)+0.5_rp*dt*f%k2(:,:,m_ang)
    !--------------------------------------------------------
       call set_k(m_ang, &
          p%l3, q%l3, f%l3, & 
          p%DR, q%DR, f%DR, f%coefs_swal, f%lap, &
          p%k3, q%k3, f%k3) 
 
-      do j=1,ny
-      do i=1,nx
-         p%l4(i,j,m_ang)= p%n(i,j,m_ang)+dt*p%k3(i,j,m_ang)
-         q%l4(i,j,m_ang)= q%n(i,j,m_ang)+dt*q%k3(i,j,m_ang)
-         f%l4(i,j,m_ang)= f%n(i,j,m_ang)+dt*f%k3(i,j,m_ang)
-      end do
-      end do
+      p%l4(:,:,m_ang)= p%n(:,:,m_ang)+dt*p%k3(:,:,m_ang)
+      q%l4(:,:,m_ang)= q%n(:,:,m_ang)+dt*q%k3(:,:,m_ang)
+      f%l4(:,:,m_ang)= f%n(:,:,m_ang)+dt*f%k3(:,:,m_ang)
    !--------------------------------------------------------
       call set_k(m_ang, &
          p%l4, q%l4, f%l4, & 
          p%DR, q%DR, f%DR, f%coefs_swal, f%lap, &
          p%k4, q%k4, f%k4) 
 
-      do j=1,ny
-      do i=1,nx
-         p%np1(i,j,m_ang)= p%n(i,j,m_ang) &
-         +  (dt/6.0_rp)*(p%k1(i,j,m_ang)+2.0_rp*p%k2(i,j,m_ang)+2.0_rp*p%k3(i,j,m_ang)+p%k4(i,j,m_ang))
+      p%np1(:,:,m_ang)= p%n(:,:,m_ang) &
+      +  (dt/6.0_rp)*(p%k1(:,:,m_ang)+2.0_rp*p%k2(:,:,m_ang)+2.0_rp*p%k3(:,:,m_ang)+p%k4(:,:,m_ang))
 
-         q%np1(i,j,m_ang)= q%n(i,j,m_ang) &
-         +  (dt/6.0_rp)*(q%k1(i,j,m_ang)+2.0_rp*q%k2(i,j,m_ang)+2.0_rp*q%k3(i,j,m_ang)+q%k4(i,j,m_ang))
+      q%np1(:,:,m_ang)= q%n(:,:,m_ang) &
+      +  (dt/6.0_rp)*(q%k1(:,:,m_ang)+2.0_rp*q%k2(:,:,m_ang)+2.0_rp*q%k3(:,:,m_ang)+q%k4(:,:,m_ang))
 
-         f%np1(i,j,m_ang)= f%n(i,j,m_ang) &
-         +  (dt/6.0_rp)*(f%k1(i,j,m_ang)+2.0_rp*f%k2(i,j,m_ang)+2.0_rp*f%k3(i,j,m_ang)+f%k4(i,j,m_ang))
-      end do
-      end do
+      f%np1(:,:,m_ang)= f%n(:,:,m_ang) &
+      +  (dt/6.0_rp)*(f%k1(:,:,m_ang)+2.0_rp*f%k2(:,:,m_ang)+2.0_rp*f%k3(:,:,m_ang)+f%k4(:,:,m_ang))
    !------------------------------------------------------------
    ! want k5 for computing source term and independent residuals
    !------------------------------------------------------------
@@ -311,8 +288,6 @@ contains
       integer(ip),             intent(in)    :: m_ang
       type(scnd_order_source), intent(in)    :: src
       type(field),             intent(inout) :: p, q, f 
-
-      integer(ip) :: i, j
    !--------------------------------------------------------
    ! if first time then k1 has not been set from k5
    !--------------------------------------------------------
@@ -322,74 +297,54 @@ contains
             p%DR, q%DR, f%DR, f%coefs_swal, f%lap, &
             p%k1, q%k1, f%k1) 
 
-         do j=1,ny
-         do i=1,nx
-            p%k1(i,j,m_ang) = p%k1(i,j,m_ang) + src%n(i,j,m_ang)
-         end do
-         end do
+         p%k1(:,:,m_ang) = p%k1(:,:,m_ang) + src%n(:,:,m_ang)
 
          p%first_time = .false.
          q%first_time = .false.
          f%first_time = .false.
       end if
 
-      do j=1,ny
-      do i=1,nx
-         p%l2(i,j,m_ang)= p%n(i,j,m_ang)+0.5_rp*dt*p%k1(i,j,m_ang)
-         q%l2(i,j,m_ang)= q%n(i,j,m_ang)+0.5_rp*dt*q%k1(i,j,m_ang)
-         f%l2(i,j,m_ang)= f%n(i,j,m_ang)+0.5_rp*dt*f%k1(i,j,m_ang)
-      end do
-      end do
+      p%l2(:,:,m_ang)= p%n(:,:,m_ang)+0.5_rp*dt*p%k1(:,:,m_ang)
+      q%l2(:,:,m_ang)= q%n(:,:,m_ang)+0.5_rp*dt*q%k1(:,:,m_ang)
+      f%l2(:,:,m_ang)= f%n(:,:,m_ang)+0.5_rp*dt*f%k1(:,:,m_ang)
    !--------------------------------------------------------
       call set_k(m_ang, &
          p%l2, q%l2, f%l2, & 
          p%DR, q%DR, f%DR, f%coefs_swal, f%lap, &
          p%k2, q%k2, f%k2) 
 
-      do j=1,ny
-      do i=1,nx
-         p%k2(i,j,m_ang) = p%k2(i,j,m_ang) + src%n1h(i,j,m_ang)
+      p%k2(:,:,m_ang) = p%k2(:,:,m_ang) + src%n1h(:,:,m_ang)
 
-         p%l3(i,j,m_ang)= p%n(i,j,m_ang)+0.5_rp*dt*p%k2(i,j,m_ang)
-         q%l3(i,j,m_ang)= q%n(i,j,m_ang)+0.5_rp*dt*q%k2(i,j,m_ang)
-         f%l3(i,j,m_ang)= f%n(i,j,m_ang)+0.5_rp*dt*f%k2(i,j,m_ang)
-      end do
-      end do
+      p%l3(:,:,m_ang)= p%n(:,:,m_ang)+0.5_rp*dt*p%k2(:,:,m_ang)
+      q%l3(:,:,m_ang)= q%n(:,:,m_ang)+0.5_rp*dt*q%k2(:,:,m_ang)
+      f%l3(:,:,m_ang)= f%n(:,:,m_ang)+0.5_rp*dt*f%k2(:,:,m_ang)
    !--------------------------------------------------------
       call set_k(m_ang, &
          p%l3, q%l3, f%l3, & 
          p%DR, q%DR, f%DR, f%coefs_swal, f%lap, &
          p%k3, q%k3, f%k3) 
 
-      do j=1,ny
-      do i=1,nx
-         p%k3(i,j,m_ang) = p%k3(i,j,m_ang) + src%n1h(i,j,m_ang)
+      p%k3(:,:,m_ang) = p%k3(:,:,m_ang) + src%n1h(:,:,m_ang)
 
-         p%l4(i,j,m_ang)= p%n(i,j,m_ang)+dt*p%k3(i,j,m_ang)
-         q%l4(i,j,m_ang)= q%n(i,j,m_ang)+dt*q%k3(i,j,m_ang)
-         f%l4(i,j,m_ang)= f%n(i,j,m_ang)+dt*f%k3(i,j,m_ang)
-      end do
-      end do
+      p%l4(:,:,m_ang)= p%n(:,:,m_ang)+dt*p%k3(:,:,m_ang)
+      q%l4(:,:,m_ang)= q%n(:,:,m_ang)+dt*q%k3(:,:,m_ang)
+      f%l4(:,:,m_ang)= f%n(:,:,m_ang)+dt*f%k3(:,:,m_ang)
    !--------------------------------------------------------
       call set_k(m_ang, &
          p%l4, q%l4, f%l4, & 
          p%DR, q%DR, f%DR, f%coefs_swal, f%lap, &
          p%k4, q%k4, f%k4) 
 
-      do j=1,ny
-      do i=1,nx
-         p%k4(i,j,m_ang) = p%k4(i,j,m_ang) + src%np1(i,j,m_ang)
+      p%k4(:,:,m_ang) = p%k4(:,:,m_ang) + src%np1(:,:,m_ang)
 
-         p%np1(i,j,m_ang)= p%n(i,j,m_ang) &
-         +  (dt/6.0_rp)*(p%k1(i,j,m_ang)+2.0_rp*p%k2(i,j,m_ang)+2.0_rp*p%k3(i,j,m_ang)+p%k4(i,j,m_ang))
+      p%np1(:,:,m_ang)= p%n(:,:,m_ang) &
+      +  (dt/6.0_rp)*(p%k1(:,:,m_ang)+2.0_rp*p%k2(:,:,m_ang)+2.0_rp*p%k3(:,:,m_ang)+p%k4(:,:,m_ang))
 
-         q%np1(i,j,m_ang)= q%n(i,j,m_ang) &
-         +  (dt/6.0_rp)*(q%k1(i,j,m_ang)+2.0_rp*q%k2(i,j,m_ang)+2.0_rp*q%k3(i,j,m_ang)+q%k4(i,j,m_ang))
+      q%np1(:,:,m_ang)= q%n(:,:,m_ang) &
+      +  (dt/6.0_rp)*(q%k1(:,:,m_ang)+2.0_rp*q%k2(:,:,m_ang)+2.0_rp*q%k3(:,:,m_ang)+q%k4(:,:,m_ang))
 
-         f%np1(i,j,m_ang)= f%n(i,j,m_ang) &
-         +  (dt/6.0_rp)*(f%k1(i,j,m_ang)+2.0_rp*f%k2(i,j,m_ang)+2.0_rp*f%k3(i,j,m_ang)+f%k4(i,j,m_ang))
-      end do
-      end do
+      f%np1(:,:,m_ang)= f%n(:,:,m_ang) &
+      +  (dt/6.0_rp)*(f%k1(:,:,m_ang)+2.0_rp*f%k2(:,:,m_ang)+2.0_rp*f%k3(:,:,m_ang)+f%k4(:,:,m_ang))
    !------------------------------------------------------------
    ! want k5 for computing source term and independent residuals
    !------------------------------------------------------------
@@ -397,11 +352,8 @@ contains
          p%np1, q%np1, f%np1, & 
          p%DR,  q%DR,  f%DR, f%coefs_swal, f%lap, &
          p%k5,  q%k5,  f%k5) 
-      do j=1,ny
-      do i=1,nx
-         p%k5(i,j,m_ang) = p%k1(i,j,m_ang) + src%np1(i,j,m_ang)
-      end do
-      end do
+
+      p%k5(:,:,m_ang) = p%k1(:,:,m_ang) + src%np1(:,:,m_ang)
    end subroutine teuk_scnd_time_step
 !=============================================================================
 ! independent residula: q - \partial_R f

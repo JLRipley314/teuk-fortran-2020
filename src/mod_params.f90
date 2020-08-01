@@ -16,8 +16,8 @@ implicit none
    character(*), parameter :: initial_data_direction = 'time_symmetric'
    character(*), parameter :: initial_data_type = 'compact_bump'
    real(rp), parameter :: amp_pm = 0.1_rp
-   real(rp), parameter :: rl_pm = 1.1_rp
-   real(rp), parameter :: ru_pm = 4.0_rp
+   real(rp), parameter :: rl_pm = -1.5_rp
+   real(rp), parameter :: ru_pm = 1.5_rp
    integer(ip), parameter :: l_ang_pm = 2_ip
    real(rp), parameter :: amp_nm = 10.0_rp
    real(rp), parameter :: rl_nm = -1.5_rp
@@ -40,7 +40,7 @@ implicit none
    integer(ip), parameter :: max_l = 15_ip
    real(rp), parameter :: horizon = 0.8570714214271424_rp
    real(rp), parameter :: R_max = 1.1667639067172042_rp
-   real(rp), parameter :: metric_recon_start_time = 18.7338278586458_rp
+   real(rp), parameter :: metric_recon_start_time = 4.810510846598895_rp
    integer(ip), parameter :: ny = 28_ip
    real(rp), parameter :: dt = 0.00390625_rp
    integer(ip), parameter :: nt = 3840_ip
@@ -49,8 +49,8 @@ implicit none
    integer(ip), parameter :: min_m = -4_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Fri_16_11_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2'
-   character(*), parameter :: output_dir = 'output/Fri_16_11_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2'
-   character(*), parameter :: bin_name = 'Fri_16_11_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2.run'
-   character(*), parameter :: tables_dir = 'output/Fri_16_11_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2/tables'
+   character(*), parameter :: output_stem = 'Sat_12_49_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2'
+   character(*), parameter :: output_dir = 'output/Sat_12_49_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2'
+   character(*), parameter :: bin_name = 'Sat_12_49_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2.run'
+   character(*), parameter :: tables_dir = 'output/Sat_12_49_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2/tables'
 end module mod_params

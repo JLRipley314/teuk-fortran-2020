@@ -6,8 +6,8 @@ module mod_scnd_order_source
 !=============================================================================
    use mod_prec
 
-   use mod_cheb,     only: R, compute_DR
-   use mod_swal,     only: swal_lower, cy
+   use mod_cheb,     only: R=>Rvec, compute_DR
+   use mod_swal,     only: swal_lower, cy=>cyvec
    use mod_field,    only: field, set_level
    use mod_ghp,      only: set_edth, set_edth_prime, set_thorn, set_thorn_prime
    use mod_bkgrd_np, only: mu_0, ta_0, pi_0, rh_0, psi2_0

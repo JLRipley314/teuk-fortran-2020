@@ -6,7 +6,7 @@ module mod_metric_recon
 !=============================================================================
    use mod_prec
 
-   use mod_cheb,     only: R, compute_DR
+   use mod_cheb,     only: R=>Rarr, compute_DR
    use mod_field,    only: field, set_field, set_level
    use mod_ghp,      only: set_edth, set_edth_prime, set_thorn, set_thorn_prime
    use mod_bkgrd_np, only: mu_0, ta_0, pi_0, rh_0, psi2_0
@@ -37,126 +37,96 @@ module mod_metric_recon
       complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: level
       complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: level_DR
       complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: kl
-
-      integer(ip) :: i,j
-
+      !----------------------------------------------------------------------
       select_field: select case (fname)
          !-------------------------------------------------------------------
          case ("psi3")
-            do j=1,ny
-            do i=1,nx
-               kl(i,j,m_ang) = &
-               -  4.0_rp*R(i)*mu_0(i,j)*level(i,j,m_ang) &
+            kl(:,:,m_ang) = &
+            -  4.0_rp*R*mu_0*level(:,:,m_ang) &
 
-               -  R(i)*ta_0(i,j)*(psi4_lin_f%level(i,j,m_ang)) &
+            -  R*ta_0*(psi4_lin_f%level(:,:,m_ang)) &
 
-               +  (psi4_lin_f%edth(i,j,m_ang))
-            end do
-            end do
+            +  (psi4_lin_f%edth(:,:,m_ang))
          !--------------------------------------------------------------------
          case ("la")
-            do j=1,ny
-            do i=1,nx
-               kl(i,j,m_ang) = &
-               -  R(i)*( &
-                     mu_0(i,j) &
-                  +  conjg(mu_0(i,j)) &
-                  )*level(i,j,m_ang) &
+            kl(:,:,m_ang) = &
+            -  R*( &
+                  mu_0 &
+               +  conjg(mu_0) &
+               )*level(:,:,m_ang) &
 
-               - (psi4_lin_f%level(i,j,m_ang))
-            end do
-            end do
+            - (psi4_lin_f%level(:,:,m_ang))
          !--------------------------------------------------------------------
          case ("psi2")
-            do j=1,ny
-            do i=1,nx
-               kl(i,j,m_ang) = &
-               -  3.0_rp*R(i)*mu_0(i,j)*level(i,j,m_ang) &
+            kl(:,:,m_ang) = &
+            -  3.0_rp*R*mu_0*level(:,:,m_ang) &
 
-               -  2.0_rp*R(i)*ta_0(i,j)*(psi3%level(i,j,m_ang)) &
+            -  2.0_rp*R*ta_0*(psi3%level(:,:,m_ang)) &
 
-               +  (psi3%edth(i,j,m_ang))
-            end do
-            end do
+            +  (psi3%edth(:,:,m_ang))
          !--------------------------------------------------------------------
          case ("hmbmb")
-            do j=1,ny
-            do i=1,nx
-               kl(i,j,m_ang) = & 
-                  R(i)*( &
-                     mu_0(i,j) &
-                  -  conjg(mu_0(i,j)) &
-                  )*level(i,j,m_ang) &
+            kl(:,:,m_ang) = & 
+               R*( &
+                  mu_0 &
+               -  conjg(mu_0) &
+               )*level(:,:,m_ang) &
 
-               -  2.0_rp*(la%level(i,j,m_ang))
-            end do
-            end do
+            -  2.0_rp*(la%level(:,:,m_ang))
          !--------------------------------------------------------------------
          case ("pi")
-            do j=1,ny
-            do i=1,nx
-               kl(i,j,m_ang) = &
-               -  R(i)*( &
-                     conjg(pi_0(i,j)) &
-                  +  ta_0(i,j) &
-                  )*(la%level(i,j,m_ang)) &
+            kl(:,:,m_ang) = &
+            -  R*( &
+                  conjg(pi_0) &
+               +  ta_0 &
+               )*(la%level(:,:,m_ang)) &
 
-               +  (R(i)**2)*0.5_rp*mu_0(i,j)*( &
-                     conjg(pi_0(i,j)) &
-                  +  ta_0(i,j) &
-                  )*(hmbmb%level(i,j,m_ang)) &
-               -  (psi3%level(i,j,m_ang))
-            end do
-            end do
+            +  (R**2)*0.5_rp*mu_0*( &
+                  conjg(pi_0) &
+               +  ta_0 &
+               )*(hmbmb%level(:,:,m_ang)) &
+            -  (psi3%level(:,:,m_ang))
          !--------------------------------------------------------------------
          case ("hlmb")
-            do j=1,ny
-            do i=1,nx
-               kl(i,j,m_ang) = &
-               -  R(i)*conjg(mu_0(i,j))*level(i,j,m_ang) &
+               kl(:,:,m_ang) = &
+               -  R*conjg(mu_0)*level(:,:,m_ang) &
 
-               -  2.0_rp*(pi%level(i,j,m_ang)) &
+               -  2.0_rp*(pi%level(:,:,m_ang)) &
 
-               -  R(i)*ta_0(i,j)*(hmbmb%level(i,j,m_ang)) 
-            end do
-            end do
+               -  R*ta_0*(hmbmb%level(:,:,m_ang)) 
          !--------------------------------------------------------------------
          case ("muhll")
-            do j=1,ny
-            do i=1,nx
-               kl(i,j,m_ang) = &
-               -  R(i)*conjg(mu_0(i,j))*level(i,j,m_ang) &
+            kl(:,:,m_ang) = &
+            -  R*conjg(mu_0)*level(:,:,m_ang) &
 
-               -  R(i)*mu_0(i,j)*(hlmb%edth(i,j,m_ang)) &
+            -  R*mu_0*(hlmb%edth(:,:,m_ang)) &
 
-               -  (R(i)**2)*mu_0(i,j)*( &
-                     conjg(pi_0(i,j)) &
-                  +  2.0_rp*ta_0(i,j) &
-                  )*(hlmb%level(i,j,m_ang)) &
+            -  (R**2)*mu_0*( &
+                  conjg(pi_0) &
+               +  2.0_rp*ta_0 &
+               )*(hlmb%level(:,:,m_ang)) &
 
-               -  2.0_rp*(pi%edth(i,j,m_ang)) &
+            -  2.0_rp*(pi%edth(:,:,m_ang)) &
 
-               -  2.0_rp*R(i)*conjg(pi_0(i,j))*(pi%level(i,j,m_ang)) &
+            -  2.0_rp*R*conjg(pi_0)*(pi%level(:,:,m_ang)) &
 
-               -  2.0_rp*(psi2%level(i,j,m_ang)) &
-               !
-               ! complex conjugate of fields
-               !
-               -  2.0_rp*R(i)*pi_0(i,j)*conjg(pi%level(i,j,-m_ang)) &
+            -  2.0_rp*(psi2%level(:,:,m_ang)) &
+            !
+            ! complex conjugate of fields
+            !
+            -  2.0_rp*R*pi_0*conjg(pi%level(:,:,-m_ang)) &
 
-               -  R(i)*pi_0(i,j)*conjg(hmbmb%edth(i,j,-m_ang)) &
+            -  R*pi_0*conjg(hmbmb%edth(:,:,-m_ang)) &
 
-               +  (R(i)**2)*(pi_0(i,j)**2)*conjg(hmbmb%level(i,j,-m_ang)) &
+            +  (R**2)*(pi_0**2)*conjg(hmbmb%level(:,:,-m_ang)) &
 
-               +  R(i)*mu_0(i,j)*conjg(hlmb%edth(i,j,-m_ang))  &
+            +  R*mu_0*conjg(hlmb%edth(:,:,-m_ang))  &
 
-               +  (R(i)**2)*( &
-                  -  3.0_rp*mu_0(i,j)*pi_0(i,j) &
-                  +  2.0_rp*conjg(mu_0(i,j))*pi_0(i,j) &
-                  -  2.0_rp*mu_0(i,j)*conjg(ta_0(i,j)) &
-                  )*conjg(hlmb%level(i,j,-m_ang)) 
-            end do
-            end do
+            +  (R**2)*( &
+               -  3.0_rp*mu_0*pi_0 &
+               +  2.0_rp*conjg(mu_0)*pi_0 &
+               -  2.0_rp*mu_0*conjg(ta_0) &
+               )*conjg(hlmb%level(:,:,-m_ang)) 
          !--------------------------------------------------------------------
          case default
             write (error,*) "ERROR: set_k, " // fname // ", not in list"
@@ -165,17 +135,15 @@ module mod_metric_recon
       !-----------------------------------------------------------------------
       call compute_DR(m_ang, level, level_DR)
 
-      do i=1,nx
-         kl(i,:,m_ang) = ( &
-               kl(i,:,m_ang) &
+      kl(:,:,m_ang) = ( &
+            kl(:,:,m_ang) &
 
-            -  ((R(i)/cl)**2)*level_DR(i,:,m_ang) &
+         -  ((R/cl)**2)*level_DR(:,:,m_ang) &
 
-            -  (falloff*R(i)/(cl**2))*level(i,:,m_ang) &
+         -  (falloff*R/(cl**2))*level(:,:,m_ang) &
          )/( &
-            2.0_rp+(4.0_rp*bhm*R(i)/(cl**2)) &
+            2.0_rp+(4.0_rp*bhm*R/(cl**2)) &
          )
-      end do
 
    end subroutine set_k
 !=============================================================================
@@ -183,10 +151,7 @@ module mod_metric_recon
 !=============================================================================
    pure subroutine take_step(step, m_ang, f)
       integer(ip), intent(in)    :: step, m_ang
-      type(field), intent(inout) :: f
-      
-      integer(ip) :: i, j
-
+      type(field), intent(inout) :: f 
       !-----------------------------------------------------------------------
       select_step: select case (step)
          !--------------------------------------------------------------------
@@ -200,40 +165,23 @@ module mod_metric_recon
                f%first_time = .false.
             end if
 
-
-            do j=1,ny
-            do i=1,nx
-               f%l2(i,j,m_ang)= f%n(i,j,m_ang)+0.5_rp*dt*f%k1(i,j,m_ang)
-            end do
-            end do
+            f%l2(:,:,m_ang)= f%n(:,:,m_ang)+0.5_rp*dt*f%k1(:,:,m_ang)
          !--------------------------------------------------------------------
          case (2)
             call set_k(f%error, m_ang, f%name, f%falloff, f%l2, f%DR, f%k2)
 
-            do j=1,ny
-            do i=1,nx
-               f%l3(i,j,m_ang)= f%n(i,j,m_ang)+0.5_rp*dt*f%k2(i,j,m_ang)
-            end do
-            end do
+            f%l3(:,:,m_ang)= f%n(:,:,m_ang)+0.5_rp*dt*f%k2(:,:,m_ang)
          !--------------------------------------------------------------------
          case (3)
             call set_k(f%error, m_ang, f%name, f%falloff, f%l3, f%DR, f%k3)
 
-            do j=1,ny
-            do i=1,nx
-               f%l4(i,j,m_ang)= f%n(i,j,m_ang)+dt*f%k3(i,j,m_ang)
-            end do
-            end do
+            f%l4(:,:,m_ang)= f%n(:,:,m_ang)+dt*f%k3(:,:,m_ang)
          !--------------------------------------------------------------------
          case (4)
             call set_k(f%error, m_ang, f%name, f%falloff, f%l4, f%DR, f%k4)
 
-            do j=1,ny
-            do i=1,nx
-               f%np1(i,j,m_ang)= f%n(i,j,m_ang) &
-               +  (dt/6.0_rp)*(f%k1(i,j,m_ang)+2.0_rp*f%k2(i,j,m_ang)+2.0_rp*f%k3(i,j,m_ang)+f%k4(i,j,m_ang))
-            end do
-            end do
+            f%np1(:,:,m_ang)= f%n(:,:,m_ang) &
+            +  (dt/6.0_rp)*(f%k1(:,:,m_ang)+2.0_rp*f%k2(:,:,m_ang)+2.0_rp*f%k3(:,:,m_ang)+f%k4(:,:,m_ang))
          !--------------------------------------------------------------------
          case (5)
             !-----------------------------------------------------------------
@@ -250,8 +198,6 @@ module mod_metric_recon
    subroutine set_indep_res(m_ang, fname)
       integer(ip),  intent(in) :: m_ang
       character(*), intent(in) :: fname
-
-      integer(ip) :: i, j
       !-----------------------------------------------------------------------
       select_field: select case (fname)
          !--------------------------------------------------------------------
@@ -263,21 +209,17 @@ module mod_metric_recon
 
             call set_thorn(     5_ip,m_ang,psi4_lin_f)
             call set_edth_prime(5_ip,m_ang,psi3)
-   
-            do j=1,ny
-            do i=1,nx
-               res_bianchi3%np1(i,j,m_ang) = &
-                  R(i)*psi3%edth_prime(i,j,m_ang) &
+            !-----------------------------------------------   
+            res_bianchi3%np1(:,:,m_ang) = &
+               R*psi3%edth_prime(:,:,m_ang) &
 
-               +  4.0_rp*(R(i)**2)*pi_0(i,j)*psi3%level(i,j,m_ang) &
+            +  4.0_rp*(R**2)*pi_0*psi3%level(:,:,m_ang) &
 
-               -  psi4_lin_f%thorn(i,j,m_ang) &
+            -  psi4_lin_f%thorn(:,:,m_ang) &
 
-               +  rh_0(i,j)*psi4_lin_f%level(i,j,m_ang) &
+            +  rh_0*psi4_lin_f%level(:,:,m_ang) &
 
-               -  3.0_rp*(R(i)**2)*psi2_0(i,j)*la%level(i,j,m_ang) 
-            end do
-            end do
+            -  3.0_rp*(R**2)*psi2_0*la%level(:,:,m_ang) 
          !--------------------------------------------------------------------
          case ("res_bianchi2")
 
@@ -291,25 +233,21 @@ module mod_metric_recon
 
             call set_thorn(     5_ip,m_ang,psi3)
             call set_edth_prime(5_ip,m_ang,psi2)
+            !-----------------------------------------------   
+            res_bianchi2%np1(:,:,m_ang) = &
+               psi2_0*( &
+               -  3.0_rp*(R**3)*mu_0*hlmb%level(:,:,m_ang) &
+               -  1.5_rp*(R**3)*ta_0*hmbmb%level(:,:,m_ang) &
+               -       3.0_rp*(R**2)*pi%level(:,:,m_ang) &
+               ) &
 
-            do j=1,ny
-            do i=1,nx
-               res_bianchi2%np1(i,j,m_ang) = &
-                  psi2_0(i,j)*( &
-                  -  3.0_rp*(R(i)**3)*mu_0(i,j)*hlmb%level(i,j,m_ang) &
-                  -  1.5_rp*(R(i)**3)*ta_0(i,j)*hmbmb%level(i,j,m_ang) &
-                  -            3.0_rp*(R(i)**2)*pi%level(i,j,m_ang) &
-                  ) &
+            -  R*psi2%edth_prime(:,:,m_ang) &
 
-               -  R(i)*psi2%edth_prime(i,j,m_ang) &
+            -  3.0_rp*(R**2)*pi_0*psi2%level(:,:,m_ang) &
 
-               -  3.0_rp*(R(i)**2)*pi_0(i,j)*psi2%level(i,j,m_ang) &
+            +  psi3%thorn(:,:,m_ang) &
 
-               +  psi3%thorn(i,j,m_ang) &
-
-               -  2.0_rp*rh_0(i,j)*psi3%level(i,j,m_ang)
-            end do
-            end do
+            -  2.0_rp*rh_0*psi3%level(:,:,m_ang)
          !--------------------------------------------------------------------
          ! hll should be real
          !--------------------------------------------------------------------
@@ -317,14 +255,10 @@ module mod_metric_recon
 
             call set_level(5_ip,-m_ang,muhll)
             call set_level(5_ip, m_ang,muhll)
-
-            do j=1,ny
-            do i=1,nx
-               res_hll%np1(i,j,m_ang) = &
-                       (muhll%level(i,j, m_ang) / mu_0(i,j)) &
-               -  conjg(muhll%level(i,j,-m_ang) / mu_0(i,j)) 
-            end do
-            end do
+            !-----------------------------------------------   
+            res_hll%np1(:,:,m_ang) = &
+                    (muhll%level(:,:, m_ang) / mu_0) &
+            -  conjg(muhll%level(:,:,-m_ang) / mu_0) 
          !-------------------------------------------------------------------- 
          case default
             continue
