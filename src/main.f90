@@ -134,12 +134,17 @@ clean_memory: block
       end if
    end if
    !--------------------------------------------------------------------
-   if (scd_order .and. write_scd_order_source) then
-      call compute_res_q(psi4_scd_q,psi4_scd_f,res_scd_q)
+   if (scd_order) then
+      call write_csv(time,pm_ang,psi4_scd_f)
 
-      call write_csv(time, pm_ang,res_scd_q)
+      if (write_indep_res) then
+         call compute_res_q(psi4_scd_q,psi4_scd_f,res_scd_q)
 
-      call write_csv(source%name,time,source%np1(:,:,pm_ang))
+         call write_csv(time, pm_ang,res_scd_q)
+      end if
+      if (write_scd_order_source) then 
+         call write_csv(source%name,time,source%np1(:,:,pm_ang))
+      end if
    end if
 !=============================================================================
 ! integrate in time 
@@ -193,12 +198,16 @@ clean_memory: block
             end if
          end if
          !--------------------------------------------------------------------
-         if (scd_order .and. write_scd_order_source) then
-            call compute_res_q(psi4_scd_q,psi4_scd_f,res_scd_q)
+         if (scd_order) then
+            call write_csv(time,pm_ang,psi4_scd_f)
+            if (write_indep_res) then
+               call compute_res_q(psi4_scd_q,psi4_scd_f,res_scd_q)
 
-            call write_csv(time, pm_ang,res_scd_q)
-
-            call write_csv(source%name,time,source%np1(:,:,pm_ang))
+               call write_csv(time, pm_ang,res_scd_q)
+            end if
+            if (write_scd_order_source) then
+               call write_csv(source%name,time,source%np1(:,:,pm_ang))
+            end if
          end if
          !--------------------------------------------------------------------
       end if

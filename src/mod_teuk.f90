@@ -278,9 +278,9 @@ contains
 ! RK4 time integrator: linear teukolsky wave with second order source term
 !=============================================================================
    pure subroutine teuk_scd_time_step(m_ang, src, p, q, f) 
-      integer(ip),             intent(in)    :: m_ang
+      integer(ip),            intent(in)    :: m_ang
       type(scd_order_source), intent(in)    :: src
-      type(field),             intent(inout) :: p, q, f 
+      type(field),            intent(inout) :: p, q, f 
    !--------------------------------------------------------
    ! if first time then k1 has not been set from k5
    !--------------------------------------------------------
