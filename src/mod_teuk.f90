@@ -16,14 +16,14 @@ module mod_teuk
    use mod_cheb, only: R=>Rarr, compute_DR
    use mod_swal, only: Y=>Yarr, swal_laplacian
 
-   use mod_scnd_order_source, only: scnd_order_source 
+   use mod_scd_order_source, only: scd_order_source 
 !=============================================================================
    implicit none
    private
    public :: teuk_init, teuk_time_step, compute_res_q 
 
    interface teuk_time_step 
-      module procedure teuk_lin_time_step, teuk_scnd_time_step
+      module procedure teuk_lin_time_step, teuk_scd_time_step
    end interface
 !=============================================================================
    real(rp) :: &
@@ -277,9 +277,9 @@ contains
 !=============================================================================
 ! RK4 time integrator: linear teukolsky wave with second order source term
 !=============================================================================
-   pure subroutine teuk_scnd_time_step(m_ang, src, p, q, f) 
+   pure subroutine teuk_scd_time_step(m_ang, src, p, q, f) 
       integer(ip),             intent(in)    :: m_ang
-      type(scnd_order_source), intent(in)    :: src
+      type(scd_order_source), intent(in)    :: src
       type(field),             intent(inout) :: p, q, f 
    !--------------------------------------------------------
    ! if first time then k1 has not been set from k5
@@ -347,7 +347,7 @@ contains
          p%k5,  q%k5,  f%k5) 
 
       p%k5(:,:,m_ang) = p%k1(:,:,m_ang) + src%np1(:,:,m_ang)
-   end subroutine teuk_scnd_time_step
+   end subroutine teuk_scd_time_step
 !=============================================================================
 ! independent residula: q - \partial_R f
 !=============================================================================

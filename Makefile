@@ -15,7 +15,7 @@ vpath %.o   $(OBJDIR)
 #==========================================================================
 FC = gfortran#ifort#
 
-FFLAGS= -g -fmax-errors=5 -O3
+FFLAGS= -g -fmax-errors=5 -O2
 
 #SYSLIB= -lfftw3 #-fopenmp 
 #==========================================================================
@@ -45,7 +45,7 @@ OBJ= $(addprefix $(OBJDIR), \
 	mod_bkgrd.o \
 	mod_ghp.o \
 	mod_metric_recon.o \
-	mod_scnd_order_source.o \
+	mod_scd_order_source.o \
 	mod_initial_data.o \
 	mod_teuk.o \
 	)
@@ -61,7 +61,7 @@ DEPS = $(addprefix $(SRC), \
 	mod_bkgrd.f90 \
 	mod_ghp.f90 \
 	mod_metric_recon.f90 \
-	mod_scnd_order_source.f90 \
+	mod_scd_order_source.f90 \
 	initial_data.f90 \
 	mod_teuk.f90 \
 	)

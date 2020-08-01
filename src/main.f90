@@ -11,9 +11,10 @@ program main
    use mod_prec
    use mod_params,       only: nt, dt, t_step_save, black_hole_mass, &
                            psi_spin, psi_boost, pm_ang, &
-                           metric_recon, &
+                           metric_recon, scd_order, &
+                           scd_order_start_time, &
                            write_metric_recon_fields, &
-                           write_indep_res!, write_source
+                           write_indep_res, write_scd_order_source
    use mod_field,        only: set_field, shift_time_step
    use mod_cheb,         only: cheb_init, cheb_filter, cheb_test
    use mod_swal,         only: swal_init, swal_filter, swal_test_orthonormal
@@ -27,8 +28,18 @@ program main
       psi4_lin_p, psi4_lin_q, psi4_lin_f, &
       res_lin_q, & 
 
+      psi4_scd_p, psi4_scd_q, psi4_scd_f, &
+      res_scd_q, & 
+
       psi3, psi2, la, pi, muhll, hlmb, hmbmb, &
       res_bianchi3, res_bianchi2, res_hll
+
+   use mod_scd_order_source, only: &
+      scd_order_source, &
+      source, &
+      scd_order_source_init, &
+      scd_order_source_compute, &
+      scd_order_source_shift_time_step
 
    implicit none
 !=============================================================================
@@ -47,6 +58,12 @@ clean_memory: block
    call set_field(name="lin_p",spin=psi_spin,boost=psi_boost,falloff=1_ip,f=psi4_lin_p)
    call set_field(name="lin_q",spin=psi_spin,boost=psi_boost,falloff=2_ip,f=psi4_lin_q)
    call set_field(name="lin_f",spin=psi_spin,boost=psi_boost,falloff=1_ip,f=psi4_lin_f)
+
+   if (scd_order) then
+      call set_field(name="scd_p",spin=psi_spin,boost=psi_boost,falloff=1_ip,f=psi4_scd_p)
+      call set_field(name="scd_q",spin=psi_spin,boost=psi_boost,falloff=2_ip,f=psi4_scd_q)
+      call set_field(name="scd_f",spin=psi_spin,boost=psi_boost,falloff=1_ip,f=psi4_scd_f)
+   end if
 !-----------------------------------------------------------------------------
 ! metric reconstructed fields
 !-----------------------------------------------------------------------------
@@ -64,9 +81,19 @@ clean_memory: block
 !-----------------------------------------------------------------------------
    call set_field(name="res_lin_q",spin=-2_ip,boost=-2_ip,falloff=2_ip,f=res_lin_q)
 
+   if (scd_order) then
+      call set_field(name="res_scd_q",spin=-2_ip,boost=-2_ip,falloff=2_ip,f=res_scd_q)
+   end if
+
    call set_field(name="res_bianchi3",spin=-2_ip,boost=-1_ip,falloff=2_ip,f=res_bianchi3)
    call set_field(name="res_bianchi2",spin=-1_ip,boost= 0_ip,falloff=2_ip,f=res_bianchi2)
    call set_field(name="res_hll",     spin= 0_ip,boost= 2_ip,falloff=2_ip,f=res_hll)
+!-----------------------------------------------------------------------------
+! source term for \psi_4^{(2)}
+!-----------------------------------------------------------------------------
+   if (scd_order) then
+      call scd_order_source_init(name="scd_order_source",sf=source)
+   end if
 !-----------------------------------------------------------------------------
 ! initialize chebyshev diff matrices, swal matrices, etc.
 !-----------------------------------------------------------------------------
@@ -106,6 +133,14 @@ clean_memory: block
          call write_csv(time,pm_ang,res_hll)
       end if
    end if
+   !--------------------------------------------------------------------
+   if (scd_order .and. write_scd_order_source) then
+      call compute_res_q(psi4_scd_q,psi4_scd_f,res_scd_q)
+
+      call write_csv(time, pm_ang,res_scd_q)
+
+      call write_csv(source%name,time,source%np1(:,:,pm_ang))
+   end if
 !=============================================================================
 ! integrate in time 
 !=============================================================================
@@ -119,6 +154,14 @@ clean_memory: block
       !-----------------------------------------------------------------------
       if (metric_recon) then 
          call metric_recon_time_step(pm_ang)
+      end if
+      !-----------------------------------------------------------------------
+      if (scd_order) then
+         call scd_order_source_compute(pm_ang, source) 
+
+         if (time>=scd_order_start_time) then
+            call teuk_time_step(pm_ang, source, psi4_scd_p, psi4_scd_q, psi4_scd_f)
+         end if
       end if
       !-----------------------------------------------------------------------
       if (mod(t_step,t_step_save)==0) then
@@ -148,6 +191,14 @@ clean_memory: block
                call write_csv(time,pm_ang,res_bianchi2)
                call write_csv(time,pm_ang,res_hll)
             end if
+         end if
+         !--------------------------------------------------------------------
+         if (scd_order .and. write_scd_order_source) then
+            call compute_res_q(psi4_scd_q,psi4_scd_f,res_scd_q)
+
+            call write_csv(time, pm_ang,res_scd_q)
+
+            call write_csv(source%name,time,source%np1(:,:,pm_ang))
          end if
          !--------------------------------------------------------------------
       end if
@@ -185,8 +236,18 @@ clean_memory: block
 
          call shift_time_step(hmbmb)
          call shift_time_step(hlmb)
-         call shift_time_step(muhll)
+         call shift_time_step(muhll) 
+    
       end if
+
+      if (scd_order) then
+         call shift_time_step(psi4_scd_p)
+         call shift_time_step(psi4_scd_q)
+         call shift_time_step(psi4_scd_f)
+
+         call scd_order_source_shift_time_step(source)
+      end if
+
    end do time_evolve
 !=============================================================================
 end block clean_memory
