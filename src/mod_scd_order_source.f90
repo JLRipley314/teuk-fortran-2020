@@ -154,7 +154,7 @@ module mod_scd_order_source
    end subroutine compute_DT
 !=============================================================================
    pure subroutine scd_order_source_zero(m_ang,sf)
-      integer(ip),             intent(in)    :: m_ang
+      integer(ip),            intent(in)    :: m_ang
       type(scd_order_source), intent(inout) :: sf
 
       sf % pre_edth_prime_np1(:,:,m_ang)  = 0.0_rp
@@ -166,7 +166,7 @@ module mod_scd_order_source
 ! look at section II D of numerics_description paper
 !=============================================================================
    subroutine scd_order_source_m1_plus_m2(m1_ang, m2_ang, sf)
-      integer(ip), intent(in)                :: m1_ang, m2_ang
+      integer(ip),            intent(in)    :: m1_ang, m2_ang
       type(scd_order_source), intent(inout) :: sf
 
       integer(ip), parameter :: step = 5_ip
@@ -289,7 +289,7 @@ module mod_scd_order_source
    end subroutine scd_order_source_m1_plus_m2
 !=============================================================================
    subroutine scd_order_source_compute(m_ang, sf)
-      integer(ip),             intent(in)    :: m_ang
+      integer(ip),            intent(in)    :: m_ang
       type(scd_order_source), intent(inout) :: sf
  
       integer(ip) :: m1_ang, m2_ang 
@@ -344,7 +344,7 @@ module mod_scd_order_source
          sf%DT, &
          sf%DR, &
          sf%thorn_prime)
-
+      !-----------------------------------------------------------------------
       !-----------------------------------------------------------------------
       sf%np1(:,:,m_ang) = &
          sf%thorn_prime(:,:,m_ang) &

@@ -346,7 +346,8 @@ contains
          p%DR,  q%DR,  f%DR, f%coefs_swal, f%lap, &
          p%k5,  q%k5,  f%k5) 
 
-      p%k5(:,:,m_ang) = p%k1(:,:,m_ang) + src%np1(:,:,m_ang)
+      p%k5(:,:,m_ang) = p%k5(:,:,m_ang) + src%np1(:,:,m_ang)
+
    end subroutine teuk_scd_time_step
 !=============================================================================
 ! independent residula: q - \partial_R f

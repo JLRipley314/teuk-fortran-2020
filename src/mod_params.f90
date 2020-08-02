@@ -11,8 +11,8 @@ implicit none
    real(rp), parameter :: black_hole_mass = 0.5_rp
    real(rp), parameter :: black_hole_spin = 0.35_rp
    real(rp), parameter :: compactification_length = 1.0_rp
-   real(rp), parameter :: evolve_time = 60.0_rp
-   integer(ip), parameter :: num_saved_times = 200_ip
+   real(rp), parameter :: evolve_time = 30.0_rp
+   integer(ip), parameter :: num_saved_times = 100_ip
    character(*), parameter :: initial_data_direction = 'time_symmetric'
    character(*), parameter :: initial_data_type = 'compact_bump'
    real(rp), parameter :: amp_pm = 0.1_rp
@@ -44,14 +44,14 @@ implicit none
    real(rp), parameter :: scd_order_start_time = 4.810510846598895_rp
    integer(ip), parameter :: ny = 28_ip
    real(rp), parameter :: dt = 0.00390625_rp
-   integer(ip), parameter :: nt = 7680_ip
+   integer(ip), parameter :: nt = 3840_ip
    integer(ip), parameter :: t_step_save = 38_ip
    integer(ip), parameter :: max_m = 4_ip
    integer(ip), parameter :: min_m = -4_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Sat_15_21_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2'
-   character(*), parameter :: output_dir = 'output/Sat_15_21_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2'
-   character(*), parameter :: bin_name = 'Sat_15_21_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2.run'
-   character(*), parameter :: tables_dir = 'output/Sat_15_21_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2/tables'
+   character(*), parameter :: output_stem = 'Sat_18_57_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2'
+   character(*), parameter :: output_dir = 'output/Sat_18_57_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2'
+   character(*), parameter :: bin_name = 'Sat_18_57_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2.run'
+   character(*), parameter :: tables_dir = 'output/Sat_18_57_bhm0.5_bhs0.35_nx48_ny28_nl16_s-2_lpm2_lnm2_pm2/tables'
 end module mod_params
