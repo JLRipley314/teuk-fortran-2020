@@ -376,11 +376,9 @@ module mod_metric_recon
 !=============================================================================
    subroutine metric_recon_indep_res(m_ang)
       integer(ip), intent(in) :: m_ang
-      !-----------------------------------------------------------------------
+
       call set_indep_res(m_ang,"res_bianchi3")
-      !-----------------------------------------------------------------------
       call set_indep_res(m_ang,"res_bianchi2")
-      !-----------------------------------------------------------------------
       call set_indep_res(m_ang,"res_hll")
 
    end subroutine metric_recon_indep_res

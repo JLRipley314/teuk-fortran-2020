@@ -22,7 +22,7 @@ program main
    use mod_teuk,         only: teuk_init, teuk_time_step
    use mod_initial_data, only: set_initial_data
    use mod_bkgrd_np,     only: bkgrd_np_init
-   use mod_metric_recon, only: metric_recon_time_step, metric_recon_indep_res
+   use mod_metric_recon, only: metric_recon_time_step 
    use mod_write_level,  only: write_level
 
    use mod_fields_list, only: &
@@ -119,36 +119,41 @@ clean_memory: block
 !=============================================================================
 ! integrate in time 
 !=============================================================================
-!-----------------------------------------------------------------------------
    write (stdout,*) "Beginning time evolution"
 !-----------------------------------------------------------------------------
    time_evolve: do t_step=1,nt
       time = t_step*dt
       !-----------------------------------------------------------------------
+      ! \Psi_4^{(1)} evolution 
+      !-----------------------------------------------------------------------
       do i=1,size(lin_m)
-         call teuk_time_step(lin_m(i), psi4_lin_p, psi4_lin_q, psi4_lin_f)
-         call teuk_time_step(lin_m(i), psi4_lin_p, psi4_lin_q, psi4_lin_f)
+         call teuk_time_step(lin_m(i),psi4_lin_p,psi4_lin_q,psi4_lin_f)
       end do
+      !-----------------------------------------------------------------------
+      ! metric recon evolves +/- m_ang
       !-----------------------------------------------------------------------
       if (metric_recon) then 
          do i=1,size(lin_m)
-            call metric_recon_time_step(lin_m(i))
+            if (lin_m(i)>=0) then
+               call metric_recon_time_step(lin_m(i))
+            end if
          end do
       end if
+      !-----------------------------------------------------------------------
+      ! \Psi_4^{(2)} evolution 
       !-----------------------------------------------------------------------
       if (scd_order) then
          do i=1,size(scd_m)
             call scd_order_source_compute(scd_m(i),source) 
-            call scd_order_source_compute(scd_m(i),source) 
          end do
          if (time>=scd_order_start_time) then
             do i=1,size(scd_m)
-               call teuk_time_step(scd_m(i),source, psi4_scd_p, psi4_scd_q, psi4_scd_f)
-               call teuk_time_step(scd_m(i),source, psi4_scd_p, psi4_scd_q, psi4_scd_f)
+               call teuk_time_step(scd_m(i),source,psi4_scd_p,psi4_scd_q,psi4_scd_f)
             end do
          end if
-
       end if
+      !-----------------------------------------------------------------------
+      ! save to file 
       !-----------------------------------------------------------------------
       save_level: if (mod(t_step,t_step_save)==0) then
          !--------------------------------------------------------------------
@@ -157,11 +162,14 @@ clean_memory: block
          call write_level(time)
       end if save_level
       !-----------------------------------------------------------------------
+      ! low pass filter (in spectral space)
+      !-----------------------------------------------------------------------
       do i=1,size(lin_m)
          call cheb_filter(lin_m(i),psi4_lin_p%np1,psi4_lin_p%coefs_cheb)
          call cheb_filter(lin_m(i),psi4_lin_q%np1,psi4_lin_q%coefs_cheb)
          call cheb_filter(lin_m(i),psi4_lin_f%np1,psi4_lin_f%coefs_cheb)
       end do
+
       do i=1,size(scd_m)
          call swal_filter(scd_m(i),psi4_lin_p%spin,psi4_lin_p%np1,psi4_lin_p%coefs_swal)
          call swal_filter(scd_m(i),psi4_lin_q%spin,psi4_lin_q%np1,psi4_lin_q%coefs_swal)
@@ -181,6 +189,8 @@ clean_memory: block
             call cheb_filter(lin_m(i),muhll%np1,muhll%coefs_cheb)
          end do
       end if
+      !-----------------------------------------------------------------------
+      ! shift time steps
       !-----------------------------------------------------------------------
       do i=1,size(lin_m)
          call shift_time_step(lin_m(i),psi4_lin_p)

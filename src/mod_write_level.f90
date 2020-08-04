@@ -33,24 +33,25 @@ module mod_write_level
    private
 
    public :: write_level
-
 !-----------------------------------------------------------------------------
 ! m_ang for each level that we evolve
 !-----------------------------------------------------------------------------
-   integer(ip) :: i
-
-   integer(ip), parameter :: lin_saved_m(1) = [pm1_ang]
+   integer(ip), parameter :: lin_saved_m(2) = [-pm1_ang, pm1_ang]
    integer(ip), parameter :: scd_saved_m(2) = [2_ip*pm1_ang, 0_ip]
 !=============================================================================
 contains
 !=============================================================================
    subroutine write_level(time)
       real(rp), intent(in) :: time
+
+      integer(ip) :: i
+      !-----------------------------------------------------------------------
+      ! \Psi_4^{(1)} and linear metric reconstruction 
       !--------------------------------------------------------------------------
       do i=1,size(lin_saved_m)
          call write_csv(time,lin_saved_m(i),psi4_lin_f)
       end do 
-      !--------------------------------------------------------------------------
+
       if (write_metric_recon_fields) then
          do i=1,size(lin_saved_m)
             call write_csv(time,lin_saved_m(i),psi3)
@@ -60,7 +61,7 @@ contains
             call write_csv(time,lin_saved_m(i),muhll)
          end do
       end if
-      !--------------------------------------------------------------------------
+
       if (write_indep_res) then
          do i=1,size(lin_saved_m)
             call compute_res_q( lin_saved_m(i),psi4_lin_q,psi4_lin_f,res_lin_q)
@@ -76,7 +77,9 @@ contains
             end do
          end if
       end if
-      !--------------------------------------------------------------------
+      !-----------------------------------------------------------------------
+      ! \Psi_4^{(2)} and 2nd order source term 
+      !-----------------------------------------------------------------------
       if (scd_order) then
 
          do i=1,size(scd_saved_m)

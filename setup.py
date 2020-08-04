@@ -10,18 +10,18 @@ sim.black_hole_mass= float(0.5)
 sim.black_hole_spin= float(0.35)
 sim.compactification_length= float(1)
 #=============================================================================
-sim.evolve_time= float(30) ## units of black hole mass
+sim.evolve_time= float(20) ## units of black hole mass
 sim.num_saved_times= int(100)
 #=============================================================================
 sim.nx= int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
 sim.nl= int(pow(2,2)*pow(3,1)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
 #=============================================================================
 sim.metric_recon= True#False# 
-sim.scd_order=    True#False# 
+sim.scd_order=    False#True# 
 
 sim.write_indep_res=           True#False#
-sim.write_metric_recon_fields= False#True#
-sim.write_scd_order_source=    True#False#
+sim.write_metric_recon_fields= True#False#
+sim.write_scd_order_source=    False#True#
 #=============================================================================
 ## change start time
 sim.start_multiple= float(1.0)
@@ -57,11 +57,11 @@ sim.amp_pm1= float( 0.1)  ## amplitude of the initial perturbation
 sim.rl_pm1=  float(-1.5)  ## compact support: lower r value
 sim.ru_pm1=  float( 1.5)  ## compact support: upper r value 
 #-----------------------------------------------------------------------------
-sim.l_ang_nm1= int(3) ## support over single spin weighted spherical harmonic
+sim.l_ang_nm1= int(2) ## support over single spin weighted spherical harmonic
 
 sim.initial_data_direction_nm1= "time_symmetric"#"outgoing"#"ingoing"#
 
-sim.amp_nm1= float(10.0)  ## amplitude of the initial perturbation
+sim.amp_nm1= float( 0.0)  ## amplitude of the initial perturbation
 sim.rl_nm1=  float(-1.5)  ## compact support: lower r value
 sim.ru_nm1=  float( 1.5)  ## compact support: upper r value 
 #-----------------------------------------------------------------------------
@@ -72,17 +72,17 @@ sim.l_ang_pm2= int(3) ## support over single spin weighted spherical harmonic
 
 sim.initial_data_direction_pm2= "time_symmetric"#"outgoing"#"ingoing"#
 
-sim.amp_pm2= float( 0.1)  ## amplitude of the initial perturbation
+sim.amp_pm2= float( 0.0)  ## amplitude of the initial perturbation
 sim.rl_pm2=  float(-1.5)  ## compact support: lower r value
 sim.ru_pm2=  float( 1.5)  ## compact support: upper r value 
 
 sim.l_ang_pm2= int(3)     ## support over single spin weighted spherical harmonic
 #-----------------------------------------------------------------------------
-sim.l_ang_nm2= int(3) ## support over single spin weighted spherical harmonic
+sim.l_ang_nm2= int(2) ## support over single spin weighted spherical harmonic
 
 sim.initial_data_direction_nm2= "time_symmetric"#"outgoing"#"ingoing"#
 
-sim.amp_nm2= float(10.0)  ## amplitude of the initial perturbation
+sim.amp_nm2= float( 0.0)  ## amplitude of the initial perturbation
 sim.rl_nm2=  float(-1.5)  ## compact support: lower r value
 sim.ru_nm2=  float( 1.5)  ## compact support: upper r value 
 #=============================================================================
