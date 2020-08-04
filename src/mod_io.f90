@@ -163,26 +163,32 @@ contains
    end subroutine write_field_csv
 !=============================================================================
 ! writes to one line, row by row
-   subroutine write_array_csv(fn, time, arr)
+   subroutine write_array_csv(fn, time, m_ang, arr)
       character(*),                  intent(in) :: fn
       real(rp),                      intent(in) :: time
+      integer(ip),                   intent(in) :: m_ang
       complex(rp), dimension(nx,ny), intent(in) :: arr
 
-      character(:), allocatable :: rn_re, rn_im
+      character(:), allocatable :: mstr, fn_re, fn_im
       logical :: exists
       integer(ip) :: i, j, ierror = 0
       integer(ip) :: uf = 3
+
+      ! inelegant int to str conversion
+      mstr = '     '
+      write (mstr,'(i5)') m_ang
+      mstr = trim(adjustl(mstr))
       ! set the file name to read from
-      rn_re = output_dir // '/' // fn // '_re.csv'
-      rn_im = output_dir // '/' // fn // '_im.csv'
+      fn_re = output_dir // '/' // fn // '_m' // mstr // '_re.csv'
+      fn_im = output_dir // '/' // fn // '_m' // mstr // '_im.csv'
       !----------------------------------------------------------------------
       ! save real part 
       !----------------------------------------------------------------------
-      inquire(file=rn_re,exist=exists)
+      inquire(file=fn_re,exist=exists)
       if (exists) then
-         open(unit=uf,file=rn_re,status='old',position='append',action='write',iostat=ierror)
+         open(unit=uf,file=fn_re,status='old',position='append',action='write',iostat=ierror)
       else
-         open(unit=uf,file=rn_re,status='new',action='write',iostat=ierror) 
+         open(unit=uf,file=fn_re,status='new',action='write',iostat=ierror) 
       end if
 
       write (uf,'(e14.6,a1,i3,a1,i3,a1)',advance='no',iostat=ierror) time, ',', nx, ',', ny, ','
@@ -198,17 +204,17 @@ contains
 
       if (ierror/=0) then
          write (*,*) "Error(read_arr): ierror=", ierror
-         write (*,*) "file = ", rn_re
+         write (*,*) "file = ", fn_re
          stop
       end if
       !----------------------------------------------------------------------
       ! save real part 
       !----------------------------------------------------------------------
-      inquire(file=rn_im,exist=exists)
+      inquire(file=fn_im,exist=exists)
       if (exists) then
-         open(unit=uf,file=rn_im,status='old',position='append',action='write',iostat=ierror)
+         open(unit=uf,file=fn_im,status='old',position='append',action='write',iostat=ierror)
       else
-         open(unit=uf,file=rn_im,status='new',action='write',iostat=ierror) 
+         open(unit=uf,file=fn_im,status='new',action='write',iostat=ierror) 
       end if
 
       write (uf,'(e14.6,a1,i3,a1,i3,a1)',advance='no',iostat=ierror) time, ',', nx, ',', ny, ','
@@ -224,7 +230,7 @@ contains
 
       if (ierror/=0) then
          write (*,*) "Error(read_arr): ierror=", ierror
-         write (*,*) "file = ", rn_im
+         write (*,*) "file = ", fn_im
          stop
       end if
    end subroutine write_array_csv

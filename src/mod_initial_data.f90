@@ -11,10 +11,19 @@ module mod_initial_data
       cl=>compactification_length, &
       bhm=>black_hole_mass, &
       bhs=>black_hole_spin, &
-      R_max, pm_ang, &
-      initial_data_direction, initial_data_type, &
-      amp_nm, rl_nm, ru_nm, l_ang_nm, &
-      amp_pm, rl_pm, ru_pm, l_ang_pm
+      R_max, &
+! initial data parameters 
+      pm1_ang, &
+      initial_data_direction_nm1, &
+      initial_data_direction_pm1, &
+      amp_nm1, rl_nm1, ru_nm1, l_ang_nm1, &
+      amp_pm1, rl_pm1, ru_pm1, l_ang_pm1, &
+
+      pm2_ang, &
+      initial_data_direction_nm2, &
+      initial_data_direction_pm2, &
+      amp_nm2, rl_nm2, ru_nm2, l_ang_nm2, &
+      amp_pm2, rl_pm2, ru_pm2, l_ang_pm2
 !=============================================================================
    implicit none
    private
@@ -34,29 +43,42 @@ contains
       real(rp) :: max_val, bump, r, y
       real(rp) :: width, amp, rl, ru 
 
-      bump    = 0.0_rp
-      max_val = 0.0_rp
-      amp     = 0.0_rp
-      rl      = 0.0_rp
-      ru      = 0.0_rp
-      width   = 0.0_rp
+      character(:), allocatable :: initial_data_direction
 
-      if (m_ang==pm_ang) then
-         amp   = amp_pm
-         ru    = ru_pm
-         rl    = rl_pm
-         l_ang = l_ang_pm
+      if (m_ang==pm1_ang) then
+         amp   = amp_pm1
+         ru    = ru_pm1
+         rl    = rl_pm1
+         l_ang = l_ang_pm1
+         initial_data_direction = initial_data_direction_pm1
 
-      else if (m_ang==-pm_ang) then
-         amp   = amp_nm
-         ru    = ru_nm
-         rl    = rl_nm
+      else if (m_ang==-pm1_ang) then
+         amp   = amp_nm1
+         ru    = ru_nm1
+         rl    = rl_nm1
+         l_ang = l_ang_nm1
+         initial_data_direction = initial_data_direction_nm1
+
+      else if (m_ang==pm2_ang) then
+         amp   = amp_pm2
+         ru    = ru_pm2
+         rl    = rl_pm2
+         l_ang = l_ang_pm2
+         initial_data_direction = initial_data_direction_pm2
+
+      else if (m_ang==-pm2_ang) then
+         amp   = amp_nm2
+         ru    = ru_nm2
+         rl    = rl_nm2
+         l_ang = l_ang_nm2
+         initial_data_direction = initial_data_direction_nm2
 
       else
          write (*,*) "ERROR(set_initial_data): m_ang = ", m_ang
          stop
       end if
 
+      max_val = 0.0_rp
       width = ru-rl
 !-----------------------------------------------------------------------------
       y_loop: do j=1,ny
@@ -99,7 +121,7 @@ contains
       f%n(:,:,m_ang) = f%n(:,:,m_ang) * (amp / max_val)
       q%n(:,:,m_ang) = q%n(:,:,m_ang) * (amp / max_val)
 !-----------------------------------------------------------------------------
-! set which way psi4 is heading initially
+! p = (...)\phi_{,t} + (...), so use p to set \phi_{,t}
 !-----------------------------------------------------------------------------
    select case (initial_data_direction)
       !-----------------------------------------------------------------------
@@ -148,7 +170,7 @@ contains
                -  4*bhm*spin &
                +  (8*bhm**2*R*(2 + spin))/cl**2 &
                -  (0,2)*bhs*spin*Y &
-               -  (0,0.5)*m_ang*( &
+               -  (0,0.5_rp)*m_ang*( &
                      8 &
                   +  (16*bhm*R)/cl**2 &
                   +  bhs*(-4 - (16*bhm*R)/cl**2) &

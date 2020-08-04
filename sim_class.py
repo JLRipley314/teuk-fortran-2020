@@ -41,9 +41,8 @@ class Sim:
       +	'_ny'+str(self.ny)
       +	'_nl'+str(self.nl)
       +	'_s'+str(self.psi_spin)
-      +	'_lpm'+str(self.l_ang_pm)
-      +	'_lnm'+str(self.l_ang_nm)
-      +	'_pm'+str(self.pm_ang)
+      +	'_pm1'+str(self.pm1_ang)
+      +	'_pm2'+str(self.pm2_ang)
       )
       if (self.computer=="home"):
          self.output_dir= "output/"+self.output_stem
@@ -72,19 +71,33 @@ class Sim:
       )
 #-----------------------------------------------------------------------------
 ## when to begin metric reconstruction
-      self.scd_order_start_time = self.start_multiple*(
-         (2.0/self.black_hole_mass)*(self.ru_pm - self.horizon)
-      +  4.0*log(self.ru_pm/self.horizon)
+      self.scd_order_start_time = max(
+            self.start_multiple*(
+               (2.0/self.black_hole_mass)*(self.ru_nm1 - self.horizon)
+            +  4.0*log(self.ru_nm1/self.horizon)
+            ),
+            self.start_multiple*(
+               (2.0/self.black_hole_mass)*(self.ru_pm1 - self.horizon)
+            +  4.0*log(self.ru_pm1/self.horizon)
+            ),
+            self.start_multiple*(
+               (2.0/self.black_hole_mass)*(self.ru_nm2 - self.horizon)
+            +  4.0*log(self.ru_nm2/self.horizon)
+            ),
+            self.start_multiple*(
+               (2.0/self.black_hole_mass)*(self.ru_pm2 - self.horizon)
+            +  4.0*log(self.ru_pm2/self.horizon)
+            )
       )
 #-----------------------------------------------------------------------------
 ## Gauss points for integration
 ## want to exactly integrate polynomials of order
 ## 2l + 2m(i.e. lmin) + alpha + beta (so being a bit conservative here) 
-      lmin= max(abs(self.pm_ang),abs(self.psi_spin))
+      lmin= max(abs(self.pm1_ang),abs(self.pm2_ang),abs(self.psi_spin))
       self.ny= (self.nl
       +	int(abs(2*lmin))
-      + int(abs(2*self.pm_ang+self.psi_spin))
-      +	int(abs(2*self.pm_ang-self.psi_spin))
+      + int(abs(2*self.pm1_ang+self.psi_spin))
+      +	int(abs(2*self.pm1_ang-self.psi_spin))
       )
       if (self.ny%2!=0):
          self.ny+= 1
@@ -106,14 +119,16 @@ class Sim:
       if (self.t_step_save==0):
          self.t_step_save= 1
 #-----------------------------------------------------------------------------
-      self.max_m=  max(abs(2*self.pm_ang),1)
-      self.min_m= -max(abs(2*self.pm_ang),1)
+      self.max_m=  max(abs(2*self.pm1_ang),abs(2*self.pm2_ang),1)
+      self.min_m= -max(abs(2*self.pm1_ang),abs(2*self.pm2_ang),1)
 #-----------------------------------------------------------------------------
       self.max_s=  3
       self.min_s= -3
 #-----------------------------------------------------------------------------
-      assert(self.l_ang_pm>=max(abs(self.pm_ang),abs(self.psi_spin)))
-      assert(self.l_ang_nm>=max(abs(self.pm_ang),abs(self.psi_spin)))
+      assert(self.l_ang_nm1>=max(abs(self.pm1_ang),abs(self.psi_spin)))
+      assert(self.l_ang_pm1>=max(abs(self.pm1_ang),abs(self.psi_spin)))
+      assert(self.l_ang_nm2>=max(abs(self.pm2_ang),abs(self.psi_spin)))
+      assert(self.l_ang_pm2>=max(abs(self.pm2_ang),abs(self.psi_spin)))
 #=============================================================================
    def make_tables_dir(self)->None:
       self.tables_dir= self.output_dir+"/tables"
@@ -215,6 +230,7 @@ class Sim:
 
             if (type(attrs[param])==complex):
                f.write("   complex(rp), parameter :: {} = ({}_rp,{}_rp)\n".format(param,attrs[param].real,attrs[param].imag))
+
          f.write('end module mod_params\n')
       subprocess.call('make clean_obj',shell=True)
       subprocess.call('make '+self.bin_name,shell=True)

@@ -349,39 +349,41 @@ module mod_metric_recon
 !=============================================================================
 ! evolve +/- m angular number fields
 !=============================================================================
-   subroutine metric_recon_time_step(m_ang)
-      integer(ip), intent(in) :: m_ang
+   subroutine metric_recon_time_step()
+      integer(ip) :: m_ang
 
-      call step_all_fields_preserve_m_ang(1_ip,m_ang);
-      call step_all_fields_preserve_m_ang(2_ip,m_ang);
-      call step_all_fields_preserve_m_ang(3_ip,m_ang);
-      call step_all_fields_preserve_m_ang(4_ip,m_ang);
-      call step_all_fields_preserve_m_ang(5_ip,m_ang);
+      do m_ang=min_m,max_m
+         call step_all_fields_preserve_m_ang(1_ip,m_ang);
+         call step_all_fields_preserve_m_ang(2_ip,m_ang);
+         call step_all_fields_preserve_m_ang(3_ip,m_ang);
+         call step_all_fields_preserve_m_ang(4_ip,m_ang);
+         call step_all_fields_preserve_m_ang(5_ip,m_ang);
 
-      if (m_ang>0) then
-         call step_all_fields_preserve_m_ang(1_ip,-m_ang);
-         call step_all_fields_preserve_m_ang(2_ip,-m_ang);
-         call step_all_fields_preserve_m_ang(3_ip,-m_ang);
-         call step_all_fields_preserve_m_ang(4_ip,-m_ang);
-         call step_all_fields_preserve_m_ang(5_ip,-m_ang);
-      end if
+         if (m_ang>0) then
+            call step_all_fields_preserve_m_ang(1_ip,-m_ang);
+            call step_all_fields_preserve_m_ang(2_ip,-m_ang);
+            call step_all_fields_preserve_m_ang(3_ip,-m_ang);
+            call step_all_fields_preserve_m_ang(4_ip,-m_ang);
+            call step_all_fields_preserve_m_ang(5_ip,-m_ang);
+         end if
 
-      call step_all_fields_mix_m_ang(1_ip,m_ang);
-      call step_all_fields_mix_m_ang(2_ip,m_ang);
-      call step_all_fields_mix_m_ang(3_ip,m_ang);
-      call step_all_fields_mix_m_ang(4_ip,m_ang);
-      call step_all_fields_mix_m_ang(5_ip,m_ang);
+         call step_all_fields_mix_m_ang(1_ip,m_ang);
+         call step_all_fields_mix_m_ang(2_ip,m_ang);
+         call step_all_fields_mix_m_ang(3_ip,m_ang);
+         call step_all_fields_mix_m_ang(4_ip,m_ang);
+         call step_all_fields_mix_m_ang(5_ip,m_ang);
+      end do
 
    end subroutine metric_recon_time_step
 !=============================================================================
-   subroutine metric_recon_indep_res(m_ang)
-      integer(ip), intent(in) :: m_ang
-      !-----------------------------------------------------------------------
-      call set_indep_res(m_ang,"res_bianchi3")
-      !-----------------------------------------------------------------------
-      call set_indep_res(m_ang,"res_bianchi2")
-      !-----------------------------------------------------------------------
-      call set_indep_res(m_ang,"res_hll")
+   subroutine metric_recon_indep_res()
+      integer(ip) :: m_ang
+
+      do m_ang=min_m,max_m
+         call set_indep_res(m_ang,"res_bianchi3")
+         call set_indep_res(m_ang,"res_bianchi2")
+         call set_indep_res(m_ang,"res_hll")
+      end do
 
    end subroutine metric_recon_indep_res
 !=============================================================================
