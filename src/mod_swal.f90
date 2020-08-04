@@ -188,25 +188,21 @@ contains
 !=============================================================================
 ! Low pass filter. A smooth filter appears to help prevent Gibbs-like ringing
 !=============================================================================
-   pure subroutine swal_filter(spin,vals,coefs)
-      integer(ip), intent(in) :: spin
+   pure subroutine swal_filter(m_ang,spin,vals,coefs)
+      integer(ip), intent(in) :: m_ang, spin
       complex(rp), dimension(nx,     ny,min_m:max_m), intent(inout) :: vals
       complex(rp), dimension(nx,0:max_l,min_m:max_m), intent(inout) :: coefs
 
-      integer(ip) :: m_ang, k
+      integer(ip) :: k
 
-      do m_ang=min_m,max_m
+      call swal_real_to_coef(spin,m_ang,vals,coefs) 
 
-         call swal_real_to_coef(spin,m_ang,vals,coefs) 
-
-         do k=0,max_l
-            coefs(:,k,m_ang) = &
-               exp(-36.0_rp*(real(k,rp)/real(max_l,rp))**25)*coefs(:,k,m_ang)
-         end do
-
-         call swal_coef_to_real(spin,m_ang,coefs,vals) 
-
+      do k=0,max_l
+         coefs(:,k,m_ang) = &
+            exp(-36.0_rp*(real(k,rp)/real(max_l,rp))**25)*coefs(:,k,m_ang)
       end do
+
+      call swal_coef_to_real(spin,m_ang,coefs,vals) 
    end subroutine swal_filter
 !=============================================================================
 ! High pass filter. To see if we are getting converging in high l modes 

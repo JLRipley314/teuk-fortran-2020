@@ -48,6 +48,7 @@ OBJ= $(addprefix $(OBJDIR), \
 	mod_scd_order_source.o \
 	mod_initial_data.o \
 	mod_teuk.o \
+	mod_write_level.o \
 	)
 
 DEPS = $(addprefix $(SRC), \
@@ -64,6 +65,7 @@ DEPS = $(addprefix $(SRC), \
 	mod_scd_order_source.f90 \
 	initial_data.f90 \
 	mod_teuk.f90 \
+	mod_write_level.f90 \
 	)
 
 all: $(RUN)

@@ -142,11 +142,12 @@ contains
       end select
    end subroutine set_DT
 !=============================================================================
-   pure subroutine shift_time_step(f)
+   pure subroutine shift_time_step(m_ang, f)
+      integer(ip), intent(in)    :: m_ang
       type(field), intent(inout) :: f 
 
-      f % n  = f % np1
-      f % k1 = f % k5
+      f % n( :,:,m_ang) = f % np1(:,:,m_ang) 
+      f % k1(:,:,m_ang) = f % k5( :,:,m_ang) 
    end subroutine shift_time_step
 !=============================================================================
 end module mod_field

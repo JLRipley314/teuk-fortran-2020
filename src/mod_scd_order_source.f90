@@ -24,8 +24,7 @@ module mod_scd_order_source
    private
 
    public :: scd_order_source, &
-      scd_order_source_init, &
-      scd_order_source_compute, &
+      scd_order_source_init, scd_order_source_compute, &
       scd_order_source_shift_time_step
 !=============================================================================
 ! scd_order_source type:
@@ -289,7 +288,7 @@ module mod_scd_order_source
       !--------------------------------------------------------------------
    end subroutine scd_order_source_m1_plus_m2
 !=============================================================================
-   subroutine scd_order_source_compute_m_ang(m_ang, sf)
+   subroutine scd_order_source_compute(m_ang, sf)
       integer(ip),            intent(in)    :: m_ang
       type(scd_order_source), intent(inout) :: sf
  
@@ -364,34 +363,23 @@ module mod_scd_order_source
       ! estimate halfstep value 
       sf%n1h(:,:,m_ang) = 0.5_rp*(sf%np1(:,:,m_ang) + sf%n(:,:,m_ang))
       !-----------------------------------------------------------------------
-   end subroutine scd_order_source_compute_m_ang
-!=============================================================================
-   subroutine scd_order_source_compute(sf)
-
-      type(scd_order_source), intent(inout) :: sf
-
-      integer(ip) :: m_ang
-
-      do m_ang=min_m,max_m
-         call scd_order_source_compute_m_ang(m_ang,sf)
-      end do
-
    end subroutine scd_order_source_compute
 !=============================================================================
-   pure subroutine scd_order_source_shift_time_step(sf)
+   pure subroutine scd_order_source_shift_time_step(m_ang, sf)
+      integer(ip), intent(in) :: m_ang
       type(scd_order_source), intent(inout) :: sf
 
-      sf % n = sf % np1
+      sf % n(:,:,m_ang) = sf % np1(:,:,m_ang)
 
-      sf % pre_edth_prime_nm3 = sf % pre_edth_prime_nm2
-      sf % pre_edth_prime_nm2 = sf % pre_edth_prime_nm1  
-      sf % pre_edth_prime_nm1 = sf % pre_edth_prime_n
-      sf % pre_edth_prime_n   = sf % pre_edth_prime_np1
+      sf % pre_edth_prime_nm3(:,:,m_ang) = sf % pre_edth_prime_nm2(:,:,m_ang) 
+      sf % pre_edth_prime_nm2(:,:,m_ang) = sf % pre_edth_prime_nm1(:,:,m_ang)  
+      sf % pre_edth_prime_nm1(:,:,m_ang) = sf % pre_edth_prime_n(:,:,m_ang) 
+      sf % pre_edth_prime_n(:,:,m_ang)   = sf % pre_edth_prime_np1(:,:,m_ang) 
 
-      sf % pre_thorn_prime_nm3 = sf % pre_thorn_prime_nm2
-      sf % pre_thorn_prime_nm2 = sf % pre_thorn_prime_nm1  
-      sf % pre_thorn_prime_nm1 = sf % pre_thorn_prime_n
-      sf % pre_thorn_prime_n   = sf % pre_thorn_prime_np1
+      sf % pre_thorn_prime_nm3(:,:,m_ang) = sf % pre_thorn_prime_nm2(:,:,m_ang) 
+      sf % pre_thorn_prime_nm2(:,:,m_ang) = sf % pre_thorn_prime_nm1(:,:,m_ang) 
+      sf % pre_thorn_prime_nm1(:,:,m_ang) = sf % pre_thorn_prime_n(:,:,m_ang) 
+      sf % pre_thorn_prime_n(:,:,m_ang)   = sf % pre_thorn_prime_np1(:,:,m_ang) 
 
    end subroutine scd_order_source_shift_time_step
 !=============================================================================
