@@ -43,17 +43,15 @@ sim.num_tasks_per_node= '1'
 sim.psi_spin=  int(-2)
 sim.psi_boost= int(-2)
 #=============================================================================
-## initial data
-#=============================================================================
-#-----------------------------------------------------------------------------
 ## initial data for mode m1
-#-----------------------------------------------------------------------------
+#=============================================================================
 sim.pm1_ang =  int(2) ## m_ang is preserved by time evolution
+#-----------------------------------------------------------------------------
 sim.l_ang_pm1= int(2) ## l_ang: support of initial swal 
 
 sim.initial_data_direction_pm1= "time_symmetric"#"outgoing"#"ingoing"#
 
-sim.amp_pm1= float( 0.1)  ## amplitude of the initial perturbation
+sim.amp_pm1= float(10.0)  ## amplitude of the initial perturbation
 sim.rl_pm1=  float(-1.5)  ## compact support: lower r value
 sim.ru_pm1=  float( 1.5)  ## compact support: upper r value 
 #-----------------------------------------------------------------------------
@@ -64,10 +62,11 @@ sim.initial_data_direction_nm1= "time_symmetric"#"outgoing"#"ingoing"#
 sim.amp_nm1= float( 0.0)  ## amplitude of the initial perturbation
 sim.rl_nm1=  float(-1.5)  ## compact support: lower r value
 sim.ru_nm1=  float( 1.5)  ## compact support: upper r value 
-#-----------------------------------------------------------------------------
+#=============================================================================
 ## initial data for mode m2
-#-----------------------------------------------------------------------------
+#=============================================================================
 sim.pm2_ang =  int(1) ## m_ang is preserved by time evolution
+#-----------------------------------------------------------------------------
 sim.l_ang_pm2= int(3) ## support over single spin weighted spherical harmonic
 
 sim.initial_data_direction_pm2= "time_symmetric"#"outgoing"#"ingoing"#

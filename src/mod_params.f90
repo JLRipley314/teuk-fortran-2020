@@ -30,7 +30,7 @@ implicit none
    integer(ip), parameter :: pm1_ang = 2_ip
    integer(ip), parameter :: l_ang_pm1 = 2_ip
    character(*), parameter :: initial_data_direction_pm1 = 'time_symmetric'
-   real(rp), parameter :: amp_pm1 = 0.1_rp
+   real(rp), parameter :: amp_pm1 = 10.0_rp
    real(rp), parameter :: rl_pm1 = -1.5_rp
    real(rp), parameter :: ru_pm1 = 1.5_rp
    integer(ip), parameter :: l_ang_nm1 = 2_ip
@@ -61,8 +61,8 @@ implicit none
    integer(ip), parameter :: min_m = -4_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Tue_16_52_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm21'
-   character(*), parameter :: output_dir = 'output/Tue_16_52_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm21'
-   character(*), parameter :: bin_name = 'Tue_16_52_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm21.run'
-   character(*), parameter :: tables_dir = 'output/Tue_16_52_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm21/tables'
+   character(*), parameter :: output_stem = 'Tue_19_03_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm21'
+   character(*), parameter :: output_dir = 'output/Tue_19_03_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm21'
+   character(*), parameter :: bin_name = 'Tue_19_03_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm21.run'
+   character(*), parameter :: tables_dir = 'output/Tue_19_03_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm21/tables'
 end module mod_params
