@@ -55,7 +55,7 @@ class Sim:
    def set_derived_params(self)->None:
       self.max_l = int(self.nl - 1)
 #-----------------------------------------------------------------------------
-## put the R_max slightly inside the outer horizon.
+## put the R_max at the location of the outer horizon.
 ## if near extremal limit then put R_max a m, which is in between
 ## the outer and inner horizons
       sqrt_term= pow(
