@@ -36,7 +36,7 @@ module mod_write_level
 !-----------------------------------------------------------------------------
 ! m_ang for each level that we evolve
 !-----------------------------------------------------------------------------
-   integer(ip), parameter :: lin_saved_m(2) = [-pm1_ang, pm1_ang]
+   integer(ip), parameter :: lin_saved_m(1) = [pm1_ang]
    integer(ip), parameter :: scd_saved_m(2) = [2_ip*pm1_ang, 0_ip]
 !=============================================================================
 contains

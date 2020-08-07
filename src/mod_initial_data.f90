@@ -91,9 +91,9 @@ contains
             bump = 0.0_rp
          end if
 
-         f%n(i,j,m_ang) = (((r-rl)/width)**2) * (((ru-r)/width)**2) * bump
+         f%n(i,j,m_ang) = (1.0_rp+ZI)*(((r-rl)/width)**2) * (((ru-r)/width)**2) * bump
          
-         q%n(i,j,m_ang) = ( &
+         q%n(i,j,m_ang) = (1.0_rp+ZI)*( &
             (2.0_rp*(((r-rl)/width)   )*(((ru-r)/width)**2)) &
          -  (2.0_rp*(((r-rl)/width)**2)*( (ru-r)/width    )) &
          +  (1.0_rp*(1.0_rp           )*(((ru-r)/width)**2)) &

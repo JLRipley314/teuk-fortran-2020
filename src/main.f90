@@ -52,7 +52,7 @@ clean_memory: block
    integer(ip) :: i, t_step
    real(rp)    :: time
 
-   integer(ip), parameter :: lin_m(2) = [-pm1_ang, pm1_ang]
+   integer(ip), parameter :: lin_m(1) = [pm1_ang]
    integer(ip), parameter :: scd_m(2) = [2_ip*pm1_ang, 0_ip]
 !=============================================================================
    write (*,*) "Initializing fields"   
