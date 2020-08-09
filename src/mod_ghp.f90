@@ -47,7 +47,7 @@ module mod_ghp
 !=============================================================================
 ! edth rescaled by R
 !=============================================================================
-   pure subroutine set_edth_field(step, m_ang, f)
+   subroutine set_edth_field(step, m_ang, f)
       integer(ip), intent(in)    :: step, m_ang
       type(field), intent(inout) :: f
 
@@ -76,7 +76,7 @@ module mod_ghp
       end do 
    end subroutine set_edth_field
 !=============================================================================
-   pure subroutine set_edth_arr(m_ang, spin, boost, level, DT, raised, edth_arr)
+   subroutine set_edth_arr(m_ang, spin, boost, level, DT, raised, edth_arr)
       integer(ip), intent(in) :: m_ang, spin, boost
       complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: level, DT
       complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: raised
@@ -104,7 +104,7 @@ module mod_ghp
 !=============================================================================
 ! edth_prime rescaled by R
 !=============================================================================
-   pure subroutine set_edth_prime_field(step, m_ang, f)
+   subroutine set_edth_prime_field(step, m_ang, f)
       integer(ip), intent(in)    :: step, m_ang
       type(field), intent(inout) :: f
 
@@ -134,7 +134,7 @@ module mod_ghp
       end do
    end subroutine set_edth_prime_field
 !=============================================================================
-   pure subroutine set_edth_prime_arr(m_ang, spin, boost, level, DT, lowered, edth_prime_arr)
+   subroutine set_edth_prime_arr(m_ang, spin, boost, level, DT, lowered, edth_prime_arr)
       integer(ip), intent(in) :: m_ang, spin, boost
       complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: level, DT
       complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: lowered 
@@ -163,7 +163,7 @@ module mod_ghp
 !=============================================================================
 ! thorn rescaled by R
 !=============================================================================
-   pure subroutine set_thorn_field(step, m_ang, f)
+   subroutine set_thorn_field(step, m_ang, f)
       integer(ip), intent(in)    :: step, m_ang
       type(field), intent(inout) :: f
 
@@ -176,7 +176,7 @@ module mod_ghp
       call set_level(step, m_ang, f)
       call set_DT(   step, m_ang, f)
 
-      call compute_DR(m_ang, f%level, f%DR)
+      call compute_DR(m_ang, f%level, f%coefs_cheb, f%DR)
 
       do j=1,ny
       do i=1,nx
@@ -194,7 +194,7 @@ module mod_ghp
       end do
    end subroutine set_thorn_field
 !=============================================================================
-   pure subroutine set_thorn_arr(m_ang, spin, boost, falloff, level, DT, DR, thorn_arr)
+   subroutine set_thorn_arr(m_ang, spin, boost, falloff, level, DT, DR, thorn_arr)
       integer(ip), intent(in)    :: m_ang, spin, boost, falloff
       complex(rp), dimension(nx,ny,min_m:max_m), intent(in) :: level, DT, DR
       complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: thorn_arr
@@ -223,7 +223,7 @@ module mod_ghp
 !=============================================================================
 ! no rescaling in R for thorn prime
 !=============================================================================
-   pure subroutine set_thorn_prime_field(step, m_ang, f)
+   subroutine set_thorn_prime_field(step, m_ang, f)
       integer(ip), intent(in)    :: step, m_ang
       type(field), intent(inout) :: f
 
@@ -232,7 +232,7 @@ module mod_ghp
       call set_level(step, m_ang, f)
       call set_DT(   step, m_ang, f)
 
-      call compute_DR(m_ang, f%level, f%DR)
+      call compute_DR(m_ang, f%level, f%coefs_cheb, f%DR)
 
       do j=1,ny
       do i=1,nx
@@ -246,7 +246,7 @@ module mod_ghp
       end do
    end subroutine set_thorn_prime_field
 !=============================================================================
-   pure subroutine set_thorn_prime_arr(m_ang, falloff, level, DT, DR, thorn_prime_arr)
+   subroutine set_thorn_prime_arr(m_ang, falloff, level, DT, DR, thorn_prime_arr)
       integer(ip), intent(in) :: m_ang, falloff
       complex(rp), dimension(nx,ny,min_m:max_m), intent(in) :: level, DT, DR
       complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: thorn_prime_arr

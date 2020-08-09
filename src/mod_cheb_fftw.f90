@@ -1,11 +1,16 @@
 module mod_cheb 
 !=============================================================================
    use mod_prec
-   use mod_fftw3
-   use mod_io, only: set_arr
+   use mod_field,  only: field, set_level, get_level
+   use mod_io,     only: set_arr
    use mod_params, only: tables_dir, R_max, nx, ny, min_m, max_m 
 
+!=============================================================================
+   use, intrinsic :: iso_c_binding
+
    implicit none
+!=============================================================================
+   include 'fftw3.f03'
 !=============================================================================
    private
 
@@ -41,24 +46,26 @@ contains
       ! setup dct fftw plan
       call dfftw_plan_r2r_1d( &
          plan_dct, &
-         nx,test_in,test_out, &
+         nx, &
+         test_in,test_out, &
          FFTW_REDFT00,FFTW_PATIENT)
 
    end subroutine cheb_init
 !=============================================================================
-   subroutine cheb_real_to_coef(m_ang,vals,coefs)
-      integer(ip), intent(in) :: m_ang
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: vals
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: coefs
+   subroutine cheb_real_to_coef(step,m_ang,f)
+      integer(ip), intent(in) :: step,m_ang
+      type(field), intent(inout) :: f
 
       integer(ip) :: i,j,N 
       real(rp), dimension(nx) :: rep, imp
 
+      call set_level(step,m_ang,f)
+
       N = nx-1
 
       do j=1,ny
-         rep = real( vals(:,j,m_ang),kind=rp)
-         imp = aimag(vals(:,j,m_ang))
+         rep = real( f%level(:,j,m_ang),kind=rp)
+         imp = aimag(f%level(:,j,m_ang))
 
          call dfftw_execute_r2r(plan_dct,rep,rep)
          call dfftw_execute_r2r(plan_dct,imp,imp)
@@ -74,15 +81,13 @@ contains
             imp(i) = imp(i)/N
          end do
 
-         coefs(:,j,m_ang) = cmplx(rep,imp,kind=rp)
+         f%coefs(:,j,m_ang) = cmplx(rep,imp,kind=rp)
       end do
 
    end subroutine cheb_real_to_coef
 !=============================================================================
-   subroutine cheb_coef_to_real(m_ang,coefs,vals)
-      integer(ip), intent(in) :: m_ang
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: coefs
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: vals
+   subroutine cheb_coef_to_real(step,m_ang,f)
+      integer(ip), intent(in) :: step,m_ang
 
       integer(ip) :: j,N 
       real(rp), dimension(nx) :: rep, imp
@@ -90,8 +95,8 @@ contains
       N = nx-1
 
       do j=1,ny
-         rep = real( coefs(:,j,m_ang),kind=rp)
-         imp = aimag(coefs(:,j,m_ang))
+         rep = real( f%coefs(:,j,m_ang),kind=rp)
+         imp = aimag(f%coefs(:,j,m_ang))
 
          rep = rep / 2.0_rp
          imp = imp / 2.0_rp
@@ -99,75 +104,59 @@ contains
          call dfftw_execute_r2r(plan_dct,rep,rep)
          call dfftw_execute_r2r(plan_dct,imp,imp)
 
-         vals(:,j,m_ang) = cmplx(rep,imp,kind=rp)
+         f%level(:,j,m_ang) = cmplx(rep,imp,kind=rp)
+
+         call get_level(step,m_ang,f)
       end do
    end subroutine cheb_coef_to_real
 !=============================================================================
-   subroutine compute_DR(m_ang,vals,coefs,D_vals)
-      integer(ip), intent(in) :: m_ang
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)    :: vals
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: coefs
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: D_vals 
+   subroutine compute_DR(step,m_ang,f)
+      integer(ip), intent(in)    :: step, m_ang
+      type(field), intent(inout) :: f
 
       integer(ip) :: i
    
-      call cheb_real_to_coef(m_ang,vals,coefs)
+      call cheb_real_to_coef(step,m_ang,f)
 
       ! use D_vals as a temporary array
-      D_vals(:,:,m_ang) = coefs(:,:,m_ang)
+      f%DR(:,:,m_ang) = f%coefs_cheb(:,:,m_ang)
 
-      coefs(nx,  :,m_ang) = 0
-      coefs(nx-1,:,m_ang) = 0
+      f%coefs_cheb(nx,  :,m_ang) = 0
+      f%coefs_cheb(nx-1,:,m_ang) = 0
 
       do i=nx-1, 2, -1
-         coefs(i-1,:,m_ang) = 2.0_rp*i*D_vals(i,:,m_ang) + coefs(i+1,:,m_ang)
+         f%coefs_cheb(i-1,:,m_ang) = 2.0_rp*i*f%DR(i,:,m_ang) + f%coefs_cheb(i+1,:,m_ang)
       end do
 
-      coefs(1,:,m_ang) = coefs(1,:,m_ang) / 2.0_rp
+      f%coefs_cheb(1,:,m_ang) = f%coefs_cheb(1,:,m_ang) / 2.0_rp
 
-      call cheb_coef_to_real(m_ang,coefs,D_vals)
+      call cheb_coef_to_real(step,m_ang,f)
 
-      D_vals(:,:,m_ang) = dx_over_dR * D_vals(:,:,m_ang)
+      f%DR(:,:,m_ang) = dx_over_dR * f%DR(:,:,m_ang)
 
    end subroutine compute_DR
 !=============================================================================
 ! Low pass filter. A smooth filter appears to help prevent Gibbs-like ringing
 !=============================================================================
-   subroutine cheb_filter(vals,coefs)
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: vals
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: coefs
+   subroutine cheb_filter(f)
+      type(field), intent(inout) :: f
+
+      integer(ip), parameter :: step = 5_ip
 
       integer(ip) :: m_ang, i
       
       do m_ang=min_m,max_m
 
-         call cheb_real_to_coef(m_ang,vals,coefs) 
+         call cheb_real_to_coef(step,m_ang,f) 
 
          do i=1,nx
-            coefs(i,:,m_ang) = &
-               exp(-36.0_rp*(real(i-1,rp)/real(nx-1,rp))**25)*coefs(i,:,m_ang)
+            f%coefs(i,:,m_ang) = &
+               exp(-36.0_rp*(real(i-1,rp)/real(nx-1,rp))**25)*f%coefs(i,:,m_ang)
          end do
 
-         call cheb_coef_to_real(m_ang,coefs,vals) 
+         call cheb_coef_to_real(step,m_ang,f) 
 
       end do
    end subroutine cheb_filter
-!=============================================================================
-   subroutine cheb_test()
-      complex(rp), dimension(nx,ny,min_m:max_m) :: vals, coefs, DR_vals, computed_DR_vals
-      integer(ip) :: i
-
-      do i=1,nx
-         vals(i,:,:) = sin(Rvec(i))
-         DR_vals(i,:,:) = cos(Rvec(i))
-      end do
-
-      call compute_DR(0_ip, vals, coefs, computed_DR_vals)
-
-      do i=1,nx
-         write (*,*) computed_DR_vals(i,:,0_ip) - DR_vals(i,:,0_ip)
-      end do
-
-   end subroutine cheb_test
 !=============================================================================
 end module mod_cheb

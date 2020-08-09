@@ -4,7 +4,7 @@
 module mod_teuk
 !=============================================================================
    use mod_prec
-   use mod_field, only: field
+   use mod_field, only: field, set_level, get_k
    use mod_params, only: &
       dt, nx, ny, max_l, &
       min_m, max_m, &
@@ -167,47 +167,47 @@ contains
 !=============================================================================
    pure subroutine set_k(m_ang, & 
          p, q, f, &
-         p_DR, q_DR, f_DR, f_coefs, f_laplacian, & 
+         p_DR, q_DR, f_DR, f_laplacian, & 
          kp, kq, kf) 
 
-      integer(ip), intent(in) :: m_ang 
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)    :: p, q, f 
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: &
-         p_DR, q_DR, f_DR, f_laplacian, &
-         kp, kq, kf 
-      complex(rp), dimension(nx,0:max_l,min_m:max_m), intent(inout) :: f_coefs
+      integer(ip), intent(in) :: step, m_ang 
+      type(field), intent(inout) :: p, q, f
 
-      call compute_DR(m_ang, p, p_DR)
-      call compute_DR(m_ang, q, q_DR)
-      call compute_DR(m_ang, f ,f_DR)
+      call compute_DR(step, m_ang, p)
+      call compute_DR(step, m_ang, q)
+      call compute_DR(step, m_ang, f)
 
-      call swal_laplacian(spin,m_ang,f,f_coefs,f_laplacian)
+      call swal_laplacian(step,m_ang,f)
+
+      call set_level(step,m_ang,p)
+      call set_level(step,m_ang,q)
+      call set_level(step,m_ang,f)
 
       !-------------------------------------
-      kp(:,:,m_ang) = &
-         A_pp(:,:,m_ang) * p_DR(:,:,m_ang) &
-      +  A_pq(:,:,m_ang) * q_DR(:,:,m_ang) &
-      +  A_pf(:,:,m_ang) * f_DR(:,:,m_ang) &
-      +  B_pp(:,:,m_ang) * p(:,:,m_ang) &
-      +  B_pq(:,:,m_ang) * q(:,:,m_ang) &
-      +  B_pf(:,:,m_ang) * f(:,:,m_ang) &
-      +  f_laplacian(:,:,m_ang) 
+      p%k(:,:,m_ang) = &
+         A_pp(:,:,m_ang) * p%DR(:,:,m_ang) &
+      +  A_pq(:,:,m_ang) * q%DR(:,:,m_ang) &
+      +  A_pf(:,:,m_ang) * f%DR(:,:,m_ang) &
+      +  B_pp(:,:,m_ang) * p%level(:,:,m_ang) &
+      +  B_pq(:,:,m_ang) * q%level(:,:,m_ang) &
+      +  B_pf(:,:,m_ang) * f%level(:,:,m_ang) &
+      +  f%laplacian(:,:,m_ang) 
       !-------------------------------------
-      kq(:,:,m_ang) = &
-         A_qp(:,:,m_ang) * p_DR(:,:,m_ang) &
-      +  A_qq(:,:,m_ang) * q_DR(:,:,m_ang) &
-      +  A_qf(:,:,m_ang) * f_DR(:,:,m_ang) &
-      +  B_qp(:,:,m_ang) * p(:,:,m_ang) &
-      +  B_qq(:,:,m_ang) * q(:,:,m_ang) &
-      +  B_qf(:,:,m_ang) * f(:,:,m_ang) 
+      q%k(:,:,m_ang) = &
+         A_qp(:,:,m_ang) * p%DR(:,:,m_ang) &
+      +  A_qq(:,:,m_ang) * q%DR(:,:,m_ang) &
+      +  A_qf(:,:,m_ang) * f%DR(:,:,m_ang) &
+      +  B_qp(:,:,m_ang) * p%level(:,:,m_ang) &
+      +  B_qq(:,:,m_ang) * q%level(:,:,m_ang) &
+      +  B_qf(:,:,m_ang) * f%level(:,:,m_ang) 
       !-------------------------------------
-      kf(:,:,m_ang) = &
-         A_fp(:,:,m_ang) * p_DR(:,:,m_ang) &
-      +  A_fq(:,:,m_ang) * q_DR(:,:,m_ang) &
-      +  A_ff(:,:,m_ang) * f_DR(:,:,m_ang) &
-      +  B_fp(:,:,m_ang) * p(:,:,m_ang) &
-      +  B_fq(:,:,m_ang) * q(:,:,m_ang) &
-      +  B_ff(:,:,m_ang) * f(:,:,m_ang) 
+      f%k(:,:,m_ang) = &
+         A_fp(:,:,m_ang) * p%DR(:,:,m_ang) &
+      +  A_fq(:,:,m_ang) * q%DR(:,:,m_ang) &
+      +  A_ff(:,:,m_ang) * f%DR(:,:,m_ang) &
+      +  B_fp(:,:,m_ang) * p%level(:,:,m_ang) &
+      +  B_fq(:,:,m_ang) * q%level(:,:,m_ang) &
+      +  B_ff(:,:,m_ang) * f%level(:,:,m_ang) 
 
    end subroutine set_k
 !=============================================================================

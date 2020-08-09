@@ -29,12 +29,13 @@ module mod_metric_recon
 !=============================================================================
    contains
 !=============================================================================
-   pure subroutine set_k(error, m_ang, fname, falloff, level, level_DR, kl)
+   subroutine set_k(error, m_ang, fname, falloff, level, coefs_cheb, level_DR, kl)
       character(*), intent(inout) :: error
       integer(ip),  intent(in) :: m_ang
       character(*), intent(in) :: fname
       integer(ip),  intent(in) :: falloff
       complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: level
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: coefs_cheb
       complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: level_DR
       complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: kl
       !----------------------------------------------------------------------
@@ -133,7 +134,7 @@ module mod_metric_recon
 
       end select select_field
       !-----------------------------------------------------------------------
-      call compute_DR(m_ang, level, level_DR)
+      call compute_DR(m_ang, level, coefs_cheb, level_DR)
 
       kl(:,:,m_ang) = ( &
             kl(:,:,m_ang) &
@@ -149,7 +150,7 @@ module mod_metric_recon
 !=============================================================================
 ! RK4 evolution
 !=============================================================================
-   pure subroutine take_step(step, m_ang, f)
+   subroutine take_step(step, m_ang, f)
       integer(ip), intent(in)    :: step, m_ang
       type(field), intent(inout) :: f 
       !-----------------------------------------------------------------------
@@ -160,7 +161,7 @@ module mod_metric_recon
             ! if first time then k1 has not been set from k5
             !--------------------------------------------------------
             if (f%first_time) then
-               call set_k(f%error, m_ang, f%name, f%falloff, f%n, f%DR, f%k1)
+               call set_k(f%error, m_ang, f%name, f%falloff, f%n, f%coefs_cheb, f%DR, f%k1)
 
                f%first_time = .false.
             end if
@@ -168,17 +169,17 @@ module mod_metric_recon
             f%l2(:,:,m_ang)= f%n(:,:,m_ang)+0.5_rp*dt*f%k1(:,:,m_ang)
          !--------------------------------------------------------------------
          case (2)
-            call set_k(f%error, m_ang, f%name, f%falloff, f%l2, f%DR, f%k2)
+            call set_k(f%error, m_ang, f%name, f%falloff, f%l2, f%coefs_cheb, f%DR, f%k2)
 
             f%l3(:,:,m_ang)= f%n(:,:,m_ang)+0.5_rp*dt*f%k2(:,:,m_ang)
          !--------------------------------------------------------------------
          case (3)
-            call set_k(f%error, m_ang, f%name, f%falloff, f%l3, f%DR, f%k3)
+            call set_k(f%error, m_ang, f%name, f%falloff, f%l3, f%coefs_cheb, f%DR, f%k3)
 
             f%l4(:,:,m_ang)= f%n(:,:,m_ang)+dt*f%k3(:,:,m_ang)
          !--------------------------------------------------------------------
          case (4)
-            call set_k(f%error, m_ang, f%name, f%falloff, f%l4, f%DR, f%k4)
+            call set_k(f%error, m_ang, f%name, f%falloff, f%l4, f%coefs_cheb, f%DR, f%k4)
 
             f%np1(:,:,m_ang)= f%n(:,:,m_ang) &
             +  (dt/6.0_rp)*(f%k1(:,:,m_ang)+2.0_rp*f%k2(:,:,m_ang)+2.0_rp*f%k3(:,:,m_ang)+f%k4(:,:,m_ang))
@@ -187,7 +188,7 @@ module mod_metric_recon
             !-----------------------------------------------------------------
             ! need k5 for source term and independent residual
             !-----------------------------------------------------------------
-            call set_k(f%error, m_ang, f%name, f%falloff, f%np1, f%DR, f%k5)
+            call set_k(f%error, m_ang, f%name, f%falloff, f%np1, f%coefs_cheb, f%DR, f%k5)
          !--------------------------------------------------------------------
          case default
             write(f%error,*) "Error: take_step, " // f%name // ", step != 1,..,5"
