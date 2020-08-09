@@ -171,8 +171,7 @@ contains
 
       integer(ip), intent(in) :: step, m_ang 
       type(field), intent(inout) :: p, q, f
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: &
-         kp, kq, kf 
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: kp, kq, kf 
 
       call set_level(step, m_ang, p)
       call set_level(step, m_ang, q)
