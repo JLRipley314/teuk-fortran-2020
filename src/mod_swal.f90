@@ -6,7 +6,7 @@
 module mod_swal 
 !=============================================================================
    use mod_prec
-   use mod_field, only: field
+   use mod_field, only: field, set_level
 
    use mod_io, only: set_arr
    use mod_params, only: &
@@ -22,7 +22,7 @@ module mod_swal
    real(rp), dimension(nx,ny), protected, public :: Yarr, cyarr, syarr
 
    ! subroutines 
-   public :: swal_init, swal_lower, swal_raise, swal_laplacian_field 
+   public :: swal_init, swal_lower, swal_raise, compute_swal_laplacian 
 
    public :: swal_filter, swal_high_pass_filter
 
@@ -127,7 +127,7 @@ contains
       end do
    end subroutine swal_coef_to_real
 !=============================================================================
-   pure subroutine swal_laplacian(spin,m_ang,vals,coefs,vals_lap)
+   pure subroutine swal_laplacian_arr(spin,m_ang,vals,coefs,vals_lap)
       integer(ip), intent(in) :: spin
       integer(ip), intent(in) :: m_ang
       complex(rp), dimension(nx,     ny,min_m:max_m), intent(in)    :: vals
@@ -144,17 +144,17 @@ contains
       end do
 
       call swal_coef_to_real(spin,m_ang,coefs,vals_lap) 
-   end subroutine swal_laplacian
+   end subroutine swal_laplacian_arr
 !=============================================================================
-   pure subroutine swal_laplacian_field(step,_ang,f)
+   pure subroutine compute_swal_laplacian(step,m_ang,f)
       integer(ip), intent(in) :: step,m_ang
-      type(filed), intent(inout) :: f
+      type(field), intent(inout) :: f
 
       call set_level(step,m_ang,f)
 
-      call swal_laplacian(f%spin,m_ang,f%level,f%coefs_swal,f%laplacian)
+      call swal_laplacian_arr(f%spin,m_ang,f%level,f%coefs_swal,f%lap)
 
-   end subroutine swal_laplacian_field
+   end subroutine compute_swal_laplacian
 !=============================================================================
    pure subroutine swal_lower(spin,m_ang,vals,coefs,vals_lowered)
       integer(ip), intent(in) :: spin
@@ -199,27 +199,21 @@ contains
 !=============================================================================
 ! Low pass filter. A smooth filter appears to help prevent Gibbs-like ringing
 !=============================================================================
-   pure subroutine swal_filter(m_ang,f)
-      integer(ip), intent(in) :: m_ang
+   pure subroutine swal_filter(m_ang, f)
+      integer(ip), intent(in)    :: m_ang
       type(field), intent(inout) :: f
 
-      integer(ip), parameter :: step
       integer(ip) :: k
 
-      do m_ang=min_m,max_m
+      call swal_real_to_coef(f%spin,m_ang,f%np1,f%coefs_swal) 
 
-         call set_level(step,m_ang,f)
-
-         call swal_real_to_coef(spin,m_ang,f%vals,f%coefs_swal) 
-
-         do k=0,max_l
-            f%coefs(:,k,m_ang) = &
-               exp(-36.0_rp*(real(k,rp)/real(max_l,rp))**25)*f%coefs(:,k,m_ang)
-         end do
-
-         call swal_coef_to_real(f%spin,m_ang,f%coefs_swal,f%np1)
-
+      do k=0,max_l
+         f%coefs_swal(:,k,m_ang) = &
+            exp(-36.0_rp*(real(k,rp)/real(max_l,rp))**25)*f%coefs_swal(:,k,m_ang)
       end do
+
+      call swal_coef_to_real(f%spin,m_ang,f%coefs_swal,f%np1)
+
    end subroutine swal_filter
 !=============================================================================
 ! High pass filter. To see if we are getting converging in high l modes 

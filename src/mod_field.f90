@@ -9,7 +9,7 @@ module mod_field
 !=============================================================================
    private
 
-   public :: field, set_field, set_level, get_level, set_DT, shift_time_step
+   public :: field, set_field, set_level, set_DT, shift_time_step
 !=============================================================================
 ! field type:
 ! always have two levels: n, np1 and intermediate levels for RK4 time
@@ -121,26 +121,6 @@ contains
             write(f%error,*) "ERROR(set_field_level), step=", step 
       end select
    end subroutine set_level
-!=============================================================================
-   pure subroutine get_level(step, m_ang, f)
-      integer(ip), intent(in)    :: step, m_ang
-      type(field), intent(inout) :: f
-
-      select case (step)
-         case (1)
-            f % n(:,:,m_ang)  = f % level(:,:,m_ang) 
-         case (2)
-            f % l2(:,:,m_ang) = f % level(:,:,m_ang)
-         case (3)
-            f % l3(:,:,m_ang) = f % level(:,:,m_ang)
-         case (4)
-            f % l4(:,:,m_ang) = f % level(:,:,m_ang)
-         case (5)
-            f % l5(:,:,m_ang) = f % level(:,:,m_ang)
-         case default
-            write(f%error,*) "ERROR(set_field_level), step=", step 
-      end select
-   end subroutine get_level
 !=============================================================================
    pure subroutine set_DT(step, m_ang, f)
       integer(ip), intent(in)    :: step, m_ang

@@ -16,8 +16,8 @@ sim.black_hole_mass= float(0.5)
 sim.black_hole_spin= round(0.7*sim.black_hole_mass,3)
 sim.compactification_length= float(1)
 #=============================================================================
-sim.evolve_time= float(60) ## units of black hole mass
-sim.num_saved_times= int(300)
+sim.evolve_time= float(30) ## units of black hole mass
+sim.num_saved_times= int(150)
 #=============================================================================
 sim.nx= int(pow(2,6)*pow(3,0)*pow(5,0)*pow(7,0)) ## num radial pts 
 sim.nl= int(pow(2,2)*pow(3,1)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
@@ -51,7 +51,7 @@ sim.psi_boost= int(-2)
 #=============================================================================
 ## initial data for mode m1
 #=============================================================================
-sim.pm1_ang =  int(1) ## m_ang is preserved by time evolution
+sim.pm1_ang =  int(2) ## m_ang is preserved by time evolution
 #-----------------------------------------------------------------------------
 sim.l_ang_pm1= int(2) ## l_ang: support of initial swal 
 

@@ -134,7 +134,8 @@ module mod_metric_recon
 
       end select select_field
       !-----------------------------------------------------------------------
-      call compute_DR(m_ang, level, coefs_cheb, level_DR)
+!      call compute_DR(m_ang, level, coefs_cheb, level_DR)
+      call compute_DR(m_ang, level, level_DR)
 
       kl(:,:,m_ang) = ( &
             kl(:,:,m_ang) &
