@@ -231,6 +231,17 @@ class Sim:
             if (type(attrs[param])==complex):
                f.write("   complex(rp), parameter :: {} = ({}_rp,{}_rp)\n".format(param,attrs[param].real,attrs[param].imag))
 
+            if ((type(attrs[param])==list)
+            and  type(attrs[param][0])==int
+            ):
+               l= attrs[param]
+               n= len(l)
+               lstr= "[{}_ip".format(l[0])
+               for item in l[1:]:
+                  lstr+= ",{}_ip".format(item)
+               lstr+= "]"
+               f.write("   integer(ip), dimension({}), parameter :: {} = {}\n".format(n,param,lstr))
+
          f.write('end module mod_params\n')
       subprocess.call('make clean_obj',shell=True)
       subprocess.call('make '+self.bin_name,shell=True)

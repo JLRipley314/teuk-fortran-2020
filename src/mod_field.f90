@@ -20,7 +20,6 @@ module mod_field
 
    character(:), allocatable :: name
 
-   character(:), allocatable :: error
    logical :: first_time
 
    integer(ip) :: spin, boost, falloff
@@ -66,9 +65,6 @@ contains
       type(field),  intent(out) :: f
 
       f % name = name 
-
-      ! make empty string long enough to hold error message
-      f % error = "                                                              "
 
       f % first_time = .true.
 

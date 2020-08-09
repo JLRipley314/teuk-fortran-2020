@@ -115,21 +115,20 @@ contains
 !=============================================================================
 ! Low pass filter. A smooth filter appears to help prevent Gibbs-like ringing
 !=============================================================================
-   subroutine cheb_filter(m_ang,vals,coefs)
+   subroutine cheb_filter(m_ang, f)
       integer(ip), intent(in) :: m_ang
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: vals
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: coefs
+      type(field), intent(inout) :: f
 
       integer(ip) :: i
 
-      call cheb_real_to_coef(m_ang,vals,coefs) 
+      call cheb_real_to_coef(m_ang,f%np1,f%coefs_cheb) 
 
       do i=1,nx
-         coefs(i,:,m_ang) = &
-            exp(-36.0_rp*(real(i-1,rp)/real(nx-1,rp))**25)*coefs(i,:,m_ang)
+         f%coefs_cheb(i,:,m_ang) = &
+            exp(-36.0_rp*(real(i-1,rp)/real(nx-1,rp))**25)*f%coefs_cheb(i,:,m_ang)
       end do
 
-      call cheb_coef_to_real(m_ang,coefs,vals) 
+      call cheb_coef_to_real(m_ang,f%coefs_cheb,f%np1) 
    end subroutine cheb_filter
 !=============================================================================
    subroutine cheb_test()

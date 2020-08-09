@@ -16,7 +16,7 @@ sim.black_hole_mass= float(0.5)
 sim.black_hole_spin= round(0.7*sim.black_hole_mass,3)
 sim.compactification_length= float(1)
 #=============================================================================
-sim.evolve_time= float(30) ## units of black hole mass
+sim.evolve_time= float(100) ## units of black hole mass
 sim.num_saved_times= int(150)
 #=============================================================================
 sim.nx= int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
@@ -90,6 +90,16 @@ sim.initial_data_direction_nm2= "time_symmetric"#"outgoing"#"ingoing"#
 sim.amp_nm2= float( 0.0)  ## amplitude of the initial perturbation
 sim.rl_nm2=  float(-1.5)  ## compact support: lower r value
 sim.ru_nm2=  float( 1.5)  ## compact support: upper r value 
+#=============================================================================
+## which m angular values to evolve
+#=============================================================================
+sim.lin_m = [  -sim.pm1_ang,   sim.pm1_ang]
+sim.scd_m = [-2*sim.pm1_ang, 2*sim.pm1_ang, 0]
+#=============================================================================
+## which m angular values to write to file
+#=============================================================================
+sim.lin_write_m = [  -sim.pm1_ang,   sim.pm1_ang]
+sim.scd_write_m = [-2*sim.pm1_ang, 2*sim.pm1_ang, 0]
 #=============================================================================
 if (sim.run_type == "basic_run"):
    sim.launch_run()

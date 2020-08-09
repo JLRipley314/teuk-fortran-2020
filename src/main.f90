@@ -11,7 +11,7 @@ program main
    use mod_prec
    use mod_params, only: &
       nt, dt, t_step_save, black_hole_mass, &
-      pm1_ang, pm2_ang, &
+      lin_m, scd_m, &
       psi_spin, psi_boost, &
       metric_recon, scd_order, &
       scd_order_start_time
@@ -51,9 +51,6 @@ clean_memory: block
 !=============================================================================
    integer(ip) :: i, t_step
    real(rp)    :: time
-
-   integer(ip), parameter :: lin_m(2) = [-pm1_ang, pm1_ang]
-   integer(ip), parameter :: scd_m(2) = [2_ip*pm1_ang, 0_ip]
 !=============================================================================
    write (*,*) "Initializing fields"   
 !-----------------------------------------------------------------------------
@@ -165,28 +162,28 @@ clean_memory: block
       ! low pass filter (in spectral space)
       !-----------------------------------------------------------------------
       do i=1,size(lin_m)
-         call cheb_filter(lin_m(i),psi4_lin_p%np1,psi4_lin_p%coefs_cheb)
-         call cheb_filter(lin_m(i),psi4_lin_q%np1,psi4_lin_q%coefs_cheb)
-         call cheb_filter(lin_m(i),psi4_lin_f%np1,psi4_lin_f%coefs_cheb)
+         call cheb_filter(lin_m(i),psi4_lin_p)
+         call cheb_filter(lin_m(i),psi4_lin_q)
+         call cheb_filter(lin_m(i),psi4_lin_f)
       end do
 
       do i=1,size(scd_m)
-         call swal_filter(scd_m(i),psi4_lin_p%spin,psi4_lin_p%np1,psi4_lin_p%coefs_swal)
-         call swal_filter(scd_m(i),psi4_lin_q%spin,psi4_lin_q%np1,psi4_lin_q%coefs_swal)
-         call swal_filter(scd_m(i),psi4_lin_f%spin,psi4_lin_f%np1,psi4_lin_f%coefs_swal)
+         call swal_filter(scd_m(i),psi4_lin_p)
+         call swal_filter(scd_m(i),psi4_lin_q)
+         call swal_filter(scd_m(i),psi4_lin_f)
       end do
 
       if (metric_recon) then
          do i=1,size(lin_m)
-            call cheb_filter(lin_m(i),psi3%np1,psi3%coefs_cheb)
-            call cheb_filter(lin_m(i),psi2%np1,psi2%coefs_cheb)
+            call cheb_filter(lin_m(i),psi3)
+            call cheb_filter(lin_m(i),psi2)
 
-            call cheb_filter(lin_m(i),la%np1,la%coefs_cheb)
-            call cheb_filter(lin_m(i),pi%np1,pi%coefs_cheb)
+            call cheb_filter(lin_m(i),la)
+            call cheb_filter(lin_m(i),pi)
 
-            call cheb_filter(lin_m(i),hmbmb%np1,hmbmb%coefs_cheb)
-            call cheb_filter(lin_m(i), hlmb%np1, hlmb%coefs_cheb)
-            call cheb_filter(lin_m(i),muhll%np1,muhll%coefs_cheb)
+            call cheb_filter(lin_m(i),hmbmb)
+            call cheb_filter(lin_m(i), hlmb)
+            call cheb_filter(lin_m(i),muhll)
          end do
       end if
       !-----------------------------------------------------------------------
