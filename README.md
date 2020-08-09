@@ -18,9 +18,6 @@ Runtime parameters are configured in the ``setup.py'' file.
 * Fastest Fourier Transform in the West (FFTW): 
 	http://fftw.org
 
-* Hierarchical Data Format:
-	https://www.hdfgroup.org/solutions/hdf5/
-
 I have successfully compiled the code with
 gfortran (version 9 onwards) and
 ifort (version 17 onwards).
@@ -28,18 +25,19 @@ You will probably need to configure the Makefile to run on your local machine.
 
 ## Visualization
 
-I use a pyqtgraph (see [here](https://github.com/JLRipley314/sci-vis))
-to visualize the data, which are saved as csv files hdf5 (and/or csv) files 
+I use pyqtgraph-graph derived software
+(see [here](https://github.com/JLRipley314/sci-vis))
+to visualize the data, which are saved as csv files 
 
-# Citation
+## Citation
 	
-This code is described in
+This code is described in more detail in
 ...
 
 Further theoretical background on how we reconstruct the metric can be found in
 ...
 
-# Further information
+# Contact
 
 For questions please contact
 Justin Ripley: lloydripley [at] gmail [dot] com

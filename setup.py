@@ -22,12 +22,14 @@ sim.num_saved_times= int(150)
 sim.nx= int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
 sim.nl= int(pow(2,2)*pow(3,1)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
 #=============================================================================
-sim.metric_recon= True#False# 
-sim.scd_order=    False#True# 
+## evolution and write: take boolean values 
+#=============================================================================
+sim.metric_recon= True 
+sim.scd_order=    True 
 
-sim.write_indep_res=           True#False#
-sim.write_metric_recon_fields= True#False#
-sim.write_scd_order_source=    False#True#
+sim.write_indep_res=           True
+sim.write_metric_recon_fields= False
+sim.write_scd_order_source=    False
 #=============================================================================
 ## change start time
 sim.start_multiple= float(1.0)

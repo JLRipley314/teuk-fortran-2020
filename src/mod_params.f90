@@ -15,9 +15,9 @@ implicit none
    integer(ip), parameter :: nx = 48_ip
    integer(ip), parameter :: nl = 12_ip
    logical, parameter :: metric_recon = .true.
-   logical, parameter :: scd_order = .false.
+   logical, parameter :: scd_order = .true.
    logical, parameter :: write_indep_res = .true.
-   logical, parameter :: write_metric_recon_fields = .true.
+   logical, parameter :: write_metric_recon_fields = .false.
    logical, parameter :: write_scd_order_source = .false.
    real(rp), parameter :: start_multiple = 1.0_rp
    character(*), parameter :: computer = 'home'
@@ -65,8 +65,8 @@ implicit none
    integer(ip), parameter :: min_m = -4_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Sun_16_21_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm22'
-   character(*), parameter :: output_dir = 'output/Sun_16_21_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm22'
-   character(*), parameter :: bin_name = 'Sun_16_21_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm22.run'
-   character(*), parameter :: tables_dir = 'output/Sun_16_21_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm22/tables'
+   character(*), parameter :: output_stem = 'Sun_16_28_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm22'
+   character(*), parameter :: output_dir = 'output/Sun_16_28_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm22'
+   character(*), parameter :: bin_name = 'Sun_16_28_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm22.run'
+   character(*), parameter :: tables_dir = 'output/Sun_16_28_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm22/tables'
 end module mod_params
