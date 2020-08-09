@@ -19,7 +19,7 @@ sim.compactification_length= float(1)
 sim.evolve_time= float(30) ## units of black hole mass
 sim.num_saved_times= int(150)
 #=============================================================================
-sim.nx= int(pow(2,6)*pow(3,0)*pow(5,0)*pow(7,0)) ## num radial pts 
+sim.nx= int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
 sim.nl= int(pow(2,2)*pow(3,1)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
 #=============================================================================
 sim.metric_recon= True#False# 
@@ -71,7 +71,7 @@ sim.ru_nm1=  float( 1.5)  ## compact support: upper r value
 #=============================================================================
 ## initial data for mode m2
 #=============================================================================
-sim.pm2_ang =  int(1) ## m_ang is preserved by time evolution
+sim.pm2_ang =  int(2) ## m_ang is preserved by time evolution
 #-----------------------------------------------------------------------------
 sim.l_ang_pm2= int(3) ## support over single spin weighted spherical harmonic
 

@@ -91,13 +91,13 @@ contains
             bump = 0.0_rp
          end if
 
-         f%n(i,j,m_ang) = (1.0_rp+ZI)*(((r-rl)/width)**2) * (((ru-r)/width)**2) * bump
+         f%n(i,j,m_ang) = (((r-rl)/width)**2) * (((ru-r)/width)**2) * bump
          
-         q%n(i,j,m_ang) = (1.0_rp+ZI)*( &
+         q%n(i,j,m_ang) = ( &
             (2.0_rp*(((r-rl)/width)   )*(((ru-r)/width)**2)) &
          -  (2.0_rp*(((r-rl)/width)**2)*( (ru-r)/width    )) &
          +  (1.0_rp*(1.0_rp           )*(((ru-r)/width)**2)) &
-         -  (2.0_rp*(((r-rl)/width)**2)*(1.0_rp           )) &
+         -  (2.0_rp*(((r-rl)/width)**2)*(1.0_rp              )) &
          )*bump/width
          !--------------------------------------------------------------------
          ! rescale q as q = \partial_R f = -(r/cl)^2 partial_r f

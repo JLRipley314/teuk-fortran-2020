@@ -161,9 +161,10 @@ module mod_ghp
       integer(ip), intent(in)    :: step, m_ang
       type(field), intent(inout) :: f
 
-      call set_level( step, m_ang, f)
-      call set_DT(    step, m_ang, f)
-      call compute_DR(step, m_ang, f)
+      call set_level(step, m_ang, f)
+      call set_DT(   step, m_ang, f)
+
+      call compute_DR(m_ang, f%level, f%DR)
 
       call set_thorn_arr(m_ang, f%spin, f%boost, f%falloff, f%level, f%DT, f%DR, f%thorn)
 
@@ -194,9 +195,10 @@ module mod_ghp
       integer(ip), intent(in)    :: step, m_ang
       type(field), intent(inout) :: f
 
-      call set_level( step, m_ang, f)
-      call set_DT(    step, m_ang, f)
-      call compute_DR(step, m_ang, f)
+      call set_level(step, m_ang, f)
+      call set_DT(   step, m_ang, f)
+
+      call compute_DR(m_ang, f%level, f%DR)
 
       call set_thorn_prime_arr(m_ang, f%falloff, f%level, f%DT, f%DR, f%thorn_prime)
 

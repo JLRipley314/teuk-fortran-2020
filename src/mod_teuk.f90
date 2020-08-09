@@ -171,17 +171,18 @@ contains
 
       integer(ip), intent(in) :: step, m_ang 
       type(field), intent(inout) :: p, q, f
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: kp, kq, kf
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: &
+         kp, kq, kf 
+
+      call set_level(step, m_ang, p)
+      call set_level(step, m_ang, q)
+      call set_level(step, m_ang, f)
 
       call compute_DR(step, m_ang, p)
       call compute_DR(step, m_ang, q)
       call compute_DR(step, m_ang, f)
 
-      call compute_swal_laplacian(step,m_ang,f)
-
-      call set_level(step,m_ang,p)
-      call set_level(step,m_ang,q)
-      call set_level(step,m_ang,f)
+      call compute_swal_laplacian(step, m_ang, f)
 
       !-------------------------------------
       kp(:,:,m_ang) = &
@@ -191,7 +192,7 @@ contains
       +  B_pp(:,:,m_ang) * p%level(:,:,m_ang) &
       +  B_pq(:,:,m_ang) * q%level(:,:,m_ang) &
       +  B_pf(:,:,m_ang) * f%level(:,:,m_ang) &
-      +  f%lap(:,:,m_ang) 
+      +  f%swal_lap(:,:,m_ang) 
       !-------------------------------------
       kq(:,:,m_ang) = &
          A_qp(:,:,m_ang) * p%DR(:,:,m_ang) &
@@ -328,7 +329,7 @@ contains
       type(field), intent(inout) :: f
       type(field), intent(out)   :: res
 
-      call compute_DR(5_ip,m_ang,f)
+      call compute_DR(m_ang,f%np1,f%DR)
       
       res%np1(:,:,m_ang) = f%DR(:,:,m_ang) - q%np1(:,:,m_ang)
 

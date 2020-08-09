@@ -38,12 +38,12 @@ module mod_field
       k4( nx,ny,min_m:max_m), &
       k5( nx,ny,min_m:max_m), &
 
-      level(  nx,ny,min_m:max_m), &
-      DT(     nx,ny,min_m:max_m), &
-      DR(     nx,ny,min_m:max_m), &
-      raised( nx,ny,min_m:max_m), &
-      lowered(nx,ny,min_m:max_m), & 
-      lap(    nx,ny,min_m:max_m), &
+      level(   nx,ny,min_m:max_m), &
+      DT(      nx,ny,min_m:max_m), &
+      DR(      nx,ny,min_m:max_m), &
+      raised(  nx,ny,min_m:max_m), &
+      lowered( nx,ny,min_m:max_m), & 
+      swal_lap(nx,ny,min_m:max_m), &
 
       coefs_swal(nx,0:max_l,min_m:max_m), &
       coefs_cheb(nx,    ny, min_m:max_m), &
@@ -60,7 +60,7 @@ module mod_field
 !=============================================================================
 contains
 !=============================================================================
-   pure subroutine set_field(name, spin, boost, falloff, f)
+   subroutine set_field(name, spin, boost, falloff, f)
       character(*), intent(in)  :: name ! field name
       integer(ip),  intent(in)  :: spin, boost, falloff
       type(field),  intent(out) :: f
@@ -92,9 +92,9 @@ contains
       f % DT    = 0.0_rp
       f % DR    = 0.0_rp
 
-      f % raised  = 0.0_rp
-      f % lowered = 0.0_rp
-      f % lap     = 0.0_rp
+      f % raised   = 0.0_rp
+      f % lowered  = 0.0_rp
+      f % swal_lap = 0.0_rp
 
       f % coefs_swal = 0.0_rp
       f % coefs_cheb = 0.0_rp
@@ -102,7 +102,7 @@ contains
 
    end subroutine set_field
 !=============================================================================
-   pure subroutine set_level(step, m_ang, f)
+   subroutine set_level(step, m_ang, f)
       integer(ip), intent(in)    :: step, m_ang
       type(field), intent(inout) :: f
 
@@ -118,11 +118,11 @@ contains
          case (5)
             f % level(:,:,m_ang) = f % np1(:,:,m_ang)  
          case default
-            write(f%error,*) "ERROR(set_field_level), step=", step 
+            write(*,*) "ERROR(set_field_level), step=", step 
       end select
    end subroutine set_level
 !=============================================================================
-   pure subroutine set_DT(step, m_ang, f)
+   subroutine set_DT(step, m_ang, f)
       integer(ip), intent(in)    :: step, m_ang
       type(field), intent(inout) :: f
 
@@ -138,11 +138,11 @@ contains
          case (5)
             f % DT(:,:,m_ang) = f % k5(:,:,m_ang) 
          case default
-            write(f%error,*) "ERROR(set_field_DT), step=", step 
+            write(*,*) "ERROR(set_field_DT), step=", step 
       end select
    end subroutine set_DT
 !=============================================================================
-   pure subroutine shift_time_step(m_ang, f)
+   subroutine shift_time_step(m_ang, f)
       integer(ip), intent(in)    :: m_ang
       type(field), intent(inout) :: f 
 
