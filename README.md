@@ -8,8 +8,7 @@ the linearized Newman-Penrose scalar Psi\_4, and then
 solves the equations of motion for the second order Psi\_4.
 For more information about the code see papers listed under ``Citation''.
 
-Runs are launched with ``setup.py''.
-You will probably need to configure the Makefile to run on your local machine.
+Runtime parameters are configured in the ``setup.py'' file.
 
 ## Libraries
 
@@ -22,7 +21,10 @@ You will probably need to configure the Makefile to run on your local machine.
 * Hierarchical Data Format:
 	https://www.hdfgroup.org/solutions/hdf5/
 
-I have successfully compiled the code with gfortran (v9 onwards) and ifort.
+I have successfully compiled the code with
+gfortran (version 9 onwards) and
+ifort (version 17 onwards).
+You will probably need to configure the Makefile to run on your local machine.
 
 ## Visualization
 
