@@ -100,8 +100,6 @@ contains
       integer(ip), intent(in) :: step, m_ang
       type(field), intent(inout) :: f
 
-      integer(ip) :: i, j
-
       call set_level(step,m_ang,f)
 
       call compute_DR_arr(m_ang, f%level, f%DR)
