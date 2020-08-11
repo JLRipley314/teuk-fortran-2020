@@ -5,7 +5,6 @@ BIN= $(TOP)bin/
 
 OBJDIR= $(TOP)obj/
 
-## for fftw
 INCFFTW= /usr/include
 LIBFFTW= /lib/x86_64-linux-gnu
 
@@ -16,7 +15,6 @@ vpath %.o   $(OBJDIR)
 FC = gfortran#ifort#
 
 FFLAGS= -fmax-errors=5 -O2
-#FFLAGS= -pg -fmax-errors=5 -O3
 
 SYSLIB= -lfftw3 
 #==========================================================================
@@ -74,15 +72,12 @@ all: $(RUN)
 
 %.run: $(MAIN) $(OBJ)
 	$(FC) -o $(BIN)$@ $^ -I$(INCFFTW) -L$(LIBFFTW) $(SYSLIB) $(FFLAGS)   
-#	$(FC) -o $(BIN)$@ $^ $(FFLAGS)   
 
 $(RUN): $(MAIN) $(OBJ)
 	$(FC) -o $@ $^ -I$(INCFFTW) -L$(LIBFFTW) $(SYSLIB) $(FFLAGS)  
-#	$(FC) -o $@ $^ $(FFLAGS)  
 
 $(OBJDIR)%.o: %.f90
 	$(FC) $(FFLAGS) -I$(INCFFTW) -L$(LIBFFTW) $(SYSLIB) -c -o $@ $^ 
-#	$(FC) $(FFLAGS) -c -o $@ $^ 
 #==========================================================================
 clean_obj:
 	rm -f $(OBJDIR)*.o
