@@ -15,8 +15,8 @@ vpath %.o   $(OBJDIR)
 #==========================================================================
 FC = gfortran#ifort#
 
-#FFLAGS= -fmax-errors=5 -O3
-FFLAGS= -pg -fmax-errors=5 -O3
+FFLAGS= -fmax-errors=5 -O2
+#FFLAGS= -pg -fmax-errors=5 -O3
 
 SYSLIB= -lfftw3 
 #==========================================================================
@@ -42,7 +42,7 @@ OBJ= $(addprefix $(OBJDIR), \
 	mod_field.o \
 	mod_fields_list.o \
 	mod_io.o \
-	mod_cheb.o \
+	mod_cheb_fftw.o \
 	mod_swal.o \
 	mod_bkgrd.o \
 	mod_ghp.o \
@@ -59,7 +59,7 @@ DEPS = $(addprefix $(SRC), \
 	mod_field.f90 \
 	mod_fields_list.f90 \
 	mod_io.f90 \
-	mod_cheb.f90 \
+	mod_cheb_fftw.f90 \
 	mod_swal.f90 \
 	mod_bkgrd.f90 \
 	mod_ghp.f90 \
