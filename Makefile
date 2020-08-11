@@ -91,8 +91,3 @@ clean_all:
 	rm -f $(OBJDIR)*.mod
 	rm -f $(BIN)*.run
 	rm -rf output/*
-#==========================================================================
-run:
-	@./bin/run
-run_debug:
-	@valgrind -v --track-origins=yes --leak-check=full ./bin/run
