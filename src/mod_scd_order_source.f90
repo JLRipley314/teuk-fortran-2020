@@ -335,7 +335,8 @@ module mod_scd_order_source
          sf%edth_prime)
 
       call compute_DT("pre_thorn_prime",m_ang,sf)
-      call compute_DR(m_ang,sf%pre_thorn_prime_np1,sf%DR)
+!      call compute_DR(m_ang,sf%pre_thorn_prime_np1,sf%DR)
+      call compute_DR(m_ang,sf%pre_thorn_prime_np1,sf%coefs_cheb,sf%DR)
 
       call set_thorn_prime( &
          m_ang, &

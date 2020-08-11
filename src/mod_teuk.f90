@@ -328,7 +328,9 @@ contains
       type(field), intent(inout) :: f
       type(field), intent(out)   :: res
 
-      call compute_DR(m_ang,f%np1,f%DR)
+      integer(ip), parameter :: step = 5_ip
+
+      call compute_DR(step, m_ang, f)
       
       res%np1(:,:,m_ang) = f%DR(:,:,m_ang) - q%np1(:,:,m_ang)
 

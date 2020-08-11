@@ -127,7 +127,7 @@ clean_memory: block
          call teuk_time_step(lin_m(i),psi4_lin_p,psi4_lin_q,psi4_lin_f)
       end do
       !-----------------------------------------------------------------------
-      ! metric recon evolves +/- m_ang
+      ! metric recon evolves +/- m_ang so only evolve m_ang>=0
       !-----------------------------------------------------------------------
       if (metric_recon) then 
          do i=1,size(lin_m)

@@ -26,7 +26,7 @@ module mod_cheb
    real(rp), dimension(nx,ny), protected, public :: Rarr = 0
 
    ! subroutines
-   public :: cheb_init, compute_DR, cheb_filter
+   public :: cheb_init, compute_DR, cheb_filter, cheb_test
 
    interface compute_DR
       module procedure compute_DR_arr, compute_DR_field
@@ -94,15 +94,17 @@ contains
       complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: coefs
       complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: vals
 
-      integer(ip) :: j 
+      integer(ip) :: i, j 
       real(rp), dimension(nx) :: rep, imp
 
       do j=1,ny
          rep = real( coefs(:,j,m_ang),kind=rp)
          imp = aimag(coefs(:,j,m_ang))
 
-         rep = rep / 2.0_rp
-         imp = imp / 2.0_rp
+         do i=2,N
+            rep(i) = rep(i) / 2.0_rp
+            imp(i) = imp(i) / 2.0_rp
+         end do
 
          call dfftw_execute_r2r(plan_dct,rep,rep)
          call dfftw_execute_r2r(plan_dct,imp,imp)
@@ -114,22 +116,23 @@ contains
 !=============================================================================
    subroutine compute_DR_arr(m_ang,vals,coefs,DR)
       integer(ip), intent(in) :: m_ang
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)    :: vals
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: coefs
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(out)   :: DR
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: vals
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: coefs
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: DR
 
       integer(ip) :: i
    
       call cheb_real_to_coef(m_ang,vals,coefs)
 
-      ! use D_vals as a temporary array
-      DR(:,:,m_ang) = coefs(:,:,m_ang)
-
       coefs(nx,  :,m_ang) = 0
       coefs(nx-1,:,m_ang) = 0
 
+      ! use D_vals as a temporary array
+      DR(:,:,m_ang) = coefs(:,:,m_ang)
+
+      ! note fortran indexing 1..nx (and not 0..nx-1)
       do i=nx-1, 2, -1
-         coefs(i-1,:,m_ang) = 2.0_rp*i*DR(i,:,m_ang) + coefs(i+1,:,m_ang)
+         coefs(i-1,:,m_ang) = 2.0_rp*(i-1)*DR(i,:,m_ang) + coefs(i+1,:,m_ang)
       end do
 
       coefs(1,:,m_ang) = coefs(1,:,m_ang) / 2.0_rp
@@ -166,5 +169,25 @@ contains
 
       call cheb_coef_to_real(m_ang,f%coefs_cheb,f%np1) 
    end subroutine cheb_filter
+!=============================================================================
+   subroutine cheb_test()
+      complex(rp), dimension(nx,ny,min_m:max_m) :: vals, coefs, DR_vals, computed_DR_vals
+      integer(ip) :: i
+
+      integer(ip), parameter :: m_ang = 0_ip
+
+      do i=1,nx
+         vals(i,:,:)    = sin(Rvec(i))**2
+         DR_vals(i,:,:) = 2*sin(Rvec(i))*cos(Rvec(i))
+      end do
+
+      call compute_DR(m_ang, vals, coefs, computed_DR_vals)
+
+      do i=1,nx
+         write (*,*) computed_DR_vals(i,:,m_ang) - DR_vals(i,:,m_ang)
+      end do
+
+
+   end subroutine cheb_test
 !=============================================================================
 end module mod_cheb

@@ -83,8 +83,8 @@ contains
 !=============================================================================
    subroutine compute_DR_arr(m_ang,vals,D_vals)
       integer(ip), intent(in) :: m_ang
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)    :: vals
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(inout) :: D_vals 
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: vals
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: D_vals 
       integer(ip) :: i, j
 
       D_vals(:,:,m_ang) = 0
@@ -104,13 +104,8 @@ contains
 
       call set_level(step,m_ang,f)
 
-      f%DR(:,:,m_ang) = 0
+      call compute_DR_arr(m_ang, f%level, f%DR)
 
-      do j=1,nx
-      do i=1,nx
-         f%DR(i,:,m_ang) = f%DR(i,:,m_ang) + (D_cheb(i,j) * f%level(j,:,m_ang))
-      end do
-      end do
    end subroutine compute_DR_field
 !=============================================================================
 ! Low pass filter. A smooth filter appears to help prevent Gibbs-like ringing

@@ -100,7 +100,6 @@ contains
          coefs(:,k,m_ang) =  &
             coefs(:,k,m_ang) &
          +  (vals(:,j,m_ang) * weights(j) * swal(j,k,m_ang,spin))
-!         +  (vals(:,j,m_ang) * weights(j) * ((-1.0_rp)**(spin+m_ang))*swal(j,k,-m_ang,-spin))
       end do
       end do
    end subroutine swal_real_to_coef

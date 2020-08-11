@@ -187,7 +187,6 @@ class Sim:
          )
          if (self.debug):
             run_str= 'valgrind -v --track-origins=yes --leak-check=full '+run_str
-         print(run_str)
          subprocess.call(run_str,shell=True) 
       elif (self.computer=='feynman'):
          self.write_slurm_script()

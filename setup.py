@@ -16,16 +16,16 @@ sim.black_hole_mass= float(0.5)
 sim.black_hole_spin= round(0.7*sim.black_hole_mass,3)
 sim.compactification_length= float(1)
 #=============================================================================
-sim.evolve_time= float(100) ## units of black hole mass
-sim.num_saved_times= int(150)
+sim.evolve_time= float(20) ## units of black hole mass
+sim.num_saved_times= int(100)
 #=============================================================================
-sim.nx= int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
+sim.nx= int(pow(2,6)*pow(3,0)*pow(5,0)*pow(7,0)) ## num radial pts 
 sim.nl= int(pow(2,2)*pow(3,1)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
 #=============================================================================
 ## evolution and write: take boolean values 
 #=============================================================================
 sim.metric_recon= True 
-sim.scd_order=    True 
+sim.scd_order=    True
 
 sim.write_indep_res=           True
 sim.write_metric_recon_fields= False
@@ -37,8 +37,8 @@ sim.start_multiple= float(1.0)
 sim.computer= 'home'#'feynman'#
 #=============================================================================
 ## for feynman cluster/slurm script
-sim.walltime= '12:00:00' ### (hh:mm:ss)
-sim.memory=  '512' ### MB 
+sim.walltime= '4:00:00' ## (hh:mm:ss)
+sim.memory=  '512' ## MB 
 sim.num_nodes= '1'
 sim.num_tasks_per_node= '1'
 #=============================================================================
@@ -53,13 +53,13 @@ sim.psi_boost= int(-2)
 #=============================================================================
 ## initial data for mode m1
 #=============================================================================
-sim.pm1_ang =  int(2) ## m_ang is preserved by time evolution
+sim.pm1_ang =  int(1) ## m_ang is preserved by time evolution
 #-----------------------------------------------------------------------------
 sim.l_ang_pm1= int(2) ## l_ang: support of initial swal 
 
 sim.initial_data_direction_pm1= "ingoing"#"outgoing"#"time_symmetric"#
 
-sim.amp_pm1= float(10.0)  ## amplitude of the initial perturbation
+sim.amp_pm1= float( 1.0)  ## amplitude of the initial perturbation
 sim.rl_pm1=  float(-1.5)  ## compact support: lower r value
 sim.ru_pm1=  float( 1.5)  ## compact support: upper r value 
 #-----------------------------------------------------------------------------
