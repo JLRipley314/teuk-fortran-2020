@@ -374,13 +374,13 @@ module mod_scd_order_source
 
       sf % pre_edth_prime_nm3(:,:,m_ang) = sf % pre_edth_prime_nm2(:,:,m_ang) 
       sf % pre_edth_prime_nm2(:,:,m_ang) = sf % pre_edth_prime_nm1(:,:,m_ang)  
-      sf % pre_edth_prime_nm1(:,:,m_ang) = sf % pre_edth_prime_n(:,:,m_ang) 
-      sf % pre_edth_prime_n(:,:,m_ang)   = sf % pre_edth_prime_np1(:,:,m_ang) 
+      sf % pre_edth_prime_nm1(:,:,m_ang) = sf % pre_edth_prime_n(  :,:,m_ang) 
+      sf % pre_edth_prime_n(  :,:,m_ang) = sf % pre_edth_prime_np1(:,:,m_ang) 
 
       sf % pre_thorn_prime_nm3(:,:,m_ang) = sf % pre_thorn_prime_nm2(:,:,m_ang) 
       sf % pre_thorn_prime_nm2(:,:,m_ang) = sf % pre_thorn_prime_nm1(:,:,m_ang) 
-      sf % pre_thorn_prime_nm1(:,:,m_ang) = sf % pre_thorn_prime_n(:,:,m_ang) 
-      sf % pre_thorn_prime_n(:,:,m_ang)   = sf % pre_thorn_prime_np1(:,:,m_ang) 
+      sf % pre_thorn_prime_nm1(:,:,m_ang) = sf % pre_thorn_prime_n(  :,:,m_ang) 
+      sf % pre_thorn_prime_n(  :,:,m_ang) = sf % pre_thorn_prime_np1(:,:,m_ang) 
 
    end subroutine scd_order_source_shift_time_step
 !=============================================================================

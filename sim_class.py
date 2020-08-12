@@ -233,7 +233,7 @@ class Sim:
             if ((type(attrs[param])==list)
             and  type(attrs[param][0])==int
             ):
-               l= attrs[param]
+               l= list(set(attrs[param])) ## to get rid of duplicates in list 
                n= len(l)
                lstr= "[{}_ip".format(l[0])
                for item in l[1:]:

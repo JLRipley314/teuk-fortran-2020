@@ -13,7 +13,7 @@ args= sys.argv
 sim= Sim(args)
 #=============================================================================
 sim.black_hole_mass= float(0.5)	
-sim.black_hole_spin= round(0.7*sim.black_hole_mass,3)
+sim.black_hole_spin= round(0.999*sim.black_hole_mass,4)
 sim.compactification_length= float(1)
 #=============================================================================
 sim.evolve_time= float(100) ## units of black hole mass
