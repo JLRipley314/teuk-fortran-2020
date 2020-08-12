@@ -80,7 +80,7 @@ module mod_ghp
       call set_level(step, m_ang, f)
       call set_DT(   step, m_ang, f)
 
-      call swal_raise(f%spin, m_ang, f%level, f%coefs_swal, f%raised)
+      call swal_raise(f%spin, m_ang, f%level, f%raised)
 
       call set_edth_arr(m_ang, f%spin, f%boost, f%level, f%DT, f%raised, f%edth)
 
@@ -122,7 +122,7 @@ module mod_ghp
       call set_level(step, m_ang, f)
       call set_DT(   step, m_ang, f)
 
-      call swal_lower(f%spin, m_ang, f%level, f%coefs_swal, f%lowered)
+      call swal_lower(f%spin, m_ang, f%level, f%lowered)
 
       call set_edth_prime_arr(m_ang, f%spin, f%boost, f%level, f%DT, f%lowered, f%edth_prime)
 

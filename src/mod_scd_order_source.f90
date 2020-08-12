@@ -323,7 +323,6 @@ module mod_scd_order_source
          sf%pre_edth_prime_spin, &
          m_ang, &
          sf%pre_edth_prime_np1, &
-         sf%coefs_swal, &
          sf%lowered)
 
       call set_edth_prime( &

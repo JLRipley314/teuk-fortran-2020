@@ -33,7 +33,7 @@ module mod_swal
    ! Note: range of indices
    real(rp), dimension(ny, 0:max_l, min_m:max_m, min_s:max_s), protected, public :: swal = 0
 
-   real(rp), dimension(ny, ny, min_m:max_m, min_s:max_s) :: laplacian
+   real(rp), dimension(ny, ny, min_m:max_m, min_s:max_s) :: laplacian, lower, raise
 !=============================================================================
 contains
 !=============================================================================
@@ -90,7 +90,7 @@ contains
                laplacian(j,i,m_ang,spin) = laplacian(j,i,m_ang,spin) &
                -  real(k-spin,rp)*real(k+spin+1,rp)   &
                   *weights(j)*swal(j,k,m_ang,spin)  &
-                  *swal(i,k,m_ang,spin)      
+                  *swal(i,k,m_ang,spin)
             end do
          end do
          end do
@@ -99,11 +99,43 @@ contains
       !-----------------------------------------------------------------
       ! precompute raising array
       !-----------------------------------------------------------------
+      raise = 0
+      do spin =min_s,max_s-1
+      do m_ang=min_m,max_m
+         do i=1,ny
+         do j=1,ny
+            min_l = max(abs(spin), abs(spin+1), abs(m_ang))
 
+            do k=min_l,max_l
+               raise(j,i,m_ang,spin) = raise(j,i,m_ang,spin) &
+               +  sqrt(real(k-spin,rp)*real(k+spin+1.0_rp,rp)) &
+                  *weights(j)*swal(j,k,m_ang,spin)  &
+                  *swal(i,k,m_ang,spin+1)
+            end do
+         end do
+         end do
+      end do
+      end do
       !-----------------------------------------------------------------
       ! precompute lowering array
       !-----------------------------------------------------------------
+      lower = 0
+      do spin =min_s+1,max_s
+      do m_ang=min_m,  max_m
+         do i=1,ny
+         do j=1,ny
+            min_l = max(abs(spin), abs(spin-1), abs(m_ang))
 
+            do k=min_l,max_l
+               lower(j,i,m_ang,spin) = lower(j,i,m_ang,spin) &
+               -  sqrt(real(k+spin,rp)*real(k-spin+1,rp))   &
+                  *weights(j)*swal(j,k,m_ang,spin)  &
+                  *swal(i,k,m_ang,spin-1)
+            end do
+         end do
+         end do
+      end do
+      end do
       !-----------------------------------------------------------------
    end subroutine swal_init
 !=============================================================================
@@ -181,45 +213,42 @@ contains
 
    end subroutine compute_swal_laplacian
 !=============================================================================
-   subroutine swal_lower(spin,m_ang,vals,coefs,vals_lowered)
+   subroutine swal_lower(spin,m_ang,vals,vals_lowered)
       integer(ip), intent(in) :: spin
       integer(ip), intent(in) :: m_ang
-      complex(rp), dimension(nx,     ny,min_m:max_m), intent(in)    :: vals
-      complex(rp), dimension(nx,0:max_l,min_m:max_m), intent(inout) :: coefs
-      complex(rp), dimension(nx,     ny,min_m:max_m), intent(out)   :: vals_lowered 
-      integer(ip) :: lmin, k
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: vals
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: vals_lowered 
 
-      call swal_real_to_coef(spin,m_ang,vals,coefs) 
+      integer(ip) :: j, jp
 
-      lmin = max(-spin,spin-1_ip)
+      vals_lowered = 0
 
-      do k=lmin,max_l
-         coefs(:,k,m_ang) = &
-         -  sqrt(real(k+spin,rp)*real(k-spin+1.0_rp,rp))*coefs(:,k,m_ang)
+      do j =1,ny
+      do jp=1,ny
+         vals_lowered(:,j,m_ang) = vals_lowered(:,j,m_ang) &
+         +  vals(:,jp,m_ang)*lower(jp,j,m_ang,spin)
+      end do
       end do
 
-      call swal_coef_to_real(spin-1,m_ang,coefs,vals_lowered) 
    end subroutine swal_lower
 !=============================================================================
-   subroutine swal_raise(spin,m_ang,vals,coefs,vals_raised)
+   subroutine swal_raise(spin,m_ang,vals,vals_raised)
       integer(ip), intent(in) :: spin
       integer(ip), intent(in) :: m_ang
-      complex(rp), dimension(nx,     ny,min_m:max_m), intent(in)    :: vals
-      complex(rp), dimension(nx,0:max_l,min_m:max_m), intent(inout) :: coefs
-      complex(rp), dimension(nx,     ny,min_m:max_m), intent(out)   :: vals_raised
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: vals
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: vals_raised
 
-      integer(ip) :: lmin, k
+      integer(ip) :: j, jp
 
-      call swal_real_to_coef(spin,m_ang,vals,coefs) 
+      vals_raised = 0
 
-      lmin = max(spin,-spin-1_ip)
-
-      do k=lmin,max_l
-         coefs(:,k,m_ang) = &
-            sqrt(real(k-spin,rp)*real(k+spin+1.0_rp,rp))*coefs(:,k,m_ang)
+      do j =1,ny
+      do jp=1,ny
+         vals_raised(:,j,m_ang) = vals_raised(:,j,m_ang) &
+         +  vals(:,jp,m_ang)*raise(jp,j,m_ang,spin)
+      end do
       end do
 
-      call swal_coef_to_real(spin+1,m_ang,coefs,vals_raised) 
    end subroutine swal_raise
 !=============================================================================
 ! Low pass filter. A smooth filter appears to help prevent Gibbs-like ringing

@@ -16,8 +16,8 @@ sim.black_hole_mass= float(0.5)
 sim.black_hole_spin= round(0.7*sim.black_hole_mass,3)
 sim.compactification_length= float(1)
 #=============================================================================
-sim.evolve_time= float(100) ## units of black hole mass
-sim.num_saved_times= int(500)
+sim.evolve_time= float(30) ## units of black hole mass
+sim.num_saved_times= int(100)
 #=============================================================================
 sim.nx= int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
 sim.nl= int(pow(2,2)*pow(3,1)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
