@@ -38,11 +38,8 @@ class Sim:
       +	'_bhm'+str(self.black_hole_mass)
       +	'_bhs'+str(self.black_hole_spin)
       +	'_nx'+str(self.nx)
-      +	'_ny'+str(self.ny)
       +	'_nl'+str(self.nl)
-      +	'_s'+str(self.psi_spin)
-      +	'_pm1'+str(self.pm1_ang)
-      +	'_pm2'+str(self.pm2_ang)
+      +	'_m_'+str(self.pm1_ang)+'_'+str(self.pm2_ang)
       )
       if (self.computer=="home"):
          self.output_dir= "output/"+self.output_stem

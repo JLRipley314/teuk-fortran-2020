@@ -13,11 +13,11 @@ args= sys.argv
 sim= Sim(args)
 #=============================================================================
 sim.black_hole_mass= float(0.5)	
-sim.black_hole_spin= round(0.999*sim.black_hole_mass,4)
+sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
 sim.compactification_length= float(1)
 #=============================================================================
-sim.evolve_time= float(100) ## units of black hole mass
-sim.num_saved_times= int(500)
+sim.evolve_time= float(150) ## units of black hole mass
+sim.num_saved_times= int(750)
 #=============================================================================
 sim.nx= int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
 sim.nl= int(pow(2,2)*pow(3,1)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
@@ -25,22 +25,22 @@ sim.nl= int(pow(2,2)*pow(3,1)*pow(5,0)*pow(7,0)) ## num swaL angular pts
 ## evolution and write: take boolean values 
 #=============================================================================
 sim.metric_recon= True 
-sim.scd_order=    False
+sim.scd_order=    True
 
 sim.write_indep_res=           True
 sim.write_metric_recon_fields= False
-sim.write_scd_order_source=    False
+sim.write_scd_order_source=    True
 #=============================================================================
 ## change start time
 sim.start_multiple= float(1.0)
 #=============================================================================
-sim.computer= 'home'#'feynman'#
+sim.computer= 'feynman'#'home'#
 #=============================================================================
 ## for feynman cluster/slurm script
 sim.walltime= '4:00:00' ## (hh:mm:ss)
 sim.memory=  '512' ## MB 
 sim.num_nodes= '1'
-sim.num_tasks_per_node= '8'
+sim.num_tasks_per_node= '1'
 #=============================================================================
 ## we can only do metric reconstruction starting from psi4 for now.
 ## For pure first order Teukolsky evolution we can consider other
@@ -59,15 +59,15 @@ sim.l_ang_pm1= int(2) ## l_ang: support of initial swal
 
 sim.initial_data_direction_pm1= "ingoing"#"outgoing"#"time_symmetric"#
 
-sim.amp_pm1= float( 1.0)  ## amplitude of the initial perturbation
+sim.amp_pm1= float(10.0)  ## amplitude of the initial perturbation
 sim.rl_pm1=  float(-1.5)  ## compact support: lower r value
 sim.ru_pm1=  float( 1.5)  ## compact support: upper r value 
 #-----------------------------------------------------------------------------
 sim.l_ang_nm1= int(2) ## support over single spin weighted spherical harmonic
 
-sim.initial_data_direction_nm1= "time_symmetric"#"outgoing"#"ingoing"#
+sim.initial_data_direction_nm1= "ingoing"#"time_symmetric"#"outgoing"#
 
-sim.amp_nm1= float( 0.0)  ## amplitude of the initial perturbation
+sim.amp_nm1= float(10.0)  ## amplitude of the initial perturbation
 sim.rl_nm1=  float(-1.5)  ## compact support: lower r value
 sim.ru_nm1=  float( 1.5)  ## compact support: upper r value 
 #=============================================================================
@@ -107,14 +107,22 @@ if (sim.run_type == "basic_run"):
    sim.launch_run()
 #=============================================================================
 elif (sim.run_type == "multiple_runs"):
-   m_vals = [0,1,2]
+   nxs = [64, 80, 96]
+   nys = [12, 16, 20]
 
-   sim.nx = 64
-   sim.ny = 12
-   for m in m_vals:
-      sim.pm_ang = m
-      sim.launch_run() 
-      time.sleep(120)
+   bhss = [round(0.7*sim.black_hole_mass,4), round(0.998*sim.black_hole_mass,4)]
+   sms = [1,2,3]
+
+   for sm in sms:
+      for bhs in bhss:
+         for nx in nxs:
+            for ny in nys:
+               sim.start_multiple = sm
+               sim.bhs = bhs 
+               sim.nx = nx
+               sim.ny = ny
+               sim.launch_run() 
+               time.sleep(60)
 #=============================================================================
 elif (sim.run_type == "spin_ramp"):
    for bhs in [0,0.01,0.02,0.04,0.08,0.12,0.16,0.2,0.24,0.28,0.32]:

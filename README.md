@@ -6,7 +6,10 @@ The code also reconstructs
 the linear spacetime metric in outgoing raditation gauge from
 the linearized Newman-Penrose scalar Psi\_4, and then
 solves the equations of motion for the second order Psi\_4.
-For more information about the code see papers listed under ``Citation''.
+The code evolves fields in the time domain, and spatial derivatives
+are evaluated using pseudo-spectral methods. 
+For more information about the code and the formalism we use
+see the papers listed under ``Citation''.
 
 Runtime parameters are configured in the ``setup.py'' file.
 
@@ -23,17 +26,26 @@ gfortran (version 9 onwards) and
 ifort (version 17 onwards).
 You will probably need to configure the Makefile to run on your local machine.
 
+## Derivation of equations of motion in coordinate form
+
+A Mathematica notebook that contains the equations of motion
+(as described in the ``code paper'' listed under ``Citation'') in coordinate
+form can be found [here](https://github.com/JLRipley314/2nd-order-teuk-derivations).
+
 ## Visualization
 
 I use pyqtgraph-graph derived software
 (see [here](https://github.com/JLRipley314/sci-vis))
-to visualize the data, which are saved as csv files 
+to visualize the data, which are saved as csv files. 
 
 ## Citation
-	
-This code is described in more detail in
+
+### Code paper
+This code (and some of the formalism that went into developting it)
+is described in more detail in
 ...
 
+### Formalism paper
 Further theoretical background on how we reconstruct the metric can be found in
 ...
 

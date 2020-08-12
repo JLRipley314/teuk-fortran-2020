@@ -12,7 +12,7 @@ vpath %.f90 $(SRC)
 vpath %.mod $(OBJDIR)
 vpath %.o   $(OBJDIR)
 #==========================================================================
-FC = gfortran#ifort#
+FC = ifort#gfortran#
 
 FFLAGS= -g -fmax-errors=5 -O2
 
