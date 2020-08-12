@@ -123,9 +123,11 @@ clean_memory: block
       !-----------------------------------------------------------------------
       ! \Psi_4^{(1)} evolution 
       !-----------------------------------------------------------------------
+!      !$OMP PARALLEL DO
       do i=1,size(lin_m)
          call teuk_time_step(lin_m(i),psi4_lin_p,psi4_lin_q,psi4_lin_f)
       end do
+!      !$OMP END PARALLEL DO
       !-----------------------------------------------------------------------
       ! metric recon evolves +/- m_ang so only evolve m_ang>=0
       !-----------------------------------------------------------------------
@@ -140,9 +142,11 @@ clean_memory: block
       ! \Psi_4^{(2)} evolution 
       !-----------------------------------------------------------------------
       if (scd_order) then
+!         !$OMP PARALLEL DO
          do i=1,size(scd_m)
             call scd_order_source_compute(scd_m(i),source) 
          end do
+!         !$OMP END PARALLEL DO
          if (time>=scd_order_start_time) then
             do i=1,size(scd_m)
                call teuk_time_step(scd_m(i),source,psi4_scd_p,psi4_scd_q,psi4_scd_f)

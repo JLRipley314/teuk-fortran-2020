@@ -10,8 +10,8 @@ implicit none
    real(rp), parameter :: black_hole_mass = 0.5_rp
    real(rp), parameter :: black_hole_spin = 0.35_rp
    real(rp), parameter :: compactification_length = 1.0_rp
-   real(rp), parameter :: evolve_time = 20.0_rp
-   integer(ip), parameter :: num_saved_times = 100_ip
+   real(rp), parameter :: evolve_time = 5.0_rp
+   integer(ip), parameter :: num_saved_times = 10_ip
    integer(ip), parameter :: nx = 64_ip
    integer(ip), parameter :: nl = 12_ip
    logical, parameter :: metric_recon = .true.
@@ -24,7 +24,7 @@ implicit none
    character(*), parameter :: walltime = '4:00:00'
    character(*), parameter :: memory = '512'
    character(*), parameter :: num_nodes = '1'
-   character(*), parameter :: num_tasks_per_node = '1'
+   character(*), parameter :: num_tasks_per_node = '8'
    integer(ip), parameter :: psi_spin = -2_ip
    integer(ip), parameter :: psi_boost = -2_ip
    integer(ip), parameter :: pm1_ang = 1_ip
@@ -59,14 +59,14 @@ implicit none
    real(rp), parameter :: scd_order_start_time = 4.810510846598895_rp
    integer(ip), parameter :: ny = 20_ip
    real(rp), parameter :: dt = 0.002197265625_rp
-   integer(ip), parameter :: nt = 4551_ip
-   integer(ip), parameter :: t_step_save = 45_ip
+   integer(ip), parameter :: nt = 1137_ip
+   integer(ip), parameter :: t_step_save = 113_ip
    integer(ip), parameter :: max_m = 4_ip
    integer(ip), parameter :: min_m = -4_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Tue_16_31_bhm0.5_bhs0.35_nx64_ny20_nl12_s-2_pm11_pm22'
-   character(*), parameter :: output_dir = 'output/Tue_16_31_bhm0.5_bhs0.35_nx64_ny20_nl12_s-2_pm11_pm22'
-   character(*), parameter :: bin_name = 'Tue_16_31_bhm0.5_bhs0.35_nx64_ny20_nl12_s-2_pm11_pm22.run'
-   character(*), parameter :: tables_dir = 'output/Tue_16_31_bhm0.5_bhs0.35_nx64_ny20_nl12_s-2_pm11_pm22/tables'
+   character(*), parameter :: output_stem = 'Tue_17_04_bhm0.5_bhs0.35_nx64_ny20_nl12_s-2_pm11_pm22'
+   character(*), parameter :: output_dir = 'output/Tue_17_04_bhm0.5_bhs0.35_nx64_ny20_nl12_s-2_pm11_pm22'
+   character(*), parameter :: bin_name = 'Tue_17_04_bhm0.5_bhs0.35_nx64_ny20_nl12_s-2_pm11_pm22.run'
+   character(*), parameter :: tables_dir = 'output/Tue_17_04_bhm0.5_bhs0.35_nx64_ny20_nl12_s-2_pm11_pm22/tables'
 end module mod_params

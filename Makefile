@@ -14,12 +14,13 @@ vpath %.o   $(OBJDIR)
 #==========================================================================
 FC = gfortran#ifort#
 
-FFLAGS= -fmax-errors=5 -O2
+FFLAGS= -pg -fmax-errors=5 -O2
 
 SYSLIB= -lfftw3 
 #==========================================================================
 ifeq ($(FC),gfortran)
 	FFLAGS+= -std=f2008 -Wall -Wextra -fimplicit-none -fcheck=all \
+		-fopenmp \
 		-J$(OBJDIR) 
 endif
 
@@ -27,6 +28,7 @@ ifeq ($(FC),ifort)
 	FFLAGS+= -std08 -ip -ipo -warn declarations -warn all -check-bounds \
 		-no-inline-max-total-size -no-inline-max-size \
 		-parallel -par-num-threads=2 \
+		-qopenmp \
 		-module $(OBJDIR) 
 endif
 #==========================================================================
