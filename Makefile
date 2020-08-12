@@ -14,20 +14,21 @@ vpath %.o   $(OBJDIR)
 #==========================================================================
 FC = gfortran#ifort#
 
-FFLAGS= -pg -fmax-errors=5 -O2
+FFLAGS= -g -fmax-errors=5 -O2
 
 SYSLIB= -lfftw3 
 #==========================================================================
 ifeq ($(FC),gfortran)
-	FFLAGS+= -std=f2008 -Wall -Wextra -fimplicit-none -fcheck=all \
-		-J$(OBJDIR) 
+	FFLAGS+= -std=f2008 -Wall -Wextra -fimplicit-none \
+		 -ftree-vectorize -march=native \
+		 -J$(OBJDIR) 
+		#-fcheck=all  
 endif
 
 ifeq ($(FC),ifort)
-	FFLAGS+= -std08 -ip -ipo -warn declarations -warn all -check-bounds \
-		-no-inline-max-total-size -no-inline-max-size \
-		-parallel -par-num-threads=4 \
+	FFLAGS+= -std08 -ipo -warn declarations -warn all \
 		-module $(OBJDIR) 
+		#-check-bounds 
 endif
 #==========================================================================
 RUN = $(BIN)default.run
