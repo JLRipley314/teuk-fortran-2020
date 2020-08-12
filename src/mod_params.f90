@@ -65,8 +65,8 @@ implicit none
    integer(ip), parameter :: min_m = -4_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Wed_11_33_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm22'
-   character(*), parameter :: output_dir = 'output/Wed_11_33_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm22'
-   character(*), parameter :: bin_name = 'Wed_11_33_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm22.run'
-   character(*), parameter :: tables_dir = 'output/Wed_11_33_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm22/tables'
+   character(*), parameter :: output_stem = 'Wed_11_47_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm22'
+   character(*), parameter :: output_dir = 'output/Wed_11_47_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm22'
+   character(*), parameter :: bin_name = 'Wed_11_47_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm22.run'
+   character(*), parameter :: tables_dir = 'output/Wed_11_47_bhm0.5_bhs0.35_nx48_ny24_nl12_s-2_pm12_pm22/tables'
 end module mod_params

@@ -33,7 +33,8 @@ module mod_swal
    ! Note: range of indices
    real(rp), dimension(ny, 0:max_l, min_m:max_m, min_s:max_s), protected, public :: swal = 0
 
-   real(rp), dimension(ny, ny, min_m:max_m, min_s:max_s) :: laplacian, lower, raise
+   real(rp), dimension(ny, ny, min_m:max_m, min_s:max_s) :: &
+      laplacian, lower, raise, low_pass
 !=============================================================================
 contains
 !=============================================================================
@@ -136,6 +137,25 @@ contains
          end do
       end do
       end do
+      !-----------------------------------------------------------------
+      ! precompute swal low-pass filter array
+      !-----------------------------------------------------------------
+      low_pass = 0
+      do spin =min_s,max_s
+      do m_ang=min_m,max_m
+         do i=1,ny
+         do j=1,ny
+            do k=0,max_l
+               low_pass(j,i,m_ang,spin) = low_pass(j,i,m_ang,spin) &
+               +  exp(-36.0_rp*(real(k,rp)/real(max_l,rp))**25) &
+                  *weights(j)*swal(j,k,m_ang,spin)  &
+                  *swal(i,k,m_ang,spin)
+            end do
+         end do
+         end do
+      end do
+      end do
+      !-----------------------------------------------------------------
       !-----------------------------------------------------------------
    end subroutine swal_init
 !=============================================================================
@@ -257,16 +277,19 @@ contains
       integer(ip), intent(in) :: m_ang
       type(field), intent(inout) :: f
 
-      integer(ip) :: k
+      integer(ip) :: j, jp
 
-      call swal_real_to_coef(f%spin,m_ang,f%np1,f%coefs_swal) 
+      f%level = 0
 
-      do k=0,max_l
-         f%coefs_swal(:,k,m_ang) = &
-            exp(-36.0_rp*(real(k,rp)/real(max_l,rp))**25)*f%coefs_swal(:,k,m_ang)
+      do j =1,ny
+      do jp=1,ny
+         f%level(:,j,m_ang) = f%level(:,j,m_ang) &
+         +  f%np1(:,jp,m_ang)*low_pass(jp,j,m_ang,f%spin)
+      end do
       end do
 
-      call swal_coef_to_real(f%spin,m_ang,f%coefs_swal,f%np1) 
+      f%np1(:,:,m_ang) = f%level(:,:,m_ang)
+
    end subroutine swal_filter
 !=============================================================================
 ! High pass filter. To see if we are getting converging in high l modes 
