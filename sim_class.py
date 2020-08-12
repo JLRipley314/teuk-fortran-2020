@@ -183,7 +183,7 @@ class Sim:
       self.output_file= self.output_dir+'/output.txt'
       if (self.computer=='home'):
          run_str= (
-            './bin/'+self.bin_name+' > '+self.output_file+' 2>&1 &'
+            'time ./bin/'+self.bin_name+' > '+self.output_file+' 2>&1 &'
          )
          if (self.debug):
             run_str= 'valgrind -v --track-origins=yes --leak-check=full '+run_str

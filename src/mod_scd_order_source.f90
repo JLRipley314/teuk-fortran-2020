@@ -173,6 +173,7 @@ module mod_scd_order_source
       integer(ip) :: mt_ang
 
       mt_ang = m1_ang + m2_ang
+
       !-----------------------------------------------------------------------
       call set_level(step,m1_ang,psi4_lin_f)
       call set_level(step,m1_ang,psi3)
@@ -184,7 +185,7 @@ module mod_scd_order_source
 
       call set_level(step,-m1_ang,hlmb)
       call set_level(step,-m1_ang,hmbmb)
-      !-----------------------------------------------------------------------
+
       call set_level(step,m2_ang,psi4_lin_f)
       call set_level(step,m2_ang,psi3)
       call set_level(step,m2_ang,psi2)
@@ -192,25 +193,25 @@ module mod_scd_order_source
       call set_level(step,m2_ang,hlmb)
       call set_level(step,m2_ang,muhll)
 
+      call set_level(step,-m2_ang,pi)
+      call set_level(step,-m2_ang,hlmb)
+      call set_level(step,-m2_ang,hmbmb)
+
       call set_thorn_prime(step,m2_ang,psi4_lin_f)
       call set_thorn_prime(step,m2_ang,psi3)
       call set_thorn_prime(step,m2_ang,muhll)
       call set_thorn_prime(step,m2_ang,hlmb)
 
+      call set_edth_prime(step,m2_ang,psi4_lin_f)
+
       call set_edth(step,m2_ang,psi3)
       call set_edth(step,m2_ang,hmbmb)
       call set_edth(step,m2_ang,hlmb)
 
-      call set_edth_prime(step,m2_ang,psi4_lin_f)
-
-      call set_level(step,-m2_ang,pi)
-      call set_level(step,-m2_ang,hlmb)
-      call set_level(step,-m2_ang,hmbmb)
-
-      call set_thorn_prime(step,-m2_ang,hlmb)
-
       call set_edth(step,-m2_ang,hlmb)
       call set_edth(step,-m2_ang,hmbmb)
+
+      call set_thorn_prime(step,-m2_ang,hlmb)
       !--------------------------------------------------------------------
       ! pre_thorn_prime term
       !--------------------------------------------------------------------
