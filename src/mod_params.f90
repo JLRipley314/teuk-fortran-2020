@@ -66,9 +66,9 @@ implicit none
    integer(ip), parameter :: min_m = -4_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Wed_19_17_bhm0.5_bhs0.35_nx80_nl12_m_2_2'
-   character(*), parameter :: output_dir = '/mnt/grtheory/tf-out/Wed_19_17_bhm0.5_bhs0.35_nx80_nl12_m_2_2'
-   character(*), parameter :: bin_name = 'Wed_19_17_bhm0.5_bhs0.35_nx80_nl12_m_2_2.run'
-   character(*), parameter :: tables_dir = '/mnt/grtheory/tf-out/Wed_19_17_bhm0.5_bhs0.35_nx80_nl12_m_2_2/tables'
-   character(*), parameter :: output_file = '/mnt/grtheory/tf-out/Wed_19_15_bhm0.5_bhs0.35_nx64_nl12_m_2_2/output.txt'
+   character(*), parameter :: output_stem = 'Wed_19_19_bhm0.5_bhs0.35_nx80_nl12_m_2_2'
+   character(*), parameter :: output_dir = '/mnt/grtheory/tf-out/Wed_19_19_bhm0.5_bhs0.35_nx80_nl12_m_2_2'
+   character(*), parameter :: bin_name = 'Wed_19_19_bhm0.5_bhs0.35_nx80_nl12_m_2_2.run'
+   character(*), parameter :: tables_dir = '/mnt/grtheory/tf-out/Wed_19_19_bhm0.5_bhs0.35_nx80_nl12_m_2_2/tables'
+   character(*), parameter :: output_file = '/mnt/grtheory/tf-out/Wed_19_17_bhm0.5_bhs0.35_nx80_nl12_m_2_2/output.txt'
 end module mod_params

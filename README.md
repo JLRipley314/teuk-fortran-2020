@@ -9,9 +9,9 @@ solves the equations of motion for the second order Psi\_4.
 The code evolves fields in the time domain, and spatial derivatives
 are evaluated using pseudo-spectral methods. 
 For more information about the code and the formalism we use
-see the papers listed under `Citation'.
+see the papers listed under `Citation`.
 
-Runtime parameters are configured in the `setup.py' file.
+Runtime parameters are configured in the `setup.py` file.
 
 ## Libraries
 
@@ -29,7 +29,7 @@ You will probably need to configure the Makefile to run on your local machine.
 ## Derivation of equations of motion in coordinate form
 
 A Mathematica notebook that contains the equations of motion
-(as described in the `code paper' listed under `Citation') in coordinate
+(as described in the `code paper` listed under `Citation`) in coordinate
 form can be found [here](https://github.com/JLRipley314/2nd-order-teuk-derivations).
 
 ## Visualization
