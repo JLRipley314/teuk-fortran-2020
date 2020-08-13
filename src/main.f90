@@ -167,12 +167,6 @@ clean_memory: block
          call cheb_filter(lin_m(i),psi4_lin_f)
       end do
 
-      do i=1,size(scd_m)
-         call swal_filter(scd_m(i),psi4_lin_p)
-         call swal_filter(scd_m(i),psi4_lin_q)
-         call swal_filter(scd_m(i),psi4_lin_f)
-      end do
-
       if (metric_recon) then
          do i=1,size(lin_m)
             call cheb_filter(lin_m(i),psi3)
@@ -186,6 +180,12 @@ clean_memory: block
             call cheb_filter(lin_m(i),muhll)
          end do
       end if
+
+      do i=1,size(scd_m)
+         call cheb_filter(scd_m(i),psi4_scd_p)
+         call cheb_filter(scd_m(i),psi4_scd_q)
+         call cheb_filter(scd_m(i),psi4_scd_f)
+      end do
       !-----------------------------------------------------------------------
       ! shift time steps
       !-----------------------------------------------------------------------

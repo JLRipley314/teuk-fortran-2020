@@ -16,8 +16,8 @@ sim.black_hole_mass= float(0.5)
 sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
 sim.compactification_length= float(1)
 #=============================================================================
-sim.evolve_time= float(150) ## units of black hole mass
-sim.num_saved_times= int(750)
+sim.evolve_time= float(100) ## units of black hole mass
+sim.num_saved_times= int(300)
 #=============================================================================
 sim.nx= int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
 sim.nl= int(pow(2,2)*pow(3,1)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
@@ -30,6 +30,7 @@ sim.scd_order=    True
 sim.write_indep_res=           True
 sim.write_metric_recon_fields= False
 sim.write_scd_order_source=    True
+sim.write_coefs=               True
 #=============================================================================
 ## change start time
 sim.start_multiple= float(1.0)
@@ -107,17 +108,17 @@ if (sim.run_type == "basic_run"):
    sim.launch_run()
 #=============================================================================
 elif (sim.run_type == "multiple_runs"):
-   nxs = [64, 80, 96]
-   nys = [12, 16, 20]
+   nxs = [64, 80]#, 96]
+   nls = [12, 16]#, 20]
 
    bhss = [round(0.7*sim.black_hole_mass,4), round(0.998*sim.black_hole_mass,4)]
    sms = [1,2,3]
 
    for bhs in bhss:
-      for i in [0,1,2]:
-         sim.bhs = bhs 
+      for i in range(len(nxs)):
+         sim.black_hole_spin = bhs 
          sim.nx = nxs[i]
-         sim.ny = nys[i]
+         sim.nl = nls[i]
          sim.launch_run() 
          time.sleep(60)
 #=============================================================================

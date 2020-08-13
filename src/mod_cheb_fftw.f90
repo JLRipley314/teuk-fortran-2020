@@ -28,6 +28,8 @@ module mod_cheb
    ! subroutines
    public :: cheb_init, compute_DR, cheb_filter, cheb_test
 
+   public :: cheb_real_to_coef
+
    interface compute_DR
       module procedure compute_DR_arr, compute_DR_field
    end interface

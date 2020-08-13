@@ -8,6 +8,9 @@ module mod_write_level
 
    use mod_io,   only: write_csv
 
+   use mod_cheb, only: cheb_real_to_coef
+   use mod_swal, only: swal_real_to_coef
+
    use mod_teuk, only: compute_res_q
 
    use mod_metric_recon, only: metric_recon_indep_res
@@ -17,7 +20,8 @@ module mod_write_level
       pm1_ang, pm2_ang, &
       metric_recon, scd_order, &
       write_metric_recon_fields, &
-      write_indep_res, write_scd_order_source
+      write_indep_res, write_scd_order_source, &
+      write_coefs
 
    use mod_fields_list, only: &
       psi4_lin_p, psi4_lin_q, psi4_lin_f, &
@@ -101,6 +105,52 @@ contains
             end do
          end if
 
+      end if
+      !-----------------------------------------------------------------------
+      if (write_coefs) then
+         !--------------------------------------------------------------------
+         do i=1,size(lin_write_m)
+            call cheb_real_to_coef( &
+               lin_write_m(i), &
+               psi4_lin_f%np1, &
+               psi4_lin_f%coefs_cheb &
+            )
+            call swal_real_to_coef( &
+               psi4_lin_f%spin, &
+               lin_write_m(i), &
+               psi4_lin_f%coefs_cheb, &
+               psi4_lin_f%coefs_both &
+            )
+            call write_csv( &
+               "coefs_"//psi4_lin_f%name, &
+               time, &
+               lin_write_m(i), &
+               psi4_lin_f%coefs_both(:,:,lin_write_m(i)) &
+            )
+         end do 
+         !--------------------------------------------------------------------
+         if (scd_order) then
+            do i=1,size(scd_write_m)
+               call cheb_real_to_coef( &
+                  scd_write_m(i), &
+                  psi4_scd_f%np1, &
+                  psi4_scd_f%coefs_cheb &
+               )
+               call swal_real_to_coef( &
+                  psi4_scd_f%spin, &
+                  scd_write_m(i), &
+                  psi4_scd_f%coefs_cheb, &
+                  psi4_scd_f%coefs_both &
+               )
+               call write_csv( &
+                  "coefs_"//psi4_scd_f%name, &
+                  time, &
+                  scd_write_m(i), &
+                  psi4_scd_f%coefs_both(:,:,scd_write_m(i)) &
+               )
+            end do 
+         end if
+         !--------------------------------------------------------------------
       end if
       !--------------------------------------------------------------------
    end subroutine write_level

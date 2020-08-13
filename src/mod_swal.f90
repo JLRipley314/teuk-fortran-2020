@@ -27,6 +27,8 @@ module mod_swal
 
    public :: swal_test_orthonormal, swal_test_to_from
 
+   public :: swal_real_to_coef
+
    ! weights for Gaussian integration 
    real(rp), dimension(ny) :: weights
 
