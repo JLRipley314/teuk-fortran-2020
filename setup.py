@@ -113,16 +113,13 @@ elif (sim.run_type == "multiple_runs"):
    bhss = [round(0.7*sim.black_hole_mass,4), round(0.998*sim.black_hole_mass,4)]
    sms = [1,2,3]
 
-   for sm in sms:
-      for bhs in bhss:
-         for nx in nxs:
-            for ny in nys:
-               sim.start_multiple = sm
-               sim.bhs = bhs 
-               sim.nx = nx
-               sim.ny = ny
-               sim.launch_run() 
-               time.sleep(60)
+   for bhs in bhss:
+      for i in [0,1,2]:
+         sim.bhs = bhs 
+         sim.nx = nxs[i]
+         sim.ny = nys[i]
+         sim.launch_run() 
+         time.sleep(60)
 #=============================================================================
 elif (sim.run_type == "spin_ramp"):
    for bhs in [0,0.01,0.02,0.04,0.08,0.12,0.16,0.2,0.24,0.28,0.32]:
