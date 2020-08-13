@@ -22,8 +22,8 @@ module mod_cheb
    type(c_ptr) :: plan_dct
 
    ! radial points
-   real(rp), dimension(nx),    protected, public :: Rvec = 0
-   real(rp), dimension(nx,ny), protected, public :: Rarr = 0
+   real(rp), dimension(nx),    protected, public :: Rvec
+   real(rp), dimension(nx,ny), protected, public :: Rarr
 
    ! subroutines
    public :: cheb_init, compute_DR, cheb_filter, cheb_test
@@ -31,9 +31,6 @@ module mod_cheb
    interface compute_DR
       module procedure compute_DR_arr, compute_DR_field
    end interface
-
-   ! For radial smoothing 
-   real(rp), parameter :: width = R_max/real(nx,rp)
 !=============================================================================
 contains
 !=============================================================================

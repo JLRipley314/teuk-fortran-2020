@@ -10,8 +10,8 @@ module mod_cheb
    private
 
    ! radial points
-   real(rp), dimension(nx),    protected, public :: Rvec = 0
-   real(rp), dimension(nx,ny), protected, public :: Rarr = 0
+   real(rp), dimension(nx),    protected, public :: Rvec
+   real(rp), dimension(nx,ny), protected, public :: Rarr
 
    ! subroutines
    public :: cheb_init, compute_DR, cheb_filter, cheb_test
@@ -21,13 +21,9 @@ module mod_cheb
    end interface
 
    ! Chebyshev matrices  
-   real(rp), dimension(nx,nx) :: D_cheb  = 0
-   real(rp), dimension(nx,nx) :: to_cheb = 0
-   real(rp), dimension(nx,nx) :: to_real = 0
-
-   ! For radial smoothing 
-   real(rp), parameter :: width = R_max/real(nx,rp)
-
+   real(rp), dimension(nx,nx) :: D_cheb
+   real(rp), dimension(nx,nx) :: to_cheb
+   real(rp), dimension(nx,nx) :: to_real
 !=============================================================================
 contains
 !=============================================================================
