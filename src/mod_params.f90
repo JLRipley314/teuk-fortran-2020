@@ -16,13 +16,13 @@ implicit none
    integer(ip), parameter :: nl = 16_ip
    logical, parameter :: metric_recon = .true.
    logical, parameter :: scd_order = .true.
-   logical, parameter :: write_coefs = .true.
    logical, parameter :: write_indep_res = .true.
    logical, parameter :: write_metric_recon_fields = .false.
    logical, parameter :: write_scd_order_source = .true.
+   logical, parameter :: write_coefs = .true.
    real(rp), parameter :: start_multiple = 1.0_rp
    character(*), parameter :: computer = 'feynman'
-   character(*), parameter :: walltime = '8:00:00'
+   character(*), parameter :: walltime = '4:00:00'
    character(*), parameter :: memory = '512'
    character(*), parameter :: num_nodes = '1'
    character(*), parameter :: num_tasks_per_node = '1'
@@ -66,9 +66,9 @@ implicit none
    integer(ip), parameter :: min_m = -4_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Thu_13_18_bhm0.5_bhs0.499_nx80_nl16_m_2_2'
-   character(*), parameter :: output_dir = '/mnt/grtheory/tf-out/Thu_13_18_bhm0.5_bhs0.499_nx80_nl16_m_2_2'
-   character(*), parameter :: bin_name = 'Thu_13_18_bhm0.5_bhs0.499_nx80_nl16_m_2_2.run'
-   character(*), parameter :: tables_dir = '/mnt/grtheory/tf-out/Thu_13_18_bhm0.5_bhs0.499_nx80_nl16_m_2_2/tables'
-   character(*), parameter :: output_file = '/mnt/grtheory/tf-out/Thu_13_17_bhm0.5_bhs0.499_nx64_nl12_m_2_2/output.txt'
+   character(*), parameter :: output_stem = 'Thu_16_54_bhm0.5_bhs0.499_nx80_nl16_m_2_2'
+   character(*), parameter :: output_dir = '/mnt/grtheory/tf-out/Thu_16_54_bhm0.5_bhs0.499_nx80_nl16_m_2_2'
+   character(*), parameter :: bin_name = 'Thu_16_54_bhm0.5_bhs0.499_nx80_nl16_m_2_2.run'
+   character(*), parameter :: tables_dir = '/mnt/grtheory/tf-out/Thu_16_54_bhm0.5_bhs0.499_nx80_nl16_m_2_2/tables'
+   character(*), parameter :: output_file = '/mnt/grtheory/tf-out/Thu_16_53_bhm0.5_bhs0.499_nx64_nl12_m_2_2/output.txt'
 end module mod_params
