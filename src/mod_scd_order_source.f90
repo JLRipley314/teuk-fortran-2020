@@ -295,8 +295,6 @@ module mod_scd_order_source
  
       integer(ip) :: m1_ang, m2_ang 
  
-      sf % n(:,:,m_ang) = sf % np1(:,:,m_ang)
-       
       call scd_order_source_zero(m_ang,sf)
 
       do m1_ang=min_m,max_m
