@@ -44,7 +44,8 @@ program main
 
    implicit none
 !=============================================================================
-! so valgrind doesn't get confused about automatically deallocated memory
+! Put everything in a black so valgrind doesn't get confused about 
+! automatically deallocated memory
 clean_memory: block
 !=============================================================================
 ! declare and initialize variables, fields, etc.
@@ -165,7 +166,7 @@ clean_memory: block
          call cheb_filter(lin_m(i),psi4_lin_p)
          call cheb_filter(lin_m(i),psi4_lin_q)
          call cheb_filter(lin_m(i),psi4_lin_f)
-
+         !------------------------------------
          call swal_filter(lin_m(i),psi4_lin_p)
          call swal_filter(lin_m(i),psi4_lin_q)
          call swal_filter(lin_m(i),psi4_lin_f)
@@ -182,7 +183,7 @@ clean_memory: block
             call cheb_filter(lin_m(i),hmbmb)
             call cheb_filter(lin_m(i), hlmb)
             call cheb_filter(lin_m(i),muhll)
-
+            !-------------------------------
             call swal_filter(lin_m(i),psi3)
             call swal_filter(lin_m(i),psi2)
 
@@ -199,7 +200,7 @@ clean_memory: block
          call cheb_filter(scd_m(i),psi4_scd_p)
          call cheb_filter(scd_m(i),psi4_scd_q)
          call cheb_filter(scd_m(i),psi4_scd_f)
-
+         !------------------------------------
          call swal_filter(scd_m(i),psi4_scd_p)
          call swal_filter(scd_m(i),psi4_scd_q)
          call swal_filter(scd_m(i),psi4_scd_f)

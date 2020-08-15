@@ -232,8 +232,8 @@ module mod_scd_order_source
             +  2.0_rp*ta_0 &
             )*hlmb%level(:,:,m2_ang) &
 
-         +  (R**2)*(muhll%thorn_prime(:,:,m2_ang)/mu_0) &
-         +  (R**2)*conjg(muhll%level(:,:,-m2_ang)) &
+         +  (muhll%thorn_prime(:,:,m2_ang)/mu_0) &
+         +  R*conjg(muhll%level(:,:,-m2_ang)) &
 
          -  0.5_rp*R*conjg(hlmb%edth(:,:,-m2_ang)) &
          +  0.5_rp*(R**2)*( &
@@ -257,7 +257,7 @@ module mod_scd_order_source
             )*hlmb%level(:,:,m2_ang)  &
          ) &
       !-------------------------------------------------
-         -  (R**2)*hlmb%level(:,:,m1_ang)*psi3%thorn_prime(:,:,m2_ang) &
+         -  R*hlmb%level(:,:,m1_ang)*psi3%thorn_prime(:,:,m2_ang) &
 
          +  0.5_rp*R*hmbmb%level(:,:,m1_ang)*psi3%edth(:,:,m2_ang) &
 
@@ -271,9 +271,9 @@ module mod_scd_order_source
       sf % pre_edth_prime_np1(:,:,mt_ang) &
       !-------------------------------------------------
       -  conjg(hlmb%level(:,:,-m1_ang))*( &
-            R*psi4_lin_f%thorn_prime(:,:,m2_ang) &
+            psi4_lin_f%thorn_prime(:,:,m2_ang) &
 
-         +  r*(mu_0+2.0_rp*conjg(mu_0))*psi4_lin_f%level(:,:,m2_ang) &
+         +  R*(mu_0+2.0_rp*conjg(mu_0))*psi4_lin_f%level(:,:,m2_ang) &
          ) &
       +  0.5_rp*conjg(hmbmb%level(:,:,-m1_ang))*psi4_lin_f%edth_prime(:,:,m2_ang) &
 
@@ -281,7 +281,7 @@ module mod_scd_order_source
       +  psi4_lin_f%level(:,:,m1_ang)*( &
             conjg(pi%level(:,:,-m2_ang)) &
 
-         -  R*conjg(hlmb%thorn_prime(:,:,-m2_ang)) &
+         -  conjg(hlmb%thorn_prime(:,:,-m2_ang)) &
 
          +  conjg(hmbmb%edth(:,:,-m2_ang)) &
 

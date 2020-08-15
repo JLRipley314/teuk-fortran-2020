@@ -123,6 +123,8 @@ contains
    
       call cheb_real_to_coef(m_ang,vals,coefs)
 
+      ! Any error incurred by setting the last two cheb coefs to zero 
+      ! should converge away with higher resolution.
       coefs(nx,  :,m_ang) = 0
       coefs(nx-1,:,m_ang) = 0
 
