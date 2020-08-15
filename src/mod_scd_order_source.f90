@@ -32,7 +32,7 @@ module mod_scd_order_source
 !-----------------------------------------------------------------------------
    type :: scd_order_source
 
-   character(:), allocatable :: name
+   character(:), allocatable :: fname
    character(:), allocatable :: error
 
    integer(ip) :: &
@@ -77,11 +77,11 @@ module mod_scd_order_source
 !=============================================================================
    contains
 !=============================================================================
-   pure subroutine scd_order_source_init(name, sf)
-      character(*),            intent(in) :: name ! field name
+   pure subroutine scd_order_source_init(fname, sf)
+      character(*),            intent(in) :: fname ! field name
       type(scd_order_source), intent(out) :: sf
 
-      sf % name = name
+      sf % fname = fname
 
       ! make empty string long enough to hold error message
       sf % error = "                                                              "

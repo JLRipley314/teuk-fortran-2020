@@ -36,7 +36,7 @@ module mod_metric_recon
       !----------------------------------------------------------------------
       call set_level(step, m_ang, f)
       !----------------------------------------------------------------------
-      select_field: select case (f%name)
+      select_field: select case (f%fname)
          !-------------------------------------------------------------------
          case ("psi3")
             kl(:,:,m_ang) = &
@@ -127,7 +127,7 @@ module mod_metric_recon
                )*conjg(hlmb%level(:,:,-m_ang)) 
          !--------------------------------------------------------------------
          case default
-            write (*,*) "ERROR: set_k, " // f%name // ", not in list"
+            write (*,*) "ERROR: set_k, " // f%fname // ", not in list"
             stop
       end select select_field
       !-----------------------------------------------------------------------
@@ -188,7 +188,7 @@ module mod_metric_recon
             call set_k(step, m_ang, f, f%k5)
          !--------------------------------------------------------------------
          case default
-            write(*,*) "Error: take_step, " // f%name // ", step != 1,..,5"
+            write(*,*) "Error: take_step, " // f%fname // ", step != 1,..,5"
             stop
       end select select_step
       !-----------------------------------------------------------------------

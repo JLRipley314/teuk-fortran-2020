@@ -26,7 +26,7 @@ contains
       character(:), allocatable :: rn
       integer(ip) :: ierror
       integer(ip) :: uf = 3
-      ! set the file name to read from
+      ! set the file fname to read from
       rn = tables_dir // '/' // fn
 
       ! Note: here we ASSUME the input file is correctly formatted
@@ -48,7 +48,7 @@ contains
       character(:), allocatable :: rn
       integer(ip) :: i1, ierror
       integer(ip) :: uf = 3
-      ! set the file name to read from
+      ! set the file fname to read from
       rn = tables_dir // '/' // fn
 
       ! Note: here we ASSUME the input file is correctly formatted
@@ -72,7 +72,7 @@ contains
       character(:), allocatable :: rn
       integer(ip) :: i1, i2, ierror
       integer(ip) :: uf = 3
-      ! set the file name to read from
+      ! set the file fname to read from
       rn = tables_dir // '/' // fn
 
       ! Note: here we ASSUME the input file is correctly formatted
@@ -113,7 +113,7 @@ contains
       mstr = '     '
       write (mstr,'(i5)') m_ang
       mstr = trim(adjustl(mstr))
-      ! set the file name to read from
+      ! set the file fname to read from
       fn_re = output_dir // '/' // fn // '_m' // mstr // '_re.csv'
       fn_im = output_dir // '/' // fn // '_m' // mstr // '_im.csv'
       !----------------------------------------------------------------------
@@ -180,7 +180,7 @@ contains
       integer(ip), intent(in) :: m_ang
       type(field), intent(in) :: f
 
-      call write_array_csv(f%name, time, m_ang, f%np1(:,:,m_ang))
+      call write_array_csv(f%fname, time, m_ang, f%np1(:,:,m_ang))
 
    end subroutine write_field_csv
 !=============================================================================

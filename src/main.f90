@@ -57,44 +57,44 @@ clean_memory: block
 !-----------------------------------------------------------------------------
 ! first order metric field
 !-----------------------------------------------------------------------------
-   call set_field(name="lin_p",spin=psi_spin,boost=psi_boost,falloff=1_ip,f=psi4_lin_p)
-   call set_field(name="lin_q",spin=psi_spin,boost=psi_boost,falloff=2_ip,f=psi4_lin_q)
-   call set_field(name="lin_f",spin=psi_spin,boost=psi_boost,falloff=1_ip,f=psi4_lin_f)
+   call set_field(fname="lin_p",spin=psi_spin,boost=psi_boost,falloff=1_ip,f=psi4_lin_p)
+   call set_field(fname="lin_q",spin=psi_spin,boost=psi_boost,falloff=2_ip,f=psi4_lin_q)
+   call set_field(fname="lin_f",spin=psi_spin,boost=psi_boost,falloff=1_ip,f=psi4_lin_f)
 
    if (scd_order) then
-      call set_field(name="scd_p",spin=psi_spin,boost=psi_boost,falloff=1_ip,f=psi4_scd_p)
-      call set_field(name="scd_q",spin=psi_spin,boost=psi_boost,falloff=2_ip,f=psi4_scd_q)
-      call set_field(name="scd_f",spin=psi_spin,boost=psi_boost,falloff=1_ip,f=psi4_scd_f)
+      call set_field(fname="scd_p",spin=psi_spin,boost=psi_boost,falloff=1_ip,f=psi4_scd_p)
+      call set_field(fname="scd_q",spin=psi_spin,boost=psi_boost,falloff=2_ip,f=psi4_scd_q)
+      call set_field(fname="scd_f",spin=psi_spin,boost=psi_boost,falloff=1_ip,f=psi4_scd_f)
    end if
 !-----------------------------------------------------------------------------
 ! metric reconstructed fields
 !-----------------------------------------------------------------------------
-   call set_field(name="psi3",spin=-1_ip,boost=-1_ip,falloff=2_ip,f=psi3)
-   call set_field(name="psi2",spin= 0_ip,boost= 0_ip,falloff=3_ip,f=psi2)
+   call set_field(fname="psi3",spin=-1_ip,boost=-1_ip,falloff=2_ip,f=psi3)
+   call set_field(fname="psi2",spin= 0_ip,boost= 0_ip,falloff=3_ip,f=psi2)
 
-   call set_field(name="la",spin=-2_ip,boost=-1_ip,falloff=1_ip,f=la)
-   call set_field(name="pi",spin=-1_ip,boost= 0_ip,falloff=2_ip,f=pi)
+   call set_field(fname="la",spin=-2_ip,boost=-1_ip,falloff=1_ip,f=la)
+   call set_field(fname="pi",spin=-1_ip,boost= 0_ip,falloff=2_ip,f=pi)
 
-   call set_field(name="muhll",spin= 0_ip,boost=1_ip,falloff=3_ip,f=muhll)
-   call set_field(name="hlmb" ,spin=-1_ip,boost=1_ip,falloff=2_ip,f= hlmb)
-   call set_field(name="hmbmb",spin=-2_ip,boost=0_ip,falloff=1_ip,f=hmbmb)
+   call set_field(fname="muhll",spin= 0_ip,boost=1_ip,falloff=3_ip,f=muhll)
+   call set_field(fname="hlmb" ,spin=-1_ip,boost=1_ip,falloff=2_ip,f= hlmb)
+   call set_field(fname="hmbmb",spin=-2_ip,boost=0_ip,falloff=1_ip,f=hmbmb)
 !-----------------------------------------------------------------------------
 ! independent residual fields
 !-----------------------------------------------------------------------------
-   call set_field(name="res_lin_q",spin=-2_ip,boost=-2_ip,falloff=2_ip,f=res_lin_q)
+   call set_field(fname="res_lin_q",spin=-2_ip,boost=-2_ip,falloff=2_ip,f=res_lin_q)
 
    if (scd_order) then
-      call set_field(name="res_scd_q",spin=-2_ip,boost=-2_ip,falloff=2_ip,f=res_scd_q)
+      call set_field(fname="res_scd_q",spin=-2_ip,boost=-2_ip,falloff=2_ip,f=res_scd_q)
    end if
 
-   call set_field(name="res_bianchi3",spin=-2_ip,boost=-1_ip,falloff=2_ip,f=res_bianchi3)
-   call set_field(name="res_bianchi2",spin=-1_ip,boost= 0_ip,falloff=2_ip,f=res_bianchi2)
-   call set_field(name="res_hll",     spin= 0_ip,boost= 2_ip,falloff=2_ip,f=res_hll)
+   call set_field(fname="res_bianchi3",spin=-2_ip,boost=-1_ip,falloff=2_ip,f=res_bianchi3)
+   call set_field(fname="res_bianchi2",spin=-1_ip,boost= 0_ip,falloff=2_ip,f=res_bianchi2)
+   call set_field(fname="res_hll",     spin= 0_ip,boost= 2_ip,falloff=2_ip,f=res_hll)
 !-----------------------------------------------------------------------------
 ! source term for \psi_4^{(2)}
 !-----------------------------------------------------------------------------
    if (scd_order) then
-      call scd_order_source_init(name="scd_order_source",sf=source)
+      call scd_order_source_init(fname="scd_order_source",sf=source)
    end if
 !-----------------------------------------------------------------------------
 ! initialize chebyshev diff matrices, swal matrices, etc.
@@ -157,7 +157,7 @@ clean_memory: block
          !--------------------------------------------------------------------
          write (stdout,*) time / black_hole_mass
          flush (stdout)
-         call write_level(time)
+         call write_level(time / black_hole_mass)
       end if save_level
       !-----------------------------------------------------------------------
       ! low pass filter (in spectral space)

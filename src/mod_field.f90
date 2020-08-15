@@ -18,7 +18,7 @@ module mod_field
 !-----------------------------------------------------------------------------
    type :: field
 
-   character(:), allocatable :: name
+   character(:), allocatable :: fname
 
    logical :: first_time
 
@@ -59,12 +59,12 @@ module mod_field
 !=============================================================================
 contains
 !=============================================================================
-   subroutine set_field(name, spin, boost, falloff, f)
-      character(*), intent(in)  :: name ! field name
+   subroutine set_field(fname, spin, boost, falloff, f)
+      character(*), intent(in)  :: fname ! field fname
       integer(ip),  intent(in)  :: spin, boost, falloff
       type(field),  intent(out) :: f
 
-      f % name = name 
+      f % fname = fname 
 
       f % first_time = .true.
 
