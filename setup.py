@@ -29,7 +29,7 @@ sim.scd_order=    True
 
 sim.write_indep_res=           True
 sim.write_metric_recon_fields= False
-sim.write_scd_order_source=    True
+sim.write_scd_order_source=    False
 sim.write_coefs=               True
 #=============================================================================
 ## change start time
@@ -108,8 +108,8 @@ if (sim.run_type == "basic_run"):
    sim.launch_run()
 #=============================================================================
 elif (sim.run_type == "multiple_runs"):
-   nxs = [64, 80]#, 96]
-   nls = [12, 16]#, 20]
+   nxs = [48, 64, 80]
+   nls = [12, 16, 20]
 
    bhss = [round(0.7*sim.black_hole_mass,4), round(0.998*sim.black_hole_mass,4)]
    sms = [1,2,3]

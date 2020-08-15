@@ -78,7 +78,7 @@ module mod_scd_order_source
    contains
 !=============================================================================
    pure subroutine scd_order_source_init(name, sf)
-      character(*),            intent(in)  :: name ! field name
+      character(*),            intent(in) :: name ! field name
       type(scd_order_source), intent(out) :: sf
 
       sf % name = name
@@ -86,14 +86,14 @@ module mod_scd_order_source
       ! make empty string long enough to hold error message
       sf % error = "                                                              "
 
-      sf % pre_edth_prime_spin  = -2_ip
-      sf % pre_thorn_prime_spin = -1_ip
+      sf % pre_edth_prime_spin  = -1_ip
+      sf % pre_thorn_prime_spin = -2_ip
 
-      sf % pre_edth_prime_spin   = -1_ip
-      sf % pre_thorn_prime_boost = -2_ip
+      sf % pre_edth_prime_spin   = -2_ip
+      sf % pre_thorn_prime_boost = -1_ip
 
-      sf % pre_edth_prime_falloff  = 0_ip
-      sf % pre_thorn_prime_falloff = 0_ip
+      sf % pre_edth_prime_falloff  = 3_ip
+      sf % pre_thorn_prime_falloff = 3_ip
 
       sf % n1h = 0.0_rp
       sf % n   = 0.0_rp
@@ -127,8 +127,8 @@ module mod_scd_order_source
    end subroutine scd_order_source_init
 !=============================================================================
    pure subroutine compute_DT(pre_type, m_ang, sf)
-      character(*),            intent(in)    :: pre_type
-      integer(ip),             intent(in)    :: m_ang
+      character(*),            intent(in)   :: pre_type
+      integer(ip),             intent(in)   :: m_ang
       type(scd_order_source), intent(inout) :: sf
 
       select case (pre_type)
@@ -157,7 +157,7 @@ module mod_scd_order_source
       integer(ip),            intent(in)    :: m_ang
       type(scd_order_source), intent(inout) :: sf
 
-      sf % pre_edth_prime_np1(:,:,m_ang)  = 0.0_rp
+      sf % pre_edth_prime_np1( :,:,m_ang) = 0.0_rp
       sf % pre_thorn_prime_np1(:,:,m_ang) = 0.0_rp
       
    end subroutine scd_order_source_zero
@@ -194,8 +194,9 @@ module mod_scd_order_source
       call set_level(step,m2_ang,muhll)
 
       call set_level(step,-m2_ang,pi)
-      call set_level(step,-m2_ang,hlmb)
       call set_level(step,-m2_ang,hmbmb)
+      call set_level(step,-m2_ang,hlmb)
+      call set_level(step,-m2_ang,muhll)
 
       call set_thorn_prime(step,m2_ang,psi4_lin_f)
       call set_thorn_prime(step,m2_ang,psi3)
@@ -229,10 +230,10 @@ module mod_scd_order_source
          +  (R**2)*( &
                conjg(pi_0) &
             +  2.0_rp*ta_0 &
-            )*conjg(hlmb%level(:,:,-m2_ang)) &
+            )*hlmb%level(:,:,m2_ang) &
 
          +  (R**2)*(muhll%thorn_prime(:,:,m2_ang)/mu_0) &
-         +  (R**2)*conjg(mu_0)*(muhll%level(:,:,m2_ang)/mu_0) &
+         +  (R**2)*conjg(muhll%level(:,:,-m2_ang)) &
 
          -  0.5_rp*R*conjg(hlmb%edth(:,:,-m2_ang)) &
          +  0.5_rp*(R**2)*( &
@@ -272,8 +273,8 @@ module mod_scd_order_source
       -  conjg(hlmb%level(:,:,-m1_ang))*( &
             R*psi4_lin_f%thorn_prime(:,:,m2_ang) &
 
-         -  R*(mu_0+2.0_rp*conjg(mu_0))*psi4_lin_f%level(:,:,m2_ang) &
-      ) &
+         +  r*(mu_0+2.0_rp*conjg(mu_0))*psi4_lin_f%level(:,:,m2_ang) &
+         ) &
       +  0.5_rp*conjg(hmbmb%level(:,:,-m1_ang))*psi4_lin_f%edth_prime(:,:,m2_ang) &
 
       !-------------------------------------------------
@@ -285,7 +286,7 @@ module mod_scd_order_source
          +  conjg(hmbmb%edth(:,:,-m2_ang)) &
 
          -  0.5_rp*R*(pi_0+conjg(ta_0))*conjg(hmbmb%level(:,:,-m2_ang)) &
-      )
+         )
       !--------------------------------------------------------------------
    end subroutine scd_order_source_m1_plus_m2
 !=============================================================================

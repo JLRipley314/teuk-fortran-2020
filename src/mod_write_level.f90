@@ -6,6 +6,8 @@ module mod_write_level
 !=============================================================================
    use mod_prec
 
+   use mod_params, only: nx, max_l
+
    use mod_io,   only: write_csv
 
    use mod_cheb, only: cheb_real_to_coef
@@ -39,6 +41,8 @@ module mod_write_level
    private
 
    public :: write_level
+
+   complex(rp), dimension(nx,0:max_l) :: coefslog10
 !=============================================================================
 contains
 !=============================================================================
@@ -121,11 +125,14 @@ contains
                psi4_lin_f%coefs_cheb, &
                psi4_lin_f%coefs_both &
             )
+
+            coefslog10 = log10(abs(psi4_lin_f%coefs_both(:,:,lin_write_m(i))))
+
             call write_csv( &
                "coefs_"//psi4_lin_f%name, &
                time, &
                lin_write_m(i), &
-               psi4_lin_f%coefs_both(:,:,lin_write_m(i)) &
+               coefslog10 &
             )
          end do 
          !--------------------------------------------------------------------
@@ -142,11 +149,14 @@ contains
                   psi4_scd_f%coefs_cheb, &
                   psi4_scd_f%coefs_both &
                )
+
+               coefslog10 = log10(abs(psi4_scd_f%coefs_both(:,:,scd_write_m(i))))
+
                call write_csv( &
                   "coefs_"//psi4_scd_f%name, &
                   time, &
                   scd_write_m(i), &
-                  psi4_scd_f%coefs_both(:,:,scd_write_m(i)) &
+                  coefslog10 &
                )
             end do 
          end if
