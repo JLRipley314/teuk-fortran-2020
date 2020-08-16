@@ -216,10 +216,10 @@ module mod_scd_order_source
       sf % pre_thorn_prime_np1(:,:,mt_ang) = &
       sf % pre_thorn_prime_np1(:,:,mt_ang) &
       !-------------------------------------------------
-      + 0.5_rp*(muhll%level(:,:,m1_ang)/mu_0)*( &
-            R*psi4_lin_f%thorn_prime(:,:,m1_ang) &
+      + 0.5_rp*(muhll%level(:,:,m1_ang))*( &
+            (psi4_lin_f%thorn_prime(:,:,m1_ang))/mu_0 &
 
-         +  R*mu_0*psi4_lin_f%level(:,:,m1_ang) &
+         +  R*psi4_lin_f%level(:,:,m1_ang) &
          ) &
       !-------------------------------------------------
       + psi4_lin_f%level(:,:,m1_ang)*( &
@@ -270,9 +270,10 @@ module mod_scd_order_source
       -  conjg(hlmb%level(:,:,-m1_ang))*( &
             psi4_lin_f%thorn_prime(:,:,m2_ang) &
 
-         +  R*(mu_0+2.0_rp*conjg(mu_0))*psi4_lin_f%level(:,:,m2_ang) &
+         +  R*(mu_0+2.0_rp*conjg(mu_0))*(psi4_lin_f%level(:,:,m2_ang)) &
          ) &
-      +  0.5_rp*conjg(hmbmb%level(:,:,-m1_ang))*psi4_lin_f%edth_prime(:,:,m2_ang) &
+      +  0.5_rp*(conjg(hmbmb%level(:,:,-m1_ang)) &
+            *(psi4_lin_f%edth_prime(:,:,m2_ang))) &
 
       !-------------------------------------------------
       +  psi4_lin_f%level(:,:,m1_ang)*( &
@@ -296,23 +297,11 @@ module mod_scd_order_source
       call scd_order_source_zero(m_ang,sf)
 
       do m1_ang=min_m,max_m
-      do m2_ang=min_m,max_m
-
-         if (m1_ang+m2_ang==m_ang) then
-            call scd_order_source_m1_plus_m2( m1_ang, m2_ang, sf)
-
-         else if (m1_ang-m2_ang==m_ang) then
-            call scd_order_source_m1_plus_m2( m1_ang,-m2_ang, sf)
-
-         else if (-m1_ang+m2_ang==m_ang) then
-            call scd_order_source_m1_plus_m2(-m1_ang, m2_ang, sf)
-
-         else
-            continue
+         m2_ang=m_ang-m1_ang
+         if (m2_ang>=min_m .and. m2_ang<=max_m) then
+            call scd_order_source_m1_plus_m2(m1_ang,m2_ang,sf)
          end if
       end do
-      end do
-
       call compute_DT("pre_edth_prime",m_ang,sf)
       call compute_DT("pre_edth_prime",m_ang,sf)
       call swal_lower( &

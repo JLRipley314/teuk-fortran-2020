@@ -16,7 +16,7 @@ sim.black_hole_mass= float(0.5)
 sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
 sim.compactification_length= float(1)
 #=============================================================================
-sim.evolve_time= float(100) ## units of black hole mass
+sim.evolve_time= float(50) ## units of black hole mass
 sim.num_saved_times= int(200)
 #=============================================================================
 sim.nx= int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
@@ -27,8 +27,8 @@ sim.nl= int(pow(2,2)*pow(3,1)*pow(5,0)*pow(7,0)) ## num swaL angular pts
 sim.metric_recon= True
 sim.scd_order=    True
 
-sim.write_indep_res=           True
-sim.write_metric_recon_fields= True
+sim.write_indep_res=           False
+sim.write_metric_recon_fields= False
 sim.write_scd_order_source=    True
 sim.write_coefs=               False
 #=============================================================================
@@ -54,7 +54,7 @@ sim.psi_boost= int(-2)
 #=============================================================================
 ## initial data for mode m1
 #=============================================================================
-sim.pm1_ang =  int(0) ## m_ang is preserved by time evolution
+sim.pm1_ang =  int(2) ## m_ang is preserved by time evolution
 #-----------------------------------------------------------------------------
 sim.l_ang_pm1= int(2) ## l_ang: support of initial swal 
 
@@ -108,8 +108,8 @@ if (sim.run_type == "basic_run"):
    sim.launch_run()
 #=============================================================================
 elif (sim.run_type == "multiple_runs"):
-   nxs = [48, 64, 80]
-   nls = [12, 16, 20]
+   nxs = [64, 72, 80]
+   nls = [16, 18, 20]
 
    bhss = [round(0.7*sim.black_hole_mass,4), round(0.998*sim.black_hole_mass,4)]
    sms = [1,2,3]
