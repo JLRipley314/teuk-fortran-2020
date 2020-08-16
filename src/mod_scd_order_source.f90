@@ -33,7 +33,6 @@ module mod_scd_order_source
    type :: scd_order_source
 
    character(:), allocatable :: fname
-   character(:), allocatable :: error
 
    integer(ip) :: &
       pre_edth_prime_spin,  pre_edth_prime_boost,  pre_edth_prime_falloff, &
@@ -77,20 +76,17 @@ module mod_scd_order_source
 !=============================================================================
    contains
 !=============================================================================
-   pure subroutine scd_order_source_init(fname, sf)
+   subroutine scd_order_source_init(fname, sf)
       character(*),            intent(in) :: fname ! field name
       type(scd_order_source), intent(out) :: sf
 
       sf % fname = fname
 
-      ! make empty string long enough to hold error message
-      sf % error = "                                                              "
+      sf % pre_thorn_prime_spin  = -2_ip
+      sf % pre_thorn_prime_boost = -1_ip
 
       sf % pre_edth_prime_spin  = -1_ip
-      sf % pre_thorn_prime_spin = -2_ip
-
-      sf % pre_edth_prime_spin   = -2_ip
-      sf % pre_thorn_prime_boost = -1_ip
+      sf % pre_edth_prime_boost = -2_ip
 
       sf % pre_edth_prime_falloff  = 3_ip
       sf % pre_thorn_prime_falloff = 3_ip
@@ -126,7 +122,7 @@ module mod_scd_order_source
 
    end subroutine scd_order_source_init
 !=============================================================================
-   pure subroutine compute_DT(pre_type, m_ang, sf)
+   subroutine compute_DT(pre_type, m_ang, sf)
       character(*),            intent(in)   :: pre_type
       integer(ip),             intent(in)   :: m_ang
       type(scd_order_source), intent(inout) :: sf
@@ -149,11 +145,12 @@ module mod_scd_order_source
             +  (1.0_rp/4.0_rp  )*(sf%pre_thorn_prime_nm3(:,:,m_ang)) &
             )
          case default
-            write (sf%error,*) "ERROR(compute_DT): inter_type= ", pre_type 
+            write (*,*) "ERROR(compute_DT): inter_type= ", pre_type 
+            stop
       end select
    end subroutine compute_DT
 !=============================================================================
-   pure subroutine scd_order_source_zero(m_ang,sf)
+   subroutine scd_order_source_zero(m_ang,sf)
       integer(ip),            intent(in)    :: m_ang
       type(scd_order_source), intent(inout) :: sf
 
@@ -365,7 +362,7 @@ module mod_scd_order_source
       !-----------------------------------------------------------------------
    end subroutine scd_order_source_compute
 !=============================================================================
-   pure subroutine scd_order_source_shift_time_step(m_ang, sf)
+   subroutine scd_order_source_shift_time_step(m_ang, sf)
       integer(ip), intent(in) :: m_ang
       type(scd_order_source), intent(inout) :: sf
 

@@ -41,8 +41,6 @@ module mod_write_level
    private
 
    public :: write_level
-
-   complex(rp), dimension(nx,0:max_l) :: coefslog10
 !=============================================================================
 contains
 !=============================================================================
@@ -125,14 +123,11 @@ contains
                psi4_lin_f%coefs_cheb, &
                psi4_lin_f%coefs_both &
             )
-
-            coefslog10 = log10(abs(psi4_lin_f%coefs_both(:,:,lin_write_m(i))))
-
             call write_csv( &
                "coefs_"//psi4_lin_f%fname, &
                time, &
                lin_write_m(i), &
-               coefslog10 &
+               psi4_lin_f%coefs_both(:,:,lin_write_m(i)) &
             )
          end do 
          !--------------------------------------------------------------------
@@ -149,14 +144,11 @@ contains
                   psi4_scd_f%coefs_cheb, &
                   psi4_scd_f%coefs_both &
                )
-
-               coefslog10 = log10(abs(psi4_scd_f%coefs_both(:,:,scd_write_m(i))))
-
                call write_csv( &
                   "coefs_"//psi4_scd_f%fname, &
                   time, &
                   scd_write_m(i), &
-                  coefslog10 &
+                  psi4_scd_f%coefs_both(:,:,scd_write_m(i)) &
                )
             end do 
          end if

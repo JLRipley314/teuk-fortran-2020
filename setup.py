@@ -17,20 +17,20 @@ sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
 sim.compactification_length= float(1)
 #=============================================================================
 sim.evolve_time= float(100) ## units of black hole mass
-sim.num_saved_times= int(300)
+sim.num_saved_times= int(200)
 #=============================================================================
 sim.nx= int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
 sim.nl= int(pow(2,2)*pow(3,1)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
 #=============================================================================
 ## evolution and write: take boolean values 
 #=============================================================================
-sim.metric_recon= True 
+sim.metric_recon= True
 sim.scd_order=    True
 
 sim.write_indep_res=           True
-sim.write_metric_recon_fields= False
-sim.write_scd_order_source=    False
-sim.write_coefs=               True
+sim.write_metric_recon_fields= True
+sim.write_scd_order_source=    True
+sim.write_coefs=               False
 #=============================================================================
 ## change start time
 sim.start_multiple= float(1.0)
@@ -54,7 +54,7 @@ sim.psi_boost= int(-2)
 #=============================================================================
 ## initial data for mode m1
 #=============================================================================
-sim.pm1_ang =  int(2) ## m_ang is preserved by time evolution
+sim.pm1_ang =  int(0) ## m_ang is preserved by time evolution
 #-----------------------------------------------------------------------------
 sim.l_ang_pm1= int(2) ## l_ang: support of initial swal 
 
@@ -68,7 +68,7 @@ sim.l_ang_nm1= int(2) ## support over single spin weighted spherical harmonic
 
 sim.initial_data_direction_nm1= "ingoing"#"time_symmetric"#"outgoing"#
 
-sim.amp_nm1= float(10.0)  ## amplitude of the initial perturbation
+sim.amp_nm1= float( 0.0)  ## amplitude of the initial perturbation
 sim.rl_nm1=  float(-1.5)  ## compact support: lower r value
 sim.ru_nm1=  float( 1.5)  ## compact support: upper r value 
 #=============================================================================
