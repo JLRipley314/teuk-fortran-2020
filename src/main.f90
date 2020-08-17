@@ -153,12 +153,12 @@ clean_memory: block
       !-----------------------------------------------------------------------
       ! save to file 
       !-----------------------------------------------------------------------
-      save_level: if (mod(t_step,t_step_save)==0) then
+      if (mod(t_step,t_step_save)==0) then
          !--------------------------------------------------------------------
          write (stdout,*) time / black_hole_mass
          flush (stdout)
          call write_level(time / black_hole_mass)
-      end if save_level
+      end if
       !-----------------------------------------------------------------------
       ! low pass filter (in spectral space)
       !-----------------------------------------------------------------------

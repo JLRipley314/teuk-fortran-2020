@@ -44,7 +44,7 @@ class Sim:
       if (self.computer=="home"):
          self.output_dir= "output/"+self.output_stem
       elif (self.computer=="feynman"):
-         self.output_dir="/mnt/grtheory/tf-out/"+self.output_stem
+         self.output_dir=self.feyn_out_stem+self.output_stem
       else:
          raise ValueError("self.computer="+self.computer+" not supported")
       os.makedirs(self.output_dir)

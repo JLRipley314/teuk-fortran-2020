@@ -20,7 +20,7 @@ sim.evolve_time= float(50) ## units of black hole mass
 sim.num_saved_times= int(200)
 #=============================================================================
 sim.nx= int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
-sim.nl= int(pow(2,2)*pow(3,1)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
+sim.nl= int(pow(2,4)*pow(3,0)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
 #=============================================================================
 ## evolution and write: take boolean values 
 #=============================================================================
@@ -36,6 +36,7 @@ sim.write_coefs=               False
 sim.start_multiple= float(1.0)
 #=============================================================================
 sim.computer= 'feynman'#'home'#
+sim.feyn_out_stem= '/mnt/grtheory/tf-out/'
 #=============================================================================
 ## for feynman cluster/slurm script
 sim.walltime= '4:00:00' ## (hh:mm:ss)
@@ -111,7 +112,7 @@ elif (sim.run_type == "multiple_runs"):
    nxs = [64, 72, 80]
    nls = [16, 18, 20]
 
-   bhss = [round(0.7*sim.black_hole_mass,4), round(0.998*sim.black_hole_mass,4)]
+   bhss = [round(0.7*sim.black_hole_mass,4)]#, round(0.998*sim.black_hole_mass,4)]
    sms = [1,2,3]
 
    for bhs in bhss:

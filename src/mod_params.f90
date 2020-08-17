@@ -13,7 +13,7 @@ implicit none
    real(rp), parameter :: evolve_time = 50.0_rp
    integer(ip), parameter :: num_saved_times = 200_ip
    integer(ip), parameter :: nx = 48_ip
-   integer(ip), parameter :: nl = 12_ip
+   integer(ip), parameter :: nl = 16_ip
    logical, parameter :: metric_recon = .true.
    logical, parameter :: scd_order = .true.
    logical, parameter :: write_indep_res = .false.
@@ -22,6 +22,7 @@ implicit none
    logical, parameter :: write_coefs = .false.
    real(rp), parameter :: start_multiple = 1.0_rp
    character(*), parameter :: computer = 'feynman'
+   character(*), parameter :: feyn_out_stem = '/mnt/grtheory/tf-out/'
    character(*), parameter :: walltime = '4:00:00'
    character(*), parameter :: memory = '512'
    character(*), parameter :: num_nodes = '1'
@@ -54,11 +55,11 @@ implicit none
    integer(ip), dimension(3), parameter :: scd_m = [0_ip,-4_ip,4_ip]
    integer(ip), dimension(2), parameter :: lin_write_m = [2_ip,-2_ip]
    integer(ip), dimension(3), parameter :: scd_write_m = [0_ip,-4_ip,4_ip]
-   integer(ip), parameter :: max_l = 11_ip
+   integer(ip), parameter :: max_l = 15_ip
    real(rp), parameter :: horizon = 0.8570714214271424_rp
    real(rp), parameter :: R_max = 1.1667639067172042_rp
    real(rp), parameter :: scd_order_start_time = 4.810510846598895_rp
-   integer(ip), parameter :: ny = 24_ip
+   integer(ip), parameter :: ny = 28_ip
    real(rp), parameter :: dt = 0.00390625_rp
    integer(ip), parameter :: nt = 6400_ip
    integer(ip), parameter :: t_step_save = 32_ip
@@ -66,8 +67,8 @@ implicit none
    integer(ip), parameter :: min_m = -4_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Sun_19_24_bhm0.5_bhs0.35_nx48_nl12_m_2_2'
-   character(*), parameter :: output_dir = '/mnt/grtheory/tf-out/Sun_19_24_bhm0.5_bhs0.35_nx48_nl12_m_2_2'
-   character(*), parameter :: bin_name = 'Sun_19_24_bhm0.5_bhs0.35_nx48_nl12_m_2_2.run'
-   character(*), parameter :: tables_dir = '/mnt/grtheory/tf-out/Sun_19_24_bhm0.5_bhs0.35_nx48_nl12_m_2_2/tables'
+   character(*), parameter :: output_stem = 'Mon_15_49_bhm0.5_bhs0.35_nx48_nl16_m_2_2'
+   character(*), parameter :: output_dir = '/mnt/grtheory/tf-out/Mon_15_49_bhm0.5_bhs0.35_nx48_nl16_m_2_2'
+   character(*), parameter :: bin_name = 'Mon_15_49_bhm0.5_bhs0.35_nx48_nl16_m_2_2.run'
+   character(*), parameter :: tables_dir = '/mnt/grtheory/tf-out/Mon_15_49_bhm0.5_bhs0.35_nx48_nl16_m_2_2/tables'
 end module mod_params
