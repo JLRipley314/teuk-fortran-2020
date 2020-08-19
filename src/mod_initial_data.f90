@@ -109,9 +109,7 @@ contains
          f%n(i,j,m_ang) = f%n(i,j,m_ang) * swal(j,l_ang,m_ang,spin)
          q%n(i,j,m_ang) = q%n(i,j,m_ang) * swal(j,l_ang,m_ang,spin)
 
-         if (abs(f%n(i,j,m_ang)) > max_val) then
-            max_val = abs(f%n(i,j,m_ang))
-         end if
+         max_val = max(abs(f%n(i,j,m_ang)),max_val)
 
       end do x_loop
       end do y_loop

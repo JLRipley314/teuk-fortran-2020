@@ -131,7 +131,8 @@ contains
 
       do i=lbx,ubx
       do j=lby,uby
-         write (uf,'(e14.6,a1)',advance='no',iostat=ierror) aimag(arr(i,j)), ','
+         write (uf,'(e14.6,a1)',advance='no',iostat=ierror) &
+            real(arr(i,j),kind=rp), ','
       end do
       end do
       ! line break 
@@ -145,7 +146,7 @@ contains
          stop
       end if
       !----------------------------------------------------------------------
-      ! save real part 
+      ! save imaginary part 
       !----------------------------------------------------------------------
       inquire(file=fn_im,exist=exists)
       if (exists) then
@@ -159,7 +160,8 @@ contains
 
       do i=lbx,ubx
       do j=lby,uby
-         write (uf,'(e14.6,a1)',advance='no',iostat=ierror) aimag(arr(i,j)), ','
+         write (uf,'(e14.6,a1)',advance='no',iostat=ierror) &
+            aimag(arr(i,j)), ','
       end do
       end do
       ! line break      

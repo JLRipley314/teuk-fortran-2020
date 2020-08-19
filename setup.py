@@ -13,14 +13,14 @@ args= sys.argv
 sim= Sim(args)
 #=============================================================================
 sim.black_hole_mass= float(0.5)	
-sim.black_hole_spin= round(0.998*sim.black_hole_mass,4)
+sim.black_hole_spin= round(0.98*sim.black_hole_mass,4)
 sim.compactification_length= float(1)
 #=============================================================================
 sim.evolve_time= float(150) ## units of black hole mass
 sim.num_saved_times= int(600)
 #=============================================================================
-sim.nx= int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
-sim.nl= int(pow(2,4)*pow(3,0)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
+sim.nx= 112#int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
+sim.nl= 28#int(pow(2,4)*pow(3,0)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
 #=============================================================================
 ## evolution and write: take boolean values 
 #=============================================================================
@@ -108,7 +108,7 @@ sim.scd_write_m = [-2*sim.pm1_ang, 2*sim.pm1_ang, 0]
 if (sim.run_type == "basic_run"):
    sim.launch_run()
 #=============================================================================
-elif (sim.run_type == "multiple_runs"):
+elif (sim.run_type == "multiple_res"):
 #   nxs = [64, 80, 96]
 #   nls = [16, 20, 24]
    nxs = [96, 112, 128]
@@ -116,7 +116,6 @@ elif (sim.run_type == "multiple_runs"):
 
 #   bhss = [round(0.0*sim.black_hole_mass,4), round(0.7*sim.black_hole_mass,4), round(0.998*sim.black_hole_mass,4)]
    bhss = [round(0.98*sim.black_hole_mass,4), round(0.998*sim.black_hole_mass,4)]
-   sms = [1,2,3]
 
    for bhs in bhss:
       for i in range(len(nxs)):
@@ -125,6 +124,14 @@ elif (sim.run_type == "multiple_runs"):
          sim.nl = nls[i]
          sim.launch_run() 
          time.sleep(60)
+#=============================================================================
+elif (sim.run_type == "start_times"):
+   sms = [1,2,3]
+
+   for sm in sms:
+      sim.start_multiple= sm
+      sim.launch_run()
+      time.sleep(60)
 #=============================================================================
 elif (sim.run_type == "spin_ramp"):
    for bhs in [0,0.01,0.02,0.04,0.08,0.12,0.16,0.2,0.24,0.28,0.32]:
