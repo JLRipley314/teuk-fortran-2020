@@ -55,12 +55,12 @@ class Sim:
 ## put the R_max at the location of the outer horizon.
 ## if near extremal limit then put R_max a m, which is in between
 ## the outer and inner horizons
-      sqrt_term= pow(
+      sqrt_term = pow(
          pow(self.black_hole_mass,2)
       -  pow(self.black_hole_spin,2)
       ,0.5)
 
-      self.horizon= self.black_hole_mass+sqrt_term
+      self.horizon= self.black_hole_mass+(0.99*sqrt_term)
 
       self.R_max= float(
          pow(self.compactification_length,2)
