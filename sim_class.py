@@ -60,7 +60,7 @@ class Sim:
       -  pow(self.black_hole_spin,2)
       ,0.5)
 
-      self.horizon= self.black_hole_mass+(0.99*sqrt_term)
+      self.horizon= self.black_hole_mass+(0.999*sqrt_term)
 
       self.R_max= float(
          pow(self.compactification_length,2)
@@ -103,7 +103,7 @@ class Sim:
 ## the factor 6/N^2 by up to (3/2) (need to experiment)
 #-----------------------------------------------------------------------------
       self.dt= float(
-         9.*pow(max(self.nx,self.ny),-2)
+         6.*pow(max(self.nx,self.ny),-2)
       )
 #-----------------------------------------------------------------------------
       self.nt= int(

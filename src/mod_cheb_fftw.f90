@@ -63,27 +63,27 @@ contains
       complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: coefs
 
       integer(ip) :: i,j 
-      real(rp), dimension(nx) :: rep, imp
+      real(rp), dimension(nx) :: re_v, im_v, re_c, im_c
 
       do j=1,ny
-         rep = real( vals(:,j,m_ang),kind=rp)
-         imp = aimag(vals(:,j,m_ang))
+         re_v = real( vals(:,j,m_ang),kind=rp)
+         im_v = aimag(vals(:,j,m_ang))
 
-         call dfftw_execute_r2r(plan_dct,rep,rep)
-         call dfftw_execute_r2r(plan_dct,imp,imp)
+         call dfftw_execute_r2r(plan_dct,re_v,re_c)
+         call dfftw_execute_r2r(plan_dct,im_v,im_c)
 
-         rep(1) = rep(1)/(2.0_rp*N)
-         imp(1) = imp(1)/(2.0_rp*N)
+         re_c(1) = re_c(1)/(2.0_rp*N)
+         im_c(1) = im_c(1)/(2.0_rp*N)
          
-         rep(nx) = rep(nx)/(2.0_rp*N)
-         imp(nx) = imp(nx)/(2.0_rp*N)
+         re_c(nx) = re_c(nx)/(2.0_rp*N)
+         im_c(nx) = im_c(nx)/(2.0_rp*N)
 
          do i=2,N
-            rep(i) = rep(i)/N
-            imp(i) = imp(i)/N
+            re_c(i) = re_c(i)/N
+            im_c(i) = im_c(i)/N
          end do
 
-         coefs(:,j,m_ang) = cmplx(rep,imp,kind=rp)
+         coefs(:,j,m_ang) = cmplx(re_c,im_c,kind=rp)
       end do
 
    end subroutine cheb_real_to_coef
@@ -94,21 +94,21 @@ contains
       complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: vals
 
       integer(ip) :: i, j 
-      real(rp), dimension(nx) :: rep, imp
+      real(rp), dimension(nx) :: re_c, im_c, re_v, im_v
 
       do j=1,ny
-         rep = real( coefs(:,j,m_ang),kind=rp)
-         imp = aimag(coefs(:,j,m_ang))
+         re_c = real( coefs(:,j,m_ang),kind=rp)
+         im_c = aimag(coefs(:,j,m_ang))
 
          do i=2,N
-            rep(i) = rep(i) / 2.0_rp
-            imp(i) = imp(i) / 2.0_rp
+            re_c(i) = re_c(i) / 2.0_rp
+            im_c(i) = im_c(i) / 2.0_rp
          end do
 
-         call dfftw_execute_r2r(plan_dct,rep,rep)
-         call dfftw_execute_r2r(plan_dct,imp,imp)
+         call dfftw_execute_r2r(plan_dct,re_c,re_v)
+         call dfftw_execute_r2r(plan_dct,im_c,im_v)
 
-         vals(:,j,m_ang) = cmplx(rep,imp,kind=rp)
+         vals(:,j,m_ang) = cmplx(re_v,im_v,kind=rp)
       end do
 
    end subroutine cheb_coef_to_real

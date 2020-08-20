@@ -13,11 +13,11 @@ args= sys.argv
 sim= Sim(args)
 #=============================================================================
 sim.black_hole_mass= float(0.5)	
-sim.black_hole_spin= round(0.98*sim.black_hole_mass,4)
+sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
 sim.compactification_length= float(1)
 #=============================================================================
 sim.evolve_time= float(150) ## units of black hole mass
-sim.num_saved_times= int(600)
+sim.num_saved_times= int(800)
 #=============================================================================
 sim.nx= 112#int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
 sim.nl= 28#int(pow(2,4)*pow(3,0)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
@@ -39,7 +39,7 @@ sim.computer= 'feynman'#'home'#
 sim.feyn_out_stem= '/mnt/grtheory/tf-out/'
 #=============================================================================
 ## for feynman cluster/slurm script
-sim.walltime= '16:00:00' ## (hh:mm:ss)
+sim.walltime= '24:00:00' ## (hh:mm:ss)
 sim.memory=  '512' ## MB 
 sim.num_nodes= '1'
 sim.num_tasks_per_node= '1'
@@ -98,12 +98,12 @@ sim.ru_nm2=  float( 1.5)  ## compact support: upper r value
 ## which m angular values to evolve
 #=============================================================================
 sim.lin_m = [  -sim.pm1_ang,   sim.pm1_ang]
-sim.scd_m = [-2*sim.pm1_ang, 2*sim.pm1_ang, 0]
+sim.scd_m = [-2*sim.pm1_ang, 2*sim.pm1_ang]
 #=============================================================================
 ## which m angular values to write to file
 #=============================================================================
 sim.lin_write_m = [  -sim.pm1_ang,   sim.pm1_ang]
-sim.scd_write_m = [-2*sim.pm1_ang, 2*sim.pm1_ang, 0]
+sim.scd_write_m = [-2*sim.pm1_ang, 2*sim.pm1_ang]
 #=============================================================================
 if (sim.run_type == "basic_run"):
    sim.launch_run()
@@ -118,9 +118,9 @@ elif (sim.run_type == "multiple_runs"):
       sim.launch_run() 
       time.sleep(60)
 
-   sim.black_hole_spin = round(0.99*sim.black_hole_mass,4)
-   nxs = [96, 112, 128]
-   nls = [20,  24,  28]
+   sim.black_hole_spin = round(0.98*sim.black_hole_mass,4)
+   nxs = [96, 104, 112]
+   nls = [20,  22,  24]
    for i in range(len(nxs)):
       sim.nx = nxs[i]
       sim.nl = nls[i]
@@ -136,7 +136,7 @@ elif (sim.run_type == "multiple_runs"):
       sim.launch_run()
       time.sleep(60)
 
-   sim.black_hole_spin = round(0.99*sim.black_hole_mass,4)
+   sim.black_hole_spin = round(0.98*sim.black_hole_mass,4)
    sms = [1,2,3]
    sim.nx = 112
    sim.nl = 28

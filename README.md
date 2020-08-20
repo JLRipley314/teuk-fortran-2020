@@ -38,16 +38,13 @@ to visualize the data, which are saved as csv files.
 
 ## Citation
 
-### Code paper
-This code (and some of the formalism that went into developting it)
-is described in more detail in
+If you use this code, please cite:
 ...
 
-### Formalism paper
-Further theoretical background on how we reconstruct the metric can be found in
+Also consider citing:
 ...
 
-# Contact
+## Contact
 
 For questions please contact
 Justin Ripley: lloydripley [at] gmail [dot] com
