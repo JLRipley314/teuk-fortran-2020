@@ -26,6 +26,9 @@ module mod_cheb
    real(rp), dimension(nx,nx) :: D_cheb
    real(rp), dimension(nx,nx) :: to_cheb
    real(rp), dimension(nx,nx) :: to_real
+
+   ! filter array
+   real(rp), dimension(nx) :: filter_arr
 !=============================================================================
 contains
 !=============================================================================
@@ -44,6 +47,10 @@ contains
 
       do j=1,ny
          Rarr(:,j) = Rvec
+      end do
+
+      do j=1,nx
+         filter_arr(j) = exp(-36.0_rp*(real(j-1,rp)/real(nx-1,rp))**20)
       end do
    end subroutine cheb_init
 !=============================================================================
@@ -115,8 +122,7 @@ contains
       call cheb_real_to_coef(m_ang,f%np1,f%coefs_cheb) 
 
       do i=1,nx
-         f%coefs_cheb(i,:,m_ang) = &
-            exp(-36.0_rp*(real(i-1,rp)/real(nx-1,rp))**25)*f%coefs_cheb(i,:,m_ang)
+         f%coefs_cheb(i,:,m_ang) = filter_arr(i)*f%coefs_cheb(i,:,m_ang)
       end do
 
       call cheb_coef_to_real(m_ang,f%coefs_cheb,f%np1) 

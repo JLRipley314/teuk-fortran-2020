@@ -103,7 +103,7 @@ class Sim:
 ## the factor 6/N^2 by up to (3/2) (need to experiment)
 #-----------------------------------------------------------------------------
       self.dt= float(
-         6.*pow(max(self.nx,self.ny),-2)
+         9.*pow(max(self.nx,self.ny),-2)
       )
 #-----------------------------------------------------------------------------
       self.nt= int(

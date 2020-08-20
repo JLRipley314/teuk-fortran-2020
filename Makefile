@@ -11,7 +11,8 @@ vpath %.mod $(OBJDIR)
 vpath %.o   $(OBJDIR)
 vpath %.f90 $(SRC)
 #==========================================================================
-## for FFTW (exact path will depend on your computer)
+## for FFTW 
+
 INCFFTW= /usr/include
 LIBFFTW= /lib/x86_64-linux-gnu
 #==========================================================================

@@ -17,7 +17,7 @@ sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
 sim.compactification_length= float(1)
 #=============================================================================
 sim.evolve_time= float(150) ## units of black hole mass
-sim.num_saved_times= int(800)
+sim.num_saved_times= int(600)
 #=============================================================================
 sim.nx= 112#int(pow(2,4)*pow(3,1)*pow(5,0)*pow(7,0)) ## num radial pts 
 sim.nl= 28#int(pow(2,4)*pow(3,0)*pow(5,0)*pow(7,0)) ## num swaL angular pts 
@@ -31,9 +31,6 @@ sim.write_indep_res=           True
 sim.write_metric_recon_fields= False
 sim.write_scd_order_source=    True
 sim.write_coefs=               False
-#=============================================================================
-## change start time
-sim.start_multiple= float(1.0)
 #=============================================================================
 sim.computer= 'feynman'#'home'#
 sim.feyn_out_stem= '/mnt/grtheory/tf-out/'
@@ -53,6 +50,9 @@ sim.num_tasks_per_node= '1'
 sim.psi_spin=  int(-2)
 sim.psi_boost= int(-2)
 #=============================================================================
+## start multiple for second order metric evolution 
+sim.start_multiple= float(1.0)
+#=============================================================================
 ## initial data for mode m1
 #=============================================================================
 sim.pm1_ang =  int(2) ## m_ang is preserved by time evolution
@@ -62,16 +62,16 @@ sim.l_ang_pm1= int(2) ## l_ang: support of initial swal
 sim.initial_data_direction_pm1= "ingoing"#"outgoing"#"time_symmetric"#
 
 sim.amp_pm1= float(10.0)  ## amplitude of the initial perturbation
-sim.rl_pm1=  float(-1.5)  ## compact support: lower r value
-sim.ru_pm1=  float( 1.5)  ## compact support: upper r value 
+sim.rl_pm1=  float( 0.6)  ## compact support: lower r value
+sim.ru_pm1=  float( 1.6)  ## compact support: upper r value 
 #-----------------------------------------------------------------------------
 sim.l_ang_nm1= int(2) ## support over single spin weighted spherical harmonic
 
 sim.initial_data_direction_nm1= "ingoing"#"time_symmetric"#"outgoing"#
 
 sim.amp_nm1= float(10.0)  ## amplitude of the initial perturbation
-sim.rl_nm1=  float(-1.5)  ## compact support: lower r value
-sim.ru_nm1=  float( 1.5)  ## compact support: upper r value 
+sim.rl_nm1=  float( 0.6)  ## compact support: lower r value
+sim.ru_nm1=  float( 1.6)  ## compact support: upper r value 
 #=============================================================================
 ## initial data for mode m2
 #=============================================================================
@@ -110,7 +110,7 @@ if (sim.run_type == "basic_run"):
 #=============================================================================
 elif (sim.run_type == "multiple_runs"):
    sim.black_hole_spin = round(0.7*sim.black_hole_mass,4)
-   nxs = [64, 80, 96]
+   nxs = [80, 88, 96]
    nls = [12, 16, 20]
    for i in range(len(nxs)):
       sim.nx = nxs[i]
@@ -118,9 +118,9 @@ elif (sim.run_type == "multiple_runs"):
       sim.launch_run() 
       time.sleep(60)
 
-   sim.black_hole_spin = round(0.98*sim.black_hole_mass,4)
+   sim.black_hole_spin = round(0.998*sim.black_hole_mass,4)
    nxs = [96, 104, 112]
-   nls = [20,  22,  24]
+   nls = [20,  24,  28]
    for i in range(len(nxs)):
       sim.nx = nxs[i]
       sim.nl = nls[i]
@@ -136,7 +136,7 @@ elif (sim.run_type == "multiple_runs"):
       sim.launch_run()
       time.sleep(60)
 
-   sim.black_hole_spin = round(0.98*sim.black_hole_mass,4)
+   sim.black_hole_spin = round(0.998*sim.black_hole_mass,4)
    sms = [1,2,3]
    sim.nx = 112
    sim.nl = 28
