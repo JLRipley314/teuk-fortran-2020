@@ -1,16 +1,19 @@
 #==========================================================================
+## Compiles fortran code and links to FFTW
+#==========================================================================
 TOP= ./
 SRC= $(TOP)src/
 BIN= $(TOP)bin/
 
 OBJDIR= $(TOP)obj/
 
-INCFFTW= /usr/include
-LIBFFTW= /lib/x86_64-linux-gnu
-
-vpath %.f90 $(SRC)
 vpath %.mod $(OBJDIR)
 vpath %.o   $(OBJDIR)
+vpath %.f90 $(SRC)
+#==========================================================================
+## for FFTW (exact path will depend on your computer)
+INCFFTW= /usr/include
+LIBFFTW= /lib/x86_64-linux-gnu
 #==========================================================================
 FC = ifort#gfortran#
 
@@ -68,7 +71,7 @@ DEPS = $(addprefix $(SRC), \
 	mod_teuk.f90 \
 	mod_write_level.f90 \
 	)
-
+#==========================================================================
 all: $(RUN)
 
 %.run: $(MAIN) $(OBJ)

@@ -108,22 +108,42 @@ sim.scd_write_m = [-2*sim.pm1_ang, 2*sim.pm1_ang, 0]
 if (sim.run_type == "basic_run"):
    sim.launch_run()
 #=============================================================================
-elif (sim.run_type == "multiple_res"):
-#   nxs = [64, 80, 96]
-#   nls = [16, 20, 24]
+elif (sim.run_type == "multiple_runs"):
+   sim.black_hole_spin = round(0.7*sim.black_hole_mass,4)
+   nxs = [64, 80, 96]
+   nls = [12, 16, 20]
+   for i in range(len(nxs)):
+      sim.nx = nxs[i]
+      sim.nl = nls[i]
+      sim.launch_run() 
+      time.sleep(60)
+
+   sim.black_hole_spin = round(0.99*sim.black_hole_mass,4)
    nxs = [96, 112, 128]
    nls = [20,  24,  28]
+   for i in range(len(nxs)):
+      sim.nx = nxs[i]
+      sim.nl = nls[i]
+      sim.launch_run() 
+      time.sleep(60)
 
-#   bhss = [round(0.0*sim.black_hole_mass,4), round(0.7*sim.black_hole_mass,4), round(0.998*sim.black_hole_mass,4)]
-   bhss = [round(0.98*sim.black_hole_mass,4), round(0.998*sim.black_hole_mass,4)]
+   sim.black_hole_spin = round(0.7*sim.black_hole_mass,4)
+   sms = [1,2,3]
+   sim.nx = 96
+   sim.nl = 20
+   for sm in sms:
+      sim.start_multiple= sm
+      sim.launch_run()
+      time.sleep(60)
 
-   for bhs in bhss:
-      for i in range(len(nxs)):
-         sim.black_hole_spin = bhs 
-         sim.nx = nxs[i]
-         sim.nl = nls[i]
-         sim.launch_run() 
-         time.sleep(60)
+   sim.black_hole_spin = round(0.99*sim.black_hole_mass,4)
+   sms = [1,2,3]
+   sim.nx = 112
+   sim.nl = 28
+   for sm in sms:
+      sim.start_multiple= sm
+      sim.launch_run()
+      time.sleep(60)
 #=============================================================================
 elif (sim.run_type == "start_times"):
    sms = [1,2,3]

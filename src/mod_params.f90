@@ -5,10 +5,10 @@ module mod_params
 use mod_prec
 implicit none
    character(*), parameter :: home_dir = '/home/jripley/teuk-fortran'
-   character(*), parameter :: run_type = 'start_times'
+   character(*), parameter :: run_type = 'multiple_runs'
    logical, parameter :: debug = .false.
    real(rp), parameter :: black_hole_mass = 0.5_rp
-   real(rp), parameter :: black_hole_spin = 0.49_rp
+   real(rp), parameter :: black_hole_spin = 0.495_rp
    real(rp), parameter :: compactification_length = 1.0_rp
    real(rp), parameter :: evolve_time = 150.0_rp
    integer(ip), parameter :: num_saved_times = 600_ip
@@ -56,9 +56,9 @@ implicit none
    integer(ip), dimension(2), parameter :: lin_write_m = [2_ip,-2_ip]
    integer(ip), dimension(3), parameter :: scd_write_m = [0_ip,-4_ip,4_ip]
    integer(ip), parameter :: max_l = 27_ip
-   real(rp), parameter :: horizon = 0.5985037562735555_rp
-   real(rp), parameter :: R_max = 1.6708332897127791_rp
-   real(rp), parameter :: scd_order_start_time = 21.84340595630546_rp
+   real(rp), parameter :: horizon = 0.5698283430993462_rp
+   real(rp), parameter :: R_max = 1.7549144617147554_rp
+   real(rp), parameter :: scd_order_start_time = 22.77668257170185_rp
    integer(ip), parameter :: ny = 40_ip
    real(rp), parameter :: dt = 0.0007174744897959183_rp
    integer(ip), parameter :: nt = 104533_ip
@@ -67,9 +67,9 @@ implicit none
    integer(ip), parameter :: min_m = -4_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Wed_13_22_bhm0.5_bhs0.49_nx112_nl28_m_2_2'
-   character(*), parameter :: output_dir = '/mnt/grtheory/tf-out/Wed_13_22_bhm0.5_bhs0.49_nx112_nl28_m_2_2'
-   character(*), parameter :: bin_name = 'Wed_13_22_bhm0.5_bhs0.49_nx112_nl28_m_2_2.run'
-   character(*), parameter :: tables_dir = '/mnt/grtheory/tf-out/Wed_13_22_bhm0.5_bhs0.49_nx112_nl28_m_2_2/tables'
-   character(*), parameter :: output_file = '/mnt/grtheory/tf-out/Wed_13_20_bhm0.5_bhs0.49_nx112_nl28_m_2_2/output.txt'
+   character(*), parameter :: output_stem = 'Wed_15_07_bhm0.5_bhs0.495_nx112_nl28_m_2_2'
+   character(*), parameter :: output_dir = '/mnt/grtheory/tf-out/Wed_15_07_bhm0.5_bhs0.495_nx112_nl28_m_2_2'
+   character(*), parameter :: bin_name = 'Wed_15_07_bhm0.5_bhs0.495_nx112_nl28_m_2_2.run'
+   character(*), parameter :: tables_dir = '/mnt/grtheory/tf-out/Wed_15_07_bhm0.5_bhs0.495_nx112_nl28_m_2_2/tables'
+   character(*), parameter :: output_file = '/mnt/grtheory/tf-out/Wed_15_05_bhm0.5_bhs0.495_nx112_nl28_m_2_2/output.txt'
 end module mod_params

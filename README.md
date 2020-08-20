@@ -21,9 +21,6 @@ Runtime parameters are configured in the `setup.py` file.
 * Fastest Fourier Transform in the West (FFTW): 
 	http://fftw.org
 
-You may need to reconfigure the Makefile to correctly link to FFTW
-depending on where it is located on your computer.
-
 I have successfully compiled the code with
 gfortran (version 9) and ifort (version 17).
 
