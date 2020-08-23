@@ -25,12 +25,12 @@ contains
 
       character(:), allocatable :: rn
       integer(ip) :: ierror
-      integer(ip) :: uf = 3
+      integer(ip) :: uf
       ! set the file fname to read from
       rn = tables_dir // '/' // fn
 
       ! Note: here we ASSUME the input file is correctly formatted
-      open(unit=uf,file=rn,status='old',action='read',iostat=ierror)
+      open(newunit=uf,file=rn,status='old',action='read',iostat=ierror)
          if (ierror/=0) then
             write (*,*) "Error(read_arr): ierror=", ierror
             write (*,*) "file = ", rn
@@ -47,12 +47,12 @@ contains
 
       character(:), allocatable :: rn
       integer(ip) :: i1, ierror
-      integer(ip) :: uf = 3
+      integer(ip) :: uf
       ! set the file fname to read from
       rn = tables_dir // '/' // fn
 
       ! Note: here we ASSUME the input file is correctly formatted
-      open(unit=uf,file=rn,status='old',action='read',iostat=ierror)
+      open(newunit=uf,file=rn,status='old',action='read',iostat=ierror)
          if (ierror/=0) then
             write (*,*) "Error(read_arr): ierror=", ierror
             write (*,*) "file = ", rn
@@ -71,12 +71,12 @@ contains
 
       character(:), allocatable :: rn
       integer(ip) :: i1, i2, ierror
-      integer(ip) :: uf = 3
+      integer(ip) :: uf
       ! set the file fname to read from
       rn = tables_dir // '/' // fn
-
+u
       ! Note: here we ASSUME the input file is correctly formatted
-      open(unit=uf,file=rn,status='old',action='read',iostat=ierror)
+      open(newunit=uf,file=rn,status='old',action='read',iostat=ierror)
          if (ierror/=0) then
             write (*,*) "Error(read_arr): ierror=", ierror
             write (*,*) "file = ", rn
@@ -101,7 +101,7 @@ contains
       integer(ip) :: ubx, uby, lbx, lby 
       logical :: exists
       integer(ip) :: i, j, ierror = 0
-      integer(ip) :: uf = 3
+      integer(ip) :: uf
 
       lbx = lbound(arr,1)
       lby = lbound(arr,2)
@@ -121,9 +121,9 @@ contains
       !----------------------------------------------------------------------
       inquire(file=fn_re,exist=exists)
       if (exists) then
-         open(unit=uf,file=fn_re,status='old',position='append',action='write',iostat=ierror)
+         open(newunit=uf,file=fn_re,status='old',position='append',action='write',iostat=ierror)
       else
-         open(unit=uf,file=fn_re,status='new',action='write',iostat=ierror) 
+         open(newunit=uf,file=fn_re,status='new',action='write',iostat=ierror) 
       end if
 
       write (uf,'(e14.6,a1,i3,a1,i3,a1)',advance='no',iostat=ierror) &
@@ -150,9 +150,9 @@ contains
       !----------------------------------------------------------------------
       inquire(file=fn_im,exist=exists)
       if (exists) then
-         open(unit=uf,file=fn_im,status='old',position='append',action='write',iostat=ierror)
+         open(newunit=uf,file=fn_im,status='old',position='append',action='write',iostat=ierror)
       else
-         open(unit=uf,file=fn_im,status='new',action='write',iostat=ierror) 
+         open(newunit=uf,file=fn_im,status='new',action='write',iostat=ierror) 
       end if
 
       write (uf,'(e14.6,a1,i3,a1,i3,a1)',advance='no',iostat=ierror) &
