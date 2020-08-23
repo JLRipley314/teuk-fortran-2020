@@ -66,6 +66,18 @@ class Sim:
          pow(self.compactification_length,2)
          /self.horizon
       )
+
+      self.rl_pm1 *= self.horizon
+      self.ru_pm1 *= self.horizon
+
+      self.rl_nm1 *= self.horizon
+      self.ru_nm1 *= self.horizon
+
+      self.rl_pm2 *= self.horizon
+      self.ru_pm2 *= self.horizon
+
+      self.rl_nm2 *= self.horizon
+      self.ru_nm2 *= self.horizon
 #-----------------------------------------------------------------------------
 ## when to begin metric reconstruction
       self.scd_order_start_time = max(
