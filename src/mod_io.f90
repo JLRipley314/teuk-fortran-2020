@@ -74,7 +74,7 @@ contains
       integer(ip) :: uf
       ! set the file fname to read from
       rn = tables_dir // '/' // fn
-u
+
       ! Note: here we ASSUME the input file is correctly formatted
       open(newunit=uf,file=rn,status='old',action='read',iostat=ierror)
          if (ierror/=0) then
