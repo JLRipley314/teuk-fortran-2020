@@ -61,18 +61,18 @@ sim.l_ang_pm1= int(2) ## l_ang: support of initial swal
 
 sim.initial_data_direction_pm1= "ingoing"#"outgoing"#"time_symmetric"#
 
-sim.amp_pm1= float( 5.0)  ## amplitude of the initial perturbation
+sim.amp_pm1= float( 0.25)  ## amplitude of the initial perturbation
 
-sim.rl_pm1_0= float(-4.0)  ## lower r value as a multiple of horizon
+sim.rl_pm1_0= float( 1.0)  ## lower r value as a multiple of horizon
 sim.ru_pm1_0= float( 4.0)  ## upper r value as a multiple of horizon 
 #-----------------------------------------------------------------------------
 sim.l_ang_nm1= int(2) ## support over single spin weighted spherical harmonic
 
 sim.initial_data_direction_nm1= "ingoing"#"time_symmetric"#"outgoing"#
 
-sim.amp_nm1= float( 5.0)  ## amplitude of the initial perturbation
+sim.amp_nm1= float( 0.25)  ## amplitude of the initial perturbation
 
-sim.rl_nm1_0= float(-4.0)  ## lower r value as multiple of horizon
+sim.rl_nm1_0= float( 1.0)  ## lower r value as multiple of horizon
 sim.ru_nm1_0= float( 4.0)  ## upper r value as multiple of horizon
 #=============================================================================
 ## initial data for mode m2
@@ -130,24 +130,44 @@ elif (sim.run_type == "multiple_runs"):
       sim.nl = nls[i]
       sim.launch_run() 
       time.sleep(60)
+#-----------------------------------------------------------------------------
+   sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
+   sim.nx = 96
+   sim.nl = 16
 
-#   sim.black_hole_spin = round(0.7*sim.black_hole_mass,4)
-#   sms = [1,2,3]
-#   sim.nx = 96
-#   sim.nl = 16
-#   for sm in sms:
-#      sim.start_multiple= sm
-#      sim.launch_run()
-#      time.sleep(60)
+   amps = [0.5, 0.75]
+   for amp in amps:
+      sim.amp_pm1= amp
+      sim.amp_nm1= amp
+      sim.launch_run() 
+      time.sleep(60)
 
-#   sim.black_hole_spin = round(0.998*sim.black_hole_mass,4)
-#   sms = [1,2,3]
-#   sim.nx = 128
-#   sim.nl = 24
-#   for sm in sms:
-#      sim.start_multiple= sm
-#      sim.launch_run()
-#      time.sleep(60)
+   sim.amp_pm1= 0.25
+   sim.amp_nm1= 0.25
+   sms = [2,3]
+   for sm in sms:
+      sim.start_multiple= sm
+      sim.launch_run()
+      time.sleep(60)
+#-----------------------------------------------------------------------------
+   sim.black_hole_spin = round(0.998*sim.black_hole_mass,4)
+   sim.nx = 128
+   sim.nl = 24
+
+   amps = [0.5, 0.75]
+   for amp in amps:
+      sim.amp_pm1= amp
+      sim.amp_nm1= amp
+      sim.launch_run() 
+      time.sleep(60)
+
+   sim.amp_pm1= 0.25
+   sim.amp_nm1= 0.25
+   sms = [2,3]
+   for sm in sms:
+      sim.start_multiple= sm
+      sim.launch_run()
+      time.sleep(60)
 #=============================================================================
 elif (sim.run_type == "start_times"):
    sms = [1,2,3]
