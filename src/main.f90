@@ -44,8 +44,9 @@ program main
 
    implicit none
 !=============================================================================
-! Put everything in a black so valgrind doesn't get confused about 
+! Put everything in a block so valgrind doesn't get confused about 
 ! automatically deallocated memory
+!=============================================================================
 clean_memory: block
 !=============================================================================
 ! declare and initialize variables, fields, etc.
