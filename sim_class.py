@@ -67,17 +67,17 @@ class Sim:
          /self.horizon
       )
 
-      self.rl_pm1 *= self.horizon
-      self.ru_pm1 *= self.horizon
+      self.rl_pm1= self.horizon*self.rl_pm1_0
+      self.ru_pm1= self.horizon*self.ru_pm1_0
 
-      self.rl_nm1 *= self.horizon
-      self.ru_nm1 *= self.horizon
+      self.rl_nm1= self.horizon*self.rl_nm1_0
+      self.ru_nm1= self.horizon*self.ru_nm1_0
 
-      self.rl_pm2 *= self.horizon
-      self.ru_pm2 *= self.horizon
+      self.rl_pm2= self.horizon*self.rl_pm2_0
+      self.ru_pm2= self.horizon*self.ru_pm2_0
 
-      self.rl_nm2 *= self.horizon
-      self.ru_nm2 *= self.horizon
+      self.rl_nm2= self.horizon*self.rl_nm2_0
+      self.ru_nm2= self.horizon*self.ru_nm2_0 
 #-----------------------------------------------------------------------------
 ## when to begin metric reconstruction
       self.scd_order_start_time = max(
