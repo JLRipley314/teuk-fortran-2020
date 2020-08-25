@@ -17,7 +17,7 @@ sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
 sim.compactification_length= float(1)
 #=============================================================================
 sim.evolve_time= float(125) ## units of black hole mass
-sim.num_saved_times= int(500)
+sim.num_saved_times= int(600)
 #=============================================================================
 sim.nx= 96 ## num radial pts 
 sim.nl= 24  ## num angular values
@@ -30,7 +30,7 @@ sim.scd_order=    True
 sim.write_indep_res=           True
 sim.write_metric_recon_fields= False
 sim.write_scd_order_source=    True
-sim.write_coefs=               False
+sim.write_coefs=               True
 #=============================================================================
 sim.computer= 'feynman'#'home'#
 sim.feyn_out_stem= '/mnt/grtheory/tf-out/'
@@ -122,7 +122,7 @@ elif (sim.run_type == "multiple_runs"):
       sim.launch_run() 
       time.sleep(60)
 
-   sim.black_hole_spin = round(0.98*sim.black_hole_mass,4)
+   sim.black_hole_spin = round(0.998*sim.black_hole_mass,4)
    nxs = [112, 128, 144]
    nls = [20,   24,  28]
    for i in range(len(nxs)):
@@ -150,7 +150,7 @@ elif (sim.run_type == "multiple_runs"):
       sim.launch_run()
       time.sleep(60)
 #-----------------------------------------------------------------------------
-   sim.black_hole_spin = round(0.98*sim.black_hole_mass,4)
+   sim.black_hole_spin = round(0.998*sim.black_hole_mass,4)
    sim.nx = 128
    sim.nl = 24
 

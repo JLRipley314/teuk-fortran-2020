@@ -199,7 +199,8 @@ contains
       +  A_qf(:,:,m_ang) * f%DR(:,:,m_ang) &
       +  B_qp(:,:,m_ang) * p%level(:,:,m_ang) &
       +  B_qq(:,:,m_ang) * q%level(:,:,m_ang) &
-      +  B_qf(:,:,m_ang) * f%level(:,:,m_ang) 
+      +  B_qf(:,:,m_ang) * f%level(:,:,m_ang) &
+      -  0.5 * (q%level(:,:,m_ang) - f%DR(:,:,m_ang)) ! constraint damping
       !-------------------------------------
       kf(:,:,m_ang) = &
          A_fp(:,:,m_ang) * p%DR(:,:,m_ang) &
