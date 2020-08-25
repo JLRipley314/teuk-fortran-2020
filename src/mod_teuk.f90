@@ -26,6 +26,9 @@ module mod_teuk
       module procedure teuk_lin_time_step, teuk_scd_time_step
    end interface
 !=============================================================================
+   real(rp), parameter :: constraint_damping = &
+      abs(1.0_rp / (bhm * sqrt(abs(1.00001_rp-abs(bhs/bhm)))))
+
    real(rp) :: &
       A_pp(nx,ny,min_m:max_m), A_pq(nx,ny,min_m:max_m), A_pf(nx,ny,min_m:max_m), &
       A_qp(nx,ny,min_m:max_m), A_qq(nx,ny,min_m:max_m), A_qf(nx,ny,min_m:max_m), &
@@ -200,7 +203,7 @@ contains
       +  B_qp(:,:,m_ang) * p%level(:,:,m_ang) &
       +  B_qq(:,:,m_ang) * q%level(:,:,m_ang) &
       +  B_qf(:,:,m_ang) * f%level(:,:,m_ang) &
-      -  0.5 * (q%level(:,:,m_ang) - f%DR(:,:,m_ang)) ! constraint damping
+      -  constraint_damping * (q%level(:,:,m_ang) - f%DR(:,:,m_ang))
       !-------------------------------------
       kf(:,:,m_ang) = &
          A_fp(:,:,m_ang) * p%DR(:,:,m_ang) &

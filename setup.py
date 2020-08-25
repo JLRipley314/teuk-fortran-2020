@@ -33,7 +33,7 @@ sim.write_scd_order_source=    True
 sim.write_coefs=               True
 #=============================================================================
 sim.computer= 'feynman'#'home'#
-sim.feyn_out_stem= '/mnt/grtheory/tf-out/'
+sim.feyn_out_stem= '/mnt/grtheory/tf-out_v2/'
 #=============================================================================
 ## for feynman cluster/slurm script
 sim.walltime= '24:00:00' ## (hh:mm:ss)
