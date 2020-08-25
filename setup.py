@@ -16,8 +16,8 @@ sim.black_hole_mass= float(0.5)
 sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
 sim.compactification_length= float(1)
 #=============================================================================
-sim.evolve_time= float(100) ## units of black hole mass
-sim.num_saved_times= int(400)
+sim.evolve_time= float(125) ## units of black hole mass
+sim.num_saved_times= int(500)
 #=============================================================================
 sim.nx= 96 ## num radial pts 
 sim.nl= 24  ## num angular values
@@ -61,19 +61,19 @@ sim.l_ang_pm1= int(2) ## l_ang: support of initial swal
 
 sim.initial_data_direction_pm1= "ingoing"#"outgoing"#"time_symmetric"#
 
-sim.amp_pm1= float( 0.25)  ## amplitude of the initial perturbation
+sim.amp_pm1= float( 0.1)  ## amplitude of the initial perturbation
 
-sim.rl_pm1_0= float( 1.0)  ## lower r value as a multiple of horizon
-sim.ru_pm1_0= float( 4.0)  ## upper r value as a multiple of horizon 
+sim.rl_pm1_0= float( 1.1)  ## lower r value as a multiple of horizon
+sim.ru_pm1_0= float( 3.0)  ## upper r value as a multiple of horizon 
 #-----------------------------------------------------------------------------
 sim.l_ang_nm1= int(2) ## support over single spin weighted spherical harmonic
 
 sim.initial_data_direction_nm1= "ingoing"#"time_symmetric"#"outgoing"#
 
-sim.amp_nm1= float( 0.25)  ## amplitude of the initial perturbation
+sim.amp_nm1= float( 0.1)  ## amplitude of the initial perturbation
 
-sim.rl_nm1_0= float( 1.0)  ## lower r value as multiple of horizon
-sim.ru_nm1_0= float( 4.0)  ## upper r value as multiple of horizon
+sim.rl_nm1_0= float( 1.1)  ## lower r value as multiple of horizon
+sim.ru_nm1_0= float( 3.0)  ## upper r value as multiple of horizon
 #=============================================================================
 ## initial data for mode m2
 #=============================================================================
@@ -122,7 +122,7 @@ elif (sim.run_type == "multiple_runs"):
       sim.launch_run() 
       time.sleep(60)
 
-   sim.black_hole_spin = round(0.998*sim.black_hole_mass,4)
+   sim.black_hole_spin = round(0.98*sim.black_hole_mass,4)
    nxs = [112, 128, 144]
    nls = [20,   24,  28]
    for i in range(len(nxs)):
@@ -135,7 +135,7 @@ elif (sim.run_type == "multiple_runs"):
    sim.nx = 96
    sim.nl = 16
 
-   amps = [0.5, 0.75]
+   amps = [0.3, 0.5]
    for amp in amps:
       sim.amp_pm1= amp
       sim.amp_nm1= amp
@@ -150,11 +150,11 @@ elif (sim.run_type == "multiple_runs"):
       sim.launch_run()
       time.sleep(60)
 #-----------------------------------------------------------------------------
-   sim.black_hole_spin = round(0.998*sim.black_hole_mass,4)
+   sim.black_hole_spin = round(0.98*sim.black_hole_mass,4)
    sim.nx = 128
    sim.nl = 24
 
-   amps = [0.5, 0.75]
+   amps = [0.3, 0.5]
    for amp in amps:
       sim.amp_pm1= amp
       sim.amp_nm1= amp
