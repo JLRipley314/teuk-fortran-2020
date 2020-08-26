@@ -12,7 +12,8 @@ module mod_teuk
       cl=>compactification_length, &
       bhm=>black_hole_mass, &
       bhs=>black_hole_spin, &
-      constraint_damping
+      constraint_damping, &
+      constrained_evo
 
    use mod_cheb, only: R=>Rarr, compute_DR
    use mod_swal, only: Y=>Yarr, compute_swal_laplacian
@@ -229,6 +230,11 @@ contains
          f%first_time = .false.
       end if
 
+      if (constrained_evo) then
+         call compute_DR(1_ip, m_ang, f)
+         q%n(:,:,m_ang) = f%DR(:,:,m_ang)
+      end if
+
       p%l2(:,:,m_ang)= p%n(:,:,m_ang)+0.5_rp*dt*p%k1(:,:,m_ang)
       q%l2(:,:,m_ang)= q%n(:,:,m_ang)+0.5_rp*dt*q%k1(:,:,m_ang)
       f%l2(:,:,m_ang)= f%n(:,:,m_ang)+0.5_rp*dt*f%k1(:,:,m_ang)
@@ -279,6 +285,11 @@ contains
          p%first_time = .false.
          q%first_time = .false.
          f%first_time = .false.
+      end if
+
+      if (constrained_evo) then
+         call compute_DR(1_ip, m_ang, f)
+         q%n(:,:,m_ang) = f%DR(:,:,m_ang)
       end if
 
       p%l2(:,:,m_ang)= p%n(:,:,m_ang)+0.5_rp*dt*p%k1(:,:,m_ang)
