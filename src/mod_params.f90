@@ -20,8 +20,9 @@ implicit none
    logical, parameter :: write_metric_recon_fields = .false.
    logical, parameter :: write_scd_order_source = .true.
    logical, parameter :: write_coefs = .true.
+   logical, parameter :: constrained_evo = .true.
    character(*), parameter :: computer = 'feynman'
-   character(*), parameter :: feyn_out_stem = '/mnt/grtheory/tf-out_v2/'
+   character(*), parameter :: feyn_out_stem = '/mnt/grtheory/tf-out/'
    character(*), parameter :: walltime = '24:00:00'
    character(*), parameter :: memory = '512'
    character(*), parameter :: num_nodes = '1'
@@ -76,9 +77,9 @@ implicit none
    integer(ip), parameter :: min_m = -4_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Wed_14_44_bhm0.5_bhs0.499_nx128_nl28_m_2_2'
-   character(*), parameter :: output_dir = '/mnt/grtheory/tf-out_v2/Wed_14_44_bhm0.5_bhs0.499_nx128_nl28_m_2_2'
-   character(*), parameter :: bin_name = 'Wed_14_44_bhm0.5_bhs0.499_nx128_nl28_m_2_2.run'
-   character(*), parameter :: tables_dir = '/mnt/grtheory/tf-out_v2/Wed_14_44_bhm0.5_bhs0.499_nx128_nl28_m_2_2/tables'
-   character(*), parameter :: output_file = '/mnt/grtheory/tf-out_v2/Wed_14_42_bhm0.5_bhs0.499_nx128_nl28_m_2_2/output.txt'
+   character(*), parameter :: output_stem = 'Wed_15_47_bhm0.5_bhs0.499_nx128_nl28_m_2_2'
+   character(*), parameter :: output_dir = '/mnt/grtheory/tf-out/Wed_15_47_bhm0.5_bhs0.499_nx128_nl28_m_2_2'
+   character(*), parameter :: bin_name = 'Wed_15_47_bhm0.5_bhs0.499_nx128_nl28_m_2_2.run'
+   character(*), parameter :: tables_dir = '/mnt/grtheory/tf-out/Wed_15_47_bhm0.5_bhs0.499_nx128_nl28_m_2_2/tables'
+   character(*), parameter :: output_file = '/mnt/grtheory/tf-out/Wed_15_45_bhm0.5_bhs0.499_nx128_nl28_m_2_2/output.txt'
 end module mod_params

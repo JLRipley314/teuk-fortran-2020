@@ -241,17 +241,32 @@ contains
    !--------------------------------------------------------
       call set_k(2_ip, m_ang, p, q, f, p%k2, q%k2, f%k2) 
 
+      if (constrained_evo) then
+         call compute_DR(2_ip, m_ang, f)
+         q%l2(:,:,m_ang) = f%DR(:,:,m_ang)
+      end if
+
       p%l3(:,:,m_ang)= p%n(:,:,m_ang)+0.5_rp*dt*p%k2(:,:,m_ang)
       q%l3(:,:,m_ang)= q%n(:,:,m_ang)+0.5_rp*dt*q%k2(:,:,m_ang)
       f%l3(:,:,m_ang)= f%n(:,:,m_ang)+0.5_rp*dt*f%k2(:,:,m_ang)
    !--------------------------------------------------------
       call set_k(3_ip, m_ang, p, q, f, p%k3, q%k3, f%k3) 
 
+      if (constrained_evo) then
+         call compute_DR(3_ip, m_ang, f)
+         q%l3(:,:,m_ang) = f%DR(:,:,m_ang)
+      end if
+
       p%l4(:,:,m_ang)= p%n(:,:,m_ang)+dt*p%k3(:,:,m_ang)
       q%l4(:,:,m_ang)= q%n(:,:,m_ang)+dt*q%k3(:,:,m_ang)
       f%l4(:,:,m_ang)= f%n(:,:,m_ang)+dt*f%k3(:,:,m_ang)
    !--------------------------------------------------------
       call set_k(4_ip, m_ang, p, q, f, p%k4, q%k4, f%k4) 
+
+      if (constrained_evo) then
+         call compute_DR(4_ip, m_ang, f)
+         q%l4(:,:,m_ang) = f%DR(:,:,m_ang)
+      end if
 
       p%np1(:,:,m_ang)= p%n(:,:,m_ang) &
       +  (dt/6.0_rp)*(p%k1(:,:,m_ang)+2.0_rp*p%k2(:,:,m_ang)+2.0_rp*p%k3(:,:,m_ang)+p%k4(:,:,m_ang))
@@ -264,6 +279,11 @@ contains
    !------------------------------------------------------------
    ! want k5 for computing source term and independent residuals
    !------------------------------------------------------------
+      if (constrained_evo) then
+         call compute_DR(5_ip, m_ang, f)
+         q%np1(:,:,m_ang) = f%DR(:,:,m_ang)
+      end if
+
       call set_k(5_ip, m_ang, p, q, f, p%k5, q%k5, f%k5) 
 
    end subroutine teuk_lin_time_step
@@ -298,6 +318,11 @@ contains
    !--------------------------------------------------------
       call set_k(2_ip, m_ang, p, q, f, p%k2, q%k2, f%k2) 
 
+      if (constrained_evo) then
+         call compute_DR(2_ip, m_ang, f)
+         q%l2(:,:,m_ang) = f%DR(:,:,m_ang)
+      end if
+
       p%k2(:,:,m_ang) = p%k2(:,:,m_ang) + src%n1h(:,:,m_ang)
 
       p%l3(:,:,m_ang)= p%n(:,:,m_ang)+0.5_rp*dt*p%k2(:,:,m_ang)
@@ -306,6 +331,11 @@ contains
    !--------------------------------------------------------
       call set_k(3_ip, m_ang, p, q, f, p%k3, q%k3, f%k3) 
 
+      if (constrained_evo) then
+         call compute_DR(3_ip, m_ang, f)
+         q%l3(:,:,m_ang) = f%DR(:,:,m_ang)
+      end if
+
       p%k3(:,:,m_ang) = p%k3(:,:,m_ang) + src%n1h(:,:,m_ang)
 
       p%l4(:,:,m_ang)= p%n(:,:,m_ang)+dt*p%k3(:,:,m_ang)
@@ -313,6 +343,11 @@ contains
       f%l4(:,:,m_ang)= f%n(:,:,m_ang)+dt*f%k3(:,:,m_ang)
    !--------------------------------------------------------
       call set_k(4_ip, m_ang, p, q, f, p%k4, q%k4, f%k4) 
+
+      if (constrained_evo) then
+         call compute_DR(4_ip, m_ang, f)
+         q%l4(:,:,m_ang) = f%DR(:,:,m_ang)
+      end if
 
       p%k4(:,:,m_ang) = p%k4(:,:,m_ang) + src%np1(:,:,m_ang)
 
@@ -328,6 +363,11 @@ contains
    ! want k5 for computing source term and independent residuals
    !------------------------------------------------------------
       call set_k(5_ip, m_ang, p, q, f, p%k5, q%k5, f%k5) 
+
+      if (constrained_evo) then
+         call compute_DR(5_ip, m_ang, f)
+         q%np1(:,:,m_ang) = f%DR(:,:,m_ang)
+      end if
 
       p%k5(:,:,m_ang) = p%k5(:,:,m_ang) + src%np1(:,:,m_ang)
 
