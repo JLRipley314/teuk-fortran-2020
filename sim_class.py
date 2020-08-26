@@ -79,6 +79,11 @@ class Sim:
       self.rl_nm2= self.horizon*self.rl_nm2_0
       self.ru_nm2= self.horizon*self.ru_nm2_0 
 #-----------------------------------------------------------------------------
+      absa = abs(self.black_hole_spin/self.black_hole_mass)
+      self.constraint_damping = abs(
+         (1.0/self.black_hole_mass)*pow(abs(1.0000001-absa),-0.5)
+      )
+#-----------------------------------------------------------------------------
 ## when to begin metric reconstruction
       self.scd_order_start_time = max(
             self.start_multiple*(

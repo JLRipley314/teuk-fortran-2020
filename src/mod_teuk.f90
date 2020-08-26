@@ -11,7 +11,8 @@ module mod_teuk
       spin=>psi_spin, & 
       cl=>compactification_length, &
       bhm=>black_hole_mass, &
-      bhs=>black_hole_spin
+      bhs=>black_hole_spin, &
+      constraint_damping
 
    use mod_cheb, only: R=>Rarr, compute_DR
    use mod_swal, only: Y=>Yarr, compute_swal_laplacian
@@ -26,9 +27,6 @@ module mod_teuk
       module procedure teuk_lin_time_step, teuk_scd_time_step
    end interface
 !=============================================================================
-   real(rp), parameter :: constraint_damping = &
-      abs(1.0_rp / (bhm * sqrt(abs(1.00001_rp-abs(bhs/bhm)))))
-
    real(rp) :: &
       A_pp(nx,ny,min_m:max_m), A_pq(nx,ny,min_m:max_m), A_pf(nx,ny,min_m:max_m), &
       A_qp(nx,ny,min_m:max_m), A_qq(nx,ny,min_m:max_m), A_qf(nx,ny,min_m:max_m), &
