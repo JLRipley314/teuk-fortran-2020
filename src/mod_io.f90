@@ -13,7 +13,7 @@ module mod_io
    end interface
 
    interface write_csv
-      module procedure write_field_csv, write_array_csv
+      module procedure write_field_csv, write_array_2d_csv
    end interface
 !=============================================================================
 contains
@@ -91,7 +91,7 @@ contains
    end subroutine set_arr_3d
 !=============================================================================
 ! writes to one line, row by row
-   subroutine write_array_csv(fn, time, m_ang, arr)
+   subroutine write_array_2d_csv(fn, time, m_ang, arr)
       character(*),                intent(in) :: fn
       real(rp),                    intent(in) :: time
       integer(ip),                 intent(in) :: m_ang
@@ -174,7 +174,7 @@ contains
          write (*,*) "file = ", fn_im
          stop
       end if
-   end subroutine write_array_csv
+   end subroutine write_array_2d_csv
 !=============================================================================
 ! writes to one line, row by row
    subroutine write_field_csv(time,m_ang,f)
@@ -182,7 +182,7 @@ contains
       integer(ip), intent(in) :: m_ang
       type(field), intent(in) :: f
 
-      call write_array_csv(f%fname, time, m_ang, f%np1(:,:,m_ang))
+      call write_array_2d_csv(f%fname, time, m_ang, f%np1(:,:,m_ang))
 
    end subroutine write_field_csv
 !=============================================================================

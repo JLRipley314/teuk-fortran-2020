@@ -155,9 +155,7 @@ clean_memory: block
       ! save to file 
       !-----------------------------------------------------------------------
       if (mod(t_step,t_step_save)==0) then
-         !--------------------------------------------------------------------
          write (stdout,*) time / black_hole_mass
-         flush (stdout)
          call write_level(time / black_hole_mass)
       end if
       !-----------------------------------------------------------------------
