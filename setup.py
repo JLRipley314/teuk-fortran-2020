@@ -33,7 +33,7 @@ sim.write_metric_recon_fields= False
 sim.write_scd_order_source=    True
 sim.write_coefs=               False
 #=============================================================================
-sim.computer= 'home'#'feynman'#
+sim.computer= 'feynman'#'home'#
 sim.feyn_out_stem= '/mnt/grtheory/tf-out/'
 #=============================================================================
 ## for feynman cluster/slurm script

@@ -5,23 +5,23 @@ module mod_params
 use mod_prec
 implicit none
    character(*), parameter :: home_dir = '/home/jripley/teuk-fortran'
-   character(*), parameter :: run_type = 'basic_run'
+   character(*), parameter :: run_type = 'multiple_runs'
    logical, parameter :: debug = .false.
    real(rp), parameter :: black_hole_mass = 0.5_rp
    real(rp), parameter :: black_hole_spin = 0.35_rp
    real(rp), parameter :: compactification_length = 1.0_rp
-   real(rp), parameter :: evolve_time = 50.0_rp
-   integer(ip), parameter :: num_saved_times = 200_ip
-   integer(ip), parameter :: nx = 64_ip
+   real(rp), parameter :: evolve_time = 150.0_rp
+   integer(ip), parameter :: num_saved_times = 720_ip
+   integer(ip), parameter :: nx = 80_ip
    integer(ip), parameter :: nl = 20_ip
    logical, parameter :: metric_recon = .true.
    logical, parameter :: scd_order = .true.
-   logical, parameter :: constrained_evo = .false.
+   logical, parameter :: constrained_evo = .true.
    logical, parameter :: write_indep_res = .true.
    logical, parameter :: write_metric_recon_fields = .false.
    logical, parameter :: write_scd_order_source = .true.
    logical, parameter :: write_coefs = .false.
-   character(*), parameter :: computer = 'home'
+   character(*), parameter :: computer = 'feynman'
    character(*), parameter :: feyn_out_stem = '/mnt/grtheory/tf-out/'
    character(*), parameter :: walltime = '24:00:00'
    character(*), parameter :: memory = '512'
@@ -29,7 +29,7 @@ implicit none
    character(*), parameter :: num_tasks_per_node = '1'
    integer(ip), parameter :: psi_spin = -2_ip
    integer(ip), parameter :: psi_boost = -2_ip
-   real(rp), parameter :: start_multiple = 1.0_rp
+   integer(ip), parameter :: start_multiple = 1_ip
    integer(ip), parameter :: pm1_ang = 2_ip
    integer(ip), parameter :: l_ang_pm1 = 2_ip
    character(*), parameter :: initial_data_direction_pm1 = 'ingoing'
@@ -53,9 +53,9 @@ implicit none
    real(rp), parameter :: rl_nm2_0 = -1.5_rp
    real(rp), parameter :: ru_nm2_0 = 1.5_rp
    integer(ip), dimension(2), parameter :: lin_m = [2_ip,-2_ip]
-   integer(ip), dimension(2), parameter :: scd_m = [-4_ip,4_ip]
+   integer(ip), dimension(3), parameter :: scd_m = [0_ip,-4_ip,4_ip]
    integer(ip), dimension(2), parameter :: lin_write_m = [2_ip,-2_ip]
-   integer(ip), dimension(2), parameter :: scd_write_m = [-4_ip,4_ip]
+   integer(ip), dimension(3), parameter :: scd_write_m = [0_ip,-4_ip,4_ip]
    integer(ip), parameter :: max_l = 19_ip
    real(rp), parameter :: horizon = 0.8567143500057153_rp
    real(rp), parameter :: R_max = 1.167250204217227_rp
@@ -70,15 +70,15 @@ implicit none
    real(rp), parameter :: constraint_damping = 36.51483710615301_rp
    real(rp), parameter :: scd_order_start_time = 11.248163954718162_rp
    integer(ip), parameter :: ny = 32_ip
-   real(rp), parameter :: dt = 0.002197265625_rp
-   integer(ip), parameter :: nt = 11377_ip
-   integer(ip), parameter :: t_step_save = 56_ip
+   real(rp), parameter :: dt = 0.00140625_rp
+   integer(ip), parameter :: nt = 53333_ip
+   integer(ip), parameter :: t_step_save = 74_ip
    integer(ip), parameter :: max_m = 4_ip
    integer(ip), parameter :: min_m = -4_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Fri_12_11_bhm0.5_bhs0.35_nx64_nl20_m_2_2'
-   character(*), parameter :: output_dir = 'output/Fri_12_11_bhm0.5_bhs0.35_nx64_nl20_m_2_2'
-   character(*), parameter :: bin_name = 'Fri_12_11_bhm0.5_bhs0.35_nx64_nl20_m_2_2.run'
-   character(*), parameter :: tables_dir = 'output/Fri_12_11_bhm0.5_bhs0.35_nx64_nl20_m_2_2/tables'
+   character(*), parameter :: output_stem = 'Fri_16_03_bhm0.5_bhs0.35_nx80_nl20_m_2_2'
+   character(*), parameter :: output_dir = '/mnt/grtheory/tf-out/Fri_16_03_bhm0.5_bhs0.35_nx80_nl20_m_2_2'
+   character(*), parameter :: bin_name = 'Fri_16_03_bhm0.5_bhs0.35_nx80_nl20_m_2_2.run'
+   character(*), parameter :: tables_dir = '/mnt/grtheory/tf-out/Fri_16_03_bhm0.5_bhs0.35_nx80_nl20_m_2_2/tables'
 end module mod_params

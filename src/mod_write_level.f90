@@ -103,7 +103,7 @@ contains
       end if
 
       if (write_indep_res) then
-         if (.not. constrained_evo)  then
+         if (.not. constrained_evo) then
             do i=1,size(lin_write_m)
                call compute_res_q( lin_write_m(i),psi4_lin_q,psi4_lin_f,res_lin_q)
                call write_csv(time,lin_write_m(i),res_lin_q)
