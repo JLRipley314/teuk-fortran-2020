@@ -316,11 +316,6 @@ contains
          end if
       end if
 
-      if (constrained_evo) then
-         call compute_DR(1_ip, m_ang, f)
-         q%n(:,:,m_ang) = f%DR(:,:,m_ang)
-      end if
-
       p%l2(:,:,m_ang)= p%n(:,:,m_ang)+0.5_rp*dt*p%k1(:,:,m_ang)
       f%l2(:,:,m_ang)= f%n(:,:,m_ang)+0.5_rp*dt*f%k1(:,:,m_ang)
 
