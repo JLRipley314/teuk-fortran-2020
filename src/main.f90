@@ -23,7 +23,7 @@ program main
    use mod_initial_data, only: set_initial_data
    use mod_bkgrd_np,     only: bkgrd_np_init
    use mod_metric_recon, only: metric_recon_time_step 
-   use mod_write_level,  only: write_level
+   use mod_write_level,  only: write_level, write_diagnostics
 
    use mod_fields_list, only: &
       psi4_lin_p, psi4_lin_q, psi4_lin_f, &
@@ -154,8 +154,8 @@ clean_memory: block
       !-----------------------------------------------------------------------
       ! save to file 
       !-----------------------------------------------------------------------
+      call write_diagnostics(time / black_hole_mass)
       if (mod(t_step,t_step_save)==0) then
-         write (stdout,*) time / black_hole_mass
          call write_level(time / black_hole_mass)
       end if
       !-----------------------------------------------------------------------

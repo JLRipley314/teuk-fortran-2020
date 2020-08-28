@@ -4,9 +4,12 @@
 !=============================================================================
 module mod_write_level
 !=============================================================================
+   use, intrinsic :: iso_fortran_env, only: &
+      stdout=>output_unit, stdin=>input_unit, stderr=>error_unit
+
    use mod_prec
 
-   use mod_params, only: nx, max_l
+   use mod_params, only: nx, ny 
 
    use mod_io,   only: write_csv
 
@@ -40,9 +43,43 @@ module mod_write_level
    implicit none
    private
 
-   public :: write_level
+   public :: write_level, write_diagnostics
 !=============================================================================
 contains
+!=============================================================================
+   subroutine write_diagnostics(time)
+      real(rp), intent(in) :: time
+      real(rp), dimension(8) :: diag 
+
+      complex(rp) :: mean
+      integer(ip) :: m_ang 
+      !-----------------------------------------------------------------------
+      ! field values at future null infinity and horizon
+      !-----------------------------------------------------------------------
+      m_ang = maxval(lin_write_m)
+
+      mean = sum(psi4_lin_f%np1(0,:,m_ang)) / ny
+      diag(1) = real( mean,kind=rp)
+      diag(2) = aimag(mean)
+
+      mean = sum(psi4_lin_f%np1(nx,:,m_ang)) / ny
+      diag(3) = real( mean,kind=rp)
+      diag(4) = aimag(mean)
+      !-----------------------------------------------------------------------
+      m_ang = maxval(scd_write_m)
+
+      mean = sum(psi4_scd_f%np1(0,:,m_ang)) / ny
+      diag(5) = real( mean,kind=rp)
+      diag(6) = aimag(mean)
+
+      mean = sum(psi4_scd_f%np1(nx,:,m_ang)) / ny
+      diag(7) = real( mean,kind=rp)
+      diag(8) = aimag(mean)
+      !-----------------------------------------------------------------------
+      write(stdout,*) time, &
+         diag(1), diag(2), diag(3), diag(4), diag(5), diag(6), diag(7), diag(8)
+
+   end subroutine write_diagnostics
 !=============================================================================
    subroutine write_level(time)
       real(rp), intent(in) :: time

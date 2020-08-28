@@ -13,7 +13,7 @@ module mod_io
    end interface
 
    interface write_csv
-      module procedure write_field_csv, write_array_2d_csv
+      module procedure write_field_csv, write_array_1d_csv, write_array_2d_csv
    end interface
 !=============================================================================
 contains
@@ -89,6 +89,85 @@ contains
          end do
       close(uf)
    end subroutine set_arr_3d
+!=============================================================================
+! writes to one line, row by row
+   subroutine write_array_1d_csv(fn, time, m_ang, arr)
+      character(*),              intent(in) :: fn
+      real(rp),                  intent(in) :: time
+      integer(ip),               intent(in) :: m_ang
+      complex(rp), dimension(:), intent(in) :: arr
+
+      character(:), allocatable  :: mstr, fn_re, fn_im
+      integer(ip) :: ubx, uby, lbx, lby 
+      logical :: exists
+      integer(ip) :: i, ierror = 0
+      integer(ip) :: uf
+
+      lbx = lbound(arr,1)
+      ubx = ubound(arr,1)
+
+      ! inelegant int to str conversion
+      mstr = '     '
+      write (mstr,'(i5)') m_ang
+      mstr = trim(adjustl(mstr))
+      ! set the file fname to read from
+      fn_re = output_dir // '/' // fn // '_m' // mstr // '_re.csv'
+      fn_im = output_dir // '/' // fn // '_m' // mstr // '_im.csv'
+      !----------------------------------------------------------------------
+      ! save real part 
+      !----------------------------------------------------------------------
+      inquire(file=fn_re,exist=exists)
+      if (exists) then
+         open(newunit=uf,file=fn_re,status='old',position='append',action='write',iostat=ierror)
+      else
+         open(newunit=uf,file=fn_re,status='new',action='write',iostat=ierror) 
+      end if
+
+      write (uf,'(e14.6,a1,i3,a1,i3,a1)',advance='no',iostat=ierror) &
+         time, ',', ubx-lbx+1, ',', uby-lby+1, ','
+
+      do i=lbx,ubx
+         write (uf,'(e14.6,a1)',advance='no',iostat=ierror) &
+            real(arr(i),kind=rp), ','
+      end do
+      ! line break 
+      write (uf,*)
+
+      close(uf)
+
+      if (ierror/=0) then
+         write (*,*) "Error(read_arr): ierror=", ierror
+         write (*,*) "file = ", fn_re
+         stop
+      end if
+      !----------------------------------------------------------------------
+      ! save imaginary part 
+      !----------------------------------------------------------------------
+      inquire(file=fn_im,exist=exists)
+      if (exists) then
+         open(newunit=uf,file=fn_im,status='old',position='append',action='write',iostat=ierror)
+      else
+         open(newunit=uf,file=fn_im,status='new',action='write',iostat=ierror) 
+      end if
+
+      write (uf,'(e14.6,a1,i3,a1,i3,a1)',advance='no',iostat=ierror) &
+         time, ',', ubx-lbx+1, ',', uby-lby+1, ','
+
+      do i=lbx,ubx
+         write (uf,'(e14.6,a1)',advance='no',iostat=ierror) &
+            aimag(arr(i)), ','
+      end do
+      ! line break      
+      write (uf,*) 
+
+      close(uf)
+
+      if (ierror/=0) then
+         write (*,*) "Error(read_arr): ierror=", ierror
+         write (*,*) "file = ", fn_im
+         stop
+      end if
+   end subroutine write_array_1d_csv
 !=============================================================================
 ! writes to one line, row by row
    subroutine write_array_2d_csv(fn, time, m_ang, arr)
