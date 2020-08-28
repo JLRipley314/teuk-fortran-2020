@@ -26,7 +26,7 @@ module mod_write_level
       metric_recon, scd_order, &
       write_metric_recon_fields, &
       write_indep_res, write_scd_order_source, &
-      write_coefs
+      write_coefs, constrained_evo
 
    use mod_fields_list, only: &
       psi4_lin_p, psi4_lin_q, psi4_lin_f, &
@@ -103,10 +103,12 @@ contains
       end if
 
       if (write_indep_res) then
-         do i=1,size(lin_write_m)
-            call compute_res_q( lin_write_m(i),psi4_lin_q,psi4_lin_f,res_lin_q)
-            call write_csv(time,lin_write_m(i),res_lin_q)
-         end do
+         if (.not. constrained_evo)  then
+            do i=1,size(lin_write_m)
+               call compute_res_q( lin_write_m(i),psi4_lin_q,psi4_lin_f,res_lin_q)
+               call write_csv(time,lin_write_m(i),res_lin_q)
+            end do
+         end if
          if (metric_recon) then
             do i=1,size(lin_write_m)
                call metric_recon_indep_res(lin_write_m(i))
@@ -127,10 +129,12 @@ contains
          end do
 
          if (write_indep_res) then
-            do i=1,size(scd_write_m)
-               call compute_res_q( scd_write_m(i),psi4_scd_q,psi4_scd_f,res_scd_q)
-               call write_csv(time,scd_write_m(i),res_scd_q)
-            end do
+            if (.not. constrained_evo) then
+               do i=1,size(scd_write_m)
+                  call compute_res_q( scd_write_m(i),psi4_scd_q,psi4_scd_f,res_scd_q)
+                  call write_csv(time,scd_write_m(i),res_scd_q)
+               end do
+            end if
          end if
 
          if (write_scd_order_source) then 

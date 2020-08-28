@@ -103,12 +103,12 @@ sim.ru_nm2_0= float( 1.5)  ## upper r value as multiple of horizon
 ## which m angular values to evolve
 #=============================================================================
 sim.lin_m = [  -sim.pm1_ang,   sim.pm1_ang]
-sim.scd_m = [-2*sim.pm1_ang, 2*sim.pm1_ang]
+sim.scd_m = [-2*sim.pm1_ang, 2*sim.pm1_ang, 0]
 #=============================================================================
 ## which m angular values to write to file
 #=============================================================================
 sim.lin_write_m = [  -sim.pm1_ang,   sim.pm1_ang]
-sim.scd_write_m = [-2*sim.pm1_ang, 2*sim.pm1_ang]
+sim.scd_write_m = [-2*sim.pm1_ang, 2*sim.pm1_ang, 0]
 #=============================================================================
 if (sim.run_type == "basic_run"):
    sim.launch_run()
@@ -124,7 +124,7 @@ elif (sim.run_type == "multiple_runs"):
    default_nx_099 = 112
    default_nl_099 = 24
 
-   default_nx_0998 = 112
+   default_nx_0998 = 128
    default_nl_0998 = 28
 #-----------------------------------------------------------------------------
 #-----------------------------------------------------------------------------
@@ -178,8 +178,8 @@ elif (sim.run_type == "multiple_runs"):
    sim.nx = default_nx_0998
    sim.nl = default_nl_0998
 
-   nxs = [96, 112, 128]
-   nls = [24,  28,  32]
+   nxs = [112, 128, 132]
+   nls = [24,   28,  32]
    for i in range(len(nxs)):
       sim.nx = nxs[i]
       sim.nl = nls[i]
