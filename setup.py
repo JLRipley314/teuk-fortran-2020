@@ -16,25 +16,24 @@ sim.black_hole_mass= float(0.5)
 sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
 sim.compactification_length= float(1)
 #=============================================================================
-sim.evolve_time= float(125) ## units of black hole mass
-sim.num_saved_times= int(1800)
+sim.evolve_time= float(50) ## units of black hole mass
+sim.num_saved_times= int(200)
 #=============================================================================
-sim.nx= 96 ## num radial pts 
-sim.nl= 24  ## num angular values
+sim.nx= 64 ## num radial pts 
+sim.nl= 20  ## num angular values
 #=============================================================================
 ## evolution and write: take boolean values 
 #=============================================================================
-sim.metric_recon= True
-sim.scd_order=    True
+sim.metric_recon=     True
+sim.scd_order=        True
+sim.constrained_evo = False
 
 sim.write_indep_res=           True
 sim.write_metric_recon_fields= False
 sim.write_scd_order_source=    True
 sim.write_coefs=               False
-
-sim.constrained_evo = False
 #=============================================================================
-sim.computer= 'feynman'#'home'#
+sim.computer= 'home'#'feynman'#
 sim.feyn_out_stem= '/mnt/grtheory/tf-out/'
 #=============================================================================
 ## for feynman cluster/slurm script

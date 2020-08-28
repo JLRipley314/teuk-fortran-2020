@@ -81,7 +81,7 @@ class Sim:
 #-----------------------------------------------------------------------------
       absa = abs(self.black_hole_spin/self.black_hole_mass)
       self.constraint_damping = abs(
-         (1000.0/self.black_hole_mass)*pow(abs(1.000000001-absa),-0.5)
+         (10.0/self.black_hole_mass)*pow(abs(1.000000001-absa),-0.5)
       )
 #-----------------------------------------------------------------------------
 ## when to begin metric reconstruction
