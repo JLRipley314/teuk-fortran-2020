@@ -98,7 +98,7 @@ contains
       complex(rp), dimension(:), intent(in) :: arr
 
       character(:), allocatable  :: mstr, fn_re, fn_im
-      integer(ip) :: ubx, uby, lbx, lby 
+      integer(ip) :: ubx, lbx 
       logical :: exists
       integer(ip) :: i, ierror = 0
       integer(ip) :: uf
@@ -123,8 +123,8 @@ contains
          open(newunit=uf,file=fn_re,status='new',action='write',iostat=ierror) 
       end if
 
-      write (uf,'(e14.6,a1,i3,a1,i3,a1)',advance='no',iostat=ierror) &
-         time, ',', ubx-lbx+1, ',', uby-lby+1, ','
+      write (uf,'(e14.6,a1,i3,a1)',advance='no',iostat=ierror) &
+         time, ',', ubx-lbx+1, ','
 
       do i=lbx,ubx
          write (uf,'(e14.6,a1)',advance='no',iostat=ierror) &
@@ -150,8 +150,8 @@ contains
          open(newunit=uf,file=fn_im,status='new',action='write',iostat=ierror) 
       end if
 
-      write (uf,'(e14.6,a1,i3,a1,i3,a1)',advance='no',iostat=ierror) &
-         time, ',', ubx-lbx+1, ',', uby-lby+1, ','
+      write (uf,'(e14.6,a1,i3,a1)',advance='no',iostat=ierror) &
+         time, ',', ubx-lbx+1, ','
 
       do i=lbx,ubx
          write (uf,'(e14.6,a1)',advance='no',iostat=ierror) &
