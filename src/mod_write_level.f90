@@ -76,9 +76,17 @@ contains
       diag(7) = real( mean,kind=rp)
       diag(8) = aimag(mean)
       !-----------------------------------------------------------------------
-      write(stdout,*) time, &
-         diag(1), diag(2), diag(3), diag(4), diag(5), diag(6), diag(7), diag(8)
-
+      write(stdout,*,advance='no') time
+      write(stdout,*,advance='no') diag(1)
+      write(stdout,*,advance='no') diag(2)
+      write(stdout,*,advance='no') diag(3)
+      write(stdout,*,advance='no') diag(4)
+      write(stdout,*,advance='no') diag(5)
+      write(stdout,*,advance='no') diag(6)
+      write(stdout,*,advance='no') diag(7)
+      write(stdout,*,advance='no') diag(8)
+      ! line break
+      write(stdout,*)
    end subroutine write_diagnostics
 !=============================================================================
    subroutine write_level(time)
