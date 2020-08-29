@@ -50,7 +50,7 @@ contains
       end do
 
       do j=1,nx
-         filter_arr(j) = exp(-40.0_rp*(real(j-1,rp)/real(nx-1,rp))**10)
+         filter_arr(j) = exp(-40.0_rp*(real(j-1,rp)/real(nx-1,rp))**16)
       end do
    end subroutine cheb_init
 !=============================================================================

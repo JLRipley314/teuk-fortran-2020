@@ -16,7 +16,7 @@ vpath %.f90 $(SRC)
 INCFFTW= /usr/include
 LIBFFTW= /lib/x86_64-linux-gnu
 #==========================================================================
-FC = gfortran#ifort#
+FC = ifort#gfortran#
 
 FFLAGS= -g -fmax-errors=5 -O2
 

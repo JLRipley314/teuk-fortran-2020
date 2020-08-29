@@ -149,7 +149,7 @@ contains
          do j=1,ny
             do k=0,max_l
                low_pass(j,i,m_ang,spin) = low_pass(j,i,m_ang,spin) &
-               +  exp(-40.0_rp*(real(k,rp)/real(max_l,rp))**10) &
+               +  exp(-40.0_rp*(real(k,rp)/real(max_l,rp))**16) &
                   *weights(j)*swal(j,k,m_ang,spin)  &
                   *swal(i,k,m_ang,spin)
             end do

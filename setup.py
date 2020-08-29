@@ -16,8 +16,8 @@ sim.black_hole_mass= float(0.5)
 sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
 sim.compactification_length= float(1)
 #=============================================================================
-sim.evolve_time= float(50) ## units of black hole mass
-sim.num_saved_times= int(200)
+sim.evolve_time= float(150) ## units of black hole mass
+sim.num_saved_times= int(720)
 #=============================================================================
 sim.nx= 64 ## num radial pts 
 sim.nl= 20  ## num angular values
@@ -33,11 +33,11 @@ sim.write_metric_recon_fields= False
 sim.write_scd_order_source=    True
 sim.write_coefs=               False
 #=============================================================================
-sim.computer= 'home'#'feynman'#
+sim.computer= 'feynman'#'home'#
 sim.feyn_out_stem= '/mnt/grtheory/tf-out/'
 #=============================================================================
 ## for feynman cluster/slurm script
-sim.walltime= '24:00:00' ## (hh:mm:ss)
+sim.walltime= '48:00:00' ## (hh:mm:ss)
 sim.memory=  '512' ## MB 
 sim.num_nodes= '1'
 sim.num_tasks_per_node= '1'
@@ -118,14 +118,14 @@ elif (sim.run_type == "multiple_runs"):
    default_amp = 0.1
    default_sm  = 1
 
-   default_nx_07 = 96
-   default_nl_07 = 24
+   default_nx_07 = 112
+   default_nl_07 = 26
 
    default_nx_099 = 112
    default_nl_099 = 24
 
    default_nx_0998 = 128
-   default_nl_0998 = 28
+   default_nl_0998 = 30
 #-----------------------------------------------------------------------------
 #-----------------------------------------------------------------------------
    sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
@@ -135,8 +135,8 @@ elif (sim.run_type == "multiple_runs"):
    sim.nx = default_nx_07
    sim.nl = default_nl_07
 
-   nxs = [80,  96, 112]
-   nls = [20,  24,  28]
+   nxs = [96, 112, 128]
+   nls = [22,  26,  30]
    for i in range(len(nxs)):
       sim.nx = nxs[i]
       sim.nl = nls[i]
@@ -179,7 +179,7 @@ elif (sim.run_type == "multiple_runs"):
    sim.nl = default_nl_0998
 
    nxs = [112, 128, 132]
-   nls = [24,   28,  32]
+   nls = [26,   30,  34]
    for i in range(len(nxs)):
       sim.nx = nxs[i]
       sim.nl = nls[i]
