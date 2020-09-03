@@ -37,7 +37,7 @@ sim.computer= 'feynman'#'home'#
 sim.feyn_out_stem= '/mnt/grtheory/tf-out/'
 #=============================================================================
 ## for feynman cluster/slurm script
-sim.walltime= '48:00:00' ## (hh:mm:ss)
+sim.walltime= '168:00:00' ## (hh:mm:ss)
 sim.memory=  '512' ## MB 
 sim.num_nodes= '1'
 sim.num_tasks_per_node= '1'
@@ -118,14 +118,14 @@ elif (sim.run_type == "multiple_runs"):
    default_amp = 0.1
    default_sm  = 1
 
-   default_nx_07 = 112
-   default_nl_07 = 26
+   default_nx_07 = 176
+   default_nl_07 = 32
 
-   default_nx_099 = 112
-   default_nl_099 = 24
+   default_nx_099 = 132
+   default_nl_099 = 28
 
-   default_nx_0998 = 128
-   default_nl_0998 = 30
+   default_nx_0998 = 192
+   default_nl_0998 = 36
 #-----------------------------------------------------------------------------
 #-----------------------------------------------------------------------------
    sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
@@ -135,8 +135,8 @@ elif (sim.run_type == "multiple_runs"):
    sim.nx = default_nx_07
    sim.nl = default_nl_07
 
-   nxs = [96, 112, 128]
-   nls = [22,  26,  30]
+   nxs = [160, 176, 192]
+   nls = [ 28,  32,  36]
    for i in range(len(nxs)):
       sim.nx = nxs[i]
       sim.nl = nls[i]
@@ -178,8 +178,8 @@ elif (sim.run_type == "multiple_runs"):
    sim.nx = default_nx_0998
    sim.nl = default_nl_0998
 
-   nxs = [112, 128, 132]
-   nls = [26,   30,  34]
+   nxs = [176, 192, 208]
+   nls = [32,   36,  40]
    for i in range(len(nxs)):
       sim.nx = nxs[i]
       sim.nl = nls[i]

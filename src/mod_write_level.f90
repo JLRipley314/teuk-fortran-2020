@@ -49,7 +49,7 @@ contains
 !=============================================================================
    subroutine write_diagnostics(time)
       real(rp), intent(in) :: time
-      real(rp), dimension(8) :: diag 
+      real(rp), dimension(12) :: diag 
 
       complex(rp) :: mean
       integer(ip) :: m_ang 
@@ -76,6 +76,16 @@ contains
       diag(7) = real( mean,kind=rp)
       diag(8) = aimag(mean)
       !-----------------------------------------------------------------------
+      m_ang = 0 
+
+      mean = sum(psi4_scd_f%np1(1,:,0)) / ny
+      diag(9)  = real( mean,kind=rp)
+      diag(10) = aimag(mean)
+
+      mean = sum(psi4_scd_f%np1(nx,:,0)) / ny
+      diag(11) = real( mean,kind=rp)
+      diag(12) = aimag(mean)
+      !-----------------------------------------------------------------------
       write(stdout,'(e14.6)',advance='no') time
       write(stdout,'(e14.6)',advance='no') diag(1)
       write(stdout,'(e14.6)',advance='no') diag(2)
@@ -85,6 +95,10 @@ contains
       write(stdout,'(e14.6)',advance='no') diag(6)
       write(stdout,'(e14.6)',advance='no') diag(7)
       write(stdout,'(e14.6)',advance='no') diag(8)
+      write(stdout,'(e14.6)',advance='no') diag(9)
+      write(stdout,'(e14.6)',advance='no') diag(10)
+      write(stdout,'(e14.6)',advance='no') diag(11)
+      write(stdout,'(e14.6)',advance='no') diag(12)
       ! line break
       write(stdout,*)
    end subroutine write_diagnostics
