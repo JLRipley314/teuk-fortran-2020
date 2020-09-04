@@ -33,12 +33,12 @@ implicit none
    integer(ip), parameter :: pm1_ang = 2_ip
    integer(ip), parameter :: l_ang_pm1 = 2_ip
    character(*), parameter :: initial_data_direction_pm1 = 'ingoing'
-   real(rp), parameter :: amp_pm1 = 0.1_rp
+   real(rp), parameter :: amp_pm1 = 0.5_rp
    real(rp), parameter :: rl_pm1_0 = 1.1_rp
    real(rp), parameter :: ru_pm1_0 = 3.0_rp
    integer(ip), parameter :: l_ang_nm1 = 2_ip
    character(*), parameter :: initial_data_direction_nm1 = 'ingoing'
-   real(rp), parameter :: amp_nm1 = 0.1_rp
+   real(rp), parameter :: amp_nm1 = 0.5_rp
    real(rp), parameter :: rl_nm1_0 = 1.1_rp
    real(rp), parameter :: ru_nm1_0 = 3.0_rp
    integer(ip), parameter :: pm2_ang = 2_ip
@@ -77,9 +77,9 @@ implicit none
    integer(ip), parameter :: min_m = -4_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Fri_19_20_bhm0.5_bhs0.35_nx176_nl32_m_2_2'
-   character(*), parameter :: output_dir = '/mnt/grtheory/tf-out/Fri_19_20_bhm0.5_bhs0.35_nx176_nl32_m_2_2'
-   character(*), parameter :: bin_name = 'Fri_19_20_bhm0.5_bhs0.35_nx176_nl32_m_2_2.run'
-   character(*), parameter :: tables_dir = '/mnt/grtheory/tf-out/Fri_19_20_bhm0.5_bhs0.35_nx176_nl32_m_2_2/tables'
-   character(*), parameter :: output_file = '/mnt/grtheory/tf-out/Fri_19_19_bhm0.5_bhs0.35_nx160_nl28_m_2_2/output.txt'
+   character(*), parameter :: output_stem = 'Fri_19_26_bhm0.5_bhs0.35_nx176_nl32_m_2_2'
+   character(*), parameter :: output_dir = '/mnt/grtheory/tf-out/Fri_19_26_bhm0.5_bhs0.35_nx176_nl32_m_2_2'
+   character(*), parameter :: bin_name = 'Fri_19_26_bhm0.5_bhs0.35_nx176_nl32_m_2_2.run'
+   character(*), parameter :: tables_dir = '/mnt/grtheory/tf-out/Fri_19_26_bhm0.5_bhs0.35_nx176_nl32_m_2_2/tables'
+   character(*), parameter :: output_file = '/mnt/grtheory/tf-out/Fri_19_24_bhm0.5_bhs0.35_nx176_nl32_m_2_2/output.txt'
 end module mod_params

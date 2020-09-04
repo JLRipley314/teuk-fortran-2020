@@ -296,7 +296,7 @@ module mod_scd_order_source
  
       call scd_order_source_zero(m_ang,sf)
 
-      do i=0,size(lin_m)
+      do i=1,size(lin_m)
          m1_ang=lin_m(i)
          m2_ang=m_ang-m1_ang
          if (any(lin_m==m2_ang)) then
