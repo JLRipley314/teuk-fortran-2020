@@ -16,6 +16,7 @@ module mod_scd_order_source
 
    use mod_params,   only: &
       dt, nx, ny, min_m, max_m, max_l, &
+      lin_m, &
       cl=>compactification_length, &
       bhs=>black_hole_spin
 
@@ -291,15 +292,14 @@ module mod_scd_order_source
       integer(ip),            intent(in)    :: m_ang
       type(scd_order_source), intent(inout) :: sf
  
-      integer(ip) :: m1_ang, m2_ang 
+      integer(ip) :: i, m1_ang, m2_ang 
  
       call scd_order_source_zero(m_ang,sf)
 
-      do m1_ang=min_m,max_m
+      do i=0,size(lin_m)
+         m1_ang=lin_m(i)
          m2_ang=m_ang-m1_ang
-         if (  (m2_ang>=min_m) &
-         .and. (m2_ang<=max_m) &
-         ) then
+         if (any(lin_m==m2_ang)) then
             call scd_order_source_m1_plus_m2(m1_ang,m2_ang,sf)
          end if
       end do

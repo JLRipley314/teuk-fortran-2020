@@ -71,7 +71,7 @@ sim.l_ang_nm1= int(2) ## support over single spin weighted spherical harmonic
 
 sim.initial_data_direction_nm1= "ingoing"#"time_symmetric"#"outgoing"#
 
-sim.amp_nm1= float( 0.1)  ## amplitude of the initial perturbation
+sim.amp_nm1= float( 0.0)  ## amplitude of the initial perturbation
 
 sim.rl_nm1_0= float( 1.1)  ## lower r value as multiple of horizon
 sim.ru_nm1_0= float( 3.0)  ## upper r value as multiple of horizon
@@ -102,12 +102,12 @@ sim.ru_nm2_0= float( 1.5)  ## upper r value as multiple of horizon
 #=============================================================================
 ## which m angular values to evolve
 #=============================================================================
-sim.lin_m = [  -sim.pm1_ang,   sim.pm1_ang]
+sim.lin_m = [   sim.pm1_ang]
 sim.scd_m = [-2*sim.pm1_ang, 2*sim.pm1_ang, 0]
 #=============================================================================
 ## which m angular values to write to file
 #=============================================================================
-sim.lin_write_m = [  -sim.pm1_ang,   sim.pm1_ang]
+sim.lin_write_m = [   sim.pm1_ang]
 sim.scd_write_m = [-2*sim.pm1_ang, 2*sim.pm1_ang, 0]
 #=============================================================================
 if (sim.run_type == "basic_run"):
