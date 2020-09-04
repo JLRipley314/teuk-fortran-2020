@@ -299,7 +299,9 @@ module mod_scd_order_source
       do i=1,size(lin_m)
          m1_ang=lin_m(i)
          m2_ang=m_ang-m1_ang
-         if (any(lin_m==m2_ang)) then
+         if ( (any(lin_m== m2_ang)) &
+         .or. (any(lin_m==-m2_ang)) &
+         ) then
             call scd_order_source_m1_plus_m2(m1_ang,m2_ang,sf)
          end if
       end do
