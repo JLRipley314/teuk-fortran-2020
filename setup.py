@@ -44,6 +44,7 @@ sim.feyn_out_stem= '/mnt/grtheory/tf-out/'
 
 sim.walltime= '168:00:00' ## (hh:mm:ss)
 sim.memory=  '512' ## MB 
+sim.email=  'lloydripley@gmail.com' ## for slurm notification
 #=============================================================================
 ## we can only do metric reconstruction starting from psi4 for now.
 ## For pure first order Teukolsky evolution we can consider other

@@ -162,20 +162,13 @@ class Sim:
          f.write('#SBATCH -p dept\t\t# partition/queue name\n')
          f.write('#SBATCH --mem={}MB\t\t# memory in MB\n'.format(self.memory))
          f.write('#SBATCH --output={}\t\t# file for STDOUT\n'.format(self.output_file))
-         f.write('#SBATCH --mail-user=jripley@princeton.edu\t\t# Mail  id of the user\n')
+         f.write('#SBATCH --mail-user={}\t\t# Mail  id of the user\n'.format(self.email))
          #------------
          ## for openmp
          #------------
-         f.write('#SBATCH -N 1\t\t# nodes= 1\n')
-         f.write('#SBATCH -c {}\n'.format(self.num_threads))
-
-         f.write('if [ -n "$SLURM_CPUS_PER_TASK" ]; then\n')
-         f.write('  omp_threads=$SLURM_CPUS_PER_TASK\n')
-         f.write('else\n')
-         f.write('  omp_threads=1\n')
-         f.write('fi\n')
-
-         f.write('export OMP_NUM_THREADS=$omp_threads')
+         f.write('#SBATCH -N 1\t\t# nodes=1\n')
+         f.write('#SBATCH -N 1\t\t# ntasks=1\n')
+         f.write('#SBATCH -cpus-per-task={}\n'.format(self.num_threads))
          #------------
          ## executable
          #------------
