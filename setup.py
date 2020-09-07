@@ -23,7 +23,7 @@ sim.nx= 160 ## num radial pts
 sim.nl= 30  ## num angular values
 #=============================================================================
 ## evolution and write: take boolean values 
-#=============================================================================
+
 sim.metric_recon=     True
 sim.scd_order=        True
 sim.constrained_evo = True
@@ -33,14 +33,17 @@ sim.write_metric_recon_fields= False
 sim.write_scd_order_source=    True
 sim.write_coefs=               False
 #=============================================================================
+## for openmp
+
+sim.num_threads= int(4)
+#=============================================================================
 sim.computer= 'home'#'feynman'#
 sim.feyn_out_stem= '/mnt/grtheory/tf-out/'
-#=============================================================================
+
 ## for feynman cluster/slurm script
+
 sim.walltime= '168:00:00' ## (hh:mm:ss)
 sim.memory=  '512' ## MB 
-sim.num_nodes= '1'
-sim.num_tasks_per_node= '1'
 #=============================================================================
 ## we can only do metric reconstruction starting from psi4 for now.
 ## For pure first order Teukolsky evolution we can consider other
@@ -48,10 +51,12 @@ sim.num_tasks_per_node= '1'
 ## psi4 is spin -2, boost -2
 ## psi3 is spin -1, boost -1
 ## psi2 is spin  0, boost  0 
+
 sim.psi_spin=  int(-2)
 sim.psi_boost= int(-2)
 #=============================================================================
 ## start multiple for second order metric evolution 
+
 sim.start_multiple= float(1.0)
 #=============================================================================
 ## initial data for mode m1
@@ -101,12 +106,12 @@ sim.rl_nm2_0= float(-1.5)  ## lower r value as multiple of horizon
 sim.ru_nm2_0= float( 1.5)  ## upper r value as multiple of horizon
 #=============================================================================
 ## which m angular values to evolve
-#=============================================================================
+
 sim.lin_m = [   sim.pm1_ang]
 sim.scd_m = [-2*sim.pm1_ang, 2*sim.pm1_ang, 0]
 #=============================================================================
 ## which m angular values to write to file
-#=============================================================================
+
 sim.lin_write_m = [   sim.pm1_ang]
 sim.scd_write_m = [-2*sim.pm1_ang, 2*sim.pm1_ang, 0]
 #=============================================================================

@@ -217,7 +217,7 @@ contains
 
       vals_lap = 0
 
-      !$OMP PARALLEL NUM_THREADS(4)
+      !$OMP PARALLEL 
       !$OMP DO 
       do j =1,ny
       do jp=1,ny
@@ -250,7 +250,7 @@ contains
 
       vals_lowered = 0
 
-      !$OMP PARALLEL NUM_THREADS(4)
+      !$OMP PARALLEL
       !$OMP DO 
       do j =1,ny
       do jp=1,ny
@@ -273,7 +273,7 @@ contains
 
       vals_raised = 0
 
-      !$OMP PARALLEL NUM_THREADS(4)
+      !$OMP PARALLEL
       !$OMP DO 
       do j =1,ny
       do jp=1,ny
@@ -296,7 +296,7 @@ contains
 
       f%level = 0
 
-      !$OMP PARALLEL NUM_THREADS(4)
+      !$OMP PARALLEL
       !$OMP DO 
       do j =1,ny
       do jp=1,ny

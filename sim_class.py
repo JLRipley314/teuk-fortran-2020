@@ -157,16 +157,27 @@ class Sim:
    def write_slurm_script(self):
       with open('{}/run.slurm'.format(self.home_dir), 'w') as f:
          f.write('#!/bin/sh\n')
-         f.write('#SBATCH -N 1\t\t# nodes={}\n'.format(self.num_nodes))
-         f.write('#SBATCH --ntasks-per-node={}\n'.format(self.num_tasks_per_node))
          f.write('#SBATCH -J fteuk\t\t# job name\n')
          f.write('#SBATCH -t {}\t\t# walltime (dd:hh:mm:ss)\n'.format(self.walltime))
          f.write('#SBATCH -p dept\t\t# partition/queue name\n')
          f.write('#SBATCH --mem={}MB\t\t# memory in MB\n'.format(self.memory))
          f.write('#SBATCH --output={}\t\t# file for STDOUT\n'.format(self.output_file))
          f.write('#SBATCH --mail-user=jripley@princeton.edu\t\t# Mail  id of the user\n')
-         #f.write('#SBATCH --mail-type=begin\t\t# Slurm will send mail at the beginning of the job\n')
-         #f.write('#SBATCH --mail-type=end\t\t# Slurm will send at the completion of your job\n')
+         #------------
+         ## for openmp
+         #------------
+         f.write('#SBATCH -N 1\t\t# nodes= 1\n')
+
+         f.write('#SBATCH -c {}\n'.format(self.num_threads))
+         f.write('if [ -n "$SLURM_CPUS_PER_TASK" ]; then\n')
+         f.write('  omp_threads=$SLURM_CPUS_PER_TASK\n')
+         f.write('else\n')
+         f.write('  omp_threads=1\n')
+         f.write('fi\n')
+         f.write('export OMP_NUM_THREADS=$omp_threads')
+         #------------
+         ## executable
+         #------------
          run_str= './bin/{} {}\n\n'.format(self.bin_name, self.output_dir)
          if (self.debug):
             run_str= 'valgrind -v --track-origins=yes --leak-check=full '+run_str
@@ -201,6 +212,7 @@ class Sim:
          )
          if (self.debug):
             run_str= 'valgrind -v --track-origins=yes --leak-check=full '+run_str
+         subprocess.call('export OMP_NUM_THREADS={}'.format(self.num_threads),shell=True) 
          subprocess.call(run_str,shell=True) 
       elif (self.computer=='feynman'):
          self.write_slurm_script()
