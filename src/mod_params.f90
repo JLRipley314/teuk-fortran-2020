@@ -78,8 +78,8 @@ implicit none
    integer(ip), parameter :: min_m = -4_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Mon_13_07_bhm0.5_bhs0.35_nx200_nl40_m_2_2'
-   character(*), parameter :: output_dir = 'output/Mon_13_07_bhm0.5_bhs0.35_nx200_nl40_m_2_2'
-   character(*), parameter :: bin_name = 'Mon_13_07_bhm0.5_bhs0.35_nx200_nl40_m_2_2.run'
-   character(*), parameter :: tables_dir = 'output/Mon_13_07_bhm0.5_bhs0.35_nx200_nl40_m_2_2/tables'
+   character(*), parameter :: output_stem = 'Mon_14_02_bhm0.5_bhs0.35_nx200_nl40_m_2_2'
+   character(*), parameter :: output_dir = 'output/Mon_14_02_bhm0.5_bhs0.35_nx200_nl40_m_2_2'
+   character(*), parameter :: bin_name = 'Mon_14_02_bhm0.5_bhs0.35_nx200_nl40_m_2_2.run'
+   character(*), parameter :: tables_dir = 'output/Mon_14_02_bhm0.5_bhs0.35_nx200_nl40_m_2_2/tables'
 end module mod_params

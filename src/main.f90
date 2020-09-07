@@ -132,13 +132,13 @@ clean_memory: block
       ! metric recon evolves +/- m_ang so only evolve m_ang>=0
       !-----------------------------------------------------------------------
       if (metric_recon) then 
-         !$OMP PARALLEL 
-         !$OMP DO 
+!         !$OMP PARALLEL 
+!         !$OMP DO 
          do i=1,size(lin_pos_m)
             call metric_recon_time_step(lin_m(i))
          end do
-         !$OMP END DO 
-         !$OMP END PARALLEL 
+!         !$OMP END DO 
+!        !$OMP END PARALLEL 
       end if
       !-----------------------------------------------------------------------
       ! \Psi_4^{(2)} evolution 
