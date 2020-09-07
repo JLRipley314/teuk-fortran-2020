@@ -22,6 +22,7 @@ module mod_write_level
 
    use mod_params, only: &
       lin_write_m, scd_write_m, &
+      len_lin_write_m, len_scd_write_m, &
       pm1_ang, pm2_ang, &
       metric_recon, scd_order, &
       write_metric_recon_fields, &
@@ -110,12 +111,12 @@ contains
       !-----------------------------------------------------------------------
       ! \Psi_4^{(1)} and linear metric reconstruction 
       !--------------------------------------------------------------------------
-      do i=1,size(lin_write_m)
+      do i=1,len_lin_write_m
          call write_csv(time,lin_write_m(i),psi4_lin_f)
       end do 
 
       if (write_metric_recon_fields) then
-         do i=1,size(lin_write_m)
+         do i=1,len_lin_write_m
             call write_csv(time,lin_write_m(i),psi3)
             call write_csv(time,lin_write_m(i),psi2)
             call write_csv(time,lin_write_m(i),hmbmb)
@@ -126,13 +127,13 @@ contains
 
       if (write_indep_res) then
          if (.not. constrained_evo) then
-            do i=1,size(lin_write_m)
+            do i=1,len_lin_write_m
                call compute_res_q( lin_write_m(i),psi4_lin_q,psi4_lin_f,res_lin_q)
                call write_csv(time,lin_write_m(i),res_lin_q)
             end do
          end if
          if (metric_recon) then
-            do i=1,size(lin_write_m)
+            do i=1,len_lin_write_m
                call metric_recon_indep_res(lin_write_m(i))
 
                call write_csv(time,lin_write_m(i),res_bianchi3)
@@ -146,13 +147,13 @@ contains
       !-----------------------------------------------------------------------
       if (scd_order) then
 
-         do i=1,size(scd_write_m)
+         do i=1,len_scd_write_m
             call write_csv(time,scd_write_m(i),psi4_scd_f)
          end do
 
          if (write_indep_res) then
             if (.not. constrained_evo) then
-               do i=1,size(scd_write_m)
+               do i=1,len_scd_write_m
                   call compute_res_q( scd_write_m(i),psi4_scd_q,psi4_scd_f,res_scd_q)
                   call write_csv(time,scd_write_m(i),res_scd_q)
                end do
@@ -160,7 +161,7 @@ contains
          end if
 
          if (write_scd_order_source) then 
-            do i=1,size(scd_write_m)
+            do i=1,len_scd_write_m
                call write_csv( &
                   source%fname, &
                   time, &
@@ -174,7 +175,7 @@ contains
       !-----------------------------------------------------------------------
       if (write_coefs) then
          !--------------------------------------------------------------------
-         do i=1,size(lin_write_m)
+         do i=1,len_lin_write_m
             call cheb_real_to_coef( &
                lin_write_m(i), &
                psi4_lin_f%np1, &
@@ -195,7 +196,7 @@ contains
          end do 
          !--------------------------------------------------------------------
          if (scd_order) then
-            do i=1,size(scd_write_m)
+            do i=1,len_scd_write_m
                call cheb_real_to_coef( &
                   scd_write_m(i), &
                   psi4_scd_f%np1, &

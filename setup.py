@@ -19,8 +19,8 @@ sim.compactification_length= float(1)
 sim.evolve_time= float(0.5) ## units of black hole mass
 sim.num_saved_times= int(5)
 #=============================================================================
-sim.nx= 200 ## num radial pts 
-sim.nl= 40  ## num angular values
+sim.nx= 96 ## num radial pts 
+sim.nl= 20  ## num angular values
 #=============================================================================
 ## evolution and write: take boolean values 
 
@@ -32,10 +32,6 @@ sim.write_indep_res=           True
 sim.write_metric_recon_fields= False
 sim.write_scd_order_source=    True
 sim.write_coefs=               False
-#=============================================================================
-## for openmp
-
-sim.num_threads= int(4)
 #=============================================================================
 sim.computer= 'home'#'feynman'#
 sim.feyn_out_stem= '/mnt/grtheory/tf-out/'
@@ -84,7 +80,7 @@ sim.ru_nm1_0= float( 3.0)  ## upper r value as multiple of horizon
 #=============================================================================
 ## initial data for mode m2
 #=============================================================================
-sim.pm2_ang =  int(2) ## m_ang is preserved by time evolution
+sim.pm2_ang =  int(3) ## m_ang is preserved by time evolution
 #-----------------------------------------------------------------------------
 sim.l_ang_pm2= int(3) ## support over single spin weighted spherical harmonic
 
@@ -97,7 +93,7 @@ sim.ru_pm2_0= float( 1.5)  ## upper r value as multiple of horizon
 
 sim.l_ang_pm2= int(3)     ## support over single spin weighted spherical harmonic
 #-----------------------------------------------------------------------------
-sim.l_ang_nm2= int(2) ## support over single spin weighted spherical harmonic
+sim.l_ang_nm2= int(3) ## support over single spin weighted spherical harmonic
 
 sim.initial_data_direction_nm2= "ingoing"#"time_symmetric"#"outgoing"#
 

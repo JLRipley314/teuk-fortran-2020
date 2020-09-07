@@ -106,6 +106,17 @@ class Sim:
 #-----------------------------------------------------------------------------
 ## positive definite m_ang for metric reconstruction step
       self.lin_pos_m = [ m for m in self.lin_m if m>=0]
+
+      self.len_lin_pos_m= len(set(self.lin_pos_m))
+      self.len_lin_m=     len(set(self.lin_m))
+      self.len_scd_m=     len(set(self.scd_m))
+
+      self.len_lin_write_m= len(set(self.lin_write_m))
+      self.len_scd_write_m= len(set(self.scd_write_m))
+#-----------------------------------------------------------------------------
+## for openmp
+
+      self.num_threads= self.len_lin_pos_m
 #-----------------------------------------------------------------------------
 ## Gauss points for integration
 ## want to exactly integrate polynomials of order
@@ -142,6 +153,7 @@ class Sim:
       self.max_s=  3
       self.min_s= -3
 #-----------------------------------------------------------------------------
+      assert(self.pm2_ang!=self.pm1_ang)
       assert(self.l_ang_nm1>=max(abs(self.pm1_ang),abs(self.psi_spin)))
       assert(self.l_ang_pm1>=max(abs(self.pm1_ang),abs(self.psi_spin)))
       assert(self.l_ang_nm2>=max(abs(self.pm2_ang),abs(self.psi_spin)))
