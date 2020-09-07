@@ -51,7 +51,7 @@ implicit none
    real(rp), parameter :: amp_nm2 = 0.0_rp
    real(rp), parameter :: rl_nm2_0 = -1.5_rp
    real(rp), parameter :: ru_nm2_0 = 1.5_rp
-   integer(ip), dimension(1), parameter :: lin_m = [2_ip]
+   integer(ip), dimension(2), parameter :: lin_m = [2_ip,3_ip]
    integer(ip), dimension(3), parameter :: scd_m = [0_ip,-4_ip,4_ip]
    integer(ip), dimension(1), parameter :: lin_write_m = [2_ip]
    integer(ip), dimension(3), parameter :: scd_write_m = [0_ip,-4_ip,4_ip]
@@ -68,13 +68,13 @@ implicit none
    real(rp), parameter :: ru_nm2 = 1.285071525008573_rp
    real(rp), parameter :: constraint_damping = 36.51483710615301_rp
    real(rp), parameter :: scd_order_start_time = 11.248163954718162_rp
-   integer(ip), dimension(1), parameter :: lin_pos_m = [2_ip]
-   integer(ip), parameter :: len_lin_pos_m = 1_ip
-   integer(ip), parameter :: len_lin_m = 1_ip
+   integer(ip), dimension(2), parameter :: lin_pos_m = [2_ip,3_ip]
+   integer(ip), parameter :: len_lin_pos_m = 2_ip
+   integer(ip), parameter :: len_lin_m = 2_ip
    integer(ip), parameter :: len_scd_m = 3_ip
    integer(ip), parameter :: len_lin_write_m = 1_ip
    integer(ip), parameter :: len_scd_write_m = 3_ip
-   integer(ip), parameter :: num_threads = 1_ip
+   integer(ip), parameter :: num_threads = 2_ip
    integer(ip), parameter :: ny = 34_ip
    real(rp), parameter :: dt = 0.0009765625_rp
    integer(ip), parameter :: nt = 256_ip
@@ -83,8 +83,8 @@ implicit none
    integer(ip), parameter :: min_m = -6_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Mon_16_00_bhm0.5_bhs0.35_nx96_nl20_m_2_3'
-   character(*), parameter :: output_dir = 'output/Mon_16_00_bhm0.5_bhs0.35_nx96_nl20_m_2_3'
-   character(*), parameter :: bin_name = 'Mon_16_00_bhm0.5_bhs0.35_nx96_nl20_m_2_3.run'
-   character(*), parameter :: tables_dir = 'output/Mon_16_00_bhm0.5_bhs0.35_nx96_nl20_m_2_3/tables'
+   character(*), parameter :: output_stem = 'Mon_16_06_bhm0.5_bhs0.35_nx96_nl20_m_2_3'
+   character(*), parameter :: output_dir = 'output/Mon_16_06_bhm0.5_bhs0.35_nx96_nl20_m_2_3'
+   character(*), parameter :: bin_name = 'Mon_16_06_bhm0.5_bhs0.35_nx96_nl20_m_2_3.run'
+   character(*), parameter :: tables_dir = 'output/Mon_16_06_bhm0.5_bhs0.35_nx96_nl20_m_2_3/tables'
 end module mod_params

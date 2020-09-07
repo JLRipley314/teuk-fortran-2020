@@ -104,7 +104,7 @@ sim.ru_nm2_0= float( 1.5)  ## upper r value as multiple of horizon
 #=============================================================================
 ## which m angular values to evolve
 
-sim.lin_m     = [   sim.pm1_ang]
+sim.lin_m     = [   sim.pm1_ang, sim.pm2_ang]
 sim.scd_m     = [-2*sim.pm1_ang, 2*sim.pm1_ang, 0]
 #=============================================================================
 ## which m angular values to write to file
