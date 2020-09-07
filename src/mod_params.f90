@@ -12,7 +12,7 @@ implicit none
    real(rp), parameter :: compactification_length = 1.0_rp
    real(rp), parameter :: evolve_time = 0.5_rp
    integer(ip), parameter :: num_saved_times = 5_ip
-   integer(ip), parameter :: nx = 160_ip
+   integer(ip), parameter :: nx = 200_ip
    integer(ip), parameter :: nl = 40_ip
    logical, parameter :: metric_recon = .true.
    logical, parameter :: scd_order = .true.
@@ -71,15 +71,15 @@ implicit none
    real(rp), parameter :: scd_order_start_time = 11.248163954718162_rp
    integer(ip), dimension(1), parameter :: lin_pos_m = [2_ip]
    integer(ip), parameter :: ny = 52_ip
-   real(rp), parameter :: dt = 0.0003515625_rp
-   integer(ip), parameter :: nt = 711_ip
-   integer(ip), parameter :: t_step_save = 142_ip
+   real(rp), parameter :: dt = 0.00022500000000000002_rp
+   integer(ip), parameter :: nt = 1111_ip
+   integer(ip), parameter :: t_step_save = 222_ip
    integer(ip), parameter :: max_m = 4_ip
    integer(ip), parameter :: min_m = -4_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Mon_12_59_bhm0.5_bhs0.35_nx160_nl40_m_2_2'
-   character(*), parameter :: output_dir = 'output/Mon_12_59_bhm0.5_bhs0.35_nx160_nl40_m_2_2'
-   character(*), parameter :: bin_name = 'Mon_12_59_bhm0.5_bhs0.35_nx160_nl40_m_2_2.run'
-   character(*), parameter :: tables_dir = 'output/Mon_12_59_bhm0.5_bhs0.35_nx160_nl40_m_2_2/tables'
+   character(*), parameter :: output_stem = 'Mon_13_07_bhm0.5_bhs0.35_nx200_nl40_m_2_2'
+   character(*), parameter :: output_dir = 'output/Mon_13_07_bhm0.5_bhs0.35_nx200_nl40_m_2_2'
+   character(*), parameter :: bin_name = 'Mon_13_07_bhm0.5_bhs0.35_nx200_nl40_m_2_2.run'
+   character(*), parameter :: tables_dir = 'output/Mon_13_07_bhm0.5_bhs0.35_nx200_nl40_m_2_2/tables'
 end module mod_params

@@ -19,7 +19,7 @@ sim.compactification_length= float(1)
 sim.evolve_time= float(0.5) ## units of black hole mass
 sim.num_saved_times= int(5)
 #=============================================================================
-sim.nx= 160 ## num radial pts 
+sim.nx= 200 ## num radial pts 
 sim.nl= 40  ## num angular values
 #=============================================================================
 ## evolution and write: take boolean values 
