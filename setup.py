@@ -16,11 +16,11 @@ sim.black_hole_mass= float(0.5)
 sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
 sim.compactification_length= float(1)
 #=============================================================================
-sim.evolve_time= float(1) ## units of black hole mass
-sim.num_saved_times= int(10)
+sim.evolve_time= float(0.5) ## units of black hole mass
+sim.num_saved_times= int(5)
 #=============================================================================
 sim.nx= 160 ## num radial pts 
-sim.nl= 30  ## num angular values
+sim.nl= 40  ## num angular values
 #=============================================================================
 ## evolution and write: take boolean values 
 
@@ -108,8 +108,8 @@ sim.ru_nm2_0= float( 1.5)  ## upper r value as multiple of horizon
 #=============================================================================
 ## which m angular values to evolve
 
-sim.lin_m = [   sim.pm1_ang]
-sim.scd_m = [-2*sim.pm1_ang, 2*sim.pm1_ang, 0]
+sim.lin_m     = [   sim.pm1_ang]
+sim.scd_m     = [-2*sim.pm1_ang, 2*sim.pm1_ang, 0]
 #=============================================================================
 ## which m angular values to write to file
 

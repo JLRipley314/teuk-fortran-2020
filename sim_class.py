@@ -104,6 +104,9 @@ class Sim:
             )
       )
 #-----------------------------------------------------------------------------
+## positive definite m_ang for metric reconstruction step
+      self.lin_pos_m = [ m for m in self.lin_m if m>=0]
+#-----------------------------------------------------------------------------
 ## Gauss points for integration
 ## want to exactly integrate polynomials of order
 ## 2l + 2m(i.e. lmin) + alpha + beta (so being a bit conservative here) 

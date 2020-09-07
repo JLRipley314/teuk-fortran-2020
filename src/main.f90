@@ -11,7 +11,7 @@ program main
    use mod_prec
    use mod_params, only: &
       nt, dt, t_step_save, black_hole_mass, &
-      lin_m, scd_m, &
+      lin_m, lin_pos_m, scd_m, &
       psi_spin, psi_boost, &
       metric_recon, scd_order, &
       scd_order_start_time
@@ -132,10 +132,8 @@ clean_memory: block
       ! metric recon evolves +/- m_ang so only evolve m_ang>=0
       !-----------------------------------------------------------------------
       if (metric_recon) then 
-         do i=1,size(lin_m)
-            if (lin_m(i)>=0) then
-               call metric_recon_time_step(lin_m(i))
-            end if
+         do i=1,size(lin_pos_m)
+            call metric_recon_time_step(lin_m(i))
          end do
       end if
       !-----------------------------------------------------------------------
