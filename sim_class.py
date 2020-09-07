@@ -167,13 +167,14 @@ class Sim:
          ## for openmp
          #------------
          f.write('#SBATCH -N 1\t\t# nodes= 1\n')
-
          f.write('#SBATCH -c {}\n'.format(self.num_threads))
+
          f.write('if [ -n "$SLURM_CPUS_PER_TASK" ]; then\n')
          f.write('  omp_threads=$SLURM_CPUS_PER_TASK\n')
          f.write('else\n')
          f.write('  omp_threads=1\n')
          f.write('fi\n')
+
          f.write('export OMP_NUM_THREADS=$omp_threads')
          #------------
          ## executable
@@ -212,7 +213,7 @@ class Sim:
          )
          if (self.debug):
             run_str= 'valgrind -v --track-origins=yes --leak-check=full '+run_str
-         subprocess.call('export OMP_NUM_THREADS={}'.format(self.num_threads),shell=True) 
+         os.environ['OMP_NUM_THREADS']= str(self.num_threads)
          subprocess.call(run_str,shell=True) 
       elif (self.computer=='feynman'):
          self.write_slurm_script()

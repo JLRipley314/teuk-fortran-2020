@@ -21,12 +21,11 @@ implicit none
    logical, parameter :: write_metric_recon_fields = .false.
    logical, parameter :: write_scd_order_source = .true.
    logical, parameter :: write_coefs = .false.
+   integer(ip), parameter :: num_threads = 4_ip
    character(*), parameter :: computer = 'home'
    character(*), parameter :: feyn_out_stem = '/mnt/grtheory/tf-out/'
    character(*), parameter :: walltime = '168:00:00'
    character(*), parameter :: memory = '512'
-   character(*), parameter :: num_nodes = '1'
-   character(*), parameter :: num_tasks_per_node = '1'
    integer(ip), parameter :: psi_spin = -2_ip
    integer(ip), parameter :: psi_boost = -2_ip
    real(rp), parameter :: start_multiple = 1.0_rp
@@ -77,8 +76,8 @@ implicit none
    integer(ip), parameter :: min_m = -4_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Mon_11_22_bhm0.5_bhs0.35_nx160_nl30_m_2_2'
-   character(*), parameter :: output_dir = 'output/Mon_11_22_bhm0.5_bhs0.35_nx160_nl30_m_2_2'
-   character(*), parameter :: bin_name = 'Mon_11_22_bhm0.5_bhs0.35_nx160_nl30_m_2_2.run'
-   character(*), parameter :: tables_dir = 'output/Mon_11_22_bhm0.5_bhs0.35_nx160_nl30_m_2_2/tables'
+   character(*), parameter :: output_stem = 'Mon_11_59_bhm0.5_bhs0.35_nx160_nl30_m_2_2'
+   character(*), parameter :: output_dir = 'output/Mon_11_59_bhm0.5_bhs0.35_nx160_nl30_m_2_2'
+   character(*), parameter :: bin_name = 'Mon_11_59_bhm0.5_bhs0.35_nx160_nl30_m_2_2.run'
+   character(*), parameter :: tables_dir = 'output/Mon_11_59_bhm0.5_bhs0.35_nx160_nl30_m_2_2/tables'
 end module mod_params
