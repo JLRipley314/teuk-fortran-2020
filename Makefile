@@ -30,7 +30,7 @@ ifeq ($(FC),gfortran)
 endif
 
 ifeq ($(FC),ifort)
-	FFLAGS+= -std08 -ipo -warn declarations -warn all \
+	FFLAGS+= -std08 -ipo -warn declarations -warn all -openmp \
 		-module $(OBJDIR) 
 		#-check-bounds 
 endif
