@@ -21,6 +21,9 @@ Runtime parameters are configured in the `setup.py` file.
 * Fastest Fourier Transform in the West (FFTW): 
 	http://fftw.org
 
+* OpenMP (optional):
+	https://www.openmp.org/
+
 I have successfully compiled the code with
 gfortran (version 9) and ifort (version 17).
 
