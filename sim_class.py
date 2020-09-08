@@ -187,7 +187,7 @@ class Sim:
          #------------
          ## executable
          #------------
-         run_str= './bin/{} {}\n\n'.format(self.bin_name, self.output_dir)
+         run_str= 'time ./bin/{} {}\n\n'.format(self.bin_name, self.output_dir)
          if (self.debug):
             run_str= 'valgrind -v --track-origins=yes --leak-check=full '+run_str
          f.write('\n'+run_str)
