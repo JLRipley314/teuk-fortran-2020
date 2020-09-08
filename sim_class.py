@@ -175,19 +175,19 @@ class Sim:
          f.write('#SBATCH -J fteuk\t\t# job name\n')
          f.write('#SBATCH -t {}\t\t# walltime (dd:hh:mm:ss)\n'.format(self.walltime))
          f.write('#SBATCH -p dept\t\t# partition/queue name\n')
-         f.write('#SBATCH --mem={}MB\t\t# memory in MB\n'.format(self.memory))
+         f.write('#SBATCH --mem={}MB\n'.format(self.memory))
          f.write('#SBATCH --output={}\t\t# file for STDOUT\n'.format(self.output_file))
          f.write('#SBATCH --mail-user={}\t\t# Mail  id of the user\n'.format(self.email))
          #------------
          ## for openmp
          #------------
-         f.write('#SBATCH -N 1\t\t# nodes=1\n')
-         f.write('#SBATCH -N 1\t\t# ntasks=1\n')
-         f.write('#SBATCH -cpus-per-task={}\n'.format(self.num_threads))
+         f.write('#SBATCH --nodes=1\n')
+         f.write('#SBATCH --ntasks-per-node=1\n')
+         f.write('#SBATCH --cpus-per-task={}\n'.format(self.num_threads))
          #------------
          ## executable
          #------------
-         run_str= 'time ./bin/{} {}\n\n'.format(self.bin_name, self.output_dir)
+         run_str= './bin/{} {}\n\n'.format(self.bin_name, self.output_dir)
          if (self.debug):
             run_str= 'valgrind -v --track-origins=yes --leak-check=full '+run_str
          f.write('\n'+run_str)

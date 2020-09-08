@@ -10,10 +10,10 @@ implicit none
    real(rp), parameter :: black_hole_mass = 0.5_rp
    real(rp), parameter :: black_hole_spin = 0.35_rp
    real(rp), parameter :: compactification_length = 1.0_rp
-   real(rp), parameter :: evolve_time = 20.0_rp
-   integer(ip), parameter :: num_saved_times = 100_ip
-   integer(ip), parameter :: nx = 64_ip
-   integer(ip), parameter :: nl = 16_ip
+   real(rp), parameter :: evolve_time = 50.0_rp
+   integer(ip), parameter :: num_saved_times = 200_ip
+   integer(ip), parameter :: nx = 80_ip
+   integer(ip), parameter :: nl = 20_ip
    logical, parameter :: metric_recon = .true.
    logical, parameter :: scd_order = .true.
    logical, parameter :: constrained_evo = .true.
@@ -21,7 +21,7 @@ implicit none
    logical, parameter :: write_metric_recon_fields = .false.
    logical, parameter :: write_scd_order_source = .true.
    logical, parameter :: write_coefs = .false.
-   character(*), parameter :: computer = 'home'
+   character(*), parameter :: computer = 'feynman'
    character(*), parameter :: feyn_out_stem = '/mnt/grtheory/tf-out/'
    character(*), parameter :: walltime = '168:00:00'
    character(*), parameter :: memory = '512'
@@ -55,7 +55,7 @@ implicit none
    integer(ip), dimension(3), parameter :: scd_m = [0_ip,-4_ip,4_ip]
    integer(ip), dimension(2), parameter :: lin_write_m = [2_ip,-2_ip]
    integer(ip), dimension(3), parameter :: scd_write_m = [0_ip,-4_ip,4_ip]
-   integer(ip), parameter :: max_l = 15_ip
+   integer(ip), parameter :: max_l = 19_ip
    real(rp), parameter :: horizon = 0.8567143500057153_rp
    real(rp), parameter :: R_max = 1.167250204217227_rp
    real(rp), parameter :: rl_pm1 = -1.7134287000114305_rp
@@ -75,16 +75,16 @@ implicit none
    integer(ip), parameter :: len_lin_write_m = 2_ip
    integer(ip), parameter :: len_scd_write_m = 3_ip
    integer(ip), parameter :: num_threads = 1_ip
-   integer(ip), parameter :: ny = 30_ip
-   real(rp), parameter :: dt = 0.002197265625_rp
-   integer(ip), parameter :: nt = 4551_ip
-   integer(ip), parameter :: t_step_save = 45_ip
+   integer(ip), parameter :: ny = 34_ip
+   real(rp), parameter :: dt = 0.00140625_rp
+   integer(ip), parameter :: nt = 17777_ip
+   integer(ip), parameter :: t_step_save = 88_ip
    integer(ip), parameter :: max_m = 6_ip
    integer(ip), parameter :: min_m = -6_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Tue_15_02_bhm0.5_bhs0.35_nx64_nl16_m_2_3'
-   character(*), parameter :: output_dir = 'output/Tue_15_02_bhm0.5_bhs0.35_nx64_nl16_m_2_3'
-   character(*), parameter :: bin_name = 'Tue_15_02_bhm0.5_bhs0.35_nx64_nl16_m_2_3.run'
-   character(*), parameter :: tables_dir = 'output/Tue_15_02_bhm0.5_bhs0.35_nx64_nl16_m_2_3/tables'
+   character(*), parameter :: output_stem = 'Tue_18_49_bhm0.5_bhs0.35_nx80_nl20_m_2_3'
+   character(*), parameter :: output_dir = '/mnt/grtheory/tf-out/Tue_18_49_bhm0.5_bhs0.35_nx80_nl20_m_2_3'
+   character(*), parameter :: bin_name = 'Tue_18_49_bhm0.5_bhs0.35_nx80_nl20_m_2_3.run'
+   character(*), parameter :: tables_dir = '/mnt/grtheory/tf-out/Tue_18_49_bhm0.5_bhs0.35_nx80_nl20_m_2_3/tables'
 end module mod_params
