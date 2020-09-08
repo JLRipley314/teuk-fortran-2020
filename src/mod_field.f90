@@ -84,17 +84,24 @@ contains
       f % k4 = 0.0_rp
       f % k5 = 0.0_rp
 
-      f % level = 0.0_rp
-      f % DT    = 0.0_rp
-      f % DR    = 0.0_rp
-
+      f % level    = 0.0_rp
+      f % DT       = 0.0_rp
+      f % DR       = 0.0_rp
       f % raised   = 0.0_rp
       f % lowered  = 0.0_rp
       f % swal_lap = 0.0_rp
 
-      f % coefs_swal = 0.0_rp
-      f % coefs_cheb = 0.0_rp
+      f % coefs_swal = 0.0_rp 
+      f % coefs_cheb = 0.0_rp 
       f % coefs_both = 0.0_rp
+
+      f % edth        = 0.0_rp
+      f % edth_prime  = 0.0_rp
+      f % thorn       = 0.0_rp
+      f % thorn_prime = 0.0_rp
+
+      f % re = 0.0_rp
+      f % im = 0.0_rp
 
    end subroutine set_field
 !=============================================================================

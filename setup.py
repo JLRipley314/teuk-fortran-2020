@@ -16,11 +16,11 @@ sim.black_hole_mass= float(0.5)
 sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
 sim.compactification_length= float(1)
 #=============================================================================
-sim.evolve_time= float(0.5) ## units of black hole mass
-sim.num_saved_times= int(5)
+sim.evolve_time= float(20) ## units of black hole mass
+sim.num_saved_times= int(100)
 #=============================================================================
-sim.nx= 96 ## num radial pts 
-sim.nl= 20  ## num angular values
+sim.nx= 64 ## num radial pts 
+sim.nl= 16 ## num angular values
 #=============================================================================
 ## evolution and write: take boolean values 
 
@@ -66,8 +66,8 @@ sim.initial_data_direction_pm1= "ingoing"#"outgoing"#"time_symmetric"#
 
 sim.amp_pm1= float( 0.1)  ## amplitude of the initial perturbation
 
-sim.rl_pm1_0= float( 1.1)  ## lower r value as a multiple of horizon
-sim.ru_pm1_0= float( 3.0)  ## upper r value as a multiple of horizon 
+sim.rl_pm1_0= float(-2.0)  ## lower r value as a multiple of horizon
+sim.ru_pm1_0= float( 2.0)  ## upper r value as a multiple of horizon 
 #-----------------------------------------------------------------------------
 sim.l_ang_nm1= int(2) ## support over single spin weighted spherical harmonic
 
@@ -104,12 +104,12 @@ sim.ru_nm2_0= float( 1.5)  ## upper r value as multiple of horizon
 #=============================================================================
 ## which m angular values to evolve
 
-sim.lin_m     = [   sim.pm1_ang, sim.pm2_ang]
+sim.lin_m     = [  -sim.pm1_ang,   sim.pm1_ang]
 sim.scd_m     = [-2*sim.pm1_ang, 2*sim.pm1_ang, 0]
 #=============================================================================
 ## which m angular values to write to file
 
-sim.lin_write_m = [   sim.pm1_ang]
+sim.lin_write_m = [  -sim.pm1_ang,   sim.pm1_ang]
 sim.scd_write_m = [-2*sim.pm1_ang, 2*sim.pm1_ang, 0]
 #=============================================================================
 if (sim.run_type == "basic_run"):

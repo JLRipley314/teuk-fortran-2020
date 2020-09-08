@@ -9,8 +9,8 @@
 module mod_ghp
 !=============================================================================
    use mod_prec
-   use mod_cheb,   only: R=>Rvec, compute_DR
-   use mod_swal,   only: cy=>cyvec, sy=>syvec, swal_lower, swal_raise
+   use mod_cheb,   only: R=>Rarr, compute_DR
+   use mod_swal,   only: cy=>cyarr, sy=>syarr, swal_lower, swal_raise
    use mod_field,  only: field, set_level, set_DT
 
    use mod_bkgrd_np, only: ep_0
@@ -53,24 +53,20 @@ module mod_ghp
       complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: raised
       complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: edth_arr
 
-      integer(ip) :: i, j
       real(rp) :: p
 
       p = (spin+boost)
 
-      do j=1,ny
-      do i=1,nx
-         edth_arr(i,j,m_ang) = &
-            (1.0_rp/sqrt(2.0_rp))*(1.0_rp/((cl**2) - ZI*bhs*R(i)*cy(j))) * ( &
-               -  ZI*bhs*sy(j)*(DT(i,j,m_ang)) &
-               +  (raised(i,j,m_ang)) &
-            ) &
-         +  ( &
-               (ZI*p*bhs*R(i)*sy(j)/sqrt(2.0_rp)) &
-            /  ((ZI*(cl**2) + bhs*R(i)*cy(j))**2) &
-            )*(level(i,j,m_ang))
-      end do 
-      end do 
+      edth_arr(:,:,m_ang) = &
+         (1.0_rp/sqrt(2.0_rp))*(1.0_rp/((cl**2) - ZI*bhs*R*cy)) * ( &
+            -  ZI*bhs*sy*(DT(:,:,m_ang)) &
+            +  (raised(:,:,m_ang)) &
+         ) &
+      +  ( &
+            (ZI*p*bhs*R*sy/sqrt(2.0_rp)) &
+         /  ((ZI*(cl**2) + bhs*R*cy)**2) &
+         )*(level(:,:,m_ang))
+
    end subroutine set_edth_arr
 !=============================================================================
    subroutine set_edth_field(step, m_ang, f)
@@ -94,25 +90,20 @@ module mod_ghp
       complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: lowered 
       complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: edth_prime_arr
 
-      integer(ip) :: i, j
       real(rp) :: q
 
       q = (-spin+boost)
 
-      do j=1,ny
-      do i=1,nx
-         edth_prime_arr(i,j,m_ang) = &
-            (1.0_rp/sqrt(2.0_rp))*(1.0_rp/((cl**2) + ZI*bhs*R(i)*cy(j))) * ( &
-                  ZI*bhs*sy(j)*(DT(i,j,m_ang)) &
-               +  (lowered(i,j,m_ang)) &
-            ) &
-         +  ( &
-               (ZI*q*bhs*R(i)*sy(j)/sqrt(2.0_rp)) &
-            /  ((cl**2 + ZI*bhs*R(i)*cy(j))**2) &
-            )*(level(i,j,m_ang))
+      edth_prime_arr(:,:,m_ang) = &
+         (1.0_rp/sqrt(2.0_rp))*(1.0_rp/((cl**2) + ZI*bhs*R*cy)) * ( &
+               ZI*bhs*sy*(DT(:,:,m_ang)) &
+            +  (lowered(:,:,m_ang)) &
+         ) &
+      +  ( &
+            (ZI*q*bhs*R*sy/sqrt(2.0_rp)) &
+         /  ((cl**2 + ZI*bhs*R*cy)**2) &
+         )*(level(:,:,m_ang))
 
-      end do
-      end do
    end subroutine set_edth_prime_arr
 !=============================================================================
    subroutine set_edth_prime_field(step, m_ang, f)
@@ -135,26 +126,22 @@ module mod_ghp
       complex(rp), dimension(nx,ny,min_m:max_m), intent(in) :: level, DT, DR
       complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: thorn_arr
 
-      integer(ip) :: i, j
-      real(rp)    :: p, q
+      real(rp) :: p, q
 
       p = ( spin+boost)
       q = (-spin+boost)
 
-      do j=1,ny
-      do i=1,nx
-         thorn_arr(i,j,m_ang) = &
-            (1.0_rp/((cl**4)+((bhs*R(i)*cy(j))**2)))*( &
-               R(i)*2.0_rp*bhm*(2.0_rp*bhm-((bhs/cl)**2)*R(i))*(DT(i,j,m_ang)) &
-            -  0.5_rp*((cl**2)-(2.0_rp*bhm*R(i)) + ((bhs*R(i)/cl)**2))*( &
-                  R(i)*DR(i,j,m_ang) &
-               +  (falloff)*(level(i,j,m_ang)) &
-               ) &
-            +  R(i)*(ZI*m_ang*bhs)*(level(i,j,m_ang)) &
+      thorn_arr(:,:,m_ang) = &
+         (1.0_rp/((cl**4)+((bhs*R*cy)**2)))*( &
+            R*2.0_rp*bhm*(2.0_rp*bhm-((bhs/cl)**2)*R)*(DT(:,:,m_ang)) &
+         -  0.5_rp*((cl**2)-(2.0_rp*bhm*R) + ((bhs*R/cl)**2))*( &
+               R*DR(:,:,m_ang) &
+            +  (falloff)*(level(:,:,m_ang)) &
             ) &
-          - R(i)*(p*ep_0(i,j) + q*conjg(ep_0(i,j)))*(level(i,j,m_ang))
-      end do
-      end do
+         +  R*(ZI*m_ang*bhs)*(level(:,:,m_ang)) &
+         ) &
+       - R*(p*ep_0 + q*conjg(ep_0))*(level(:,:,m_ang))
+
    end subroutine set_thorn_arr
 !=============================================================================
    subroutine set_thorn_field(step, m_ang, f)
@@ -176,18 +163,14 @@ module mod_ghp
       complex(rp), dimension(nx,ny,min_m:max_m), intent(in) :: level, DT, DR
       complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: thorn_prime_arr
 
-      integer(ip) :: i, j
 
-      do j=1,ny
-      do i=1,nx
-         thorn_prime_arr(i,j,m_ang) = &
-            (2.0_rp + (4.0_rp*bhm*R(i)/(cl**2)))*(DT(i,j,m_ang)) &
-         +  ((1.0_rp/cl)**2)*( &
-               (R(i)**2)*(DR(i,j,m_ang)) &
-            +  R(i)*(falloff)*(level(i,j,m_ang)) &
-         )
-      end do
-      end do
+      thorn_prime_arr(:,:,m_ang) = &
+         (2.0_rp + (4.0_rp*bhm*R/(cl**2)))*(DT(:,:,m_ang)) &
+      +  ((1.0_rp/cl)**2)*( &
+            (R**2)*(DR(:,:,m_ang)) &
+         +  R*(falloff)*(level(:,:,m_ang)) &
+      )
+
    end subroutine set_thorn_prime_arr
 !=============================================================================
    subroutine set_thorn_prime_field(step, m_ang, f)
