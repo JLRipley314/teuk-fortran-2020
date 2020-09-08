@@ -16,7 +16,7 @@ vpath %.f90 $(SRC)
 INCFFTW= /usr/include
 LIBFFTW= /lib/x86_64-linux-gnu
 #==========================================================================
-FC = gfortran#ifort#
+FC = ifort#gfortran#
 
 FFLAGS= -pg -fmax-errors=5 -O2 
 
@@ -30,7 +30,7 @@ ifeq ($(FC),gfortran)
 endif
 
 ifeq ($(FC),ifort)
-	FFLAGS+= -std08 -ipo -warn declarations -warn all -openmp \
+	FFLAGS+= -std08 -ipo -warn declarations -warn all -qopenmp \
 		-module $(OBJDIR) 
 		#-check-bounds 
 endif

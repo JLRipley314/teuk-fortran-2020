@@ -8,8 +8,6 @@ program main
    use, intrinsic :: iso_fortran_env, only: &
       stdout=>output_unit, stdin=>input_unit, stderr=>error_unit
 
-   use omp_lib
-
    use mod_prec
    use mod_params, only: &
       nt, dt, t_step_save, black_hole_mass, &
