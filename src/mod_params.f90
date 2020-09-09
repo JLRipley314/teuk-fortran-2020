@@ -79,12 +79,12 @@ implicit none
    real(rp), parameter :: dt = 0.002197265625_rp
    integer(ip), parameter :: nt = 4551_ip
    integer(ip), parameter :: t_step_save = 45_ip
-   integer(ip), parameter :: max_m = 6_ip
-   integer(ip), parameter :: min_m = -6_ip
+   integer(ip), parameter :: max_m = 5_ip
+   integer(ip), parameter :: min_m = -4_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Wed_15_29_bhm0.5_bhs0.35_nx64_nl20_m_2_3'
-   character(*), parameter :: output_dir = 'output/Wed_15_29_bhm0.5_bhs0.35_nx64_nl20_m_2_3'
-   character(*), parameter :: bin_name = 'Wed_15_29_bhm0.5_bhs0.35_nx64_nl20_m_2_3.run'
-   character(*), parameter :: tables_dir = 'output/Wed_15_29_bhm0.5_bhs0.35_nx64_nl20_m_2_3/tables'
+   character(*), parameter :: output_stem = 'Wed_15_42_bhm0.5_bhs0.35_nx64_nl20_m_2_3'
+   character(*), parameter :: output_dir = 'output/Wed_15_42_bhm0.5_bhs0.35_nx64_nl20_m_2_3'
+   character(*), parameter :: bin_name = 'Wed_15_42_bhm0.5_bhs0.35_nx64_nl20_m_2_3.run'
+   character(*), parameter :: tables_dir = 'output/Wed_15_42_bhm0.5_bhs0.35_nx64_nl20_m_2_3/tables'
 end module mod_params
