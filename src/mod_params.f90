@@ -10,9 +10,9 @@ implicit none
    real(rp), parameter :: black_hole_mass = 0.5_rp
    real(rp), parameter :: black_hole_spin = 0.35_rp
    real(rp), parameter :: compactification_length = 1.0_rp
-   real(rp), parameter :: evolve_time = 0.5_rp
-   integer(ip), parameter :: num_saved_times = 3_ip
-   integer(ip), parameter :: nx = 200_ip
+   real(rp), parameter :: evolve_time = 20.0_rp
+   integer(ip), parameter :: num_saved_times = 100_ip
+   integer(ip), parameter :: nx = 64_ip
    integer(ip), parameter :: nl = 20_ip
    logical, parameter :: metric_recon = .true.
    logical, parameter :: scd_order = .true.
@@ -76,15 +76,15 @@ implicit none
    integer(ip), parameter :: len_scd_write_m = 3_ip
    integer(ip), parameter :: num_threads = 3_ip
    integer(ip), parameter :: ny = 40_ip
-   real(rp), parameter :: dt = 0.00022500000000000002_rp
-   integer(ip), parameter :: nt = 1111_ip
-   integer(ip), parameter :: t_step_save = 370_ip
+   real(rp), parameter :: dt = 0.002197265625_rp
+   integer(ip), parameter :: nt = 4551_ip
+   integer(ip), parameter :: t_step_save = 45_ip
    integer(ip), parameter :: max_m = 8_ip
    integer(ip), parameter :: min_m = -8_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Wed_15_07_bhm0.5_bhs0.35_nx200_nl20_m_3_4'
-   character(*), parameter :: output_dir = 'output/Wed_15_07_bhm0.5_bhs0.35_nx200_nl20_m_3_4'
-   character(*), parameter :: bin_name = 'Wed_15_07_bhm0.5_bhs0.35_nx200_nl20_m_3_4.run'
-   character(*), parameter :: tables_dir = 'output/Wed_15_07_bhm0.5_bhs0.35_nx200_nl20_m_3_4/tables'
+   character(*), parameter :: output_stem = 'Wed_15_18_bhm0.5_bhs0.35_nx64_nl20_m_3_4'
+   character(*), parameter :: output_dir = 'output/Wed_15_18_bhm0.5_bhs0.35_nx64_nl20_m_3_4'
+   character(*), parameter :: bin_name = 'Wed_15_18_bhm0.5_bhs0.35_nx64_nl20_m_3_4.run'
+   character(*), parameter :: tables_dir = 'output/Wed_15_18_bhm0.5_bhs0.35_nx64_nl20_m_3_4/tables'
 end module mod_params
