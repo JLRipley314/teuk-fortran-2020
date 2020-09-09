@@ -20,6 +20,7 @@ program main
    use mod_field,        only: set_field, shift_time_step
    use mod_cheb,         only: cheb_init, cheb_filter, cheb_test
    use mod_swal,         only: swal_init, swal_filter, swal_test_orthonormal
+   use mod_ghp,          only: ghp_init
    use mod_teuk,         only: teuk_init, teuk_time_step
    use mod_initial_data, only: set_initial_data
    use mod_bkgrd_np,     only: bkgrd_np_init
@@ -103,6 +104,7 @@ clean_memory: block
 !-----------------------------------------------------------------------------
    call cheb_init()
    call swal_init()
+   call ghp_init()
    call bkgrd_np_init()
    call teuk_init()
 !=============================================================================
@@ -133,11 +135,11 @@ clean_memory: block
       ! metric recon evolves +/- m_ang so only evolve m_ang>=0
       !-----------------------------------------------------------------------
       if (metric_recon) then 
-         !$OMP PARALLEL DO
+!         !$OMP PARALLEL DO
          do i=1,len_lin_pos_m
             call metric_recon_time_step(lin_pos_m(i))
          end do
-         !$OMP END PARALLEL DO
+!         !$OMP END PARALLEL DO
       end if
       !-----------------------------------------------------------------------
       ! \Psi_4^{(2)} evolution 

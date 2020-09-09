@@ -23,7 +23,7 @@ module mod_swal
    ! subroutines 
    public :: swal_init, compute_swal_laplacian, swal_lower, swal_raise
 
-   public :: swal_filter, swal_high_pass_filter
+   public :: swal_filter
 
    public :: swal_test_orthonormal, swal_test_to_from
 
@@ -217,12 +217,14 @@ contains
 
       vals_lap = 0
 
+      !$OMP PARALLEL DO
       do j =1,ny
       do jp=1,ny
          vals_lap(:,j,m_ang) = vals_lap(:,j,m_ang) &
          +  vals(:,jp,m_ang)*laplacian(jp,j,m_ang,spin)
       end do
       end do
+      !$OMP END PARALLEL DO
 
    end subroutine swal_laplacian
 !=============================================================================
@@ -246,12 +248,14 @@ contains
 
       vals_lowered = 0
 
+      !$OMP PARALLEL DO
       do j =1,ny
       do jp=1,ny
          vals_lowered(:,j,m_ang) = vals_lowered(:,j,m_ang) &
          +  vals(:,jp,m_ang)*lower(jp,j,m_ang,spin)
       end do
       end do
+      !$OMP END PARALLEL DO
 
    end subroutine swal_lower
 !=============================================================================
@@ -265,12 +269,14 @@ contains
 
       vals_raised = 0
 
+      !$OMP PARALLEL DO
       do j =1,ny
       do jp=1,ny
          vals_raised(:,j,m_ang) = vals_raised(:,j,m_ang) &
          +  vals(:,jp,m_ang)*raise(jp,j,m_ang,spin)
       end do
       end do
+      !$OMP END PARALLEL DO
 
    end subroutine swal_raise
 !=============================================================================
@@ -284,36 +290,18 @@ contains
 
       f%level = 0
 
+      !$OMP PARALLEL DO
       do j =1,ny
       do jp=1,ny
          f%level(:,j,m_ang) = f%level(:,j,m_ang) &
          +  f%np1(:,jp,m_ang)*low_pass(jp,j,m_ang,f%spin)
       end do
       end do
+      !$OMP END PARALLEL DO
 
       f%np1(:,:,m_ang) = f%level(:,:,m_ang)
 
    end subroutine swal_filter
-!=============================================================================
-! High pass filter. To see if we are getting converging in high l modes 
-!=============================================================================
-   subroutine swal_high_pass_filter(spin,m_ang,vals,coefs)
-      integer(ip), intent(in) :: spin
-      integer(ip), intent(in) :: m_ang
-      complex(rp), dimension(nx,     ny,min_m:max_m), intent(inout) :: vals
-      complex(rp), dimension(nx,0:max_l,min_m:max_m), intent(inout) :: coefs
-
-      integer(ip) :: k
-
-      call swal_real_to_coef(spin,m_ang,vals,coefs) 
-
-      do k=0,1
-         coefs(:,k,m_ang) = 0.0_rp 
-      end do
-
-      call swal_coef_to_real(spin,m_ang,coefs,vals) 
-
-   end subroutine swal_high_pass_filter
 !=============================================================================
 ! test that the swal are orthogonal
 !=============================================================================

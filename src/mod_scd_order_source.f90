@@ -296,6 +296,10 @@ module mod_scd_order_source
  
       call scd_order_source_zero(m_ang,sf)
 
+      !------------------------------------
+      ! add up source term components:
+      ! f^{(m_1)} g^{(m_2)} ~ S^{(m_1+m_2)} 
+      !------------------------------------
       do i=1,size(lin_m)
          m1_ang=lin_m(i)
          m2_ang=m_ang-m1_ang

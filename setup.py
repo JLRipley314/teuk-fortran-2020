@@ -16,11 +16,11 @@ sim.black_hole_mass= float(0.5)
 sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
 sim.compactification_length= float(1)
 #=============================================================================
-sim.evolve_time= float(50) ## units of black hole mass
-sim.num_saved_times= int(200)
+sim.evolve_time= float(20.0) ## units of black hole mass
+sim.num_saved_times= int(100)
 #=============================================================================
-sim.nx= 80 ## num radial pts 
-sim.nl= 20 ## num angular values
+sim.nx= 64 ## num radial pts 
+sim.nl= 16 ## num angular values
 #=============================================================================
 ## evolution and write: take boolean values 
 
@@ -33,7 +33,7 @@ sim.write_metric_recon_fields= False
 sim.write_scd_order_source=    True
 sim.write_coefs=               False
 #=============================================================================
-sim.computer= 'feynman'#'home'#
+sim.computer= 'home'#'feynman'#
 sim.feyn_out_stem= '/mnt/grtheory/tf-out/'
 
 ## for feynman cluster/slurm script
@@ -41,6 +41,10 @@ sim.feyn_out_stem= '/mnt/grtheory/tf-out/'
 sim.walltime= '168:00:00' ## (hh:mm:ss)
 sim.memory=  '512' ## MB 
 sim.email=  'lloydripley@gmail.com' ## for slurm notification
+#=============================================================================
+## for openmp
+
+sim.num_threads= 4
 #=============================================================================
 ## we can only do metric reconstruction starting from psi4 for now.
 ## For pure first order Teukolsky evolution we can consider other
@@ -58,9 +62,9 @@ sim.start_multiple= float(1.0)
 #=============================================================================
 ## initial data for mode m1
 #=============================================================================
-sim.pm1_ang =  int(2) ## m_ang is preserved by time evolution
+sim.pm1_ang =  int(3) ## m_ang is preserved by time evolution
 #-----------------------------------------------------------------------------
-sim.l_ang_pm1= int(2) ## l_ang: support of initial swal 
+sim.l_ang_pm1= int(3) ## l_ang: support of initial swal 
 
 sim.initial_data_direction_pm1= "ingoing"#"outgoing"#"time_symmetric"#
 
@@ -69,7 +73,7 @@ sim.amp_pm1= float( 0.1)  ## amplitude of the initial perturbation
 sim.rl_pm1_0= float(-2.0)  ## lower r value as a multiple of horizon
 sim.ru_pm1_0= float( 2.0)  ## upper r value as a multiple of horizon 
 #-----------------------------------------------------------------------------
-sim.l_ang_nm1= int(2) ## support over single spin weighted spherical harmonic
+sim.l_ang_nm1= int(3) ## support over single spin weighted spherical harmonic
 
 sim.initial_data_direction_nm1= "ingoing"#"time_symmetric"#"outgoing"#
 
@@ -80,9 +84,9 @@ sim.ru_nm1_0= float( 3.0)  ## upper r value as multiple of horizon
 #=============================================================================
 ## initial data for mode m2
 #=============================================================================
-sim.pm2_ang =  int(3) ## m_ang is preserved by time evolution
+sim.pm2_ang =  int(4) ## m_ang is preserved by time evolution
 #-----------------------------------------------------------------------------
-sim.l_ang_pm2= int(3) ## support over single spin weighted spherical harmonic
+sim.l_ang_pm2= int(4) ## support over single spin weighted spherical harmonic
 
 sim.initial_data_direction_pm2= "ingoing"#"time_symmetric"#"outgoing"#
 
@@ -91,9 +95,9 @@ sim.amp_pm2= float(0.0)  ## amplitude of the initial perturbation
 sim.rl_pm2_0= float(-1.5)  ## lower r value as multiple of horizon 
 sim.ru_pm2_0= float( 1.5)  ## upper r value as multiple of horizon 
 
-sim.l_ang_pm2= int(3)     ## support over single spin weighted spherical harmonic
+sim.l_ang_pm2= int(4)     ## support over single spin weighted spherical harmonic
 #-----------------------------------------------------------------------------
-sim.l_ang_nm2= int(3) ## support over single spin weighted spherical harmonic
+sim.l_ang_nm2= int(4) ## support over single spin weighted spherical harmonic
 
 sim.initial_data_direction_nm2= "ingoing"#"time_symmetric"#"outgoing"#
 

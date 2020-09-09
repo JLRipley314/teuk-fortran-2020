@@ -114,10 +114,6 @@ class Sim:
       self.len_lin_write_m= len(set(self.lin_write_m))
       self.len_scd_write_m= len(set(self.scd_write_m))
 #-----------------------------------------------------------------------------
-## for openmp
-
-      self.num_threads= self.len_lin_pos_m
-#-----------------------------------------------------------------------------
 ## Gauss points for integration
 ## want to exactly integrate polynomials of order
 ## 2l + 2m(i.e. lmin) + alpha + beta (so being a bit conservative here) 
