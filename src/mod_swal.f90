@@ -217,14 +217,12 @@ contains
 
       vals_lap = 0
 
-      !$OMP PARALLEL DO
       do j =1,ny
       do jp=1,ny
          vals_lap(:,j,m_ang) = vals_lap(:,j,m_ang) &
          +  vals(:,jp,m_ang)*laplacian(jp,j,m_ang,spin)
       end do
       end do
-      !$OMP END PARALLEL DO
 
    end subroutine swal_laplacian
 !=============================================================================
@@ -248,14 +246,12 @@ contains
 
       vals_lowered = 0
 
-      !$OMP PARALLEL DO
       do j =1,ny
       do jp=1,ny
          vals_lowered(:,j,m_ang) = vals_lowered(:,j,m_ang) &
          +  vals(:,jp,m_ang)*lower(jp,j,m_ang,spin)
       end do
       end do
-      !$OMP END PARALLEL DO
 
    end subroutine swal_lower
 !=============================================================================
@@ -269,14 +265,12 @@ contains
 
       vals_raised = 0
 
-      !$OMP PARALLEL DO
       do j =1,ny
       do jp=1,ny
          vals_raised(:,j,m_ang) = vals_raised(:,j,m_ang) &
          +  vals(:,jp,m_ang)*raise(jp,j,m_ang,spin)
       end do
       end do
-      !$OMP END PARALLEL DO
 
    end subroutine swal_raise
 !=============================================================================
@@ -290,14 +284,12 @@ contains
 
       f%level = 0
 
-      !$OMP PARALLEL DO
       do j =1,ny
       do jp=1,ny
          f%level(:,j,m_ang) = f%level(:,j,m_ang) &
          +  f%np1(:,jp,m_ang)*low_pass(jp,j,m_ang,f%spin)
       end do
       end do
-      !$OMP END PARALLEL DO
 
       f%np1(:,:,m_ang) = f%level(:,:,m_ang)
 

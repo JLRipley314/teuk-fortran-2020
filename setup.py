@@ -16,11 +16,11 @@ sim.black_hole_mass= float(0.5)
 sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
 sim.compactification_length= float(1)
 #=============================================================================
-sim.evolve_time= float(20.0) ## units of black hole mass
-sim.num_saved_times= int(100)
+sim.evolve_time= float(0.5) ## units of black hole mass
+sim.num_saved_times= int(3)
 #=============================================================================
-sim.nx= 64 ## num radial pts 
-sim.nl= 16 ## num angular values
+sim.nx= 200 ## num radial pts 
+sim.nl=  20 ## num angular values
 #=============================================================================
 ## evolution and write: take boolean values 
 
@@ -41,10 +41,6 @@ sim.feyn_out_stem= '/mnt/grtheory/tf-out/'
 sim.walltime= '168:00:00' ## (hh:mm:ss)
 sim.memory=  '512' ## MB 
 sim.email=  'lloydripley@gmail.com' ## for slurm notification
-#=============================================================================
-## for openmp
-
-sim.num_threads= 4
 #=============================================================================
 ## we can only do metric reconstruction starting from psi4 for now.
 ## For pure first order Teukolsky evolution we can consider other
