@@ -116,11 +116,7 @@ class Sim:
 #-----------------------------------------------------------------------------
 ## for openmp
 
-      self.num_threads= max(
-         self.len_lin_pos_m,
-         self.len_lin_m,
-         self.len_scd_m
-      )
+      self.num_threads= self.len_lin_pos_m
 #-----------------------------------------------------------------------------
 ## Gauss points for integration
 ## want to exactly integrate polynomials of order
