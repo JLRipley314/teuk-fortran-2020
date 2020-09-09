@@ -144,7 +144,7 @@ clean_memory: block
       !-----------------------------------------------------------------------
       ! \Psi_4^{(2)} evolution 
       !-----------------------------------------------------------------------
-      if (scd_order .and. time>=scd_order_start_time) then
+      if (scd_order) then
          do i=1,len_scd_m
             call scd_order_source_compute(scd_m(i),source) 
          end do

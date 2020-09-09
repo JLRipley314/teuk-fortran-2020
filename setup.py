@@ -39,7 +39,7 @@ sim.feyn_out_stem= '/mnt/grtheory/tf-out/'
 ## for feynman cluster/slurm script
 
 sim.walltime= '168:00:00' ## (hh:mm:ss)
-sim.memory=  '512' ## MB 
+sim.memory=  '1024' ## MB 
 sim.email=  'lloydripley@gmail.com' ## for slurm notification
 #=============================================================================
 ## we can only do metric reconstruction starting from psi4 for now.
@@ -58,9 +58,9 @@ sim.start_multiple= float(1.0)
 #=============================================================================
 ## initial data for mode m1
 #=============================================================================
-sim.pm1_ang =  int(3) ## m_ang is preserved by time evolution
+sim.pm1_ang =  int(2) ## m_ang is preserved by time evolution
 #-----------------------------------------------------------------------------
-sim.l_ang_pm1= int(3) ## l_ang: support of initial swal 
+sim.l_ang_pm1= int(2) ## support over single spin weighted spherical harmonic
 
 sim.initial_data_direction_pm1= "ingoing"#"outgoing"#"time_symmetric"#
 
@@ -69,7 +69,7 @@ sim.amp_pm1= float( 0.1)  ## amplitude of the initial perturbation
 sim.rl_pm1_0= float(-2.0)  ## lower r value as a multiple of horizon
 sim.ru_pm1_0= float( 2.0)  ## upper r value as a multiple of horizon 
 #-----------------------------------------------------------------------------
-sim.l_ang_nm1= int(3) ## support over single spin weighted spherical harmonic
+sim.l_ang_nm1= int(2) ## support over single spin weighted spherical harmonic
 
 sim.initial_data_direction_nm1= "ingoing"#"time_symmetric"#"outgoing"#
 
@@ -80,20 +80,18 @@ sim.ru_nm1_0= float( 3.0)  ## upper r value as multiple of horizon
 #=============================================================================
 ## initial data for mode m2
 #=============================================================================
-sim.pm2_ang =  int(4) ## m_ang is preserved by time evolution
+sim.pm2_ang =  int(3) ## m_ang is preserved by time evolution
 #-----------------------------------------------------------------------------
-sim.l_ang_pm2= int(4) ## support over single spin weighted spherical harmonic
+sim.l_ang_pm2= int(3) ## support over single spin weighted spherical harmonic
 
 sim.initial_data_direction_pm2= "ingoing"#"time_symmetric"#"outgoing"#
 
-sim.amp_pm2= float(0.0)  ## amplitude of the initial perturbation
+sim.amp_pm2= float(0.05)  ## amplitude of the initial perturbation
 
 sim.rl_pm2_0= float(-1.5)  ## lower r value as multiple of horizon 
 sim.ru_pm2_0= float( 1.5)  ## upper r value as multiple of horizon 
-
-sim.l_ang_pm2= int(4)     ## support over single spin weighted spherical harmonic
 #-----------------------------------------------------------------------------
-sim.l_ang_nm2= int(4) ## support over single spin weighted spherical harmonic
+sim.l_ang_nm2= int(3) ## support over single spin weighted spherical harmonic
 
 sim.initial_data_direction_nm2= "ingoing"#"time_symmetric"#"outgoing"#
 
@@ -104,13 +102,33 @@ sim.ru_nm2_0= float( 1.5)  ## upper r value as multiple of horizon
 #=============================================================================
 ## which m angular values to evolve
 
-sim.lin_m     = [  -sim.pm1_ang,   sim.pm1_ang]
-sim.scd_m     = [-2*sim.pm1_ang, 2*sim.pm1_ang, 0]
+sim.lin_m= [
+   -sim.pm1_ang,
+   sim.pm1_ang,
+   -sim.pm2_ang,
+   sim.pm2_ang
+]
+sim.scd_m= [
+   -2*sim.pm1_ang,
+   2*sim.pm1_ang,
+   sim.pm1_ang+sim.pm2_ang,
+   0
+]
 #=============================================================================
 ## which m angular values to write to file
 
-sim.lin_write_m = [  -sim.pm1_ang,   sim.pm1_ang]
-sim.scd_write_m = [-2*sim.pm1_ang, 2*sim.pm1_ang, 0]
+sim.lin_write_m= [
+   -sim.pm1_ang,
+   sim.pm1_ang,
+   -sim.pm2_ang,
+   sim.pm2_ang
+]
+sim.scd_write_m= [
+   -2*sim.pm1_ang,
+   2*sim.pm1_ang,
+   sim.pm1_ang+sim.pm2_ang,
+   0
+]
 #=============================================================================
 if (sim.run_type == "basic_run"):
    sim.launch_run()
