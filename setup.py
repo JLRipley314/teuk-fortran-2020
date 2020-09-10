@@ -104,14 +104,11 @@ sim.ru_nm2_0= float( 1.5)  ## upper r value as multiple of horizon
 
 sim.lin_m= [
    -sim.pm1_ang,
-   sim.pm1_ang,
-   -sim.pm2_ang,
-   sim.pm2_ang
+    sim.pm1_ang,
 ]
 sim.scd_m= [
    -2*sim.pm1_ang,
-   2*sim.pm1_ang,
-   sim.pm1_ang+sim.pm2_ang,
+    2*sim.pm1_ang,
    0
 ]
 #=============================================================================
@@ -119,14 +116,11 @@ sim.scd_m= [
 
 sim.lin_write_m= [
    -sim.pm1_ang,
-   sim.pm1_ang,
-   -sim.pm2_ang,
-   sim.pm2_ang
+    sim.pm1_ang,
 ]
 sim.scd_write_m= [
    -2*sim.pm1_ang,
-   2*sim.pm1_ang,
-   sim.pm1_ang+sim.pm2_ang,
+    2*sim.pm1_ang,
    0
 ]
 #=============================================================================

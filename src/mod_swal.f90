@@ -215,7 +215,7 @@ contains
 
       integer(ip) :: j, jp
 
-      vals_lap = 0
+      vals_lap(:,:,m_ang) = 0
 
       do j =1,ny
       do jp=1,ny
@@ -244,7 +244,7 @@ contains
 
       integer(ip) :: j, jp
 
-      vals_lowered = 0
+      vals_lowered(:,:,m_ang) = 0
 
       do j =1,ny
       do jp=1,ny
@@ -263,7 +263,7 @@ contains
 
       integer(ip) :: j, jp
 
-      vals_raised = 0
+      vals_raised(:,:,m_ang) = 0
 
       do j =1,ny
       do jp=1,ny
@@ -282,7 +282,7 @@ contains
 
       integer(ip) :: j, jp
 
-      f%level = 0
+      f%level(:,:,m_ang) = 0
 
       do j =1,ny
       do jp=1,ny

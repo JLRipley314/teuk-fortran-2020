@@ -129,41 +129,11 @@ clean_memory: block
       ! \Psi_4^{(1)} evolution 
       !-----------------------------------------------------------------------
       do i=1,len_lin_m
-         call teuk_time_step(lin_m(i),psi4_lin_p,psi4_lin_q,psi4_lin_f)
-      end do
-      !-----------------------------------------------------------------------
-      ! metric recon evolves +/- m_ang so only evolve m_ang>=0
-      !-----------------------------------------------------------------------
-      if (metric_recon) then 
-         do i=1,len_lin_pos_m
-            call metric_recon_time_step(lin_pos_m(i))
-         end do
-      end if
-      !-----------------------------------------------------------------------
-      ! \Psi_4^{(2)} evolution 
-      !-----------------------------------------------------------------------
-      if (scd_order) then
-         do i=1,len_scd_m
-            call scd_order_source_compute(scd_m(i),source) 
-         end do
-         if (time>=scd_order_start_time) then
-            do i=1,len_scd_m
-               call teuk_time_step(scd_m(i),source,psi4_scd_p,psi4_scd_q,psi4_scd_f)
-            end do
-         end if
-      end if
-      !-----------------------------------------------------------------------
-      ! save to file 
-      !-----------------------------------------------------------------------
-      call write_diagnostics(time / black_hole_mass)
 
-      if (mod(t_step,t_step_save)==0) then
-         call write_level(time / black_hole_mass)
-      end if
-      !-----------------------------------------------------------------------
-      ! low pass filter (in spectral space)
-      !-----------------------------------------------------------------------
-      do i=1,len_lin_m
+         call teuk_time_step(lin_m(i),psi4_lin_p,psi4_lin_q,psi4_lin_f)
+         !------------------------------------
+         ! low pass filter (in spectral space)
+         !------------------------------------
          call cheb_filter(lin_m(i),psi4_lin_p)
          call cheb_filter(lin_m(i),psi4_lin_q)
          call cheb_filter(lin_m(i),psi4_lin_f)
@@ -171,10 +141,19 @@ clean_memory: block
          call swal_filter(lin_m(i),psi4_lin_p)
          call swal_filter(lin_m(i),psi4_lin_q)
          call swal_filter(lin_m(i),psi4_lin_f)
-      end do
 
-      if (metric_recon) then
-         do i=1,len_lin_m
+      end do
+      !-----------------------------------------------------------------------
+      ! metric recon evolves +/- m_ang so only evolve m_ang>=0
+      !-----------------------------------------------------------------------
+      if (metric_recon) then 
+         !$OMP PARALLEL DO NUM_THREADS(len_lin_pos_m)
+         do i=1,len_lin_pos_m
+
+            call metric_recon_time_step(lin_pos_m(i))
+            !------------------------------------
+            ! low pass filter (in spectral space)
+            !------------------------------------
             call cheb_filter(lin_m(i),psi3)
             call cheb_filter(lin_m(i),psi2)
 
@@ -184,7 +163,7 @@ clean_memory: block
             call cheb_filter(lin_m(i),hmbmb)
             call cheb_filter(lin_m(i), hlmb)
             call cheb_filter(lin_m(i),muhll)
-            !-------------------------------
+            !------------------------------------
             call swal_filter(lin_m(i),psi3)
             call swal_filter(lin_m(i),psi2)
 
@@ -194,31 +173,82 @@ clean_memory: block
             call swal_filter(lin_m(i),hmbmb)
             call swal_filter(lin_m(i), hlmb)
             call swal_filter(lin_m(i),muhll)
-         end do
-      end if
+            !------------------------------------
+            !------------------------------------
+            call cheb_filter(-lin_m(i),psi3)
+            call cheb_filter(-lin_m(i),psi2)
 
+            call cheb_filter(-lin_m(i),la)
+            call cheb_filter(-lin_m(i),pi)
+
+            call cheb_filter(-lin_m(i),hmbmb)
+            call cheb_filter(-lin_m(i), hlmb)
+            call cheb_filter(-lin_m(i),muhll)
+            !------------------------------------
+            call swal_filter(-lin_m(i),psi3)
+            call swal_filter(-lin_m(i),psi2)
+
+            call swal_filter(-lin_m(i),la)
+            call swal_filter(-lin_m(i),pi)
+
+            call swal_filter(-lin_m(i),hmbmb)
+            call swal_filter(-lin_m(i), hlmb)
+            call swal_filter(-lin_m(i),muhll)
+
+         end do
+         !$OMP END PARALLEL DO
+      end if
+      !-----------------------------------------------------------------------
+      ! \Psi_4^{(2)} evolution 
+      !-----------------------------------------------------------------------
       if (scd_order) then
          do i=1,len_scd_m
-            call cheb_filter(scd_m(i),psi4_scd_p)
-            call cheb_filter(scd_m(i),psi4_scd_q)
-            call cheb_filter(scd_m(i),psi4_scd_f)
-            !------------------------------------
-            call swal_filter(scd_m(i),psi4_scd_p)
-            call swal_filter(scd_m(i),psi4_scd_q)
-            call swal_filter(scd_m(i),psi4_scd_f)
+
+            call scd_order_source_compute(scd_m(i),source) 
+
          end do
+         if (time>=scd_order_start_time) then
+            do i=1,len_scd_m
+
+               call teuk_time_step(scd_m(i),source,psi4_scd_p,psi4_scd_q,psi4_scd_f)
+               !------------------------------------
+               ! low pass filter (in spectral space)
+               !------------------------------------
+               call cheb_filter(scd_m(i),psi4_scd_p)
+               call cheb_filter(scd_m(i),psi4_scd_q)
+               call cheb_filter(scd_m(i),psi4_scd_f)
+               !------------------------------------
+               call swal_filter(scd_m(i),psi4_scd_p)
+               call swal_filter(scd_m(i),psi4_scd_q)
+               call swal_filter(scd_m(i),psi4_scd_f)
+
+            end do
+         end if
+      end if
+      !-----------------------------------------------------------------------
+      ! save to file 
+      !-----------------------------------------------------------------------
+      call write_diagnostics(time / black_hole_mass)
+
+      if (mod(t_step,t_step_save)==0) then
+
+         call write_level(time / black_hole_mass)
+
       end if
       !-----------------------------------------------------------------------
       ! shift time steps
       !-----------------------------------------------------------------------
       do i=1,len_lin_m
+
          call shift_time_step(lin_m(i),psi4_lin_p)
          call shift_time_step(lin_m(i),psi4_lin_q)
          call shift_time_step(lin_m(i),psi4_lin_f)
+
       end do
 
       if (metric_recon) then
          do i=1,len_lin_m
+
             call shift_time_step(lin_m(i),psi3)
             call shift_time_step(lin_m(i),psi2)
 
@@ -228,16 +258,19 @@ clean_memory: block
             call shift_time_step(lin_m(i),hmbmb)
             call shift_time_step(lin_m(i),hlmb)
             call shift_time_step(lin_m(i),muhll) 
+
          end do 
       end if
 
       if (scd_order) then
          do i=1,len_scd_m
+
             call shift_time_step(scd_m(i),psi4_scd_p)
             call shift_time_step(scd_m(i),psi4_scd_q)
             call shift_time_step(scd_m(i),psi4_scd_f)
 
             call scd_order_source_shift_time_step(scd_m(i),source)
+
          end do
       end if
 
