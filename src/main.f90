@@ -147,7 +147,7 @@ clean_memory: block
       ! metric recon evolves +/- m_ang so only evolve m_ang>=0
       !-----------------------------------------------------------------------
       if (metric_recon) then 
-         !$OMP PARALLEL DO NUM_THREADS(len_lin_pos_m)
+         !$OMP PARALLEL DO NUM_THREADS(len_lin_pos_m) IF(len_lin_pos_m>1)
          do i=1,len_lin_pos_m
 
             call metric_recon_time_step(lin_pos_m(i))
