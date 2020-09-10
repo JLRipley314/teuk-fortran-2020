@@ -118,9 +118,7 @@ sim.scd_m= [
 
 sim.lin_write_m= [
    -sim.pm1_ang,
-    sim.pm1_ang,
-   -sim.pm2_ang,
-    sim.pm2_ang
+    sim.pm1_ang
 ]
 
 sim.scd_write_m= [

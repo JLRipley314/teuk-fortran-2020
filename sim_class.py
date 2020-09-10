@@ -147,8 +147,14 @@ class Sim:
       if (self.t_step_save==0):
          self.t_step_save= 1
 #-----------------------------------------------------------------------------
-      self.max_m= max(max(self.scd_m),max(self.scd_write_m),1)
-      self.min_m= min(min(self.scd_m),min(self.scd_write_m),1)
+      self.max_m= max(
+         max(self.lin_m),
+         max(self.scd_m),
+         1)
+      self.min_m= min(
+         min(self.lin_m),
+         min(self.scd_m),
+         1)
 #-----------------------------------------------------------------------------
       self.max_s=  3
       self.min_s= -3
