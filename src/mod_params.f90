@@ -12,8 +12,8 @@ implicit none
    real(rp), parameter :: compactification_length = 1.0_rp
    real(rp), parameter :: evolve_time = 20.0_rp
    integer(ip), parameter :: num_saved_times = 100_ip
-   integer(ip), parameter :: nx = 200_ip
-   integer(ip), parameter :: nl = 40_ip
+   integer(ip), parameter :: nx = 80_ip
+   integer(ip), parameter :: nl = 20_ip
    logical, parameter :: metric_recon = .true.
    logical, parameter :: scd_order = .true.
    logical, parameter :: constrained_evo = .true.
@@ -55,7 +55,7 @@ implicit none
    integer(ip), dimension(2), parameter :: scd_m = [5_ip,-1_ip]
    integer(ip), dimension(2), parameter :: lin_write_m = [2_ip,-2_ip]
    integer(ip), dimension(2), parameter :: scd_write_m = [5_ip,-1_ip]
-   integer(ip), parameter :: max_l = 39_ip
+   integer(ip), parameter :: max_l = 19_ip
    real(rp), parameter :: horizon = 0.8567143500057153_rp
    real(rp), parameter :: R_max = 1.167250204217227_rp
    real(rp), parameter :: rl_pm1 = -1.7134287000114305_rp
@@ -75,16 +75,16 @@ implicit none
    integer(ip), parameter :: len_lin_write_m = 2_ip
    integer(ip), parameter :: len_scd_write_m = 2_ip
    integer(ip), parameter :: num_threads = 2_ip
-   integer(ip), parameter :: ny = 54_ip
-   real(rp), parameter :: dt = 0.00022500000000000002_rp
-   integer(ip), parameter :: nt = 44444_ip
-   integer(ip), parameter :: t_step_save = 444_ip
+   integer(ip), parameter :: ny = 34_ip
+   real(rp), parameter :: dt = 0.00140625_rp
+   integer(ip), parameter :: nt = 7111_ip
+   integer(ip), parameter :: t_step_save = 71_ip
    integer(ip), parameter :: max_m = 5_ip
    integer(ip), parameter :: min_m = -3_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Thu_16_12_bhm0.5_bhs0.35_nx200_nl40_m_2_3'
-   character(*), parameter :: output_dir = 'output/Thu_16_12_bhm0.5_bhs0.35_nx200_nl40_m_2_3'
-   character(*), parameter :: bin_name = 'Thu_16_12_bhm0.5_bhs0.35_nx200_nl40_m_2_3.run'
-   character(*), parameter :: tables_dir = 'output/Thu_16_12_bhm0.5_bhs0.35_nx200_nl40_m_2_3/tables'
+   character(*), parameter :: output_stem = 'Thu_18_28_bhm0.5_bhs0.35_nx80_nl20_m_2_3'
+   character(*), parameter :: output_dir = 'output/Thu_18_28_bhm0.5_bhs0.35_nx80_nl20_m_2_3'
+   character(*), parameter :: bin_name = 'Thu_18_28_bhm0.5_bhs0.35_nx80_nl20_m_2_3.run'
+   character(*), parameter :: tables_dir = 'output/Thu_18_28_bhm0.5_bhs0.35_nx80_nl20_m_2_3/tables'
 end module mod_params

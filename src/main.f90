@@ -128,9 +128,10 @@ clean_memory: block
       !-----------------------------------------------------------------------
       ! \Psi_4^{(1)} evolution 
       !-----------------------------------------------------------------------
-      do i=1,len_lin_m
-
-         call teuk_time_step(lin_m(i),psi4_lin_p,psi4_lin_q,psi4_lin_f)
+      !$OMP PARALLEL DO NUM_THREADS(len_lin_pos_m) IF(len_lin_pos_m>1)
+      do i=1,len_lin_pos_m
+         call teuk_time_step( lin_m(i),psi4_lin_p,psi4_lin_q,psi4_lin_f)
+         call teuk_time_step(-lin_m(i),psi4_lin_p,psi4_lin_q,psi4_lin_f)
          !------------------------------------
          ! low pass filter (in spectral space)
          !------------------------------------
@@ -141,14 +142,19 @@ clean_memory: block
          call swal_filter(lin_m(i),psi4_lin_p)
          call swal_filter(lin_m(i),psi4_lin_q)
          call swal_filter(lin_m(i),psi4_lin_f)
-
-      end do
+         !------------------------------------
+         !------------------------------------
+         call cheb_filter(-lin_m(i),psi4_lin_p)
+         call cheb_filter(-lin_m(i),psi4_lin_q)
+         call cheb_filter(-lin_m(i),psi4_lin_f)
+         !------------------------------------
+         call swal_filter(-lin_m(i),psi4_lin_p)
+         call swal_filter(-lin_m(i),psi4_lin_q)
+         call swal_filter(-lin_m(i),psi4_lin_f)
       !-----------------------------------------------------------------------
       ! metric recon evolves +/- m_ang so only evolve m_ang>=0
       !-----------------------------------------------------------------------
-      if (metric_recon) then 
-         !$OMP PARALLEL DO NUM_THREADS(len_lin_pos_m) IF(len_lin_pos_m>1)
-         do i=1,len_lin_pos_m
+         if (metric_recon) then 
 
             call metric_recon_time_step(lin_pos_m(i))
             !------------------------------------
@@ -195,9 +201,9 @@ clean_memory: block
             call swal_filter(-lin_m(i), hlmb)
             call swal_filter(-lin_m(i),muhll)
 
-         end do
-         !$OMP END PARALLEL DO
-      end if
+         end if
+      end do
+      !$OMP END PARALLEL DO
       !-----------------------------------------------------------------------
       ! \Psi_4^{(2)} evolution 
       !-----------------------------------------------------------------------
