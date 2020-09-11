@@ -22,11 +22,11 @@ module mod_cheb
    type(c_ptr) :: plan_dct
 
    ! radial points
-   real(rp), dimension(nx),    protected, public :: Rvec
-   real(rp), dimension(nx,ny), protected, public :: Rarr
+   real(rp), allocatable, protected, public :: Rvec(:)
+   real(rp), allocatable, protected, public :: Rarr(:,:)
 
    ! filter array
-   real(rp), dimension(nx) :: filter_arr
+   real(rp), allocatable :: filter_arr(:)
 
    ! subroutines
    public :: cheb_init, compute_DR, cheb_filter, cheb_test
@@ -42,6 +42,10 @@ contains
    subroutine cheb_init()
       integer :: j
       complex(rp), dimension(nx) :: test_in,test_out
+
+      allocate(Rvec(nx))
+      allocate(Rarr(nx,nx))
+      allocate(filter_arr(nx))
 
       call set_arr('cheb_pts.txt', nx, Rvec)
 

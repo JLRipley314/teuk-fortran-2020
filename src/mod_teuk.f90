@@ -28,20 +28,40 @@ module mod_teuk
       module procedure teuk_lin_time_step, teuk_scd_time_step
    end interface
 !=============================================================================
-   real(rp) :: &
-      A_pp(nx,ny,min_m:max_m), A_pq(nx,ny,min_m:max_m), A_pf(nx,ny,min_m:max_m), &
-      A_qp(nx,ny,min_m:max_m), A_qq(nx,ny,min_m:max_m), A_qf(nx,ny,min_m:max_m), &
-      A_fp(nx,ny,min_m:max_m), A_fq(nx,ny,min_m:max_m), A_ff(nx,ny,min_m:max_m)
+   real(rp), allocatable:: &
+      A_pp(:,:,:), A_pq(:,:,:), A_pf(:,:,:), &
+      A_qp(:,:,:), A_qq(:,:,:), A_qf(:,:,:), &
+      A_fp(:,:,:), A_fq(:,:,:), A_ff(:,:,:)
 
-   complex(rp) :: &
-      B_pp(nx,ny,min_m:max_m), B_pq(nx,ny,min_m:max_m), B_pf(nx,ny,min_m:max_m), &
-      B_qp(nx,ny,min_m:max_m), B_qq(nx,ny,min_m:max_m), B_qf(nx,ny,min_m:max_m), &
-      B_fp(nx,ny,min_m:max_m), B_fq(nx,ny,min_m:max_m), B_ff(nx,ny,min_m:max_m)
+   complex(rp), allocatable :: &
+      B_pp(:,:,:), B_pq(:,:,:), B_pf(:,:,:), &
+      B_qp(:,:,:), B_qq(:,:,:), B_qf(:,:,:), &
+      B_fp(:,:,:), B_fq(:,:,:), B_ff(:,:,:)
 !=============================================================================
 contains
 !=============================================================================
    subroutine teuk_init()
       integer(ip) :: m_ang
+
+      allocate(A_pp(nx,ny,min_m:max_m))
+      allocate(A_pq(nx,ny,min_m:max_m))
+      allocate(A_pf(nx,ny,min_m:max_m))
+      allocate(A_qp(nx,ny,min_m:max_m))
+      allocate(A_qq(nx,ny,min_m:max_m))
+      allocate(A_qf(nx,ny,min_m:max_m))
+      allocate(A_fp(nx,ny,min_m:max_m))
+      allocate(A_fq(nx,ny,min_m:max_m))
+      allocate(A_ff(nx,ny,min_m:max_m))
+
+      allocate(B_pp(nx,ny,min_m:max_m))
+      allocate(B_pq(nx,ny,min_m:max_m))
+      allocate(B_pf(nx,ny,min_m:max_m))
+      allocate(B_qp(nx,ny,min_m:max_m))
+      allocate(B_qq(nx,ny,min_m:max_m))
+      allocate(B_qf(nx,ny,min_m:max_m))
+      allocate(B_fp(nx,ny,min_m:max_m))
+      allocate(B_fq(nx,ny,min_m:max_m))
+      allocate(B_ff(nx,ny,min_m:max_m))
       !----------------------------
       m_loop: do m_ang=min_m,max_m
       !----------------------------

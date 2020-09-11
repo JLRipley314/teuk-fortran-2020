@@ -27,18 +27,18 @@ module mod_ghp
   
    complex(rp), parameter :: ZI = (0.0_rp, 1.0_rp) 
 
-   complex(rp), dimension(nx,ny) :: &
-      pre_edth_DT, &
-      pre_edth_raised, &
-      pre_edth_level, &
-      pre_edth_prime_DT, &
-      pre_edth_prime_lowered, &
-      pre_edth_prime_level, &
-      pre_thorn_DT, &
-      pre_thorn_DR, &
-      pre_thorn_level, &
-      pre_thorn_prime_DT, &
-      pre_thorn_prime_DR
+   complex(rp), allocatable :: &
+      pre_edth_DT(:,:), &
+      pre_edth_raised(:,:), &
+      pre_edth_level(:,:), &
+      pre_edth_prime_DT(:,:), &
+      pre_edth_prime_lowered(:,:), &
+      pre_edth_prime_level(:,:), &
+      pre_thorn_DT(:,:), &
+      pre_thorn_DR(:,:), &
+      pre_thorn_level(:,:), &
+      pre_thorn_prime_DT(:,:), &
+      pre_thorn_prime_DR(:,:) 
 !=============================================================================
    interface set_edth
       module procedure set_edth_field, set_edth_arr
@@ -61,6 +61,17 @@ module mod_ghp
 ! precompute some of the prefactors for ghp operators
 !=============================================================================
    subroutine ghp_init()
+      allocate(pre_edth_DT(nx,ny))
+      allocate(pre_edth_raised(nx,ny))
+      allocate(pre_edth_level(nx,ny))
+      allocate(pre_edth_prime_DT(nx,ny))
+      allocate(pre_edth_prime_lowered(nx,ny))
+      allocate(pre_edth_prime_level(nx,ny))
+      allocate(pre_thorn_DT(nx,ny))
+      allocate(pre_thorn_DR(nx,ny))
+      allocate(pre_thorn_level(nx,ny))
+      allocate(pre_thorn_prime_DT(nx,ny))
+      allocate(pre_thorn_prime_DR(nx,ny)) 
    !--------------------------------------------------------------------------
    ! divided by R
    !--------------------------------------------------------------------------

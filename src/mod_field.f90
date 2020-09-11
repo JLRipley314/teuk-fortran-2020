@@ -24,36 +24,36 @@ module mod_field
 
    integer(ip) :: spin, boost, falloff
 
-   complex(rp) :: &
-      n(  nx,ny,min_m:max_m), &
-      l2( nx,ny,min_m:max_m), &
-      l3( nx,ny,min_m:max_m), &
-      l4( nx,ny,min_m:max_m), &
-      np1(nx,ny,min_m:max_m), &
+   complex(rp), allocatable :: &
+      n(  :,:,:), &
+      l2( :,:,:), &
+      l3( :,:,:), &
+      l4( :,:,:), &
+      np1(:,:,:), &
 
-      k1( nx,ny,min_m:max_m), &
-      k2( nx,ny,min_m:max_m), &
-      k3( nx,ny,min_m:max_m), &
-      k4( nx,ny,min_m:max_m), &
-      k5( nx,ny,min_m:max_m), &
+      k1(:,:,:), &
+      k2(:,:,:), &
+      k3(:,:,:), &
+      k4(:,:,:), &
+      k5(:,:,:), &
 
-      level(   nx,ny,min_m:max_m), &
-      DT(      nx,ny,min_m:max_m), &
-      DR(      nx,ny,min_m:max_m), &
-      raised(  nx,ny,min_m:max_m), &
-      lowered( nx,ny,min_m:max_m), & 
-      swal_lap(nx,ny,min_m:max_m), &
+      level(   :,:,:), &
+      DT(      :,:,:), &
+      DR(      :,:,:), &
+      raised(  :,:,:), &
+      lowered( :,:,:), & 
+      swal_lap(:,:,:), &
 
-      coefs_swal(nx,0:max_l,min_m:max_m), &
-      coefs_cheb(nx,    ny, min_m:max_m), &
-      coefs_both(nx,0:max_l,min_m:max_m), &
+      coefs_swal(:,:,:), &
+      coefs_cheb(:,:,:), &
+      coefs_both(:,:,:), &
 
-      edth(       nx,ny,min_m:max_m), &
-      edth_prime( nx,ny,min_m:max_m), &
-      thorn(      nx,ny,min_m:max_m), &
-      thorn_prime(nx,ny,min_m:max_m) 
+      edth(       :,:,:), &
+      edth_prime( :,:,:), &
+      thorn(      :,:,:), &
+      thorn_prime(:,:,:) 
 
-      real(rp) :: re(nx,ny,min_m:max_m), im(nx,ny,min_m:max_m)
+      real(rp), allocatable :: re(:,:,:), im(:,:,:)
 
    end type field
 !=============================================================================
@@ -71,6 +71,37 @@ contains
       f % spin    = spin
       f % boost   = boost
       f % falloff = falloff
+
+      allocate(f % n(  nx,ny,min_m:max_m))
+      allocate(f % l2( nx,ny,min_m:max_m))
+      allocate(f % l3( nx,ny,min_m:max_m))
+      allocate(f % l4( nx,ny,min_m:max_m))
+      allocate(f % np1(nx,ny,min_m:max_m))
+
+      allocate(f % k1(nx,ny,min_m:max_m))
+      allocate(f % k2(nx,ny,min_m:max_m))
+      allocate(f % k3(nx,ny,min_m:max_m))
+      allocate(f % k4(nx,ny,min_m:max_m))
+      allocate(f % k5(nx,ny,min_m:max_m))
+
+      allocate(f % level(   nx,ny,min_m:max_m))
+      allocate(f % DT(      nx,ny,min_m:max_m))
+      allocate(f % DR(      nx,ny,min_m:max_m))
+      allocate(f % raised(  nx,ny,min_m:max_m))
+      allocate(f % lowered( nx,ny,min_m:max_m))
+      allocate(f % swal_lap(nx,ny,min_m:max_m))
+
+      allocate(f % coefs_swal(nx,0:max_l,min_m:max_m)) 
+      allocate(f % coefs_cheb(nx,ny,     min_m:max_m)) 
+      allocate(f % coefs_both(nx,0:max_l,min_m:max_m)) 
+
+      allocate(f % edth(       nx,ny,min_m:max_m))
+      allocate(f % edth_prime( nx,ny,min_m:max_m))
+      allocate(f % thorn(      nx,ny,min_m:max_m))
+      allocate(f % thorn_prime(nx,ny,min_m:max_m))
+
+      allocate(f % re(nx,ny,min_m:max_m))
+      allocate(f % im(nx,ny,min_m:max_m))
 
       f % n   = 0.0_rp
       f % l2  = 0.0_rp
@@ -93,7 +124,7 @@ contains
 
       f % coefs_swal = 0.0_rp 
       f % coefs_cheb = 0.0_rp 
-      f % coefs_both = 0.0_rp
+      f % coefs_both = 0.0_rp 
 
       f % edth        = 0.0_rp
       f % edth_prime  = 0.0_rp

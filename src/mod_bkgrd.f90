@@ -30,15 +30,22 @@ module mod_bkgrd_np
 
    public :: bkgrd_np_init
 
-   complex(rp), dimension(nx,ny), public, protected :: &
-      mu_0, ta_0, pi_0, rh_0, ep_0, &
-      psi2_0
+   complex(rp), allocatable, public, protected :: &
+      mu_0(:,:), ta_0(:,:), pi_0(:,:), rh_0(:,:), ep_0(:,:), &
+      psi2_0(:,:) 
 
    complex(rp), parameter :: ZI = (0.0_rp, 1.0_rp) 
 !=============================================================================
 contains
 !=============================================================================
    subroutine bkgrd_np_init()
+      allocate(mu_0(nx,ny))
+      allocate(ta_0(nx,ny))
+      allocate(pi_0(nx,ny))
+      allocate(rh_0(nx,ny))
+      allocate(ep_0(nx,ny))
+      allocate(psi2_0(nx,ny))
+
       !----------------------------
       mu_0 = &
          1.0_rp / (-(cl**2) + ZI*bhs*R*cy)

@@ -39,35 +39,35 @@ module mod_scd_order_source
       pre_edth_prime_spin,  pre_edth_prime_boost,  pre_edth_prime_falloff, &
       pre_thorn_prime_spin, pre_thorn_prime_boost, pre_thorn_prime_falloff
 
-   complex(rp) :: &
-      n1h(nx,ny,min_m:max_m), &
-      n(  nx,ny,min_m:max_m), &
-      np1(nx,ny,min_m:max_m), &
+   complex(rp), allocatable :: &
+      n1h(:,:,:), &
+      n(  :,:,:), &
+      np1(:,:,:), &
 
-      level(  nx,ny,min_m:max_m), &
-      DT(     nx,ny,min_m:max_m), &
-      DR(     nx,ny,min_m:max_m), &
-      raised( nx,ny,min_m:max_m), &
-      lowered(nx,ny,min_m:max_m), & 
+      level(  :,:,:), &
+      DT(     :,:,:), &
+      DR(     :,:,:), &
+      raised( :,:,:), &
+      lowered(:,:,:), & 
 
-      coefs_swal(nx,0:max_l,min_m:max_m), &
-      coefs_cheb(nx,     ny,min_m:max_m), &
-      coefs_both(nx,0:max_l,min_m:max_m), &
+      coefs_swal(:,:,:), &
+      coefs_cheb(:,:,:), &
+      coefs_both(:,:,:), &
 
-       edth_prime(nx,ny,min_m:max_m), &
-      thorn_prime(nx,ny,min_m:max_m), &
+       edth_prime(:,:,:), &
+      thorn_prime(:,:,:), &
 
-      pre_edth_prime_np1( nx,ny,min_m:max_m), &
-      pre_edth_prime_n(   nx,ny,min_m:max_m), &
-      pre_edth_prime_nm1( nx,ny,min_m:max_m), &
-      pre_edth_prime_nm2( nx,ny,min_m:max_m), &
-      pre_edth_prime_nm3( nx,ny,min_m:max_m), &
+      pre_edth_prime_np1( :,:,:), &
+      pre_edth_prime_n(   :,:,:), &
+      pre_edth_prime_nm1( :,:,:), &
+      pre_edth_prime_nm2( :,:,:), &
+      pre_edth_prime_nm3( :,:,:), &
 
-      pre_thorn_prime_np1(nx,ny,min_m:max_m), &
-      pre_thorn_prime_n(  nx,ny,min_m:max_m), &
-      pre_thorn_prime_nm1(nx,ny,min_m:max_m), &
-      pre_thorn_prime_nm2(nx,ny,min_m:max_m), &
-      pre_thorn_prime_nm3(nx,ny,min_m:max_m)
+      pre_thorn_prime_np1(:,:,:), &
+      pre_thorn_prime_n(  :,:,:), &
+      pre_thorn_prime_nm1(:,:,:), &
+      pre_thorn_prime_nm2(:,:,:), &
+      pre_thorn_prime_nm3(:,:,:)
 
    end type scd_order_source
 !-----------------------------------------------------------------------------
@@ -91,6 +91,35 @@ module mod_scd_order_source
 
       sf % pre_edth_prime_falloff  = 3_ip
       sf % pre_thorn_prime_falloff = 3_ip
+
+      allocate(sf % n1h(nx,ny,min_m:max_m))
+      allocate(sf % n(  nx,ny,min_m:max_m))
+      allocate(sf % np1(nx,ny,min_m:max_m))
+
+      allocate(sf % level(  nx,ny,min_m:max_m))
+      allocate(sf % DT(     nx,ny,min_m:max_m))
+      allocate(sf % DR(     nx,ny,min_m:max_m))
+      allocate(sf % raised( nx,ny,min_m:max_m))
+      allocate(sf % lowered(nx,ny,min_m:max_m)) 
+
+      allocate(sf % coefs_swal(nx,0:max_l,min_m:max_m))
+      allocate(sf % coefs_cheb(nx,ny     ,min_m:max_m))
+      allocate(sf % coefs_both(nx,0:max_l,min_m:max_m))
+
+      allocate(sf %  edth_prime(nx,ny,min_m:max_m))
+      allocate(sf % thorn_prime(nx,ny,min_m:max_m))
+
+      allocate(sf % pre_edth_prime_np1(nx,ny,min_m:max_m))
+      allocate(sf % pre_edth_prime_n(  nx,ny,min_m:max_m))
+      allocate(sf % pre_edth_prime_nm1(nx,ny,min_m:max_m))
+      allocate(sf % pre_edth_prime_nm2(nx,ny,min_m:max_m))
+      allocate(sf % pre_edth_prime_nm3(nx,ny,min_m:max_m))
+
+      allocate(sf % pre_thorn_prime_np1(nx,ny,min_m:max_m))
+      allocate(sf % pre_thorn_prime_n(  nx,ny,min_m:max_m))
+      allocate(sf % pre_thorn_prime_nm1(nx,ny,min_m:max_m))
+      allocate(sf % pre_thorn_prime_nm2(nx,ny,min_m:max_m))
+      allocate(sf % pre_thorn_prime_nm3(nx,ny,min_m:max_m))
 
       sf % n1h = 0.0_rp
       sf % n   = 0.0_rp
