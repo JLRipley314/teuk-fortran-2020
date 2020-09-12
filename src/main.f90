@@ -125,7 +125,7 @@ clean_memory: block
    time_evolve: do t_step=1,nt
       time = t_step*dt
       !-----------------------------------------------------------------------
-      ! \Psi_4^{(1)} evolution (+/- m evolves independently in linear evo)
+      ! \Psi_4^{(1)} evolution 
       !-----------------------------------------------------------------------
       !$OMP PARALLEL DO NUM_THREADS(len_lin_pos_m) IF(len_lin_pos_m>1)
       do i=1,len_lin_pos_m
@@ -151,7 +151,7 @@ clean_memory: block
          call swal_filter(-lin_m(i),psi4_lin_q)
          call swal_filter(-lin_m(i),psi4_lin_f)
       !-----------------------------------------------------------------------
-      ! metric reconstruction 
+      ! metric recon evolves +/- m_ang so only evolve m_ang>=0
       !-----------------------------------------------------------------------
          if (metric_recon) then 
 
