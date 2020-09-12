@@ -25,21 +25,14 @@ class Sim:
 #=============================================================================
    def make_output_dir(self)->None:
       time_of_day= time.asctime().split(' ')
-      day = time_of_day[0]
-      hr_min_sec = (
-         time_of_day[4] 
-         if time_of_day[2]=='' else
-         time_of_day[3]
-      )
       self.output_stem= str(
-        day 
-      + '_'+hr_min_sec.split(':')[0] 
-      + '_'+hr_min_sec.split(':')[1] 
-      +	'_bhm'+str(self.black_hole_mass)
-      +	'_bhs'+str(self.black_hole_spin)
+         time_of_day[1]
+      +  '_'+time_of_day[2]
+      +  '_'+time_of_day[3].replace(':','_')
+      +	'_m'+str(self.black_hole_mass)
+      +	'_s'+str(self.black_hole_spin)
       +	'_nx'+str(self.nx)
       +	'_nl'+str(self.nl)
-      +	'_m_'+str(self.pm1_ang)+'_'+str(self.pm2_ang)
       )
       if (self.computer=="home"):
          self.output_dir= "output/"+self.output_stem
