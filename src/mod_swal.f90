@@ -17,8 +17,8 @@ module mod_swal
    private
 
    ! gauss points y, cos(y), sin(y)
-   real(rp), dimension(ny),    protected, public :: Yvec, cyvec, syvec
-   real(rp), dimension(nx,ny), protected, public :: Yarr, cyarr, syarr
+   real(rp), allocatable, protected, public :: Yvec(:),   cyvec(:),   syvec(:)
+   real(rp), allocatable, protected, public :: Yarr(:,:), cyarr(:,:), syarr(:,:)
 
    ! subroutines 
    public :: swal_init, compute_swal_laplacian, swal_lower, swal_raise
@@ -30,13 +30,13 @@ module mod_swal
    public :: swal_real_to_coef
 
    ! weights for Gaussian integration 
-   real(rp), dimension(ny) :: weights
+   real(rp), allocatable :: weights(:)
 
    ! Note: range of indices
-   real(rp), dimension(ny, 0:max_l, min_m:max_m, min_s:max_s), protected, public :: swal = 0
+   real(rp), allocatable, protected, public :: swal(:,:,:,:)
 
-   real(rp), dimension(ny, ny, min_m:max_m, min_s:max_s) :: &
-      laplacian, lower, raise, low_pass
+   real(rp), allocatable :: &
+      laplacian(:,:,:,:), lower(:,:,:,:), raise(:,:,:,:), low_pass(:,:,:,:) 
 !=============================================================================
 contains
 !=============================================================================
@@ -49,11 +49,29 @@ contains
    subroutine swal_init()
       character(:), allocatable :: mstr, sstr
       integer(ip) :: m_ang, spin, i, j, k, min_l
+
+      allocate(Yvec( ny))
+      allocate(cyvec(ny))
+      allocate(syvec(ny))
+
+      allocate(Yarr( nx,ny))
+      allocate(cyarr(nx,ny))
+      allocate(syarr(nx,ny))
+
+      allocate(weights(ny))
+
+      allocate(swal(ny, 0:max_l, min_m:max_m, min_s:max_s))
+
+      allocate(laplacian(ny, ny, min_m:max_m, min_s:max_s))
+      allocate(lower(    ny, ny, min_m:max_m, min_s:max_s))
+      allocate(raise(    ny, ny, min_m:max_m, min_s:max_s))
+      allocate(low_pass( ny, ny, min_m:max_m, min_s:max_s))
       !-----------------------------------------------------------------
       call set_arr('roots_legendre.txt', ny, Yvec)
 
       call set_arr('cos.txt', ny, cyvec)
       call set_arr('sin.txt', ny, syvec)
+
       do i=1,nx
          Yarr(i,:)  = Yvec
          cyarr(i,:) = cyvec

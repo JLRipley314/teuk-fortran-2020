@@ -44,7 +44,7 @@ contains
       complex(rp), dimension(nx) :: test_in,test_out
 
       allocate(Rvec(nx))
-      allocate(Rarr(nx,nx))
+      allocate(Rarr(nx,ny))
       allocate(filter_arr(nx))
 
       call set_arr('cheb_pts.txt', nx, Rvec)
