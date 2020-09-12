@@ -6,7 +6,8 @@ module mod_cheb
    use mod_params, only: tables_dir, R_max, nx, ny, min_m, max_m 
 
 !=============================================================================
-   use, intrinsic :: iso_c_binding
+! for use in fftw
+   use, intrinsic :: iso_c_binding, only: c_int, c_double
 
    implicit none
 !=============================================================================
@@ -41,7 +42,7 @@ contains
 !=============================================================================
    subroutine cheb_init()
       integer :: j
-      complex(rp), dimension(nx) :: test_in,test_out
+      complex(rp), dimension(nx) :: test_in, test_out
 
       allocate(Rvec(nx))
       allocate(Rarr(nx,ny))
@@ -74,7 +75,7 @@ contains
       complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: coefs
 
       integer(ip) :: i,j 
-      real(rp), dimension(nx) :: re_v, im_v, re_c, im_c
+      real(rp), dimension(nx) :: re_v, im_v, re_c, im_c 
 
       do j=1,ny
          re_v = real( vals(:,j,m_ang),kind=rp)
@@ -105,7 +106,7 @@ contains
       complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: vals
 
       integer(ip) :: i, j 
-      real(rp), dimension(nx) :: re_c, im_c, re_v, im_v
+      real(rp), dimension(nx) :: re_v, im_v, re_c, im_c
 
       do j=1,ny
          re_c = real( coefs(:,j,m_ang),kind=rp)
@@ -182,10 +183,18 @@ contains
    end subroutine cheb_filter
 !=============================================================================
    subroutine cheb_test()
-      complex(rp), dimension(nx,ny,min_m:max_m) :: vals, coefs, DR_vals, computed_DR_vals
+      complex(rp), allocatable :: &
+         vals(:,:,:), &
+         coefs(:,:,:), &
+         DR_vals(:,:,:), &
+         computed_DR_vals(:,:,:) 
       integer(ip) :: i
-
       integer(ip), parameter :: m_ang = 0_ip
+
+      allocate(vals(nx,ny,min_m:max_m)) 
+      allocate(coefs(nx,ny,min_m:max_m)) 
+      allocate(DR_vals(nx,ny,min_m:max_m)) 
+      allocate(computed_DR_vals(nx,ny,min_m:max_m)) 
 
       do i=1,nx
          vals(i,:,:)    = sin(Rvec(i))**2

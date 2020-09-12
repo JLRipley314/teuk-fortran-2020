@@ -16,8 +16,8 @@ sim.black_hole_mass= float(0.5)
 sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
 sim.compactification_length= float(1)
 #=============================================================================
-sim.evolve_time= float(20) ## units of black hole mass
-sim.num_saved_times= int(100)
+sim.evolve_time= float(0.5) ## units of black hole mass
+sim.num_saved_times= int(2)
 #=============================================================================
 sim.nx= 64 ## num radial pts 
 sim.nl= 16 ## num angular values
@@ -104,12 +104,15 @@ sim.ru_nm2_0= float( 1.5)  ## upper r value as multiple of horizon
 
 sim.lin_m= [
    -sim.pm1_ang,
-    sim.pm1_ang
+    sim.pm1_ang,
+   -sim.pm2_ang,
+    sim.pm2_ang
 ]
 
 sim.scd_m= [
    -sim.pm1_ang,
     sim.pm1_ang,
+   -sim.pm1_ang+sim.pm2_ang,
    0
 ]
 #=============================================================================
@@ -117,12 +120,15 @@ sim.scd_m= [
 
 sim.lin_write_m= [
    -sim.pm1_ang,
-    sim.pm1_ang
+    sim.pm1_ang,
+   -sim.pm2_ang,
+    sim.pm2_ang
 ]
 
 sim.scd_write_m= [
    -sim.pm1_ang,
     sim.pm1_ang,
+   -sim.pm1_ang+sim.pm2_ang,
    0
 ]
 #=============================================================================

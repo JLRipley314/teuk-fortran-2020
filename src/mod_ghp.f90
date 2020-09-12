@@ -133,7 +133,8 @@ module mod_ghp
 !=============================================================================
    subroutine set_edth_arr(m_ang, spin, boost, level, DT, raised, edth_arr)
       integer(ip), intent(in) :: m_ang, spin, boost
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: level, DT
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: level
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: DT
       complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: raised
       complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: edth_arr
 
@@ -163,7 +164,8 @@ module mod_ghp
 !=============================================================================
    subroutine set_edth_prime_arr(m_ang, spin, boost, level, DT, lowered, edth_prime_arr)
       integer(ip), intent(in) :: m_ang, spin, boost
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: level, DT
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: level
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: DT
       complex(rp), dimension(nx,ny,min_m:max_m), intent(in)  :: lowered 
       complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: edth_prime_arr
 
@@ -193,7 +195,9 @@ module mod_ghp
 !=============================================================================
    subroutine set_thorn_arr(m_ang, spin, boost, falloff, level, DT, DR, thorn_arr)
       integer(ip), intent(in)    :: m_ang, spin, boost, falloff
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(in) :: level, DT, DR
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(in) :: level
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(in) :: DT
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(in) :: DR
       complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: thorn_arr
 
       real(rp) :: p, q
@@ -225,7 +229,9 @@ module mod_ghp
 !=============================================================================
    subroutine set_thorn_prime_arr(m_ang, falloff, level, DT, DR, thorn_prime_arr)
       integer(ip), intent(in) :: m_ang, falloff
-      complex(rp), dimension(nx,ny,min_m:max_m), intent(in) :: level, DT, DR
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(in) :: level
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(in) :: DT
+      complex(rp), dimension(nx,ny,min_m:max_m), intent(in) :: DR
       complex(rp), dimension(nx,ny,min_m:max_m), intent(out) :: thorn_prime_arr
 
 

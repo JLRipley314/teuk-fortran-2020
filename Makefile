@@ -23,7 +23,7 @@ FFLAGS= -g -fmax-errors=5 -O2
 SYSLIB= -lfftw3 
 #==========================================================================
 ifeq ($(FC),gfortran)
-	FFLAGS+= -std=f2008 -Wall -Wextra -fimplicit-none -fopenmp \
+	FFLAGS+= -std=f2008 -Wall -Wextra -fimplicit-none \
 		 -ftree-vectorize -march=native \
 		 -J$(OBJDIR) 
 		#-fcheck=all  
