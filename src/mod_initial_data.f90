@@ -16,14 +16,18 @@ module mod_initial_data
       pm1_ang, &
       initial_data_direction_nm1, &
       initial_data_direction_pm1, &
-      amp_nm1, rl_nm1, ru_nm1, l_ang_nm1, &
-      amp_pm1, rl_pm1, ru_pm1, l_ang_pm1, &
+      amp_re_nm1, rl_nm1, ru_nm1, l_ang_nm1, &
+      amp_im_nm1, &
+      amp_re_pm1, rl_pm1, ru_pm1, l_ang_pm1, &
+      amp_im_pm1, &
 
       pm2_ang, &
       initial_data_direction_nm2, &
       initial_data_direction_pm2, &
-      amp_nm2, rl_nm2, ru_nm2, l_ang_nm2, &
-      amp_pm2, rl_pm2, ru_pm2, l_ang_pm2
+      amp_re_nm2, rl_nm2, ru_nm2, l_ang_nm2, &
+      amp_im_nm2, &
+      amp_re_pm2, rl_pm2, ru_pm2, l_ang_pm2, &
+      amp_im_pm2
 !=============================================================================
    implicit none
    private
@@ -41,33 +45,35 @@ contains
       integer(ip) :: i, j
       integer(ip) :: l_ang
       real(rp) :: max_val, bump, r, y
-      real(rp) :: width, amp, rl, ru 
+      real(rp) :: width, rl, ru 
+
+      complex(rp) :: amp
 
       character(:), allocatable :: initial_data_direction
 
       if (m_ang==pm1_ang) then
-         amp   = amp_pm1
+         amp   = amp_re_pm1 + ZI*amp_im_pm1
          ru    = ru_pm1
          rl    = rl_pm1
          l_ang = l_ang_pm1
          initial_data_direction = initial_data_direction_pm1
 
       else if (m_ang==-pm1_ang) then
-         amp   = amp_nm1
+         amp   = amp_re_nm1 + ZI*amp_im_nm1
          ru    = ru_nm1
          rl    = rl_nm1
          l_ang = l_ang_nm1
          initial_data_direction = initial_data_direction_nm1
 
       else if (m_ang==pm2_ang) then
-         amp   = amp_pm2
+         amp   = amp_re_pm2 + ZI*amp_im_pm2
          ru    = ru_pm2
          rl    = rl_pm2
          l_ang = l_ang_pm2
          initial_data_direction = initial_data_direction_pm2
 
       else if (m_ang==-pm2_ang) then
-         amp   = amp_nm2
+         amp   = amp_re_nm2 + ZI*amp_im_nm2
          ru    = ru_nm2
          rl    = rl_nm2
          l_ang = l_ang_nm2

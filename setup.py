@@ -16,11 +16,11 @@ sim.black_hole_mass= float(0.5)
 sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
 sim.compactification_length= float(1)
 #=============================================================================
-sim.evolve_time= float(150) ## units of black hole mass
-sim.num_saved_times= int(500)
+sim.evolve_time= float(20) ## units of black hole mass
+sim.num_saved_times= int(40)
 #=============================================================================
-sim.nx= 112 ## num radial pts 
-sim.nl= 28  ## num angular values
+sim.nx= 64 ## num radial pts 
+sim.nl= 16  ## num angular values
 #=============================================================================
 ## evolution and write: take boolean values 
 
@@ -33,7 +33,7 @@ sim.write_metric_recon_fields= False
 sim.write_scd_order_source=    True
 sim.write_coefs=               False
 #=============================================================================
-sim.computer= 'feynman'#'home'#
+sim.computer= 'home'#'feynman'#
 sim.feyn_out_stem= '/mnt/grtheory/tf-out/'
 
 ## for feynman cluster/slurm script
@@ -56,49 +56,63 @@ sim.psi_boost= int(-2)
 
 sim.start_multiple= float(1.0)
 #=============================================================================
+## Initial data
+#=============================================================================
+## p(m)n:                  +(-) m angular number
+## l_ang:                  initial data is a particular swal function
+## initial_data_direction: which way pulse is approximately "heading"
+## amp_re(im)_pm:          initial amplitude of real/imaginary parts of psi4
+## rl(ru)_pm_0:            lower(upper) bounds of initial data as a multiple
+##                         of the black hole horizon
+#=============================================================================
 ## initial data for mode m1
 #=============================================================================
-sim.pm1_ang =  int(2) ## m_ang is preserved by time evolution
+sim.pm1_ang =  int(2) 
 #-----------------------------------------------------------------------------
-sim.l_ang_pm1= int(2) ## support over single spin weighted spherical harmonic
+sim.l_ang_pm1= int(2)
 
 sim.initial_data_direction_pm1= "ingoing"#"outgoing"#"time_symmetric"#
 
-sim.amp_pm1= float( 0.1)  ## amplitude of the initial perturbation
+sim.amp_re_pm1= float(0.1)
+sim.amp_im_pm1= float(0.1)
 
-sim.rl_pm1_0= float(-2.0)  ## lower r value as a multiple of horizon
-sim.ru_pm1_0= float( 2.0)  ## upper r value as a multiple of horizon 
+sim.rl_pm1_0= float(-2.0)
+sim.ru_pm1_0= float( 2.0)
 #-----------------------------------------------------------------------------
-sim.l_ang_nm1= int(2) ## support over single spin weighted spherical harmonic
+sim.l_ang_nm1= int(2)
 
 sim.initial_data_direction_nm1= "ingoing"#"time_symmetric"#"outgoing"#
 
-sim.amp_nm1= float( 0.0)  ## amplitude of the initial perturbation
+sim.amp_re_nm1= float( 0.0)
+sim.amp_im_nm1= float( 0.0)
 
-sim.rl_nm1_0= float( 1.1)  ## lower r value as multiple of horizon
-sim.ru_nm1_0= float( 3.0)  ## upper r value as multiple of horizon
+sim.rl_nm1_0= float( 1.1)
+sim.ru_nm1_0= float( 3.0)
 #=============================================================================
 ## initial data for mode m2
 #=============================================================================
 sim.pm2_ang =  int(3) ## m_ang is preserved by time evolution
 #-----------------------------------------------------------------------------
-sim.l_ang_pm2= int(3) ## support over single spin weighted spherical harmonic
+sim.l_ang_pm2= int(3)
 
 sim.initial_data_direction_pm2= "ingoing"#"time_symmetric"#"outgoing"#
 
-sim.amp_pm2= float(0.05)  ## amplitude of the initial perturbation
+sim.amp_re_pm2= float(0.05)
+sim.amp_im_pm2= float(0.05)
 
-sim.rl_pm2_0= float(-1.5)  ## lower r value as multiple of horizon 
-sim.ru_pm2_0= float( 1.5)  ## upper r value as multiple of horizon 
+sim.rl_pm2_0= float(-1.5) 
+sim.ru_pm2_0= float( 1.5) 
 #-----------------------------------------------------------------------------
-sim.l_ang_nm2= int(3) ## support over single spin weighted spherical harmonic
+sim.l_ang_nm2= int(3)
+sim.l_ang_nm2= int(3)
 
 sim.initial_data_direction_nm2= "ingoing"#"time_symmetric"#"outgoing"#
 
-sim.amp_nm2= float(0.0)  ## amplitude of the initial perturbation
+sim.amp_re_nm2= float(0.0)
+sim.amp_im_nm2= float(0.0)
 
-sim.rl_nm2_0= float(-1.5)  ## lower r value as multiple of horizon 
-sim.ru_nm2_0= float( 1.5)  ## upper r value as multiple of horizon
+sim.rl_nm2_0= float(-1.5) 
+sim.ru_nm2_0= float( 1.5)
 #=============================================================================
 ## which m angular values to evolve
 
