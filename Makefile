@@ -1,5 +1,7 @@
 #==========================================================================
-## Compiles fortran code and links to FFTW
+## Usage: compiles fortran code and links to FFTW
+##
+## Configured for two compiler options (variable FC): ifort and gfortran
 #==========================================================================
 TOP= ./
 SRC= $(TOP)src/
@@ -16,7 +18,7 @@ vpath %.f90 $(SRC)
 INCFFTW= /usr/include
 LIBFFTW= /lib/x86_64-linux-gnu
 #==========================================================================
-FC = gfortran#ifort#
+FC = ifort#gfortran#
 
 FFLAGS= -g -fmax-errors=5 -O2 
 
