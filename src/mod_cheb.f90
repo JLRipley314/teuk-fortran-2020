@@ -10,8 +10,8 @@ module mod_cheb
    private
 
    ! radial points
-   real(rp), allocatable, protected, public :: Rvec(:)
-   real(rp), allocatable, protected, public :: Rarr(:,:)
+   real(rp), dimension(nx), protected, public :: Rvec
+   real(rp), dimension(nx), protected, public :: Rarr
 
    ! subroutines
    public :: cheb_init, compute_DR, cheb_filter, cheb_test
@@ -23,26 +23,17 @@ module mod_cheb
    end interface
 
    ! Chebyshev matrices  
-   real(rp), allocatable :: D_cheb(:,:)
-   real(rp), allocatable :: to_cheb(:,:)
-   real(rp), allocatable :: to_real(:,:)
+   real(rp), dimension(nx,nx) :: D_cheb(:,:)
+   real(rp), dimension(nx,nx) :: to_cheb(:,:)
+   real(rp), dimension(nx,nx) :: to_real(:,:)
 
    ! filter array
-   real(rp), allocatable :: filter_arr(:)
+   real(rp), dimension(nx) :: filter_arr(:)
 !=============================================================================
 contains
 !=============================================================================
    subroutine cheb_init()
       integer :: j
-
-      allocate(Rvec(nx))
-      allocate(Rarr(nx,nx))
-
-      allocate(D_cheb(nx,nx))
-      allocate(to_cheb(nx,nx))
-      allocate(to_real(nx,nx))
-
-      allocate(filter_arr(nx))
 
       call set_arr('cheb_pts.txt', nx,  Rvec)
       call set_arr('cheb_D.txt',nx,nx,D_cheb)

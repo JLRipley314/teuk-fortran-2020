@@ -23,11 +23,11 @@ module mod_cheb
    type(c_ptr) :: plan_dct
 
    ! radial points
-   real(rp), allocatable, protected, public :: Rvec(:)
-   real(rp), allocatable, protected, public :: Rarr(:,:)
+   real(rp), dimension(nx),    protected, public :: Rvec
+   real(rp), dimension(nx,ny), protected, public :: Rarr
 
    ! filter array
-   real(rp), allocatable :: filter_arr(:)
+   real(rp), dimension(nx) :: filter_arr
 
    ! subroutines
    public :: cheb_init, compute_DR, cheb_filter, cheb_test
@@ -43,10 +43,6 @@ contains
    subroutine cheb_init()
       integer :: j
       complex(rp), dimension(nx) :: test_in, test_out
-
-      allocate(Rvec(nx))
-      allocate(Rarr(nx,ny))
-      allocate(filter_arr(nx))
 
       call set_arr('cheb_pts.txt', nx, Rvec)
 
@@ -183,18 +179,10 @@ contains
    end subroutine cheb_filter
 !=============================================================================
    subroutine cheb_test()
-      complex(rp), allocatable :: &
-         vals(:,:,:), &
-         coefs(:,:,:), &
-         DR_vals(:,:,:), &
-         computed_DR_vals(:,:,:) 
+      complex(rp), dimension(nx,ny,min_m:max_m) :: &
+         vals, coefs, DR_vals, computed_DR_vals
       integer(ip) :: i
       integer(ip), parameter :: m_ang = 0_ip
-
-      allocate(vals(nx,ny,min_m:max_m)) 
-      allocate(coefs(nx,ny,min_m:max_m)) 
-      allocate(DR_vals(nx,ny,min_m:max_m)) 
-      allocate(computed_DR_vals(nx,ny,min_m:max_m)) 
 
       do i=1,nx
          vals(i,:,:)    = sin(Rvec(i))**2
