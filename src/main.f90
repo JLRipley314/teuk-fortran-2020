@@ -5,8 +5,7 @@
 !=============================================================================
 program main
 !=============================================================================
-   use, intrinsic :: iso_fortran_env, only: &
-      stdout=>output_unit, stdin=>input_unit, stderr=>error_unit
+   use, intrinsic :: iso_fortran_env, only: stdout=>output_unit 
 
    use mod_prec
    use mod_params, only: &
