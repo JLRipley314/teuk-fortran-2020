@@ -13,14 +13,14 @@ args= sys.argv
 sim= Sim(args)
 #=============================================================================
 sim.black_hole_mass= float(0.5)	
-sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
+sim.black_hole_spin= round(0.998*sim.black_hole_mass,4)
 sim.compactification_length= float(1)
 #=============================================================================
-sim.evolve_time= float(20) ## units of black hole mass
-sim.num_saved_times= int(40)
+sim.evolve_time= float(150) ## units of black hole mass
+sim.num_saved_times= int(500)
 #=============================================================================
-sim.nx= 64 ## num radial pts 
-sim.nl= 16  ## num angular values
+sim.nx= 192 ## num radial pts 
+sim.nl= 36  ## num angular values
 #=============================================================================
 ## evolution and write: take boolean values 
 
@@ -33,7 +33,7 @@ sim.write_metric_recon_fields= False
 sim.write_scd_order_source=    True
 sim.write_coefs=               False
 #=============================================================================
-sim.computer= 'home'#'feynman'#
+sim.computer= 'feynman'#'home'#
 sim.feyn_out_stem= '/mnt/grtheory/tf-out/'
 
 ## for feynman cluster/slurm script
@@ -74,10 +74,10 @@ sim.l_ang_pm1= int(2)
 sim.initial_data_direction_pm1= "ingoing"#"outgoing"#"time_symmetric"#
 
 sim.amp_re_pm1= float(0.1)
-sim.amp_im_pm1= float(0.1)
+sim.amp_im_pm1= float(0.0)
 
-sim.rl_pm1_0= float(-2.0)
-sim.ru_pm1_0= float( 2.0)
+sim.rl_pm1_0= float( 1.1)
+sim.ru_pm1_0= float( 2.5)
 #-----------------------------------------------------------------------------
 sim.l_ang_nm1= int(2)
 
@@ -87,7 +87,7 @@ sim.amp_re_nm1= float( 0.0)
 sim.amp_im_nm1= float( 0.0)
 
 sim.rl_nm1_0= float( 1.1)
-sim.ru_nm1_0= float( 3.0)
+sim.ru_nm1_0= float( 2.5)
 #=============================================================================
 ## initial data for mode m2
 #=============================================================================
@@ -97,8 +97,8 @@ sim.l_ang_pm2= int(3)
 
 sim.initial_data_direction_pm2= "ingoing"#"time_symmetric"#"outgoing"#
 
-sim.amp_re_pm2= float(0.05)
-sim.amp_im_pm2= float(0.05)
+sim.amp_re_pm2= float(0.0)
+sim.amp_im_pm2= float(0.0)
 
 sim.rl_pm2_0= float(-1.5) 
 sim.ru_pm2_0= float( 1.5) 
@@ -145,28 +145,28 @@ if (sim.run_type == "basic_run"):
 #=============================================================================
 elif (sim.run_type == "multiple_runs"):
 #-----------------------------------------------------------------------------
-   default_amp = 0.1
    default_sm  = 1
 
    default_nx_07 = 176
    default_nl_07 = 32
-
-   default_nx_099 = 132
-   default_nl_099 = 28
+#   default_nx_07 = 144
+#   default_nl_07 = 24
 
    default_nx_0998 = 192
    default_nl_0998 = 36
+#   default_nx_0998 = 160
+#   default_nl_0998 = 28
 #-----------------------------------------------------------------------------
 #-----------------------------------------------------------------------------
    sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
    sim.start_multiple = default_sm
-   sim.amp_pm1 = default_amp
-   sim.amp_nm1 = default_amp
    sim.nx = default_nx_07
    sim.nl = default_nl_07
 
    nxs = [160, 176, 192]
    nls = [ 28,  32,  36]
+#   nxs = [128, 144, 160]
+#   nls = [ 20,  24,  28]
    for i in range(len(nxs)):
       sim.nx = nxs[i]
       sim.nl = nls[i]
@@ -174,21 +174,6 @@ elif (sim.run_type == "multiple_runs"):
 #-----------------------------------------------------------------------------
    sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
    sim.start_multiple = default_sm
-   sim.amp_pm1 = default_amp
-   sim.amp_nm1 = default_amp
-   sim.nx = default_nx_07
-   sim.nl = default_nl_07
-
-   amps = [0.3, 0.5]
-   for amp in amps:
-      sim.amp_pm1= amp
-      sim.amp_nm1= amp
-      sim.launch_run() 
-#-----------------------------------------------------------------------------
-   sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
-   sim.start_multiple = default_sm
-   sim.amp_pm1 = default_amp
-   sim.amp_nm1 = default_amp
    sim.nx = default_nx_07
    sim.nl = default_nl_07
 
@@ -200,13 +185,13 @@ elif (sim.run_type == "multiple_runs"):
 #-----------------------------------------------------------------------------
    sim.black_hole_spin= round(0.998*sim.black_hole_mass,4)
    sim.start_multiple = default_sm
-   sim.amp_pm1 = default_amp
-   sim.amp_nm1 = default_amp
    sim.nx = default_nx_0998
    sim.nl = default_nl_0998
 
    nxs = [176, 192, 208]
    nls = [32,   36,  40]
+#   nxs = [144, 160, 176]
+#   nls = [ 24,  28,  32]
    for i in range(len(nxs)):
       sim.nx = nxs[i]
       sim.nl = nls[i]
@@ -214,74 +199,10 @@ elif (sim.run_type == "multiple_runs"):
 #-----------------------------------------------------------------------------
    sim.black_hole_spin= round(0.998*sim.black_hole_mass,4)
    sim.start_multiple = default_sm
-   sim.amp_pm1 = default_amp
-   sim.amp_nm1 = default_amp
-   sim.nx = default_nx_0998
-   sim.nl = default_nl_0998
-
-   amps = [0.3, 0.5]
-   for amp in amps:
-      sim.amp_pm1= amp
-      sim.amp_nm1= amp
-      sim.launch_run() 
-#-----------------------------------------------------------------------------
-   sim.black_hole_spin= round(0.998*sim.black_hole_mass,4)
-   sim.start_multiple = default_sm
-   sim.amp_pm1 = default_amp
-   sim.amp_nm1 = default_amp
    sim.nx = default_nx_0998
    sim.nl = default_nl_0998
 
    sms = [2,3]
-   for sm in sms:
-      sim.start_multiple= sm
-      sim.launch_run()
-
-   sys.exit()
-#-----------------------------------------------------------------------------
-#-----------------------------------------------------------------------------
-   sim.black_hole_spin= round(0.99*sim.black_hole_mass,4)
-   sim.start_multiple = default_sm
-   sim.amp_pm1 = default_amp
-   sim.amp_nm1 = default_amp
-   sim.nx = default_nx_099
-   sim.nl = default_nl_099
-
-   nxs = [96, 112, 128]
-   nls = [20,  24,  28]
-   for i in range(len(nxs)):
-      sim.nx = nxs[i]
-      sim.nl = nls[i]
-      sim.launch_run() 
-#-----------------------------------------------------------------------------
-   sim.black_hole_spin= round(0.99*sim.black_hole_mass,4)
-   sim.start_multiple = default_sm
-   sim.amp_pm1 = default_amp
-   sim.amp_nm1 = default_amp
-   sim.nx = default_nx_099
-   sim.nl = default_nl_099
-
-   amps = [0.3, 0.5]
-   for amp in amps:
-      sim.amp_pm1= amp
-      sim.amp_nm1= amp
-      sim.launch_run() 
-#-----------------------------------------------------------------------------
-   sim.black_hole_spin= round(0.99*sim.black_hole_mass,4)
-   sim.start_multiple = default_sm
-   sim.amp_pm1 = default_amp
-   sim.amp_nm1 = default_amp
-   sim.nx = default_nx_099
-   sim.nl = default_nl_099
-
-   sms = [2,3]
-   for sm in sms:
-      sim.start_multiple= sm
-      sim.launch_run()
-#=============================================================================
-elif (sim.run_type == "start_times"):
-   sms = [1,2,3]
-
    for sm in sms:
       sim.start_multiple= sm
       sim.launch_run()

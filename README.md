@@ -2,7 +2,7 @@
 
 A Fortran ('08) and python code that solves Teukolsky equation for
 the linearly perturbed Newman-Penrose scalar Psi4 about a Kerr black hole.
-The code also reconstructs
+The code also directly reconstructs
 the linear spacetime metric in outgoing raditation gauge from
 the linearized Newman-Penrose scalar Psi\_4, and then
 solves the equations of motion for the second order Psi\_4.
@@ -20,6 +20,9 @@ Runtime parameters are configured in the `setup.py` file.
 
 * Fastest Fourier Transform in the West (FFTW): 
 	http://fftw.org
+
+* OpenMP (this is optional, and can be deactivated in the Makefile): 
+	https://www.openmp.org/
 
 I have successfully compiled the code with
 gfortran (version 9) and ifort (version 17).
