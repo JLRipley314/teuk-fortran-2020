@@ -11,6 +11,8 @@ are evaluated using pseudo-spectral methods.
 For more information about the code and the formalism we use
 see the papers listed under `Citation`.
 
+Look under Releases for the latest stable version of this code.
+
 Runtime parameters are configured in the `setup.py` file.
 
 ## Libraries

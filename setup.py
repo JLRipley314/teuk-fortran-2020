@@ -13,7 +13,7 @@ args= sys.argv
 sim= Sim(args)
 #=============================================================================
 sim.black_hole_mass= float(0.5)	
-sim.black_hole_spin= round(0.998*sim.black_hole_mass,4)
+sim.black_hole_spin= round(0.998*sim.black_hole_mass,6)
 sim.compactification_length= float(1)
 #=============================================================================
 sim.evolve_time= float(150) ## units of black hole mass
@@ -33,13 +33,13 @@ sim.write_metric_recon_fields= False
 sim.write_scd_order_source=    True
 sim.write_coefs=               False
 #=============================================================================
-sim.computer= 'feynman'#'home'#
-sim.feyn_out_stem= '/mnt/grtheory/tf-out/'
+sim.computer= 'della'#'home'#
+sim.della_out_stem= '/tigress/jripley/tf-out/'
 
-## for feynman cluster/slurm script
+## for della cluster/slurm script
 
-sim.walltime= '168:00:00' ## (hh:mm:ss)
-sim.memory=  '1024' ## MB 
+sim.walltime= '144:00:00' ## (hh:mm:ss)
+sim.memory=  '2048' ## MB 
 sim.email=  'lloydripley@gmail.com' ## for slurm notification
 #=============================================================================
 ## we can only do metric reconstruction starting from psi4 for now.
@@ -152,13 +152,13 @@ elif (sim.run_type == "multiple_runs"):
 #   default_nx_07 = 144
 #   default_nl_07 = 24
 
-   default_nx_0998 = 192
-   default_nl_0998 = 36
+   default_nx_0998 = 214
+   default_nl_0998 = 44
 #   default_nx_0998 = 160
 #   default_nl_0998 = 28
 #-----------------------------------------------------------------------------
 #-----------------------------------------------------------------------------
-   sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
+   sim.black_hole_spin= round(0.7*sim.black_hole_mass,6)
    sim.start_multiple = default_sm
    sim.nx = default_nx_07
    sim.nl = default_nl_07
@@ -172,7 +172,7 @@ elif (sim.run_type == "multiple_runs"):
       sim.nl = nls[i]
       sim.launch_run() 
 #-----------------------------------------------------------------------------
-   sim.black_hole_spin= round(0.7*sim.black_hole_mass,4)
+   sim.black_hole_spin= round(0.7*sim.black_hole_mass,6)
    sim.start_multiple = default_sm
    sim.nx = default_nx_07
    sim.nl = default_nl_07
@@ -182,14 +182,15 @@ elif (sim.run_type == "multiple_runs"):
       sim.start_multiple= sm
       sim.launch_run()
 #-----------------------------------------------------------------------------
+   sys.exit()
 #-----------------------------------------------------------------------------
-   sim.black_hole_spin= round(0.998*sim.black_hole_mass,4)
+   sim.black_hole_spin= round(0.99998*sim.black_hole_mass,6)
    sim.start_multiple = default_sm
    sim.nx = default_nx_0998
    sim.nl = default_nl_0998
 
-   nxs = [176, 192, 208]
-   nls = [32,   36,  40]
+   nxs = [208, 214, 230]
+   nls = [ 40,  44,  48]
 #   nxs = [144, 160, 176]
 #   nls = [ 24,  28,  32]
    for i in range(len(nxs)):
@@ -197,7 +198,7 @@ elif (sim.run_type == "multiple_runs"):
       sim.nl = nls[i]
       sim.launch_run() 
 #-----------------------------------------------------------------------------
-   sim.black_hole_spin= round(0.998*sim.black_hole_mass,4)
+   sim.black_hole_spin= round(0.99998*sim.black_hole_mass,6)
    sim.start_multiple = default_sm
    sim.nx = default_nx_0998
    sim.nl = default_nl_0998
@@ -206,6 +207,7 @@ elif (sim.run_type == "multiple_runs"):
    for sm in sms:
       sim.start_multiple= sm
       sim.launch_run()
+
 #=============================================================================
 elif (sim.run_type == "spin_ramp"):
    for bhs in [0,0.01,0.02,0.04,0.08,0.12,0.16,0.2,0.24,0.28,0.32]:

@@ -36,8 +36,8 @@ class Sim:
       )
       if (self.computer=="home"):
          self.output_dir= "output/"+self.output_stem
-      elif (self.computer=="feynman"):
-         self.output_dir=self.feyn_out_stem+self.output_stem
+      elif (self.computer=="della"):
+         self.output_dir=self.della_out_stem+self.output_stem
       else:
          raise ValueError("self.computer="+self.computer+" not supported")
       os.makedirs(self.output_dir)
@@ -53,7 +53,7 @@ class Sim:
       -  pow(self.black_hole_spin,2)
       ,0.5)
 
-      self.horizon= self.black_hole_mass+(0.999*sqrt_term)
+      self.horizon= self.black_hole_mass+sqrt_term
 
       self.R_max= float(
          pow(self.compactification_length,2)
@@ -173,7 +173,7 @@ class Sim:
          f.write('#!/bin/sh\n')
          f.write('#SBATCH -J fteuk\t\t# job name\n')
          f.write('#SBATCH -t {}\t\t# walltime (dd:hh:mm:ss)\n'.format(self.walltime))
-         f.write('#SBATCH -p dept\t\t# partition/queue name\n')
+         f.write('#SBATCH -p physics\t\t# partition/queue name\n')
          f.write('#SBATCH --mem={}MB\n'.format(self.memory))
          f.write('#SBATCH --output={}\t\t# file for STDOUT\n'.format(self.output_file))
          f.write('#SBATCH --mail-user={}\t\t# Mail  id of the user\n'.format(self.email))
@@ -222,7 +222,7 @@ class Sim:
             run_str= 'valgrind -v --track-origins=yes --leak-check=full '+run_str
          os.environ['OMP_NUM_THREADS']= str(self.num_threads)
          subprocess.call(run_str,shell=True) 
-      elif (self.computer=='feynman'):
+      elif (self.computer=='della'):
          self.write_slurm_script()
          subprocess.call('sbatch run.slurm', shell='True')		
       else:
