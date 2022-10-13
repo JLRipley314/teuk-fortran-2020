@@ -78,11 +78,12 @@ and
 
 ## Bug history 
 
-* *Oct 2022*: I learned a few changes made to the code after
+* **Oct 2022**: A few bugs were introduced to the code in commits made after the
 publication of arXiv:2008:11770 and arXiv:2010.00162.
 I have reverted the code to close to its original form, 
 so that running this code should give allow you to reproduce the
-figures in arXiv:2010.00162. Bugs found by Hengrui Zhu (Princeton University)  
+figures in arXiv:2010.00162. Discrepencies in the code output were found
+by **Hengrui Zhu** (Princeton University)  
 
 ## Contact
 
