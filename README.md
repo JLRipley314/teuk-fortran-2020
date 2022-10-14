@@ -83,7 +83,9 @@ publication of arXiv:2008:11770 and arXiv:2010.00162.
 I have reverted the code to close to its original form, 
 so that running this code should give allow you to reproduce the
 figures in arXiv:2010.00162. Discrepencies in the code output were found
-by **Hengrui Zhu** (Princeton University)  
+by **Hengrui Zhu** (Princeton University).
+If you are interested in the newer experimental version of the code, please let
+me know.
 
 ## Contact
 
