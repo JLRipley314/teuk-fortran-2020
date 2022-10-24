@@ -23,7 +23,7 @@ Runtime parameters are configured in the `setup.py` file.
 * FFTW: 
 	http://fftw.org
 
-* OpenMP (this is optional, and can be deactivated in the Makefile): 
+* OpenMP (this is optional): 
 	https://www.openmp.org/
 
 I have successfully compiled the code with
@@ -74,7 +74,6 @@ and
     year = "2021"
 }
 ```
-
 
 ## Bug history 
 
