@@ -19,7 +19,7 @@ The general logic of the code is explained in the code paper
     year = "2021"
 }
 ```
-For example, that reference contains a fairly detaield discussion
+For example, that reference contains a fairly detailed discussion
 of how spin-weighted spherical harmonics are used in the code.
 
 ## Compiling 
@@ -65,7 +65,7 @@ These make use of type hints, so you will need to use `python3`.
 I suggest running by typing 
 
 ```
-python3 setup.pu default_run
+python3 setup.py default_run
 ```
 in the terminal of the home directory.
 
@@ -129,4 +129,4 @@ in the designated output directory.
 ## Contribution 
 
 Thank you to **Hengrui Zhu** for asking many hard questions about
-the code, which have contributed to this Documentation.
+the code.
