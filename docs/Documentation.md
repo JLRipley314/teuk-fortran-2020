@@ -110,7 +110,7 @@ the computational grid (remember Fortran indexing starts at i=1).
 The x values run from [0,R_{BH}], and the y values
 run from [-1,1]. The x values are located at the Gauss-Lobatto-Chebyshev `extreme points'; 
 and the y values are located at the Gauss-Legendre points. 
-See the [code paper](https://doi.org/10.48550/arXiv.2010.00162) for more details.
+See the code paper (citation at the top) for more details.
 
 
 ## Things to watch out for 
@@ -168,5 +168,6 @@ in the designated output directory.
 If you have any questions, please email Justin Ripley at:
 ripley {at} illinois {dot} edu
 
-Thank you to **Hengrui Zhu** for asking many hard questions about
-the code.
+Thank you to [Hengrui Zhu](https://github.com/HengruiPrinceton) and 
+[Jaime Redondo-Yuste](https://github.com/jredondoyuste)
+for asking many questions about the code.
