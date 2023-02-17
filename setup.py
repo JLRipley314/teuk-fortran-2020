@@ -13,14 +13,14 @@ args= sys.argv
 sim= Sim(args)
 #=============================================================================
 sim.black_hole_mass= float(0.5)	
-sim.black_hole_spin= round(0.998*sim.black_hole_mass,6)
+sim.black_hole_spin= round(0.0*sim.black_hole_mass,6)
 sim.compactification_length= float(1)
 #=============================================================================
-sim.evolve_time= float(150) ## units of black hole mass
-sim.num_saved_times= int(500)
+sim.evolve_time= float(10) ## units of black hole mass
+sim.num_saved_times= int(100)
 #=============================================================================
-sim.nx= 192 ## num radial pts 
-sim.nl= 36  ## num angular values
+sim.nx= 64 ## num radial pts 
+sim.nl= 20  ## num angular values
 #=============================================================================
 ## evolution and write: take boolean values 
 
