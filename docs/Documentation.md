@@ -83,7 +83,7 @@ spherical harmonics.
 
 ## Initial data
 
-The only implemented initial data for \psi_4^{(1)}
+The only implemented initial data for \psi\_4^{(1)}
 is an ingoing compact pulse of that field. 
 As things evovle in time, the evolution should settle down to the
 least damped quasinormal mode for each m-mode (at least until the
@@ -92,22 +92,26 @@ tail effects kick in).
 
 ## Output fortmat
 
-The code saves the values of the fields (e.g. psi_4^{(1)}) as .csv files.
+The code saves the values of the fields (e.g. psi\_4^{(1)}) as .csv files.
 Which fields are saved can be specified in the setup.py file, for example
 `sim.write_indep_res= True` means the independent residual fields are saved
 to file.  
 
 The storage format in each .csv file is
 
-row 1:	[time_1/M], [nx], [ny], [component 1,1], [component 1,2], ... , [component nx,ny]
-.
-.
-.
-row N:	[time_N/M], [nx], [ny], [component 1,1], [component [1,2], ... , [component nx,ny]
+row 1:	[time\_1/M], [nx], [ny], [component 1,1], [component 1,2], ... , [component nx,ny]
 
-By `[component i j]', I mean the field evaluated at the point (x[i],y[j]) on
+.
+
+.
+
+.
+
+row N:	[time\_N/M], [nx], [ny], [component 1,1], [component [1,2], ... , [component nx,ny]
+
+By `[component i j]`, I mean the field evaluated at the point (x[i],y[j]) on
 the computational grid (remember Fortran indexing starts at i=1). 
-The x values run from [0,R_{BH}], and the y values
+The x values run from [0,R\_{BH}], and the y values
 run from [-1,1]. The x values are located at the Gauss-Lobatto-Chebyshev `extreme points'; 
 and the y values are located at the Gauss-Legendre points. 
 See the code paper (citation at the top) for more details.
