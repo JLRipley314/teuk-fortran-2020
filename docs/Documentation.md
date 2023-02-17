@@ -115,7 +115,9 @@ See the [code paper](https://doi.org/10.48550/arXiv.2010.00162) for more details
 
 ## Things to watch out for 
 
-* **Convergence tests** This is a pseud-spectral code, so you should
+* **Convergence tests** 
+
+This is a pseud-spectral code, so you should
 expect very fast convergence of the waveforms.
 This being said, note that when you save to file (in time), you
 should be careful to compare the waveforms for self-convergence tests
@@ -124,6 +126,7 @@ by interpolating the data so that they can be compared at the same
 time step. 
 
 * **Metric reconstruction only currently works for |m|>=2 modes**.
+ 
 Our explanation for why our methods fail for |m|=1,0 modes
 is laid out in the code paper. If *all* you want to do is
 evolve the linear Teukolsky equation, you can evolve
@@ -137,19 +140,21 @@ not appreciably slower than the Fortran code.
 
 ## Quirks of the code
 
-I wrote this code while simultaneously learning ``modern`` fortran
+I wrote this code while simultaneously learning modern fortran
 (fortran 90 and its successors). This, along with my attempt
-to write a ``fast`` code, have led to a few quirks in the design.
+to write a fast code, have led to a few quirks in the design.
 
-* **The parameters in that run are hard-coded into the binary**
-They are located in  ``src/mod\_params.f90``
+* **The parameters for a given run are hard-coded into the binary.**
+
+The parameters are set in  `src/mod\_params.f90`.
 The easiest way to launch a new run is with the `setup.py` file. 
 When you launch the `setup.py` file, the script recompiles the
 code, makes a new binary whose name is the time at which it was
 compiled, and launches that.
 
 * **Spin-weighted spherical harmonics are pre-computed using
-python arbitrary-precision arithematic calculations (mpmath)**
+python arbitrary-precision arithematic calculations (mpmath).**
+
 Under `src/tables` are python scripts which compute
 the spin-weighted spherical harmonics.
 These scripts are called when you use the `setup.py` script,
@@ -159,6 +164,9 @@ compiles knows where those directories are, if it is run
 in the designated output directory.
 
 ## Contribution 
+
+If you have any questions, please email Justin Ripley at:
+ripley {at} illinois {dot} edu
 
 Thank you to **Hengrui Zhu** for asking many hard questions about
 the code.
