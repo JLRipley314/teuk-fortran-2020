@@ -225,14 +225,14 @@ contains
             call swal_real_to_coef( &
                psi4_lin_f%spin, &
                lin_write_m(i), &
-               psi4_lin_f%coefs_cheb, &
-               psi4_lin_f%coefs_both &
+               psi4_lin_f%np1, &
+               psi4_lin_f%coefs_swal &
             )
             call write_csv( &
                "coefs_"//psi4_lin_f%fname, &
                time, &
                lin_write_m(i), &
-               psi4_lin_f%coefs_both(:,:,lin_write_m(i)) &
+               psi4_lin_f%coefs_swal(:,:,lin_write_m(i)) &
             )
          end do 
          !--------------------------------------------------------------------
@@ -241,14 +241,14 @@ contains
                call swal_real_to_coef( &
                   psi4_scd_f%spin, &
                   scd_write_m(i), &
-                  psi4_scd_f%coefs_cheb, &
-                  psi4_scd_f%coefs_both &
+                  psi4_scd_f%np1, &
+                  psi4_scd_f%coefs_swal &
                )
                call write_csv( &
                   "coefs_"//psi4_scd_f%fname, &
                   time, &
                   scd_write_m(i), &
-                  psi4_scd_f%coefs_both(:,:,scd_write_m(i)) &
+                  psi4_scd_f%coefs_swal(:,:,scd_write_m(i)) &
                )
             end do 
          end if

@@ -21,6 +21,7 @@ implicit none
    logical, parameter :: write_metric_recon_fields = .false.
    logical, parameter :: write_scd_order_source = .true.
    logical, parameter :: write_coefs = .false.
+   logical, parameter :: write_sphere_coefs = .true.
    character(*), parameter :: computer = 'home'
    character(*), parameter :: della_out_stem = '/tigress/jripley/tf-out/'
    character(*), parameter :: walltime = '144:00:00'
@@ -87,8 +88,8 @@ implicit none
    integer(ip), parameter :: min_m = -4_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Feb_13_12_16_49_m0.5_s0.0_nx64_nl20'
-   character(*), parameter :: output_dir = 'output/Feb_13_12_16_49_m0.5_s0.0_nx64_nl20'
-   character(*), parameter :: bin_name = 'Feb_13_12_16_49_m0.5_s0.0_nx64_nl20.run'
-   character(*), parameter :: tables_dir = 'output/Feb_13_12_16_49_m0.5_s0.0_nx64_nl20/tables'
+   character(*), parameter :: output_stem = 'Jun_27_15_20_52_m0.5_s0.0_nx64_nl20'
+   character(*), parameter :: output_dir = 'output/Jun_27_15_20_52_m0.5_s0.0_nx64_nl20'
+   character(*), parameter :: bin_name = 'Jun_27_15_20_52_m0.5_s0.0_nx64_nl20.run'
+   character(*), parameter :: tables_dir = 'output/Jun_27_15_20_52_m0.5_s0.0_nx64_nl20/tables'
 end module mod_params

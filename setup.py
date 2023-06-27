@@ -32,7 +32,7 @@ sim.write_indep_res=           True
 sim.write_metric_recon_fields= False
 sim.write_scd_order_source=    True
 sim.write_coefs=               False
-sim.write_sphere_coefs=        False
+sim.write_sphere_coefs=        True 
 #=============================================================================
 sim.computer= 'home'#'della'#
 sim.della_out_stem= '/tigress/jripley/tf-out/'
