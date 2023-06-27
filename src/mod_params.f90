@@ -12,8 +12,8 @@ implicit none
    real(rp), parameter :: compactification_length = 1.0_rp
    real(rp), parameter :: evolve_time = 10.0_rp
    integer(ip), parameter :: num_saved_times = 100_ip
-   integer(ip), parameter :: nx = 64_ip
-   integer(ip), parameter :: nl = 20_ip
+   integer(ip), parameter :: nx = 48_ip
+   integer(ip), parameter :: nl = 24_ip
    logical, parameter :: metric_recon = .true.
    logical, parameter :: scd_order = .true.
    logical, parameter :: constrained_evo = .true.
@@ -60,7 +60,7 @@ implicit none
    integer(ip), dimension(3), parameter :: scd_m = [0_ip,-4_ip,4_ip]
    integer(ip), dimension(2), parameter :: lin_write_m = [2_ip,-2_ip]
    integer(ip), dimension(3), parameter :: scd_write_m = [0_ip,-4_ip,4_ip]
-   integer(ip), parameter :: max_l = 19_ip
+   integer(ip), parameter :: max_l = 23_ip
    real(rp), parameter :: horizon = 1.0_rp
    real(rp), parameter :: R_max = 1.0_rp
    real(rp), parameter :: rl_pm1 = 1.1_rp
@@ -80,16 +80,16 @@ implicit none
    integer(ip), parameter :: len_lin_write_m = 2_ip
    integer(ip), parameter :: len_scd_write_m = 3_ip
    integer(ip), parameter :: num_threads = 1_ip
-   integer(ip), parameter :: ny = 34_ip
-   real(rp), parameter :: dt = 0.002197265625_rp
-   integer(ip), parameter :: nt = 2275_ip
-   integer(ip), parameter :: t_step_save = 22_ip
+   integer(ip), parameter :: ny = 38_ip
+   real(rp), parameter :: dt = 0.00390625_rp
+   integer(ip), parameter :: nt = 1280_ip
+   integer(ip), parameter :: t_step_save = 12_ip
    integer(ip), parameter :: max_m = 4_ip
    integer(ip), parameter :: min_m = -4_ip
    integer(ip), parameter :: max_s = 3_ip
    integer(ip), parameter :: min_s = -3_ip
-   character(*), parameter :: output_stem = 'Jun_27_15_20_52_m0.5_s0.0_nx64_nl20'
-   character(*), parameter :: output_dir = 'output/Jun_27_15_20_52_m0.5_s0.0_nx64_nl20'
-   character(*), parameter :: bin_name = 'Jun_27_15_20_52_m0.5_s0.0_nx64_nl20.run'
-   character(*), parameter :: tables_dir = 'output/Jun_27_15_20_52_m0.5_s0.0_nx64_nl20/tables'
+   character(*), parameter :: output_stem = 'Jun_27_16_05_28_m0.5_s0.0_nx48_nl24'
+   character(*), parameter :: output_dir = 'output/Jun_27_16_05_28_m0.5_s0.0_nx48_nl24'
+   character(*), parameter :: bin_name = 'Jun_27_16_05_28_m0.5_s0.0_nx48_nl24.run'
+   character(*), parameter :: tables_dir = 'output/Jun_27_16_05_28_m0.5_s0.0_nx48_nl24/tables'
 end module mod_params

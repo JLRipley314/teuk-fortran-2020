@@ -3,7 +3,7 @@
 A Fortran ('08) and python code that solves Teukolsky equation for
 the linearly perturbed Newman-Penrose scalar Psi4 about a Kerr black hole.
 The code also directly reconstructs
-the linear spacetime metric in outgoing raditation gauge from
+the linear spacetime metric in outgoing radiation gauge from
 the linearized Newman-Penrose scalar Psi\_4, and then
 solves the equations of motion for the second order Psi\_4.
 The code evolves fields in the time domain, and spatial derivatives
@@ -77,12 +77,17 @@ and
 
 ## Bug history 
 
+* **June 2023**: I have added one new IO option that was not present in the original code:
+there is now a `write_sphere_coefs` option in the `setup.py` file, which allows you to save
+to file the spherical harmonic components of the code output at each radial point.
+Thanks to **Jaime Redondo-Yuste** for catching a bug in this addition to the code. 
+
 * **Oct 2022**: A few bugs were introduced to the code in commits made after the
 publication of arXiv:2008:11770 and arXiv:2010.00162.
 I have reverted the code to close to its original form, 
 so that running this code should give allow you to reproduce the
 figures in arXiv:2010.00162. Discrepencies in the code output were found
-by **Hengrui Zhu** (Princeton University).
+by **Hengrui Zhu**.
 If you are interested in the newer experimental version of the code, please let
 me know.
 
