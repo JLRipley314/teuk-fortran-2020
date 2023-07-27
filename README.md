@@ -40,7 +40,8 @@ form can be found [here](https://github.com/JLRipley314/2nd-order-teuk-derivatio
 We do not make use of the Kinnersley tetrad in this code.
 Instead, we make use of a rotation of that tetrad, which is described in more detail 
 in Appendix C of [arXiv:2010.00162](https://arxiv.org/abs/2010.00162) 
-(see the bibtex citation at the end of this README).
+(see the bibtex citation at the end of this README; a copy of the oringal preprint form
+of this paper can be found under the ``docs`` directory).
 The upshot of this transformation is that at future null infinity, the real and imaginary
 parts of the Weyl scalar Psi4 limit to *twice* the second time derivative of the
 plus and cross polarizations of the metric perturbation at future null infinity,
@@ -87,6 +88,8 @@ and
     year = "2021"
 }
 ```
+
+A copy of both of these papers (in preprint form) can be found under the ``docs`` directory.
 
 ## Bug history 
 

@@ -167,6 +167,13 @@ in the output directory. The binary file the `setup.py` file
 compiles knows where those directories are, if it is run
 in the designated output directory.
 
+# More information
+
+Included in this directory is a copy of the original preprint that described
+this code, as can be found on the arXiv, along with the original preprint 
+which describes in more detail the metric reconstruction technique used
+in this code. 
+
 ## Contribution 
 
 If you have any questions, please email Justin Ripley at:
