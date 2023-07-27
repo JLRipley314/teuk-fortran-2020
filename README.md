@@ -35,6 +35,19 @@ A Mathematica notebook that contains the equations of motion
 (as described in the `code paper` listed under `Citation`) in coordinate
 form can be found [here](https://github.com/JLRipley314/2nd-order-teuk-derivations).
 
+## Tetrad choice and extraction of radiation at future null infinity 
+
+We do not make use of the Kinnersley tetrad in this code.
+Instead, we make use of a rotation of that tetrad, which is described in more detail 
+in Appendix C of [arXiv:2010.00162](https://arxiv.org/abs/2010.00162) 
+(see the bibtex citation at the end of this README).
+The upshot of this transformation is that at future null infinity, the real and imaginary
+parts of the Weyl scalar Psi4 limit to *twice* the second time derivative of the
+plus and cross polarizations of the metric perturbation at future null infinity,
+(not *half* those quantities, as is the case for the traditionally used Kinnersley tetrad). 
+That is, the R.H.S. of Eq. (16) of [arXiv:2010.00162](https://arxiv.org/abs/2010.00162)
+should be multiplied by 4.
+
 ## Visualization
 
 I use pyqtgraph-graph derived software
@@ -86,7 +99,7 @@ Thanks to **Jaime Redondo-Yuste** for catching a bug in this addition to the cod
 publication of arXiv:2008:11770 and arXiv:2010.00162.
 I have reverted the code to close to its original form, 
 so that running this code should give allow you to reproduce the
-figures in arXiv:2010.00162. Discrepencies in the code output were found
+figures in arXiv:2010.00162. Discrepancies in the code output were found
 by **Hengrui Zhu**.
 If you are interested in the newer experimental version of the code, please let
 me know.
