@@ -1,5 +1,7 @@
 # Second order metric perturbation of Kerr black holes
 
+[![DOI](https://zenodo.org/badge/275682903.svg)](https://zenodo.org/badge/latestdoi/275682903)
+
 A Fortran ('08) and python code that solves Teukolsky equation for
 the linearly perturbed Newman-Penrose scalar Psi4 about a Kerr black hole.
 The code also directly reconstructs
@@ -57,7 +59,11 @@ to visualize the data, which are saved as csv files.
 
 ## Citation
 
-If you use this code, please cite:
+There is a zenodo link at the top of this README, if you would like to directly
+cite the code. 
+
+If you use this code, please cite the following two papers, which describe the
+algorithm and methods in detail:
 ```
 @article{Ripley:2020xby,
     author = "Ripley, Justin L. and Loutrel, Nicholas and Giorgi, Elena and Pretorius, Frans",
