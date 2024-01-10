@@ -111,9 +111,9 @@ row N:	[time\_N/M], [nx], [ny], [component 1,1], [component [1,2], ... , [compon
 
 By `[component i j]`, I mean the field evaluated at the point (x[i],y[j]) on
 the computational grid (remember Fortran indexing starts at i=1). 
-The x values run from [0,R\_{BH}], and the y values
-run from [-1,1]. The x values are located at the Gauss-Lobatto-Chebyshev `extreme points'; 
-and the y values are located at the Gauss-Legendre points. 
+The x values run from [0,R\_{BH}], and the y values run from [-1,1]. 
+The x values are located at the Gauss-Lobatto-Chebyshev `extreme points'; and the y values are located at the Gauss-Legendre points.
+**NOTE:** this means that `x(1)` is located at the black hole horizon, while `x(nx)` is located at future null infinity!!! 
 See the code paper (citation at the top) for more details.
 
 

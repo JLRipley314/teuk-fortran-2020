@@ -31,6 +31,11 @@ Runtime parameters are configured in the `setup.py` file.
 I have successfully compiled the code with
 gfortran (version 9) and ifort (version 17).
 
+## Usage
+
+Feel free to contact me if you have any questions.
+Under `docs/` there is a `Documentation.md` file which goes over how you can install the code, and how to read out data.  
+
 ## Derivation of equations of motion in coordinate form
 
 A Mathematica notebook that contains the equations of motion
