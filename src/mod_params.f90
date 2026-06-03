@@ -4,7 +4,7 @@
 module mod_params
 use mod_prec
 implicit none
-   character(*), parameter :: home_dir = '/home/jripley/teuk-fortran-2020'
+   character(*), parameter :: home_dir = ''
    character(*), parameter :: run_type = 'basic_run'
    logical, parameter :: debug = .false.
    real(rp), parameter :: black_hole_mass = 0.5_rp
@@ -23,10 +23,10 @@ implicit none
    logical, parameter :: write_coefs = .false.
    logical, parameter :: write_sphere_coefs = .true.
    character(*), parameter :: computer = 'home'
-   character(*), parameter :: della_out_stem = '/tigress/jripley/tf-out/'
+   character(*), parameter :: della_out_stem = ''
    character(*), parameter :: walltime = '144:00:00'
    character(*), parameter :: memory = '2048'
-   character(*), parameter :: email = 'lloydripley@gmail.com'
+   character(*), parameter :: email = ''
    integer(ip), parameter :: psi_spin = -2_ip
    integer(ip), parameter :: psi_boost = -2_ip
    real(rp), parameter :: start_multiple = 1.0_rp
