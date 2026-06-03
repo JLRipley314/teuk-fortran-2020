@@ -41,7 +41,7 @@ sim.della_out_stem= '/tigress/jripley/tf-out/'
 
 sim.walltime= '144:00:00' ## (hh:mm:ss)
 sim.memory=  '2048' ## MB 
-sim.email=  'lloydripley@gmail.com' ## for slurm notification
+sim.email=  '' ## for slurm notification
 #=============================================================================
 ## we can only do metric reconstruction starting from psi4 for now.
 ## For pure first order Teukolsky evolution we can consider other
